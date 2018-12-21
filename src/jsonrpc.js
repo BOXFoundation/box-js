@@ -22,7 +22,7 @@ export default class JsonRpc {
    * @returns
    * @memberof JsonRpc
    */
-  async fetch(path, body = {}) {
+  fetch = async (path, body = {}) => {
     let res;
     let json;
     try {
@@ -42,7 +42,7 @@ export default class JsonRpc {
       throw new RpcError(json);
     }
     return json;
-  }
+  };
 
   /**
    * getBlockHeight returns height of current tail block
@@ -50,9 +50,9 @@ export default class JsonRpc {
    * @returns
    * @memberof JsonRpc
    */
-  async getBlockHeight() {
+  getBlockHeight = async () => {
     return await this.fetch('/getblockheight');
-  }
+  };
 
   /**
    *  getBlockHash returns block hash of given height
@@ -61,9 +61,9 @@ export default class JsonRpc {
    * @returns
    * @memberof JsonRpc
    */
-  async getBlockHash(height) {
+  getBlockHash = async height => {
     return await this.fetch('/getblockhash', { height });
-  }
+  };
 
   /**
    *  getBlockHeader returns header info of a block given the block hash
@@ -72,9 +72,9 @@ export default class JsonRpc {
    * @returns
    * @memberof JsonRpc
    */
-  async getBlockHeader(block_hash) {
+  getBlockHeader = async block_hash => {
     return await this.fetch('/getblockheader', { block_hash });
-  }
+  };
 
   /**
    * getBlock returns block info given a block hash
@@ -83,9 +83,9 @@ export default class JsonRpc {
    * @returns
    * @memberof JsonRpc
    */
-  async getBlock(block_hash) {
+  getBlock = async block_hash => {
     return await this.fetch('/getblock', { block_hash });
-  }
+  };
 
   /**
    * Get the balance of an address
@@ -94,9 +94,9 @@ export default class JsonRpc {
    * @returns
    * @memberof JsonRpc
    */
-  async getBalance(addrs) {
+  getBalance = async addrs => {
     return await this.fetch('/getbalance', { addrs });
-  }
+  };
 
   /**
    * List transactions relate to an address
@@ -104,7 +104,7 @@ export default class JsonRpc {
    * @returns
    * @memberof JsonRpc
    */
-  async listTransactions(addr) {
+  listTransactions = async addr => {
     return await this.fetch('/listtransactions', { addr });
-  }
+  };
 }
