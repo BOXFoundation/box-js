@@ -7,6 +7,7 @@ import { newPrivateKey } from './privatekey';
 
 export default class Wallet {
   constructor() {
+    this.unlockPrivateKeyWithPassphrase = unlockPrivateKeyWithPassphrase;
     this.walletList = {};
   }
 
