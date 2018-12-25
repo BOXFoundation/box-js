@@ -11,12 +11,32 @@ export default class Wallet {
     this.walletList = {};
   }
 
-  async createWallet() {
+  /**
+   * creat an account with a password
+   *
+   * @param {string} pass
+   * @returns
+   * @memberof Wallet
+   */
+  async createWallet(pass) {
     const privateKey = newPrivateKey();
-    this.addPrivateKeyToWalletList(privateKey);
+    const cryptoJSON = this.getCrypto(privateKey, pass);
+    this.addToWalletList(cryptoJSON);
+    return {
+      privateKey,
+      cryptoJSON
+    };
   }
 
-  saveToJson(privateKey, pass) {
+  /**
+   * get cryptoJSON with privateKey and password
+   *
+   * @param {string} privateKey
+   * @param {string} pass
+   * @returns
+   * @memberof Wallet
+   */
+  getCrypto(privateKey, pass) {
     const cryptoJSON = getCryptoJSON(privateKey, pass);
     const proviteKeyStr = unlockPrivateKeyWithPassphrase(cryptoJSON, pass);
     const anotherPrivateKey = newPrivateKey(proviteKeyStr);
@@ -28,23 +48,21 @@ export default class Wallet {
     }
   }
 
-  async importWalletFromJson(json, pass) {
-    const proviteKeyStr = unlockPrivateKeyWithPassphrase(json, pass);
-    const privateKey = newPrivateKey(proviteKeyStr);
-    this.addPrivateKeyToWalletList(privateKey);
-  }
-
-  addPrivateKeyToWalletList(privateKey) {
-    const address = privateKey.toAddress();
-    if (this.privateKeys[address]) {
-      console.error('This privateKeys already existed. It will be rewrited!');
+  /**
+   * add new wallet to wallet list
+   *
+   * @param {object} cryptoJSON
+   * @memberof Wallet
+   */
+  addToWalletList(cryptoJSON) {
+    const address = cryptoJSON.address;
+    if (this.walletList[address]) {
+      console.error('This wallet already existed. It will be rewrited!');
     }
-    this.walletList[address] = { privateKey };
+    this.walletList[address] = { cryptoJSON };
   }
 
   listWallets() {
     return Object.keys(this.walletList);
   }
-
-  // async listTransactions() {}
 }
