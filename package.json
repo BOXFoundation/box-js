@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "boxd jsonrpc",
   "main": "dist/index.js",
+  "types": "./types/index.d.ts",
   "scripts": {
     "test": "npx mocha --require babel-register --require ./test/test_helper.js --recursive",
     "build": "npx babel src --out-dir dist --source-maps"
