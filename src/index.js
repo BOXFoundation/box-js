@@ -1,5 +1,5 @@
 // import 'babel-polyfill';
-import jsonrpc from './jsonrpc';
-import wallet from './wallet';
+import Jsonrpc from './jsonrpc';
+import Wallet from './wallet';
 
-export { jsonrpc, wallet };
+export { Jsonrpc, Wallet };
