@@ -30,7 +30,8 @@ export class Wallet {
   ): string;
 
   createWallet(
-    password: string
+    password: string,
+    privateKeyHexStr?: string
   ): { cryptoJSON: cryptoJSON; privateKey: bitcore.PrivateKey };
 
   getCrypto(privateKey: bitcore.PrivateKey, password: string): cryptoJSON;

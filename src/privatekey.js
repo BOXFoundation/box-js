@@ -3,15 +3,10 @@ import bitcore from 'bitcore-lib';
 /**
  * creat a new accont
  *
- * @param {string} passphrase
- * @param {string} key
+ * @param {string} privateKeyStr
  */
-export const newPrivateKey = (passphrase, privateKeyStr) => {
-  const privateKey = new bitcore.PrivateKey(privateKeyStr);
-
-  privateKey.prototype.isEqualTo = anotherPrivateKey => {
-    return privateKey.toString('hex') === anotherPrivateKey.toString('hex');
-  };
-
-  return privateKey;
+export const newPrivateKey = privateKeyStr => {
+  return new bitcore.PrivateKey(privateKeyStr);
 };
+
+newPrivateKey();

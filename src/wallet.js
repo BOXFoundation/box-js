@@ -5,6 +5,15 @@ import {
 
 import { newPrivateKey } from './privatekey';
 
+const isEqualTo = (a, b) => {
+  const aStr = a.toString();
+  const bStr = b.toString();
+  console.log('a:', aStr);
+  console.log('b:', bStr);
+
+  return aStr === bStr;
+};
+
 export default class Wallet {
   constructor() {
     this.unlockPrivateKeyWithPassphrase = unlockPrivateKeyWithPassphrase;
@@ -15,11 +24,12 @@ export default class Wallet {
    * creat an account with a password
    *
    * @param {string} pass
+   * @param {string} privateKeyHexStr
    * @returns
    * @memberof Wallet
    */
-  async createWallet(pass) {
-    const privateKey = newPrivateKey();
+  createWallet(pass, privateKeyHexStr) {
+    const privateKey = newPrivateKey(privateKeyHexStr);
     const cryptoJSON = this.getCrypto(privateKey, pass);
     return {
       privateKey,
@@ -30,7 +40,7 @@ export default class Wallet {
   /**
    * get cryptoJSON with privateKey and password
    *
-   * @param {string} privateKey
+   * @param {any} privateKey
    * @param {string} pass
    * @returns
    * @memberof Wallet
@@ -40,7 +50,7 @@ export default class Wallet {
     const proviteKeyStr = unlockPrivateKeyWithPassphrase(cryptoJSON, pass);
     const anotherPrivateKey = newPrivateKey(proviteKeyStr);
 
-    if (anotherPrivateKey.isEqualTo(privateKey)) {
+    if (isEqualTo(anotherPrivateKey, privateKey)) {
       return cryptoJSON;
     } else {
       throw new Error('Generate cryptoJSON failed!');
