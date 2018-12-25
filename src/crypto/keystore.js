@@ -47,8 +47,9 @@ const getCryptoJSON = (privateKey, passphrase) => {
 
   try {
     const privateKeyHexStr = privateKey.toString(_STRING_ENC_);
-    const address = privateKey.toAddress().toString(_STRING_ENC_);
-    const hash160Address = hash160(Buffer.from(address)).toString(_STRING_ENC_);
+    const address = hash160(privateKey.toPublicKey().toBuffer()).toString(
+      _STRING_ENC_
+    );
 
     const salt = randomBytes(32);
     const iv = randomBytes(aesBlockSize).toString(_STRING_ENC_);
@@ -68,7 +69,7 @@ const getCryptoJSON = (privateKey, passphrase) => {
 
     return {
       id: '',
-      address: hash160Address,
+      address,
       crypto: {
         cipher: 'aes-128-ctr',
         ciphertext: cipherText,

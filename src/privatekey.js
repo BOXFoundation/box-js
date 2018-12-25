@@ -7,10 +7,10 @@ import { hash160 } from './crypto/hash';
  * @param {string} privateKeyStr
  */
 export const newPrivateKey = privateKeyStr => {
-  return new bitcore.PrivateKey(privateKeyStr);
+  const newKey = new bitcore.PrivateKey(privateKeyStr);
+  return newKey;
 };
 
 export const getAddress = privateKey => {
-  const address = privateKey.toAddress().toString();
-  return hash160(Buffer.from(address)).toString('hex');
+  return hash160(privateKey.toPublicKey().toBuffer()).toString('hex');
 };

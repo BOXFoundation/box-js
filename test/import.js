@@ -15,7 +15,7 @@ const testPass = '123';
 
 describe('Test privateKey', () => {
   it(`They should be same:`, () => {
-    unlockPrivateKeyWithPassphrase(cryptoJson, '123').should.equal(
+    unlockPrivateKeyWithPassphrase(cryptoJson, testPass).should.equal(
       testPrivateKey
     );
   });
@@ -29,6 +29,8 @@ describe('Test privateKey', () => {
     const newKey = newPrivateKey(testPrivateKey);
     const json = getCryptoJSON(newKey, testPass);
     console.log('json:', json);
+    console.log(unlockPrivateKeyWithPassphrase(json, testPass));
+    console.log(testPrivateKey);
     // newKey.toString().should.equal(testPrivateKey);
   });
 });
