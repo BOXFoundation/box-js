@@ -1,6 +1,7 @@
 const scrypt = require('scrypt.js');
 const randomBytes = require('randombytes');
 const { getCiphertext, aesBlockSize, getMac } = require('./aes');
+const { hash160 } = require('./hash');
 
 const _STRING_ENC_ = 'hex';
 
@@ -46,7 +47,8 @@ const getCryptoJSON = (privateKey, passphrase) => {
 
   try {
     const privateKeyHexStr = privateKey.toString(_STRING_ENC_);
-    const address = privateKey.toAddress();
+    const address = privateKey.toAddress().toString(_STRING_ENC_);
+    const hash160Address = hash160(Buffer.from(address)).toString(_STRING_ENC_);
 
     const salt = randomBytes(32);
     const iv = randomBytes(aesBlockSize).toString(_STRING_ENC_);
@@ -66,7 +68,7 @@ const getCryptoJSON = (privateKey, passphrase) => {
 
     return {
       id: '',
-      address,
+      address: hash160Address,
       crypto: {
         cipher: 'aes-128-ctr',
         ciphertext: cipherText,
