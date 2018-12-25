@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "types": "./types/index.d.ts",
   "scripts": {
+    "shrinkwrap": "npm shrinkwrap",
     "test": "npx mocha --require babel-register --require ./test/test_helper.js --recursive",
     "build": "npx babel src --out-dir dist --source-maps"
   },
