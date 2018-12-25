@@ -21,7 +21,6 @@ export default class Wallet {
   async createWallet(pass) {
     const privateKey = newPrivateKey();
     const cryptoJSON = this.getCrypto(privateKey, pass);
-    this.addToWalletList(cryptoJSON);
     return {
       privateKey,
       cryptoJSON
@@ -54,12 +53,12 @@ export default class Wallet {
    * @param {object} cryptoJSON
    * @memberof Wallet
    */
-  addToWalletList(cryptoJSON) {
+  addToWalletList(cryptoJSON, otherInfo) {
     const address = cryptoJSON.address;
     if (this.walletList[address]) {
       console.error('This wallet already existed. It will be rewrited!');
     }
-    this.walletList[address] = { cryptoJSON };
+    this.walletList[address] = { cryptoJSON, ...otherInfo };
   }
 
   listWallets() {
