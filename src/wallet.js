@@ -15,9 +15,9 @@ const isEqualTo = (a, b) => {
 };
 
 export default class Wallet {
-  constructor() {
+  constructor(walletsMap) {
     this.unlockPrivateKeyWithPassphrase = unlockPrivateKeyWithPassphrase;
-    this.walletList = {};
+    this.walletsMap = {};
   }
 
   /**
@@ -46,15 +46,16 @@ export default class Wallet {
    * @memberof Wallet
    */
   getCrypto(privateKey, pass) {
-    const cryptoJSON = getCryptoJSON(privateKey, pass);
-    const proviteKeyStr = unlockPrivateKeyWithPassphrase(cryptoJSON, pass);
-    const anotherPrivateKey = newPrivateKey(proviteKeyStr);
+    return getCryptoJSON(privateKey, pass);
+    // const cryptoJSON = getCryptoJSON(privateKey, pass);
+    // const proviteKeyStr = unlockPrivateKeyWithPassphrase(cryptoJSON, pass);
+    // const anotherPrivateKey = newPrivateKey(proviteKeyStr);
 
-    if (isEqualTo(anotherPrivateKey, privateKey)) {
-      return cryptoJSON;
-    } else {
-      throw new Error('Generate cryptoJSON failed!');
-    }
+    // if (isEqualTo(anotherPrivateKey, privateKey)) {
+    //   return cryptoJSON;
+    // } else {
+    //   throw new Error('Generate cryptoJSON failed!');
+    // }
   }
 
   /**
@@ -65,13 +66,16 @@ export default class Wallet {
    */
   addToWalletList(cryptoJSON, otherInfo) {
     const address = cryptoJSON.address;
-    if (this.walletList[address]) {
+    const update_time = Date.now();
+    if (this.walletsMap[address]) {
       console.error('This wallet already existed. It will be rewrited!');
     }
-    this.walletList[address] = { cryptoJSON, ...otherInfo };
+    this.walletsMap[address] = { cryptoJSON, ...{ update_time }, ...otherInfo };
   }
 
   listWallets() {
-    return Object.keys(this.walletList);
+    return Object.values(this.walletsMap).sort(
+      (a, b) => a.update_time - b.update_time
+    );
   }
 }
