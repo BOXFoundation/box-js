@@ -15,9 +15,10 @@ const isEqualTo = (a, b) => {
 };
 
 export default class Wallet {
-  constructor(walletsMap) {
+  constructor({ walletsMap = {}, onUpdate }) {
     this.unlockPrivateKeyWithPassphrase = unlockPrivateKeyWithPassphrase;
-    this.walletsMap = {};
+    this.walletsMap = walletsMap;
+    this.onUpdate = onUpdate;
   }
 
   /**
@@ -71,6 +72,7 @@ export default class Wallet {
       console.error('This wallet already existed. It will be rewrited!');
     }
     this.walletsMap[address] = { cryptoJSON, ...{ update_time }, ...otherInfo };
+    this.onUpdate && this.onUpdate(this.walletsMap);
   }
 
   listWallets() {
