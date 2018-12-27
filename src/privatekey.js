@@ -2,19 +2,22 @@ import bitcore from 'bitcore-lib';
 import { hash160, sha256 } from './crypto/hash';
 import bs58 from 'bs58';
 
-const P2PKHSetting = {
-  prefix: '1326'
+const prefix = {
+  P2PKH: '1326',
+  P2SH: '132b'
 };
 
-function toP2PKHAddress() {
-  const sha256Content = P2PKHSetting.prefix + this.pkh;
-  const checksum = sha256(sha256(Buffer.from(sha256Content, 'hex'))).slice(
-    0,
-    4
-  );
-  const content = sha256Content.concat(checksum.toString('hex'));
-  this.P2PKHAddress = bs58.encode(Buffer.from(content, 'hex'));
-  return this.P2PKHAddress;
+function getAddress(_this, prefixHex) {
+  return function() {
+    const sha256Content = prefixHex + this.pkh;
+    const checksum = sha256(sha256(Buffer.from(sha256Content, 'hex'))).slice(
+      0,
+      4
+    );
+    const content = sha256Content.concat(checksum.toString('hex'));
+    this.P2PKHAddress = bs58.encode(Buffer.from(content, 'hex'));
+    return this.P2PKHAddress;
+  }.bind(_this);
 }
 
 /**
@@ -24,11 +27,12 @@ function toP2PKHAddress() {
  */
 export function newPrivateKey(privateKeyStr) {
   const newPrivateKey = new bitcore.PrivateKey(privateKeyStr);
-  newPrivateKey.pkh = getAddress(newPrivateKey);
-  newPrivateKey.toP2PKHAddress = toP2PKHAddress;
+  newPrivateKey.pkh = getPublicAddress(newPrivateKey);
+  newPrivateKey.toP2PKHAddress = getAddress(newPrivateKey, prefix.P2PKH);
+  newPrivateKey.toP2SHAddress = getAddress(newPrivateKey, prefix.P2SH);
   return newPrivateKey;
 }
 
-export const getAddress = privateKey => {
+export const getPublicAddress = privateKey => {
   return hash160(privateKey.toPublicKey().toBuffer()).toString('hex');
 };
