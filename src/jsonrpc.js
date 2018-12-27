@@ -1,5 +1,23 @@
 import RpcError from './rpcerror';
 
+const checkResStatus = async res => {
+  if (res.status >= 400) {
+    let data = {
+      code: res.status,
+      status: res.status,
+      statusText: res.statusText
+    };
+    try {
+      const resData = await res.json();
+      data.msg = resData.msg;
+    } catch (error) {
+      data.msg = res.statusText;
+    }
+    return Promise.reject(data);
+  }
+  return await res.json();
+};
+
 export default class JsonRpc {
   constructor({ endpoint, fetch }) {
     if (!endpoint) {
@@ -24,12 +42,17 @@ export default class JsonRpc {
    */
   fetch = async (path, body = {}) => {
     let res;
-    let json;
+    let json = {};
     try {
       res = await this._fetch(this.endpoint + this.publicPath + path, {
         body: JSON.stringify(body),
         method: 'POST'
       });
+      if (res.status >= 400) {
+        json.code = res.status;
+        json.statusText = res.statusText;
+        throw new RpcError(json);
+      }
       json = await res.json();
       if (json.code !== 0) {
         throw new RpcError(json);
