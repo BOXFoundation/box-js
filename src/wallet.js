@@ -33,6 +33,8 @@ export default class Wallet {
     const privateKey = newPrivateKey(privateKeyHexStr);
     const cryptoJSON = this.getCrypto(privateKey, pass);
     return {
+      P2PKH: privateKey.toP2PKHAddress(),
+      P2SH: privateKey.toP2SHAddress(),
       privateKey,
       cryptoJSON
     };
