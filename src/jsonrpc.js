@@ -28,7 +28,7 @@ export default class JsonRpc {
     }
 
     this.endpoint = endpoint;
-    this.publicPath = '/v1/ctl';
+    this.publicPath = '/v1';
     this._fetch = fetch;
   }
 
@@ -74,7 +74,7 @@ export default class JsonRpc {
    * @memberof JsonRpc
    */
   getBlockHeight = async () => {
-    return await this.fetch('/getblockheight');
+    return await this.fetch('/ctl/getblockheight');
   };
 
   /**
@@ -85,7 +85,7 @@ export default class JsonRpc {
    * @memberof JsonRpc
    */
   getBlockHash = async height => {
-    return await this.fetch('/getblockhash', { height });
+    return await this.fetch('/ctl/getblockhash', { height });
   };
 
   /**
@@ -96,7 +96,7 @@ export default class JsonRpc {
    * @memberof JsonRpc
    */
   getBlockHeader = async block_hash => {
-    return await this.fetch('/getblockheader', { block_hash });
+    return await this.fetch('/ctl/getblockheader', { block_hash });
   };
 
   /**
@@ -107,7 +107,7 @@ export default class JsonRpc {
    * @memberof JsonRpc
    */
   getBlock = async block_hash => {
-    return await this.fetch('/getblock', { block_hash });
+    return await this.fetch('/ctl/getblock', { block_hash });
   };
 
   /**
@@ -118,7 +118,7 @@ export default class JsonRpc {
    * @memberof JsonRpc
    */
   getBalance = async addrs => {
-    return await this.fetch('/getbalance', { addrs });
+    return await this.fetch('/tx/getbalance', { addrs });
   };
 
   /**
@@ -128,6 +128,6 @@ export default class JsonRpc {
    * @memberof JsonRpc
    */
   listTransactions = async addr => {
-    return await this.fetch('/listtransactions', { addr });
+    return await this.fetch('/wlt/listtransactions', { addr });
   };
 }
