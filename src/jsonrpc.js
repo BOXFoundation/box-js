@@ -131,3 +131,11 @@ export default class JsonRpc {
     return await this.fetch('/wlt/listtransactions', { addr });
   };
 }
+
+/** 
+ * getTransactionByHash
+*/
+
+  getTransactionByHash = async hash => {
+    return await this.fetch('/v1/webapi/gettransaction', hash);
+  }
