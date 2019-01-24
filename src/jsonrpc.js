@@ -137,5 +137,5 @@ export default class JsonRpc {
 */
 
   getTransactionByHash = async hash => {
-    return await this.fetch('/v1/webapi/gettransaction', hash);
+    return await this.fetch('/v1/webapi/gettransaction', { hash });
   }
