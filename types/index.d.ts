@@ -40,3 +40,15 @@ export class Wallet {
 
   listWallets(): string[];
 }
+
+interface HashBuffer {
+  (buffer: Buffer): Buffer;
+}
+
+export interface hash {
+  hash160: HashBuffer;
+  hash256: HashBuffer;
+  ripemd160: HashBuffer;
+  sha1: HashBuffer;
+  sha256: HashBuffer;
+}
