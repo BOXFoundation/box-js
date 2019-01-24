@@ -122,8 +122,21 @@ export default class JsonRpc {
   };
 
   /**
+   * Get the balance of an address
+   *
+   * @param {string} addr
+   * @param {number} amount
+   * @returns
+   * @memberof JsonRpc
+   */
+  fetchUtxos = async (addr, amount) => {
+    return await this.fetch('/tx/fetchutxos', { Addr: addr, Amount: amount });
+  };
+
+  /**
    * List transactions relate to an address
    *
+   * @param {string} addr
    * @returns
    * @memberof JsonRpc
    */
