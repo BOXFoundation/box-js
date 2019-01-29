@@ -1,7 +1,21 @@
-const bitcore = require('bitcore-lib');
 const opcode = require('./config/opcode');
+const {
+  addOperand,
+  calcTxHashForSig,
+  payToPubKeyHashScript,
+  signatureScript
+} = require('./script/index');
 
-function newTx(fromAcc, toAddrs = [], amounts = [], utxos = []) {
+const baseTx = {
+  Version: 0,
+  Vin: [],
+  Vout: [],
+  Data: null,
+  Magic: 0,
+  LockTime: 0
+};
+
+async function newTx(fromAcc, toAddrs = [], amounts = [], utxos = []) {
   let amount = 0;
   amounts.forEach(a => {
     amount += a;
@@ -10,10 +24,11 @@ function newTx(fromAcc, toAddrs = [], amounts = [], utxos = []) {
   if (amount >= 10000) {
     fee = amount / 10000;
   }
-  newTxWithFee(fromAcc, toAddrs, amounts, utxos, fee);
+  const signTx = await newTxWithFee(fromAcc, toAddrs, amounts, utxos, fee);
+  return signTx;
 }
 
-function newTxWithFee(fromAcc, toAddrs, amounts, utxos, fee) {
+async function newTxWithFee(fromAcc, toAddrs, amounts, utxos, fee) {
   let amount = 0,
     total = 0;
 
@@ -33,7 +48,7 @@ function newTxWithFee(fromAcc, toAddrs, amounts, utxos, fee) {
       changeAmt
     );
   }
-  const { tx, change, err } = newTxWithUtxos(
+  const signTx = await newTxWithUtxos(
     fromAcc,
     utxos,
     toAddrs,
@@ -42,9 +57,11 @@ function newTxWithFee(fromAcc, toAddrs, amounts, utxos, fee) {
     total,
     amount
   );
+
+  return signTx;
 }
 
-function newTxWithUtxos(
+async function newTxWithUtxos(
   fromAcc,
   utxos,
   toAddrs,
@@ -67,43 +84,56 @@ function newTxWithUtxos(
     vins.push(makeVin(utxo, 0));
   });
   toAddrs.forEach((toAddr, i) => {
-    vins.push(makeVout(toAddr, amounts[i]));
+    vouts.push(makeVout(toAddr, amounts[i]));
   });
   console.log('fromAcc:', fromAcc.toP2PKHAddress());
   // vout for change of fromAddress
   const fromAddrOut = makeVout(fromAcc.toP2PKHAddress(), changeAmt);
-  vins.push(fromAddrOut);
-  const tx = {};
+  vouts.push(fromAddrOut);
+  const tx = { ...baseTx };
+  tx.Vin = vins;
+  tx.Vout = vouts;
 
-  const data = signTxWithUtxos(tx, utxos, fromAcc);
+  const signTx = await signTxWithUtxos(tx, utxos, fromAcc);
+  return signTx;
 }
 
-function makeVin(ts, utxo, seq) {
-  return {
-    PrevOutPoint: {
-      Hash: utxo.out_point.hash,
-      Index: utxo.out_point.index
-    },
-    ScriptSig: '',
-    Sequence: seq
-  };
+function makeVin(utxo, seq) {
+  try {
+    return {
+      PrevOutPoint: {
+        Hash: utxo.out_point.hash,
+        Index: utxo.out_point.index
+      },
+      ScriptSig: '',
+      Sequence: seq
+    };
+  } catch (error) {
+    console.log('utxo:', utxo);
+    throw error;
+  }
 }
 
-function makeVout(addr, amount) {
-  const addrScript = getAddrScript(addr);
+function makeVout(pkhAddrHex, amount) {
+  const addrScript = payToPubKeyHashScript(pkhAddrHex);
   return { Value: amount, ScriptPubKey: addrScript };
 }
 
-function getAddrScript(addr) {
-  return (
-    opcode.OPDUP +
-    opcode.OPHASH160 +
-    addr +
-    opcode.OPEQUALVERIFY +
-    opcode.OPCHECKSIG
-  );
-}
+async function signTxWithUtxos(tx, utxos, acc) {
+  for (let i = 0; i < utxos.length; i++) {
+    const utxo = utxos[i];
+    const scriptPkBytes = utxo.tx_out.script_pub_key;
+    const sigHash = await calcTxHashForSig(scriptPkBytes, tx, i);
+    const sig = acc.signMsg(sigHash, acc);
+    const scriptSig = signatureScript(sig, acc.pkh);
+    tx.Vin[i].ScriptSig = scriptSig;
 
-function signTxWithUtxos() {}
+    console.log('sigHash:  ', sigHash);
+    console.log('sig:      ', sig);
+    console.log('scriptSig:', scriptSig);
+  }
+
+  return tx;
+}
 
 module.exports = { newTx };

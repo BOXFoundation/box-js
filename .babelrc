@@ -10,5 +10,7 @@
     ],
     "stage-1"
   ],
-  "plugins": ["transform-runtime"]
+  "plugins": ["transform-runtime"],
+  "sourceMaps": "inline",
+  "retainLines": true
 }

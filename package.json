@@ -6,7 +6,7 @@
   "types": "./types/index.d.ts",
   "scripts": {
     "lock": "npm shrinkwrap",
-    "test": "npx mocha --require babel-register --require ./test/test_helper.js --recursive",
+    "test": "babel-node test/tx.test.js",
     "build": "npx babel src --out-dir dist --source-maps"
   },
   "author": "",
@@ -30,6 +30,7 @@
     "create-hash": "^1.2.0",
     "crypto-js": "^3.1.9-1",
     "lodash": "^4.17.11",
+    "protobufjs": "^6.8.8",
     "randombytes": "^2.0.6",
     "scrypt.js": "^0.2.0"
   }

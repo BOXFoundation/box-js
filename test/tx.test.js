@@ -15,16 +15,21 @@ const testAmount = 5000;
 const acc = newPrivateKey(testPrivateKey);
 
 const txTest = async () => {
-  const { utxos } = await rpc.fetchUtxos(testAddr, testAmount);
+  const { utxos = [] } = await rpc.fetchUtxos(testAddr, testAmount);
   console.log(
     'utxos:',
     utxos.length,
     JSON.stringify(utxos[utxos.length - 1], null, 2)
   );
 
-  const hexstr = new Buffer(0x76).toString('hex');
-  console.log('hexstr:', hexstr);
-  // newTx(acc, ['17XBj6iFEsf8kzDMGQk5ghZipxX49VXuaV'], [10000], utxos);
+  const tx = await newTx(
+    acc,
+    ['17XBj6iFEsf8kzDMGQk5ghZipxX49VXuaV'],
+    [10000],
+    utxos.slice(0, 3)
+  );
+
+  console.log(JSON.stringify(tx));
 };
 
 txTest().catch(console.error);
