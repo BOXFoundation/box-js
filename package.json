@@ -7,6 +7,7 @@
   "scripts": {
     "lock": "npm shrinkwrap",
     "test": "babel-node test/tx.test.js",
+    "postinstall": "npm run build",
     "build": "npx babel src --out-dir dist --source-maps"
   },
   "author": "",
