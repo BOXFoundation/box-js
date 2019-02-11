@@ -23,8 +23,12 @@ export default class RpcError extends Error {
       json.processed.except.message
     ) {
       super(json.processed.except.message);
-    } else {
+    } else if (json.message) {
       super(json.message);
+    } else if (json.statusText) {
+      super(json.statusText);
+    } else {
+      super('Unknow Error!');
     }
     Object.setPrototypeOf(this, RpcError.prototype);
     this.json = json;
