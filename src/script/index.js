@@ -93,7 +93,9 @@ const calcTxHashForSig = async (scriptPubKey, originalTx, txInIdx) => {
     }
   }
   const protobuf = await calcTxHash(tx);
-  const hashBuf = hash256(protobuf).reverse().toString('hex');
+  const hashBuf = hash256(protobuf)
+    .reverse()
+    .toString('hex');
   return hashBuf;
 };
 
@@ -126,10 +128,17 @@ const signatureScript = (sig, pubKey) => {
   return addOperand('', sig) + pubKey;
 };
 
+const getSignHash = protobuf => {
+  return hash256(Buffer.from(protobuf, 'hex'))
+    .reverse()
+    .toString('hex');
+};
+
 module.exports = {
   payToPubKeyHashScript,
   calcTxHashForSig,
   signatureScript,
+  getSignHash,
   putUint16,
   putUint32,
   addOperand

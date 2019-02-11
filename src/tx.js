@@ -1,6 +1,7 @@
 const opcode = require('./config/opcode');
 const {
   addOperand,
+  getSignHash,
   calcTxHashForSig,
   payToPubKeyHashScript,
   signatureScript
@@ -124,7 +125,7 @@ async function signTxWithUtxos(tx, utxos, acc) {
     const utxo = utxos[i];
     const scriptPkBytes = utxo.tx_out.script_pub_key;
     const sigHash = await calcTxHashForSig(scriptPkBytes, tx, i);
-    const sig = acc.signMsg(sigHash, acc);
+    const sig = acc.signMsg(sigHash);
     const scriptSig = signatureScript(sig, acc.pkh);
     tx.Vin[i].ScriptSig = scriptSig;
 
@@ -136,4 +137,18 @@ async function signTxWithUtxos(tx, utxos, acc) {
   return tx;
 }
 
-module.exports = { newTx };
+const signTxWithAcc = (acc, tx, protoBufs) => {
+  for (let idx = 0; idx < tx.vin.length; idx++) {
+    const sigHash = getSignHash(protoBufs[idx]);
+    const sign = acc.signMsg(sigHash);
+    const scriptSig = signatureScript(sign, acc.pkh);
+    tx.vin[idx].ScriptSig = scriptSig;
+
+    console.log(`[vin:${idx}]: `, sigHash);
+    console.log(`[vin:${idx}]: `, sign);
+    console.log(`[vin:${idx}]: `, scriptSig);
+  }
+  return tx;
+};
+
+module.exports = { newTx, signTxWithAcc };
