@@ -1,4 +1,5 @@
 import RpcError from './rpcerror';
+import { signTxWithAcc } from './tx';
 
 const checkResStatus = async res => {
   if (res.status >= 400) {
@@ -41,8 +42,11 @@ export default class JsonRpc {
    * @memberof JsonRpc
    */
   fetch = async (path, body = {}) => {
+    console.log(`[fetch:${path}]:\n`, JSON.stringify(body), '\n');
     let res;
-    let json = {};
+    let json = {
+      path
+    };
     try {
       res = await this._fetch(this.endpoint + this.publicPath + path, {
         body: JSON.stringify(body),
@@ -122,13 +126,64 @@ export default class JsonRpc {
   };
 
   /**
+   * Get the balance of an address
+   *
+   * @param {string} addr
+   * @param {number} amount
+   * @returns
+   * @memberof JsonRpc
+   */
+  fetchUtxos = async (addr, amount) => {
+    return await this.fetch('/tx/fetchutxos', { Addr: addr, Amount: amount });
+  };
+
+  /**
    * List transactions relate to an address
    *
+   * @param {string} addr
    * @returns
    * @memberof JsonRpc
    */
   listTransactions = async addr => {
     return await this.fetch('/wlt/listtransactions', { addr });
+  };
+
+  /**
+   * makeneedsigntx
+   * @param {fromAddr} block_hash
+   * @param {[]string} toAddrs
+   * @param {[]<number>} amounts
+   * @memberof JsonRpc
+   */
+  makeneedsigntx = async (fromAddr, toAddrs = [], amounts = []) => {
+    return await this.fetch('/tx/makeneedsigntx', {
+      fromAddr,
+      toAddrs,
+      amounts
+    });
+  };
+
+  /**
+   * sendTransaction
+   *
+   * @memberof JsonRpc
+   */
+  sendTransaction = async (acc, fromAddr, toAddrs = [], amounts = []) => {
+    console.log('toAddrs, amounts:', toAddrs, amounts);
+    const baseTx = await this.makeneedsigntx(fromAddr, toAddrs, amounts);
+    console.log('baseTx:', baseTx);
+    const { tx, rawMsgs } = baseTx;
+    const signedTx = signTxWithAcc(acc, tx, rawMsgs);
+    return await this.sendTransactionRaw(signedTx);
+  };
+
+  /**
+   * sendTransactionRaw
+   *
+   * @memberof JsonRpc
+   */
+  sendTransactionRaw = async tx => {
+    return await this.fetch('/tx/sendtransaction', { tx });
   };
 
   /**
@@ -139,6 +194,8 @@ export default class JsonRpc {
   };
 
   /**
+   * getBlockByHash
+   *
    *
    */
   getBlockByHash = async hash => {

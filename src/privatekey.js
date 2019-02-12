@@ -1,4 +1,5 @@
 import bitcore from 'bitcore-lib';
+const BtcMessage = require('./crypto/sign_msg');
 import { hash160, sha256 } from './crypto/hash';
 import bs58 from 'bs58';
 
@@ -27,9 +28,15 @@ function getAddress(_this, prefixHex) {
  */
 export function newPrivateKey(privateKeyStr) {
   const newPrivateKey = new bitcore.PrivateKey(privateKeyStr);
+  newPrivateKey.PublicKey = newPrivateKey.PublicKey;
+  newPrivateKey.signMsg = sigHash => {
+    const msg = new BtcMessage(sigHash);
+    return msg.sign(newPrivateKey);
+  };
   newPrivateKey.pkh = getPublicAddress(newPrivateKey);
   newPrivateKey.toP2PKHAddress = getAddress(newPrivateKey, prefix.P2PKH);
   newPrivateKey.toP2SHAddress = getAddress(newPrivateKey, prefix.P2SH);
+
   return newPrivateKey;
 }
 
