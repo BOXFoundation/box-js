@@ -153,24 +153,31 @@ export default class JsonRpc {
    * @param {fromAddr} block_hash
    * @param {[]string} toAddrs
    * @param {[]<number>} amounts
+   * @param {number} fee
    * @memberof JsonRpc
    */
-  makeneedsigntx = async (fromAddr, toAddrs = [], amounts = []) => {
+  makeneedsigntx = async (fromAddr, toAddrs = [], amounts = [], fee) => {
     return await this.fetch('/tx/makeneedsigntx', {
       fromAddr,
       toAddrs,
-      amounts
+      amounts,
+      fee
     });
   };
 
   /**
    * sendTransaction
+   * @param {any} acc
+   * @param {fromAddr} block_hash
+   * @param {[]string} toAddrs
+   * @param {[]<number>} amounts
+   * @param {number} fee
    *
    * @memberof JsonRpc
    */
-  sendTransaction = async (acc, fromAddr, toAddrs = [], amounts = []) => {
+  sendTransaction = async (acc, fromAddr, toAddrs = [], amounts = [], fee) => {
     console.log('toAddrs, amounts:', toAddrs, amounts);
-    const baseTx = await this.makeneedsigntx(fromAddr, toAddrs, amounts);
+    const baseTx = await this.makeneedsigntx(fromAddr, toAddrs, amounts, fee);
     console.log('baseTx:', baseTx);
     const { tx, rawMsgs } = baseTx;
     const signedTx = signTxWithAcc(acc, tx, rawMsgs);
