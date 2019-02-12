@@ -1,6 +1,6 @@
 {
   "name": "boxdjs",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "description": "boxd jsonrpc",
   "main": "dist/index.js",
   "types": "./types/index.d.ts",
@@ -8,6 +8,7 @@
     "lock": "npm shrinkwrap",
     "test": "babel-node test/tx.test.js",
     "postinstall": "npm run build",
+    "test1": "npx mocha --require babel-register --require ./test/test_helper.js --recursive",
     "build": "npx babel src --out-dir dist --source-maps"
   },
   "author": "",
