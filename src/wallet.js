@@ -18,6 +18,7 @@ export default class Wallet {
   constructor({ walletsMap = {}, onUpdate }) {
     this.unlockPrivateKeyWithPassphrase = unlockPrivateKeyWithPassphrase;
     this.walletsMap = walletsMap;
+    this.newPrivateKey = newPrivateKey;
     this.onUpdate = onUpdate;
   }
 
