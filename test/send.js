@@ -11,8 +11,7 @@ const testPwd = '1';
 const rpc = new Rpc({ endpoint: 'http://127.0.0.1:19190', fetch });
 
 const txData = {
-
-  version:0,
+  version: 0,
   tx: {
     vin: [
       {
@@ -58,12 +57,17 @@ const txData = {
 const test = async () => {
   const key = await unlockPrivateKeyWithPassphrase(crypto, testPwd);
   const testAcc = newPrivateKey(key);
-  const signedTx = signTxWithAcc(testAcc, txData.tx, txData.sign_hash);
-  console.log('signedTx:\n', JSON.stringify(signedTx, null, 2));
-  rpc.sendTransaction(signedTx).then(r=>{
-    console.log(r);
-  }).catch(e=>{
-    console.error('error:', e)
-  })
+  const addr = testAcc.pkh;
+  console.log('addr:', addr);
+  // const signedTx = signTxWithAcc(testAcc, txData.tx, txData.sign_hash);
+  // console.log('signedTx:\n', JSON.stringify(signedTx, null, 2));
+  rpc
+    .sendTransaction(testAcc, addr, [addr], [1])
+    .then(r => {
+      console.log('r:', r);
+    })
+    .catch(e => {
+      console.error('error:', e);
+    });
 };
 test();
