@@ -177,7 +177,7 @@ export default class JsonRpc {
    */
   sendTransaction = async (acc, fromAddr, toAddrs = [], amounts = [], fee) => {
     console.log('toAddrs, amounts:', toAddrs, amounts);
-    const baseTx = await this.makeneedsigntx(fromAddr, toAddrs, amounts, fee);
+    const baseTx = await this.MakeUnsignedTx(fromAddr, toAddrs, amounts, fee);
     console.log('baseTx:', baseTx);
     const { tx, rawMsgs } = baseTx;
     const signedTx = signTxWithAcc(acc, tx, rawMsgs);
