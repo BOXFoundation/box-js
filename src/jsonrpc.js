@@ -156,7 +156,7 @@ export default class JsonRpc {
    * @param {number} fee
    * @memberof JsonRpc
    */
-  makeneedsigntx = async (fromAddr, toAddrs = [], amounts = [], fee) => {
+  MakeUnsignedTx = async (fromAddr, toAddrs = [], amounts = [], fee) => {
     return await this.fetch('/tx/makeneedsigntx', {
       fromAddr,
       toAddrs,
