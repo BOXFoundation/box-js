@@ -158,8 +158,8 @@ export default class JsonRpc {
    */
   MakeUnsignedTx = async (fromAddr, toAddrs = [], amounts = [], fee) => {
     return await this.fetch('/tx/makeunsignedtx', {
-      fromAddr,
-      toAddrs,
+      from,
+      to,
       amounts,
       fee
     });
