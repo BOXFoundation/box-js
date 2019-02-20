@@ -8,7 +8,7 @@ const OPPUSHDATA2 = opcode.OPPUSHDATA2.toString(16);
 const OPPUSHDATA4 = opcode.OPPUSHDATA4.toString(16);
 
 const getNunberByte = num => num & 255;
-
+const gethexByteWithNumber = num => (num & 255).toString(16);
 /**
  * putUint16
  *
@@ -44,34 +44,38 @@ const putUint32 = (bytes = [], uint16) => {
 };
 
 /**
+ * addOperand
  *
- *
- * @param {string} [str=''] hex string
- * @param {string} [operand=''] hex string
+ * @param {Buffer} [str]
+ * @param {Buffer} [operand]
  * @returns
  */
-function addOperand(str = '', operand = '') {
+function addOperand(strBuf, operand) {
   const dataLen = operand.length;
+  console.log('strBuf', strBuf);
+  console.log('dataLen', dataLen);
 
   if (dataLen < opcode.OPPUSHDATA1) {
-    str += getNunberByte(dataLen);
+    const b1 = gethexByteWithNumber(dataLen);
+    console.log('b1:', b1);
+    strBuf = Buffer.from(strBuf.toString('hex') + b1, 'hex');
   } else if (dataLen <= 0xff) {
-    str = str + getNunberByte(OPPUSHDATA1) + getNunberByte(dataLen);
+    strBuf = Buffer.concat([
+      strBuf,
+      [gethexByteWithNumber(OPPUSHDATA1), gethexByteWithNumber(dataLen)]
+    ]);
   } else if (dataLen <= 0xffff) {
     let buf = Buffer.alloc(2);
     buf = putUint16(buf, dataLen);
-    str += OPPUSHDATA2;
-    str += buf.toString('hex');
+    strBuf = Buffer.concat([strBuf, [gethexByteWithNumber(OPPUSHDATA2)], buf]);
   } else {
     let buf = Buffer.alloc(4);
     buf = putUint16(buf, dataLen);
-    str += OPPUSHDATA4;
-    str += buf.toString('hex');
+    strBuf = Buffer.concat([strBuf, [gethexByteWithNumber(OPPUSHDATA4)], buf]);
   }
 
   // Append the actual operand
-  str += operand;
-  return str;
+  return Buffer.concat([strBuf, operand]);
 }
 
 const calcTxHashForSig = async (scriptPubKey, originalTx, txInIdx) => {
@@ -124,14 +128,15 @@ function payToPubKeyHashScript(pkhAddrHex) {
  * @param {string} pubKey hex string
  * @returns
  */
-const signatureScript = (sig, pubKey) => {
-  return addOperand('', sig) + pubKey;
+const signatureScript = (sigBuf, pubKeyBuf) => {
+  const before = addOperand(Buffer.from([]), sigBuf);
+  const end = addOperand(before, pubKeyBuf);
+  console.log('before:', before.toString('hex'));
+  return end;
 };
 
 const getSignHash = protobuf => {
-  return hash256(Buffer.from(protobuf, 'hex'))
-    .reverse()
-    .toString('hex');
+  return hash256(Buffer.from(protobuf, 'base64'));
 };
 
 module.exports = {
@@ -140,6 +145,7 @@ module.exports = {
   signatureScript,
   getSignHash,
   putUint16,
+  getNunberByte,
   putUint32,
   addOperand
 };

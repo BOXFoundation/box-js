@@ -1,5 +1,5 @@
 import RpcError from './rpcerror';
-import { signTxWithAcc } from './tx';
+import { signTxWithAcc, checkTx } from './tx';
 
 const checkResStatus = async res => {
   if (res.status >= 400) {
@@ -181,6 +181,13 @@ export default class JsonRpc {
     console.log('baseTx:', baseTx);
     const { tx, rawMsgs } = baseTx;
     const signedTx = signTxWithAcc(acc, tx, rawMsgs);
+    checkTx(tx, {
+      acc,
+      fromAddr,
+      toAddrs,
+      amounts,
+      fee
+    });
     return await this.sendTransactionRaw(signedTx);
   };
 

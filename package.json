@@ -31,10 +31,12 @@
     "bs58": "^4.0.1",
     "create-hash": "^1.2.0",
     "crypto-js": "^3.1.9-1",
+    "eccrypto": "^1.1.0",
     "lodash": "^4.17.11",
     "protobufjs": "^6.8.8",
     "randombytes": "^2.0.6",
     "rimraf": "^2.6.3",
-    "scrypt.js": "^0.2.0"
+    "scrypt.js": "^0.2.0",
+    "tiny-secp256k1": "^1.0.1"
   }
 }
