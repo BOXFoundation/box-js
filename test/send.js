@@ -46,14 +46,22 @@ const txData = {
 const testSend = async () => {
   const key = await unlockPrivateKeyWithPassphrase(crypto, testPwd);
   const testAcc = newPrivateKey(key);
-  const addr = testAcc.pkh;
+  const addr = testAcc.toP2PKHAddress();
   // const signedTx = signTxWithAcc(testAcc, txData.tx, txData.rawMsgs);
   // console.log('signedTx:\n', JSON.stringify(signedTx, null, 2));
 
   rpc
-    .sendTransaction(testAcc, addr, [addr], [1])
+    .sendTransaction(
+      testAcc,
+      addr,
+      ['b1b1ncaV56DBPkSjhUVHePDErSESrBRUnyU'],
+      [10]
+    )
     .then(r => {
       console.log('r:', r);
+      setInterval(() => {
+        view(r.hash);
+      }, 4000);
     })
     .catch(e => {
       console.error('error:', e);
@@ -81,10 +89,19 @@ const scriptSig2 =
 const testSign = async () => {
   const key = await unlockPrivateKeyWithPassphrase(crypto, testPwd);
   const testAcc = newPrivateKey(key);
-  const addr = testAcc.pkh;
+  const addr = testAcc.toP2PKHAddress();
   const signedTx = signTxWithAcc(testAcc, txData.tx, txData.rawMsgs);
 };
 
-testSend(r => {
-  console.log('r:', r);
-}).catch(console.error);
+function view(hash) {
+  return rpc
+    .viewTxDetail(hash)
+    .then(d => {
+      console.log('viewTxDetail:\n', JSON.stringify(d, null, 2));
+    })
+    .catch(e => {
+      console.error('viewTxDetail err:', e);
+    });
+}
+
+testSend().catch(console.error);

@@ -9,7 +9,7 @@ const signTxWithAcc = (acc, tx, protoBufs) => {
     const sigHashBuf = getSignHash(protoBufs[idx]);
     const signBuf = acc.signMsg(sigHashBuf);
     const scriptSig = signatureScript(signBuf, acc.toPublicKey().toBuffer());
-    tx.vin[idx].ScriptSig = scriptSig.toString('base64');
+    tx.vin[idx].script_sig = scriptSig.toString('base64');
 
     // console.log(`\n[vin:${idx}]sigHash  : `, sigHash);
     // console.log(`[vin:${idx}]sign     : `, signBuf.toString('hex'));

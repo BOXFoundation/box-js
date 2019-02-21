@@ -9,6 +9,7 @@ const OPPUSHDATA4 = opcode.OPPUSHDATA4.toString(16);
 
 const getNunberByte = num => num & 255;
 const gethexByteWithNumber = num => (num & 255).toString(16);
+
 /**
  * putUint16
  *
@@ -124,8 +125,8 @@ function payToPubKeyHashScript(pkhAddrHex) {
 /**
  * signatureScript
  *
- * @param {string} sig hex string
- * @param {string} pubKey hex string
+ * @param {Buffer} sigBuf
+ * @param {Buffer} pubKeyBuf
  * @returns
  */
 const signatureScript = (sigBuf, pubKeyBuf) => {
