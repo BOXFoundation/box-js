@@ -1,5 +1,5 @@
 import RpcError from './rpcerror';
-import { signTxWithAcc } from './tx';
+import { signTxWithAcc, checkTx } from './tx';
 
 const checkResStatus = async res => {
   if (res.status >= 400) {
@@ -156,7 +156,7 @@ export default class JsonRpc {
    * @param {number} fee
    * @memberof JsonRpc
    */
-  MakeUnsignedTx = async (from, to = [], amounts = [], fee) => {
+  makeUnsignedTx = async (from, to = [], amounts = [], fee) => {
     return await this.fetch('/tx/makeunsignedtx', {
       from,
       to,
@@ -177,10 +177,17 @@ export default class JsonRpc {
    */
   sendTransaction = async (acc, fromAddr, toAddrs = [], amounts = [], fee) => {
     console.log('toAddrs, amounts:', toAddrs, amounts);
-    const baseTx = await this.MakeUnsignedTx(fromAddr, toAddrs, amounts, fee);
-    console.log('baseTx:', baseTx);
+    const baseTx = await this.makeUnsignedTx(fromAddr, toAddrs, amounts, fee);
+    console.log('baseTx:', JSON.stringify(baseTx, null, 2));
     const { tx, rawMsgs } = baseTx;
     const signedTx = signTxWithAcc(acc, tx, rawMsgs);
+    checkTx(tx, {
+      acc,
+      fromAddr,
+      toAddrs,
+      amounts,
+      fee
+    });
     return await this.sendTransactionRaw(signedTx);
   };
 
@@ -193,13 +200,7 @@ export default class JsonRpc {
     return await this.fetch('/tx/sendtransaction', { tx });
   };
 
-  /**
-   * getTransactionByHash
-   */
-  // getTransactionByHash = async hash => {
-  //   return await this.fetch('/webapi/gettransaction', { hash });
-  // };
-  ViewTxDetail = async hash => {
+  viewTxDetail = async hash => {
     return await this.fetch('/tx/detail', { hash });
   };
 
