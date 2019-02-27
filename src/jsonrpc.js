@@ -209,7 +209,7 @@ export default class JsonRpc {
   };
 
   /**
-   * sendTransaction
+   * sendSplitTransaction
    * @param {any} acc
    * @param {string} block_hash
    * @param {[]string} toAddrs
