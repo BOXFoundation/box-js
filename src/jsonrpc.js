@@ -166,6 +166,23 @@ export default class JsonRpc {
   };
 
   /**
+   * makeSplitAddrTx
+   * @param {fromAddr} block_hash
+   * @param {[]string} toAddrs
+   * @param {[]<number>} amounts
+   * @param {number} fee
+   * @memberof JsonRpc
+   */
+  makeSplitAddrTx = async (from, addrs = [], weights = [], fee) => {
+    return await this.fetch('/tx/makeunsignedtx/splitaddr', {
+      from,
+      addrs,
+      weights,
+      fee
+    });
+  };
+
+  /**
    * sendTransaction
    * @param {any} acc
    * @param {fromAddr} block_hash
@@ -186,6 +203,38 @@ export default class JsonRpc {
       fromAddr,
       toAddrs,
       amounts,
+      fee
+    });
+    return await this.sendTransactionRaw(signedTx);
+  };
+
+  /**
+   * sendTransaction
+   * @param {any} acc
+   * @param {fromAddr} block_hash
+   * @param {[]string} toAddrs
+   * @param {[]<number>} amounts
+   * @param {number} fee
+   *
+   * @memberof JsonRpc
+   */
+  sendSplitTransaction = async (
+    acc,
+    fromAddr,
+    toAddrs = [],
+    weights = [],
+    fee
+  ) => {
+    console.log('toAddrs, weights:', toAddrs, weights);
+    const baseTx = await this.makeSplitAddrTx(fromAddr, toAddrs, weights, fee);
+    console.log('baseTx:', JSON.stringify(baseTx, null, 2));
+    const { tx, rawMsgs } = baseTx;
+    const signedTx = signTxWithAcc(acc, tx, rawMsgs);
+    checkTx(tx, {
+      acc,
+      fromAddr,
+      toAddrs,
+      weights,
       fee
     });
     return await this.sendTransactionRaw(signedTx);
