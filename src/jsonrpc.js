@@ -150,7 +150,7 @@ export default class JsonRpc {
 
   /**
    * makeneedsigntx
-   * @param {fromAddr} block_hash
+   * @param {string} block_hash
    * @param {[]string} toAddrs
    * @param {[]<number>} amounts
    * @param {number} fee
@@ -167,9 +167,9 @@ export default class JsonRpc {
 
   /**
    * makeSplitAddrTx
-   * @param {fromAddr} block_hash
-   * @param {[]string} toAddrs
-   * @param {[]<number>} amounts
+   * @param {string} block_hash
+   * @param {[]string} addrs
+   * @param {[]<number>} weights
    * @param {number} fee
    * @memberof JsonRpc
    */
@@ -185,7 +185,7 @@ export default class JsonRpc {
   /**
    * sendTransaction
    * @param {any} acc
-   * @param {fromAddr} block_hash
+   * @param {string} block_hash
    * @param {[]string} toAddrs
    * @param {[]<number>} amounts
    * @param {number} fee
@@ -211,9 +211,9 @@ export default class JsonRpc {
   /**
    * sendTransaction
    * @param {any} acc
-   * @param {fromAddr} block_hash
+   * @param {string} block_hash
    * @param {[]string} toAddrs
-   * @param {[]<number>} amounts
+   * @param {[]<number>} weights
    * @param {number} fee
    *
    * @memberof JsonRpc
