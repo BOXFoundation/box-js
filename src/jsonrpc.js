@@ -228,7 +228,7 @@ export default class JsonRpc {
     console.log('toAddrs, weights:', toAddrs, weights);
     const baseTx = await this.makeSplitAddrTx(fromAddr, toAddrs, weights, fee);
     console.log('baseTx:', JSON.stringify(baseTx, null, 2));
-    const { tx, rawMsgs } = baseTx;
+    const { tx, rawMsgs, splitAddr } = baseTx;
     const signedTx = signTxWithAcc(acc, tx, rawMsgs);
     checkTx(tx, {
       acc,
@@ -237,7 +237,8 @@ export default class JsonRpc {
       weights,
       fee
     });
-    return await this.sendTransactionRaw(signedTx);
+    const res = await this.sendTransactionRaw(signedTx);
+    return { ...res, splitAddr };
   };
 
   /**
