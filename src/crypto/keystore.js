@@ -47,9 +47,7 @@ const getCryptoJSON = (privateKey, passphrase) => {
 
   try {
     const privateKeyHexStr = privateKey.toString(_STRING_ENC_);
-    const address = hash160(privateKey.toPublicKey().toBuffer()).toString(
-      _STRING_ENC_
-    );
+    const address = privateKey.toP2PKHAddress();
 
     const salt = randomBytes(32);
     const iv = randomBytes(aesBlockSize).toString(_STRING_ENC_);
