@@ -221,20 +221,24 @@ export default class JsonRpc {
     const baseTx = await this.makeCreateIssueTx(issuer, issuee, tag, fee);
     console.log('baseTx:', JSON.stringify(baseTx, null, 2));
     const {
-      token_index: issue_out_index,
-      token_tx: tx,
+      issue_out_index: token_index,
+      tx: token_tx,
       rawMsgs
     } = baseTx;
     const amounts = 0
-    const signedTx = signTxWithAcc(acc, tx, rawMsgs);
-    checkTx(tx, {
+    const signedTx = signTxWithAcc(acc, token_tx, rawMsgs);
+    checkTx(token_tx, {
       acc,
       issuer,
       issuee,
       amounts,
       fee
     });
-    return await this.sendTransactionRaw(signedTx);
+    const result = await this.sendTransactionRaw(signedTx);
+    return {
+      result,
+      token_index
+    }
   };
 
   /**
