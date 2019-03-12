@@ -210,7 +210,13 @@ export default class JsonRpc {
    * @param {number} fee
    * @memberof JsonRpc
    */
-  createIssueSendTrans = async (acc, issuer, issuee, tag = {}, fee) => {
+  createIssueSendTrans = async ({
+    acc,
+    issuer,
+    issuee,
+    tag = {},
+    fee
+  }) => {
     console.log('acc, tag:', acc, tag);
     const baseTx = await this.makeCreateIssueTx(issuer, issuee, tag, fee);
     console.log('baseTx:', JSON.stringify(baseTx, null, 2));
