@@ -1,5 +1,8 @@
 import RpcError from './rpcerror';
-import { signTxWithAcc, checkTx } from './tx';
+import {
+  signTxWithAcc,
+  checkTx
+} from './tx';
 
 const checkResStatus = async res => {
   if (res.status >= 400) {
@@ -20,7 +23,10 @@ const checkResStatus = async res => {
 };
 
 export default class JsonRpc {
-  constructor({ endpoint, fetch }) {
+  constructor({
+    endpoint,
+    fetch
+  }) {
     if (!endpoint) {
       throw new Error('option.endpoint is required!');
     }
@@ -89,7 +95,9 @@ export default class JsonRpc {
    * @memberof JsonRpc
    */
   getBlockHash = async height => {
-    return await this.fetch('/ctl/getblockhash', { height });
+    return await this.fetch('/ctl/getblockhash', {
+      height
+    });
   };
 
   /**
@@ -100,7 +108,9 @@ export default class JsonRpc {
    * @memberof JsonRpc
    */
   getBlockHeader = async block_hash => {
-    return await this.fetch('/ctl/getblockheader', { block_hash });
+    return await this.fetch('/ctl/getblockheader', {
+      block_hash
+    });
   };
 
   /**
@@ -111,7 +121,9 @@ export default class JsonRpc {
    * @memberof JsonRpc
    */
   getBlock = async block_hash => {
-    return await this.fetch('/ctl/getblock', { block_hash });
+    return await this.fetch('/ctl/getblock', {
+      block_hash
+    });
   };
 
   /**
@@ -122,7 +134,9 @@ export default class JsonRpc {
    * @memberof JsonRpc
    */
   getBalance = async addrs => {
-    return await this.fetch('/tx/getbalance', { addrs });
+    return await this.fetch('/tx/getbalance', {
+      addrs
+    });
   };
 
   /**
@@ -134,7 +148,10 @@ export default class JsonRpc {
    * @memberof JsonRpc
    */
   fetchUtxos = async (addr, amount) => {
-    return await this.fetch('/tx/fetchutxos', { Addr: addr, Amount: amount });
+    return await this.fetch('/tx/fetchutxos', {
+      Addr: addr,
+      Amount: amount
+    });
   };
 
   /**
@@ -145,7 +162,9 @@ export default class JsonRpc {
    * @memberof JsonRpc
    */
   listTransactions = async addr => {
-    return await this.fetch('/wlt/listtransactions', { addr });
+    return await this.fetch('/wlt/listtransactions', {
+      addr
+    });
   };
 
   /**
@@ -163,6 +182,53 @@ export default class JsonRpc {
       amounts,
       fee
     });
+  };
+
+  /**
+   * makeneedsigntx
+   * @param {string} issuer
+   * @param {string} issuee
+   * @param { {name, symbol, supply, decimal} } tag
+   * @param {number} fee
+   * @memberof JsonRpc
+   */
+  makeCreateIssueTx = async (issuer, issuee, tag = {}, fee) => {
+    return await this.fetch('/tx/makeunsignedtx/token/issue', {
+      issuer,
+      issuee,
+      tag,
+      fee
+    });
+  };
+
+  /**
+   * createIssueSendTrans
+   * @param {any} acc # Account info
+   * @param {string} issuer
+   * @param {string} issuee
+   * @param { {name, symbol, supply, decimal} } tag # Token info
+   * @param {number} fee
+   * @memberof JsonRpc
+   */
+  createIssueSendTrans = async (acc, issuer, issuee, tag = {}, fee) => {
+    console.log('acc, tag:', acc, tag);
+    const baseTx = await this.makeCreateIssueTx(issuer, issuee, tag, fee);
+    console.log('baseTx:', JSON.stringify(baseTx, null, 2));
+    const {
+      token_index: issue_out_index,
+      token_tx: tx,
+      rawMsgs
+    } = baseTx;
+    const amounts = 0
+    const signedTx = signTxWithAcc(acc, tx, rawMsgs);
+    checkTx(tx, {
+      acc,
+      issuer,
+      issuee,
+      amounts,
+      fee
+    });
+    return await this.sendTransactionRaw(signedTx);
   };
 
   /**
@@ -196,7 +262,10 @@ export default class JsonRpc {
     console.log('toAddrs, amounts:', toAddrs, amounts);
     const baseTx = await this.makeUnsignedTx(fromAddr, toAddrs, amounts, fee);
     console.log('baseTx:', JSON.stringify(baseTx, null, 2));
-    const { tx, rawMsgs } = baseTx;
+    const {
+      tx,
+      rawMsgs
+    } = baseTx;
     const signedTx = signTxWithAcc(acc, tx, rawMsgs);
     checkTx(tx, {
       acc,
@@ -228,7 +297,11 @@ export default class JsonRpc {
     console.log('toAddrs, weights:', toAddrs, weights);
     const baseTx = await this.makeSplitAddrTx(fromAddr, toAddrs, weights, fee);
     console.log('baseTx:', JSON.stringify(baseTx, null, 2));
-    const { tx, rawMsgs, splitAddr } = baseTx;
+    const {
+      tx,
+      rawMsgs,
+      splitAddr
+    } = baseTx;
     const signedTx = signTxWithAcc(acc, tx, rawMsgs);
     checkTx(tx, {
       acc,
@@ -238,7 +311,10 @@ export default class JsonRpc {
       fee
     });
     const res = await this.sendTransactionRaw(signedTx);
-    return { ...res, splitAddr };
+    return {
+      ...res,
+      splitAddr
+    };
   };
 
   /**
@@ -247,11 +323,16 @@ export default class JsonRpc {
    * @memberof JsonRpc
    */
   sendTransactionRaw = async tx => {
-    return await this.fetch('/tx/sendtransaction', { tx });
+    const result = await this.fetch('/tx/sendtransaction', {
+      tx
+    });
+    return result
   };
 
   viewTxDetail = async hash => {
-    return await this.fetch('/tx/detail', { hash });
+    return await this.fetch('/tx/detail', {
+      hash
+    });
   };
 
   /**
@@ -260,6 +341,8 @@ export default class JsonRpc {
    *
    */
   getBlockByHash = async hash => {
-    return await this.fetch('/webapi/getblock', { hash });
+    return await this.fetch('/webapi/getblock', {
+      hash
+    });
   };
 }
