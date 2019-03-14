@@ -1,6 +1,11 @@
 import bitcore from 'bitcore-lib';
-const { fromPrivateKey } = require('./crypto/ecpair');
-import { hash160, sha256 } from './crypto/hash';
+const {
+  fromPrivateKey
+} = require('./crypto/ecpair');
+import {
+  hash160,
+  sha256
+} from './crypto/hash';
 import bs58 from 'bs58';
 
 const prefix = {
@@ -9,7 +14,7 @@ const prefix = {
 };
 
 function getAddress(_this, prefixHex) {
-  return function() {
+  return function () {
     const sha256Content = prefixHex + this.pkh;
     const checksum = sha256(sha256(Buffer.from(sha256Content, 'hex'))).slice(
       0,
@@ -28,7 +33,6 @@ function getAddress(_this, prefixHex) {
  */
 export function newPrivateKey(privateKeyStr) {
   const newPrivateKey = new bitcore.PrivateKey(privateKeyStr);
-  newPrivateKey.PublicKey = newPrivateKey.PublicKey;
   newPrivateKey.signMsg = sigHash => {
     const eccPrivateKey = fromPrivateKey(Buffer.from(privateKeyStr, 'hex'));
     return eccPrivateKey.sign(sigHash).sig;

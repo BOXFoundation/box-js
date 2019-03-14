@@ -259,6 +259,24 @@ export default class JsonRpc {
   };
 
   /**
+   * makeIssueAddrTx
+   * @param {string} token_id
+   * @param {string} from_address
+   * @param {[]string} to_address
+   * @param {[]<number>} amounts
+   * @memberof JsonRpc
+   */
+  makeIssueAddrTx = async (tokenID, from, to = [], amounts = [], fee) => {
+    return await this.fetch('/tx/makeunsignedtx/token/transfer', {
+      tokenID,
+      from,
+      to,
+      amounts,
+      fee
+    });
+  };
+
+  /**
    * sendTransaction
    * @param {any} acc
    * @param {string} block_hash
@@ -324,6 +342,47 @@ export default class JsonRpc {
     return {
       ...res,
       splitAddr
+    };
+  };
+
+  /**
+   * sendIssueTransaction
+   * @param {any} acc
+   * @param {string} token_id
+   * @param {string} from_address
+   * @param {[]string} to_address
+   * @param {[]<number>} amounts
+   * @param {number} fee
+   *
+   * @memberof JsonRpc
+   */
+  sendIssueTransaction = async (
+    acc,
+    token_id,
+    from_address = '',
+    to_address = [],
+    amounts = [],
+    fee
+  ) => {
+    console.log('to_address, amounts:', to_address, amounts);
+    const baseTx = await this.makeIssueAddrTx(token_id, from_address, to_address, amounts, fee);
+    console.log('baseTx:', JSON.stringify(baseTx, null, 2));
+    const {
+      tx,
+      rawMsgs
+    } = baseTx;
+    const signedTx = signTxWithAcc(acc, tx, rawMsgs);
+    checkTx(tx, {
+      acc,
+      token_id,
+      from_address,
+      to_address,
+      amounts,
+      fee
+    });
+    const res = await this.sendTransactionRaw(signedTx);
+    return {
+      ...res
     };
   };
 
