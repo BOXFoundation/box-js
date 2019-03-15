@@ -367,7 +367,7 @@ export default class JsonRpc {
     amounts = [],
     fee
   }) => {
-    console.log('to_address, amounts:', to_address, amounts);
+    console.log('sendIssueTransaction to_address, amounts======', to_address, amounts);
     const baseTx = await this.makeIssueAddrTx(token_hash, token_index, from_address, to_address, amounts, fee);
     console.log('baseTx:', JSON.stringify(baseTx, null, 2));
     const {
@@ -386,7 +386,8 @@ export default class JsonRpc {
     });
     const res = await this.sendTransactionRaw(signedTx);
     return {
-      ...res
+      ...res,
+      new_transation: tx
     };
   };
 
