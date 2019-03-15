@@ -266,9 +266,10 @@ export default class JsonRpc {
    * @param {[]<number>} amounts
    * @memberof JsonRpc
    */
-  makeIssueAddrTx = async (tokenID, from, to = [], amounts = [], fee) => {
+  makeIssueAddrTx = async (token_hash, token_index, from, to = [], amounts = [], fee) => {
     return await this.fetch('/tx/makeunsignedtx/token/transfer', {
-      tokenID,
+      token_hash,
+      token_index,
       from,
       to,
       amounts,
@@ -346,9 +347,10 @@ export default class JsonRpc {
   };
 
   /**
-   * sendIssueTransaction
+   * sendIssueTransaction #（ acc, token_hash, token_index, from_address, to_address, amount, fee）
    * @param {any} acc
-   * @param {string} token_id
+   * @param {string} token_hash
+   * @param {number} token_index
    * @param {string} from_address
    * @param {[]string} to_address
    * @param {[]<number>} amounts
@@ -356,16 +358,17 @@ export default class JsonRpc {
    *
    * @memberof JsonRpc
    */
-  sendIssueTransaction = async (
+  sendIssueTransaction = async ({
     acc,
-    token_id,
+    token_hash,
+    token_index,
     from_address = '',
     to_address = [],
     amounts = [],
     fee
-  ) => {
+  }) => {
     console.log('to_address, amounts:', to_address, amounts);
-    const baseTx = await this.makeIssueAddrTx(token_id, from_address, to_address, amounts, fee);
+    const baseTx = await this.makeIssueAddrTx(token_hash, token_index, from_address, to_address, amounts, fee);
     console.log('baseTx:', JSON.stringify(baseTx, null, 2));
     const {
       tx,
@@ -374,7 +377,8 @@ export default class JsonRpc {
     const signedTx = signTxWithAcc(acc, tx, rawMsgs);
     checkTx(tx, {
       acc,
-      token_id,
+      token_hash,
+      token_index,
       from_address,
       to_address,
       amounts,
@@ -398,6 +402,11 @@ export default class JsonRpc {
     return result
   };
 
+  /**
+   * Get the detail of a hash
+   * @param {<string>} hash
+   * @memberof JsonRpc
+   */
   viewTxDetail = async hash => {
     return await this.fetch('/tx/detail', {
       hash
@@ -412,6 +421,27 @@ export default class JsonRpc {
   getBlockByHash = async hash => {
     return await this.fetch('/webapi/getblock', {
       hash
+    });
+  };
+
+  /**
+   * Get the balance of a token
+   *
+   * @param {[]<string>} addrs
+   * @param {<string>} token_hash
+   * @param {<string>} token_index
+   * @returns
+   * @memberof JsonRpc
+   */
+  getTokenBalance = async ({
+    addrs,
+    token_hash,
+    token_index
+  }) => {
+    return await this.fetch('/tx/gettokenbalance', {
+      addrs,
+      token_hash,
+      token_index
     });
   };
 }
