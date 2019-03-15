@@ -386,8 +386,7 @@ export default class JsonRpc {
     });
     const res = await this.sendTransactionRaw(signedTx);
     return {
-      ...res,
-      new_transation: tx
+      ...res
     };
   };
 
