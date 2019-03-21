@@ -1,7 +1,11 @@
 const opcode = require('../config/opcode');
 const _ = require('lodash');
-const { calcTxHash } = require('./protobuf');
-const { hash256 } = require('../crypto/hash');
+const {
+  calcTxHash
+} = require('./protobuf');
+const {
+  hash256
+} = require('../crypto/hash');
 
 const OPPUSHDATA1 = opcode.OPPUSHDATA1.toString(16);
 const OPPUSHDATA2 = opcode.OPPUSHDATA2.toString(16);
@@ -140,6 +144,19 @@ const getSignHash = protobuf => {
   return hash256(Buffer.from(protobuf, 'base64'));
 };
 
+const encodeTokenAddrBuf = (opHash, index) => {
+  const before = Buffer.from(opHash, 'hex');
+  const end = putUint32(Buffer.alloc(4), Number(index))
+  return Buffer.concat([before.reverse(), Buffer.from(':'), end])
+}
+
+// todo
+const decodeTokenAddrBuf = (opHash, index) => {
+  const before = Buffer.from(opHash, 'hex');
+  const end = putUint32(Buffer.alloc(4), Number(index))
+  return Buffer.concat([before.reverse(), Buffer.from(':'), end])
+}
+
 module.exports = {
   payToPubKeyHashScript,
   calcTxHashForSig,
@@ -148,5 +165,7 @@ module.exports = {
   putUint16,
   getNunberByte,
   putUint32,
-  addOperand
+  addOperand,
+  encodeTokenAddrBuf,
+  decodeTokenAddrBuf
 };
