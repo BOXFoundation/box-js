@@ -147,14 +147,14 @@ const getSignHash = protobuf => {
 const encodeTokenAddrBuf = (opHash, index) => {
   const before = Buffer.from(opHash, 'hex');
   const end = putUint32(Buffer.alloc(4), Number(index))
-  return Buffer.concat([before.reverse(), Buffer.from(':'), end])
+  return Buffer.concat([before, Buffer.from(':'), end])
 }
 
 // todo
 const decodeTokenAddrBuf = (opHash, index) => {
   const before = Buffer.from(opHash, 'hex');
   const end = putUint32(Buffer.alloc(4), Number(index))
-  return Buffer.concat([before.reverse(), Buffer.from(':'), end])
+  return Buffer.concat([before, Buffer.from(':'), end])
 }
 
 module.exports = {
