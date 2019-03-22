@@ -10,6 +10,7 @@ const {
 const OPPUSHDATA1 = opcode.OPPUSHDATA1.toString(16);
 const OPPUSHDATA2 = opcode.OPPUSHDATA2.toString(16);
 const OPPUSHDATA4 = opcode.OPPUSHDATA4.toString(16);
+const op_hash_len = 32
 
 const getNunberByte = num => num & 255;
 const gethexByteWithNumber = num => (num & 255).toString(16);
@@ -32,21 +33,26 @@ const putUint16 = (bytes = [], uint16) => {
 
 /**
  * putUint32
+ * TODO: it not support int32 now!!!
  *
  * @param {*} [bytes=[]]
  * @param {*} uint16
  * @returns
  */
-const putUint32 = (bytes = [], uint16) => {
+const putUint32 = (bytes = [], uint32) => {
   if (bytes.length < 4) {
     return new Error('The length of the bytes should more than 4!');
   }
-  bytes[0] = getNunberByte(uint16);
-  bytes[1] = uint16 >> 8;
-  bytes[2] = uint16 >> 16;
-  bytes[3] = uint16 >> 24;
+  bytes[0] = getNunberByte(uint32);
+  bytes[1] = uint32 >> 8;
+  bytes[2] = uint32 >> 16;
+  bytes[3] = uint32 >> 24;
   return bytes;
 };
+
+function getUint32(b) {
+  return b[0] | (b[1] << 8) | (b[2] << 16) | (b[3] << 24);
+}
 
 /**
  * addOperand
@@ -57,12 +63,9 @@ const putUint32 = (bytes = [], uint16) => {
  */
 function addOperand(strBuf, operand) {
   const dataLen = operand.length;
-  console.log('strBuf', strBuf);
-  console.log('dataLen', dataLen);
 
   if (dataLen < opcode.OPPUSHDATA1) {
     const b1 = gethexByteWithNumber(dataLen);
-    console.log('b1:', b1);
     strBuf = Buffer.from(strBuf.toString('hex') + b1, 'hex');
   } else if (dataLen <= 0xff) {
     strBuf = Buffer.concat([
@@ -152,20 +155,23 @@ const getSignHash = protobuf => {
  */
 const encodeTokenAddrBuf = (opHash, index) => {
   const before = Buffer.from(opHash, 'hex');
-  const end = putUint32(Buffer.alloc(4), Number(index))
-  return Buffer.concat([before, Buffer.from(':'), end])
-}
+  const end = putUint32(Buffer.alloc(4), Number(index));
+  return Buffer.concat([before, Buffer.from(':'), end]);
+};
 
 /**
- * @func token_address解析成hash+index
- * @param {* token_address [Buffer]}
+ * @func token_add_buf解析成hash+index
+ * @param {* token_add_buf [Buffer]}
  * @returns {hash index}
  */
-// const decodeTokenAddrBuf = (token_address_) => {
-//   const before = Buffer.from(opHash, 'hex');
-//   const end = putUint32(Buffer.alloc(4), Number(index))
-//   return Buffer.concat([before, Buffer.from(':'), end])
-// }
+const decodeTokenAddrBuf = (token_add_buf) => {
+  const opHash = token_add_buf.slice(0, op_hash_len).toString('hex')
+  const index = getUint32(token_add_buf.slice(op_hash_len + 1));
+  return {
+    opHash,
+    index
+  }
+};
 
 module.exports = {
   payToPubKeyHashScript,
