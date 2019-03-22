@@ -144,18 +144,28 @@ const getSignHash = protobuf => {
   return hash256(Buffer.from(protobuf, 'base64'));
 };
 
+/**
+ * @func 编码成token_address
+ * @param {* opHash}
+ * @param {* index}
+ * @returns {token_address [Buffer]}
+ */
 const encodeTokenAddrBuf = (opHash, index) => {
   const before = Buffer.from(opHash, 'hex');
   const end = putUint32(Buffer.alloc(4), Number(index))
   return Buffer.concat([before, Buffer.from(':'), end])
 }
 
-// todo
-const decodeTokenAddrBuf = (opHash, index) => {
-  const before = Buffer.from(opHash, 'hex');
-  const end = putUint32(Buffer.alloc(4), Number(index))
-  return Buffer.concat([before, Buffer.from(':'), end])
-}
+/**
+ * @func token_address解析成hash+index
+ * @param {* token_address [Buffer]}
+ * @returns {hash index}
+ */
+// const decodeTokenAddrBuf = (token_address_) => {
+//   const before = Buffer.from(opHash, 'hex');
+//   const end = putUint32(Buffer.alloc(4), Number(index))
+//   return Buffer.concat([before, Buffer.from(':'), end])
+// }
 
 module.exports = {
   payToPubKeyHashScript,
