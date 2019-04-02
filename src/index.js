@@ -8,9 +8,6 @@ import {
   decodeTokenAddrBuf
 } from './script/index';
 
-var encode = encodeTokenAddrBuf('4647b36b556bea74e9436f96e089b7deb2bb93e6241b24f016862c862ad70d4d', '0')
-console.log('bs58:', bs58.encode(encode))
-
 export {
   Jsonrpc,
   Wallet,
