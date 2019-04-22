@@ -24,7 +24,7 @@ BoxMask-js
   │   ├── index.js
   │   ├── jsonrpc.js
   │   ├── privatekey.js
-  │   ├── rpcerror.js
+  │   ├── rpc-error.js
   │   ├── token.js
   │   ├── tx.js
   │   └── wallet.js

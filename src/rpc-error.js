@@ -1,14 +1,10 @@
 /**
- *
-
- * @export
- * @class RpcError
- * @extends {Error}
+ * @exportClass [Rpc-Error]
+ * @extends Error
  */
 
 export default class RpcError extends Error {
-  /** Detailed error information */
-
+  // Detailed error information
   constructor(json) {
     if (
       json.error &&

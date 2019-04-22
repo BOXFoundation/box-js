@@ -1,10 +1,10 @@
-import RpcError from './rpcerror'
+import RpcError from './rpc-error'
 import {
   signTxWithAcc,
   checkTx
 } from './tx'
 
-const checkResStatus = async res => {
+/* const checkResStatus = async res => {
   if (res.status >= 400) {
     let data = {
       code: res.status,
@@ -20,7 +20,7 @@ const checkResStatus = async res => {
     return Promise.reject(data)
   }
   return await res.json()
-}
+} */
 
 export default class JsonRpc {
   constructor({
@@ -28,29 +28,27 @@ export default class JsonRpc {
     fetch
   }) {
     if (!endpoint) {
-      throw new Error('option.endpoint is required!')
+      throw new Error('rpc.endpoint is required!')
     }
     if (!fetch) {
-      throw new Error('option.fetch is required!')
+      throw new Error('rpc.fetch is required!')
     }
-
     this.endpoint = endpoint
     this.publicPath = '/v1'
     this._fetch = fetch
   }
 
   /**
-   * fetch
-   *
+   * @func fetch-encapsulation
    * @param {string} path
    * @param {object} body
-   * @returns
+   * @returns {object} fetch
    * @memberof JsonRpc
    */
   fetch = async (path, body = {}) => {
     console.log(`[fetch:${path}]:\n`, JSON.stringify(body), '\n')
     let res
-    let json = {
+    let fetch = {
       path
     }
     try {
@@ -59,27 +57,26 @@ export default class JsonRpc {
         method: 'POST'
       })
       if (res.status >= 400) {
-        json.code = res.status
-        json.statusText = res.statusText
-        throw new RpcError(json)
+        fetch.code = res.status
+        fetch.statusText = res.statusText
+        throw new RpcError(fetch)
       }
-      json = await res.json()
-      if (json.code !== 0) {
-        throw new RpcError(json)
+      fetch = await res.json()
+      if (fetch.code !== 0) {
+        throw new RpcError(fetch)
       }
     } catch (e) {
       e.isFetchError = true
       throw e
     }
     if (!res.ok) {
-      throw new RpcError(json)
+      throw new RpcError(fetch)
     }
-    return json
+    return fetch
   }
 
   /**
    * getBlockHeight returns height of current tail block
-   *
    * @returns
    * @memberof JsonRpc
    */
