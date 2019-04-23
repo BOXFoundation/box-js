@@ -76,7 +76,7 @@ export default class JsonRpc {
   }
 
   /**
-   * getBlockHeight returns height of current tail block
+   * @func get-block-height returns height of current tail block
    * @returns
    * @memberof JsonRpc
    */

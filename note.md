@@ -59,6 +59,8 @@ BoxdClient
 ├── crypto
 
 ├── util
+
+├── core
 ```
 
 ## Project Structure
