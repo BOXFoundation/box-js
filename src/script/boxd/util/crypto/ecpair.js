@@ -1,5 +1,7 @@
 const ecc = require('tiny-secp256k1');
-const { getNunberByte } = require('../script/index');
+const {
+  getNunberByte
+} = require('../script/util');
 
 function canonicalizeInt(b) {
   if (b.length === 0) {
@@ -24,25 +26,28 @@ function ECPair(d, Q, options) {
 
 Object.defineProperty(ECPair.prototype, 'privateKey', {
   enumerable: false,
-  get: function() {
+  get: function () {
     return this.__d;
   }
 });
 
 Object.defineProperty(ECPair.prototype, 'publicKey', {
-  get: function() {
+  get: function () {
     if (!this.__Q) this.__Q = ecc.pointFromScalar(this.__d, this.compressed);
     return this.__Q;
   }
 });
 
-ECPair.prototype.sign = function(hash) {
+ECPair.prototype.sign = function (hash) {
   if (!this.__d) throw new Error('Missing private key');
   const signature = ecc.sign(hash, this.__d);
-  return { sig: this.toCompact(signature), signature };
+  return {
+    sig: this.toCompact(signature),
+    signature
+  };
 };
 
-ECPair.prototype.toCompact = function(signature) {
+ECPair.prototype.toCompact = function (signature) {
   const rb = canonicalizeInt(signature.slice(0, 32));
   const sb = canonicalizeInt(signature.slice(32));
 
@@ -62,7 +67,7 @@ ECPair.prototype.toCompact = function(signature) {
   return allBytes;
 };
 
-ECPair.prototype.verify = function(hash, signature) {
+ECPair.prototype.verify = function (hash, signature) {
   return ecc.verify(hash, this.publicKey, signature);
 };
 

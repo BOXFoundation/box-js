@@ -1,4 +1,7 @@
-const { getSignHash, signatureScript } = require('./script/index');
+const {
+  getSignHash,
+  signatureScript
+} = require('./script/util');
 
 const checkTx = (tx, r_rx) => {
   console.log(tx, r_rx);
@@ -21,4 +24,7 @@ const signTxWithAcc = (acc, tx, protoBufs) => {
   return tx;
 };
 
-module.exports = { signTxWithAcc, checkTx };
+module.exports = {
+  signTxWithAcc,
+  checkTx
+};

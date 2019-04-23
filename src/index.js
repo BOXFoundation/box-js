@@ -6,7 +6,8 @@ import bs58 from 'bs58';
 import {
   encodeTokenAddrBuf,
   decodeTokenAddrBuf
-} from './script/index';
+}
+from './script/util';
 
 export {
   Jsonrpc,

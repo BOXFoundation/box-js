@@ -1,4 +1,4 @@
-module.exports = {
+export const opcode = {
   // push value
   OPPUSHDATA1: 0x4c, // 76
   OPPUSHDATA2: 0x4d, // 77
@@ -13,4 +13,4 @@ module.exports = {
 
   // bit logic
   OPCHECKSIG: 0x88 // 136
-};
+}
