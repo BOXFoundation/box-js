@@ -6,7 +6,6 @@ function canonicalizeInt(b) {
     b = Buffer.from([0x00]);
   }
   if ((b[0] & 0x80) !== 0) {
-    const paddedBytes = Buffer.alloc(b.length + 1);
     b = Buffer.concat([Buffer.alloc(1), b]);
   }
   return b;
@@ -48,7 +47,6 @@ ECPair.prototype.toCompact = function(signature) {
   const sb = canonicalizeInt(signature.slice(32));
 
   const length = 6 + rb.length + sb.length;
-  const offset = 4 + rb.length;
 
   const b1 = Buffer.alloc(4);
   b1[0] = 0x30;

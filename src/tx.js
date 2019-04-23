@@ -1,6 +1,7 @@
 const { getSignHash, signatureScript } = require('./script/index');
 
 const checkTx = (tx, r_rx) => {
+  console.log(tx, r_rx);
   // TODO: should check tx info before sign.
 };
 

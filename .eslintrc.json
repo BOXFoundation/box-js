@@ -23,7 +23,7 @@
     "linebreak-style": ["error", "unix"],
     "no-empty": 0,
     "comma-dangle": 0,
-    "no-unused-vars": 0,
+    "no-unused-vars": 2,
     "no-console": 0,
     "no-const-assign": 2,
     "no-dupe-class-members": 2,

@@ -1,16 +1,8 @@
 const scrypt = require('scrypt.js');
 const randomBytes = require('randombytes');
-const {
-  getCiphertext,
-  aesBlockSize,
-  getMac
-} = require('./aes');
-const {
-  hash160
-} = require('./hash');
+const { getCiphertext, aesBlockSize, getMac } = require('./aes');
 
 const _STRING_ENC_ = 'hex';
-
 
 const scryptOpt = {
   n: 1 << 18,

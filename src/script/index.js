@@ -1,16 +1,10 @@
 const opcode = require('../config/opcode');
-const _ = require('lodash');
-const {
-  calcTxHash
-} = require('./protobuf');
-const {
-  hash256
-} = require('../crypto/hash');
+const { hash256 } = require('../crypto/hash');
 
 const OPPUSHDATA1 = opcode.OPPUSHDATA1.toString(16);
 const OPPUSHDATA2 = opcode.OPPUSHDATA2.toString(16);
 const OPPUSHDATA4 = opcode.OPPUSHDATA4.toString(16);
-const op_hash_len = 32
+const op_hash_len = 32;
 
 const getNunberByte = num => num & 255;
 const gethexByteWithNumber = num => (num & 255).toString(16);
@@ -86,49 +80,6 @@ function addOperand(strBuf, operand) {
   return Buffer.concat([strBuf, operand]);
 }
 
-const calcTxHashForSig = async (scriptPubKey, originalTx, txInIdx) => {
-  if (txInIdx >= originalTx.Vin.length) {
-    return '';
-  }
-
-  // Make a hard copy here to avoid racing conditions when verifying signature in parallel
-  const tx = _.cloneDeep(originalTx);
-
-  for (let i = 0; i < tx.Vin.length; i++) {
-    const txIn = tx.Vin[i];
-    if (i != txInIdx) {
-      // Blank out other inputs' signatures
-      txIn.ScriptSig = '';
-    } else {
-      // Replace scriptSig with referenced scriptPubKey
-      txIn.ScriptSig = scriptPubKey;
-    }
-  }
-  const protobuf = await calcTxHash(tx);
-  const hashBuf = hash256(protobuf)
-    .reverse()
-    .toString('hex');
-  return hashBuf;
-};
-
-/**
- * payToPubKeyHashScript
- *
- * @param {string} pkhAddrHex
- * @returns
- */
-function payToPubKeyHashScript(pkhAddrHex) {
-  const preHex = opcode.OPDUP.toString(16) + opcode.OPHASH160.toString(16);
-  const midHex = addOperand(preHex, pkhAddrHex);
-  const fullHex =
-    preHex +
-    midHex +
-    opcode.OPEQUALVERIFY.toString(16) +
-    opcode.OPCHECKSIG.toString(16);
-
-  return fullHex;
-}
-
 /**
  * signatureScript
  *
@@ -164,18 +115,16 @@ const encodeTokenAddrBuf = (opHash, index) => {
  * @param {* token_add_buf [Buffer]}
  * @returns {hash index}
  */
-const decodeTokenAddrBuf = (token_add_buf) => {
-  const opHash = token_add_buf.slice(0, op_hash_len).toString('hex')
+const decodeTokenAddrBuf = token_add_buf => {
+  const opHash = token_add_buf.slice(0, op_hash_len).toString('hex');
   const index = getUint32(token_add_buf.slice(op_hash_len + 1));
   return {
     opHash,
     index
-  }
+  };
 };
 
 module.exports = {
-  payToPubKeyHashScript,
-  calcTxHashForSig,
   signatureScript,
   getSignHash,
   putUint16,

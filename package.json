@@ -8,7 +8,6 @@
     "lock": "npm shrinkwrap",
     "test": "babel-node test/tx.test.js",
     "postinstall": "npm run build",
-    "test1": "npx mocha --require babel-register --require ./test/test_helper.js --recursive",
     "build": "npx rimraf dist && npx babel src --out-dir dist --source-maps"
   },
   "author": "",
