@@ -1,83 +1,77 @@
 import { opcode } from './core'
 import { hash256 } from './crypto/hash'
 
-const OPPUSHDATA1 = opcode.OPPUSHDATA1
-const OPPUSHDATA2 = opcode.OPPUSHDATA2
-const OPPUSHDATA4 = opcode.OPPUSHDATA4
-const op_hash_len = 32
+const { OP_PUSH_DATA1, OP_PUSH_DATA2, OP_PUSH_DATA4, OP_ENCODE } = opcode
 
-const getNunberByte = (num: number) => num & 255
-const gethexByteWithNumber = (num: number) => {
-  return Number((num & 255).toString(16))
-}
+export const getNumberByte = (num: number) => num & 255
+const gethexByteWithNumber = (num: number) => (num & 255).toString(16)
 
 /**
- * putUint16
- *
- * @param {*} [bytes=[]]
- * @param {*} uint16
- * @returns
+ * @export putUint16
+ * @param [*bytes]
+ * @param [*uint16]
+ * @returns [bytes]
  */
-const putUint16 = (bytes: any = [], uint16: any) => {
+export const putUint16 = (bytes: any = [], uint16: any) => {
   if (bytes.length < 2) {
     return new Error('The length of the bytes should more than 2!')
   }
-  bytes[0] = getNunberByte(uint16)
+  bytes[0] = getNumberByte(uint16)
   bytes[1] = uint16 >> 8
   return bytes
 }
 
 /**
- * putUint32
+ * @export putUint32
  * TODO: it not support int32 now!!!
- *
- * @param {*} [bytes=[]]
- * @param {*} uint16
- * @returns
+ * @param [*bytes]
+ * @param [*uint32]
+ * @returns [bytes]
  */
-const putUint32 = (bytes: any = [], uint32: number) => {
+export const putUint32 = (bytes: any = [], uint32: number) => {
   if (bytes.length < 4) {
     return new Error('The length of the bytes should more than 4!')
   }
-  bytes[0] = getNunberByte(uint32)
+  bytes[0] = getNumberByte(uint32)
   bytes[1] = uint32 >> 8
   bytes[2] = uint32 >> 16
   bytes[3] = uint32 >> 24
   return bytes
 }
 
-function getUint32(b: number[]) {
-  return b[0] | (b[1] << 8) | (b[2] << 16) | (b[3] << 24)
-}
-
 /**
- * addOperand
- *
- * @param {Buffer} [str]
- * @param {Buffer} [operand]
- * @returns
+ * @export addOperand
+ * @param [*strBuf] Buffer | Uint8Array
+ * @param [*operand] Buffer
+ * @returns Buffer
  */
-function addOperand(strBuf: Buffer | Uint8Array, operand: Buffer) {
+export function addOperand(strBuf: Buffer | Uint8Array, operand: Buffer) {
   const dataLen = operand.length
-  if (dataLen < OPPUSHDATA1) {
-    const b1 = gethexByteWithNumber(dataLen)
-    strBuf = Buffer.from(strBuf.toString('hex') + b1, 'hex')
+  const dataLen_str = gethexByteWithNumber(dataLen)
+  if (dataLen < OP_PUSH_DATA1) {
+    strBuf = Buffer.from(strBuf.toString(OP_ENCODE) + dataLen_str, OP_ENCODE)
   } else if (dataLen <= 0xff) {
     strBuf = Buffer.concat([
       strBuf,
-      [
-        gethexByteWithNumber(Number(OPPUSHDATA1)),
-        gethexByteWithNumber(Number(dataLen))
-      ]
+      Buffer.from(gethexByteWithNumber(OP_PUSH_DATA1), OP_ENCODE),
+      Buffer.from(dataLen_str, OP_ENCODE)
     ])
   } else if (dataLen <= 0xffff) {
     let buf = Buffer.alloc(2)
     buf = putUint16(buf, dataLen)
-    strBuf = Buffer.concat([strBuf, [gethexByteWithNumber(OPPUSHDATA2)], buf])
+    strBuf = Buffer.concat([
+      strBuf,
+      Buffer.from(gethexByteWithNumber(OP_PUSH_DATA2), OP_ENCODE),
+      buf
+    ])
   } else {
     let buf = Buffer.alloc(4)
     buf = putUint16(buf, dataLen)
-    strBuf = Buffer.concat([strBuf, [gethexByteWithNumber(OPPUSHDATA4)], buf])
+    strBuf = Buffer.concat([
+      strBuf,
+      Buffer.from(gethexByteWithNumber(OP_PUSH_DATA4), OP_ENCODE),
+      buf
+    ])
   }
 
   // Append the actual operand
@@ -85,58 +79,40 @@ function addOperand(strBuf: Buffer | Uint8Array, operand: Buffer) {
 }
 
 /**
- * signatureScript
- *
- * @param {Buffer} sigBuf
- * @param {Buffer} pubKeyBuf
- * @returns
+ * @export signatureScript
+ * @param [*sigBuf] Buffer
+ * @param [*Buffer] Buffer
+ * @returns [end] Buffer
  */
-const signatureScript = (sigBuf: Buffer, pubKeyBuf: Buffer) => {
+export const signatureScript = (sigBuf: Buffer, pubKeyBuf: Buffer) => {
   const before = addOperand(Buffer.from([]), sigBuf)
   const end = addOperand(before, pubKeyBuf)
-  console.log('before:', before.toString('hex'))
+  console.log('before:', before.toString(OP_ENCODE))
   return end
 }
 
-const getSignHash = protobuf => {
+/**
+ * @export getSignHash
+ * @param [*protobuf] string
+ * @returns
+ */
+export const getSignHash = (protobuf: string) => {
   return hash256(Buffer.from(protobuf, 'base64'))
-}
-
-/**
- * @func 编码成token_address
- * @param {* opHash}
- * @param {* index}
- * @returns {token_address [Buffer]}
- */
-const encodeTokenAddrBuf = (opHash: any, index: any): Buffer => {
-  const before = Buffer.from(opHash, 'hex')
-  const end = putUint32(Buffer.alloc(4), Number(index))
-  return Buffer.concat([before, Buffer.from(':'), end])
-}
-
-/**
- * @func token_add_buf解析成hash+index
- * @param {* token_add_buf [Buffer]}
- * @returns {hash index}
- */
-const decodeTokenAddrBuf = (token_add_buf: any): object => {
-  const opHash = token_add_buf.slice(0, op_hash_len).toString('hex')
-  const index = getUint32(token_add_buf.slice(op_hash_len + 1))
-  return {
-    opHash,
-    index
-  }
 }
 
 /**
  * @exportClass [Rpc-Error]
  * @extends Error
  */
-
-export default class RpcError extends Error {
-  json
+export class RpcError extends Error {
+  json: any
   // Detailed error information
-  constructor(json) {
+  constructor(json: {
+    error: { details: { message: string | undefined }[] }
+    processed: { except: { message: string | undefined } }
+    message: string | undefined
+    statusText: string | undefined
+  }) {
     if (
       json.error &&
       json.error.details &&
@@ -160,15 +136,4 @@ export default class RpcError extends Error {
     Object.setPrototypeOf(this, RpcError.prototype)
     this.json = json
   }
-}
-
-module.exports = {
-  signatureScript,
-  getSignHash,
-  putUint16,
-  getNunberByte,
-  putUint32,
-  addOperand,
-  encodeTokenAddrBuf,
-  decodeTokenAddrBuf
 }

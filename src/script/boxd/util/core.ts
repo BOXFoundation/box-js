@@ -1,8 +1,8 @@
 export const opcode = {
   // push value
-  OPPUSHDATA1: 0x4c, // 76
-  OPPUSHDATA2: 0x4d, // 77
-  OPPUSHDATA4: 0x4e, // 78
+  OP_PUSH_DATA1: 0x4c, // 76
+  OP_PUSH_DATA2: 0x4d, // 77
+  OP_PUSH_DATA4: 0x4e, // 78
 
   // stack ops
   OPDUP: 0x76, // 118
@@ -12,5 +12,8 @@ export const opcode = {
   OPHASH160: 0xac, // 172
 
   // bit logic
-  OPCHECKSIG: 0x88 // 136
+  OPCHECKSIG: 0x88, // 136
+
+  // en/de code
+  OP_ENCODE: 'hex'
 }

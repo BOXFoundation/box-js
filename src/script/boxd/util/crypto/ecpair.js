@@ -1,6 +1,6 @@
 const ecc = require('tiny-secp256k1');
 const {
-  getNunberByte
+  getNumberByte
 } = require('../script/util');
 
 function canonicalizeInt(b) {
@@ -55,13 +55,13 @@ ECPair.prototype.toCompact = function (signature) {
 
   const b1 = Buffer.alloc(4);
   b1[0] = 0x30;
-  b1[1] = getNunberByte(length - 2);
+  b1[1] = getNumberByte(length - 2);
   b1[2] = 0x02;
-  b1[3] = getNunberByte(rb.length);
+  b1[3] = getNumberByte(rb.length);
 
   const b3 = Buffer.alloc(2);
   b3[0] = 0x02;
-  b3[1] = getNunberByte(sb.length);
+  b3[1] = getNumberByte(sb.length);
 
   const allBytes = Buffer.concat([b1, rb, b3, sb]);
   return allBytes;
