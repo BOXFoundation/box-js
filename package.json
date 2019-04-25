@@ -6,7 +6,7 @@
   "types": "./types/index.d.ts",
   "scripts": {
     "lock": "npm shrinkwrap",
-    "test": "babel-node test/tx.test.js",
+    "test": "ts-node test/test.token.ts",
     "postinstall": "npm run build",
     "build": "npx rimraf dist && npx babel src --out-dir dist --source-maps"
   },
@@ -38,6 +38,8 @@
     "rimraf": "^2.6.3",
     "scrypt.js": "^0.2.0",
     "tiny-secp256k1": "^1.0.1",
-    "tslib": "^1.9.3"
+    "ts-node": "^8.1.0",
+    "tslib": "^1.9.3",
+    "typescript": "^3.4.5"
   }
 }

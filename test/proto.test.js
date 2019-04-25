@@ -1,20 +1,22 @@
-const { calcTxHash, decodeMsg } = require('../src/script/protobuf');
-const { hash256 } = require('../src/crypto/hash');
+const {
+  calcTxHash,
+  decodeMsg
+} = require('../src/script/protobuf');
+const {
+  hash256
+} = require('../src/crypto/hash');
 
 const testTx = {
   tx: {
-    "vin": [
-      {
-        "prev_out_point": {
-          "hash": "CJN6S1uTfBejKm0WVoFHwE1eh7aefJD/tKyd3CB6J+Q=",
-          "index": 0
-        },
-        "script_sig": "RjBEAiBVdkxaNams5NUNhCgeHcq1k9wtG7ck4pk/uQ5MTHa7GQIgEz+8DB9ZRXPlBj3UfmmtxztWWAsMjacy+gBeEJtTvyAhAnnL2P9ieAgsPd1XEt09fcaDJlr9WFrqwlA9OkhdMA5V",
-        "sequence": 0
-      }
-    ],
-    "vout": [
-      {
+    "vin": [{
+      "prev_out_point": {
+        "hash": "CJN6S1uTfBejKm0WVoFHwE1eh7aefJD/tKyd3CB6J+Q=",
+        "index": 0
+      },
+      "script_sig": "RjBEAiBVdkxaNams5NUNhCgeHcq1k9wtG7ck4pk/uQ5MTHa7GQIgEz+8DB9ZRXPlBj3UfmmtxztWWAsMjacy+gBeEJtTvyAhAnnL2P9ieAgsPd1XEt09fcaDJlr9WFrqwlA9OkhdMA5V",
+      "sequence": 0
+    }],
+    "vout": [{
         "value": 4294,
         "script_pub_key": "dqkUsqcHHH3pTFrF382HYjL5vOiyo06IrA=="
       },
@@ -49,14 +51,15 @@ const testTx = {
 //     hashValue.should.equal(testTx[0].hash);
 //   });
 // });
+
 const text = async () => {
   const hashValue = await calcTxHash(testTx.tx);
   console.log('hashValue:', hashValue.toString('hex'));
   console.log(
     '\nhashValue1: ',
     hash256(hashValue)
-      .reverse()
-      .toString('hex')
+    .reverse()
+    .toString('hex')
   );
   console.log(
     'hashValue2: ',
@@ -78,28 +81,3 @@ const text = async () => {
   );
 };
 text();
-
-const a = {
-  Version: 0,
-  Vin: [
-    {
-      PrevOutPoint: {
-        Hash:
-          'e4277a20dc9dacb4ff907c9eb6875e4dc0478156166d2aa3177c935b4b7a9308',
-        Index: 0
-      },
-      ScriptSig:
-        'RjBEAiBVdkxaNams5NUNhCgeHcq1k9wtG7ck4pk/uQ5MTHa7GQIgEz+8DB9ZRXPlBj3UfmmtxztWWAsMjacy+gBeEJtTvyAhAnnL2P9ieAgsPd1XEt09fcaDJlr9WFrqwlA9OkhdMA5V',
-      Sequence: 0
-    }
-  ],
-  Vout: [
-    { value: '4294' },
-    { value: '6669' },
-    { value: '5824' },
-    { value: '5772' },
-    { value: '80158' }
-  ],
-  Magic: 0,
-  LockTime: '0'
-};

@@ -9,7 +9,7 @@ const op_hash_len = 32
  * @func getUint32
  * @param [*buf] Buffer
  */
-function getUint32(buf: Buffer) {
+const getUint32 = (buf: Buffer) => {
   return buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)
 }
 
@@ -30,7 +30,7 @@ export const encodeTokenAddr = (opHash: string, index: string): string => {
  * @param [*token_address] string
  * @returns [{hash,index}] object
  */
-export const decodeTokenAddr = (token_address: string): object => {
+export const decodeTokenAddr = (token_address: string): any => {
   const token_addr_buf = bs58.decode(token_address)
   const opHash = token_addr_buf.slice(0, op_hash_len).toString(OP_ENCODE)
   const index = getUint32(token_addr_buf.slice(op_hash_len + 1))
