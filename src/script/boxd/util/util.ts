@@ -1,7 +1,7 @@
 import { opcode } from './core'
 import { hash256 } from './crypto/hash'
 
-const { OP_PUSH_DATA1, OP_PUSH_DATA2, OP_PUSH_DATA4, OP_ENCODE } = opcode
+const { OP_PUSH_DATA1, OP_PUSH_DATA2, OP_PUSH_DATA4 } = opcode
 
 export const getNumberByte = (num: number) => num & 255
 const gethexByteWithNumber = (num: number) => (num & 255).toString(16)
@@ -49,19 +49,19 @@ export function addOperand(strBuf: Buffer | Uint8Array, operand: Buffer) {
   const dataLen = operand.length
   const dataLen_str = gethexByteWithNumber(dataLen)
   if (dataLen < OP_PUSH_DATA1) {
-    strBuf = Buffer.from(strBuf.toString(OP_ENCODE) + dataLen_str, OP_ENCODE)
+    strBuf = Buffer.from(strBuf.toString('hex') + dataLen_str, 'hex')
   } else if (dataLen <= 0xff) {
     strBuf = Buffer.concat([
       strBuf,
-      Buffer.from(gethexByteWithNumber(OP_PUSH_DATA1), OP_ENCODE),
-      Buffer.from(dataLen_str, OP_ENCODE)
+      Buffer.from(gethexByteWithNumber(OP_PUSH_DATA1), 'hex'),
+      Buffer.from(dataLen_str, 'hex')
     ])
   } else if (dataLen <= 0xffff) {
     let buf = Buffer.alloc(2)
     buf = putUint16(buf, dataLen)
     strBuf = Buffer.concat([
       strBuf,
-      Buffer.from(gethexByteWithNumber(OP_PUSH_DATA2), OP_ENCODE),
+      Buffer.from(gethexByteWithNumber(OP_PUSH_DATA2), 'hex'),
       buf
     ])
   } else {
@@ -69,7 +69,7 @@ export function addOperand(strBuf: Buffer | Uint8Array, operand: Buffer) {
     buf = putUint16(buf, dataLen)
     strBuf = Buffer.concat([
       strBuf,
-      Buffer.from(gethexByteWithNumber(OP_PUSH_DATA4), OP_ENCODE),
+      Buffer.from(gethexByteWithNumber(OP_PUSH_DATA4), 'hex'),
       buf
     ])
   }
@@ -87,7 +87,7 @@ export function addOperand(strBuf: Buffer | Uint8Array, operand: Buffer) {
 export const signatureScript = (sigBuf: Buffer, pubKeyBuf: Buffer) => {
   const before = addOperand(Buffer.from([]), sigBuf)
   const end = addOperand(before, pubKeyBuf)
-  console.log('before:', before.toString(OP_ENCODE))
+  console.log('before:', before.toString('hex'))
   return end
 }
 

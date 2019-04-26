@@ -12,8 +12,5 @@ export const opcode = {
   OPHASH160: 0xac, // 172
 
   // bit logic
-  OPCHECKSIG: 0x88, // 136
-
-  // en/de code
-  OP_ENCODE: 'hex'
+  OPCHECKSIG: 0x88 // 136
 }

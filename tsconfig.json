@@ -2,21 +2,20 @@
   "compilerOptions": {
     "outDir": "./dist",
     "sourceMap": true,
-    "allowJs": true,
+    "allowJs": false,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]
     },
     "allowSyntheticDefaultImports": true,
-    "jsx": "preserve",
     "moduleResolution": "node",
     "strictNullChecks": true,
     "experimentalDecorators": true,
-    "module": "es6",
+    "module": "commonjs",
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "target": "es5",
-    "lib": ["dom", "es7"]
+    "target": "es2017",
+    "lib": ["dom", "es2017"]
   },
   "exclude": [
     "config",

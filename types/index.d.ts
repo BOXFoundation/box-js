@@ -52,3 +52,9 @@ export interface hash {
   sha1: HashBuffer
   sha256: HashBuffer
 }
+
+declare module 'base58' {
+  export function encode()
+
+  export function decode()
+}
