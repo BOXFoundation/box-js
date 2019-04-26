@@ -14,8 +14,8 @@
     "module": "commonjs",
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "target": "es2017",
-    "lib": ["dom", "es2017"]
+    "target": "es5",
+    "lib": ["dom", "es7"]
   },
   "exclude": [
     "config",

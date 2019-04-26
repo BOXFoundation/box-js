@@ -1,5 +1,3 @@
-/// <reference path='../../../../../types/index.d.ts'/>
-
 import base58 from 'bs58'
 import { putUint32 } from '../../util/util'
 

@@ -1,5 +1,5 @@
-import 'mocha'
-import should from 'should'
+/* import 'mocha'
+import should from 'should' */
 import {
   encodeTokenAddr,
   decodeTokenAddr
@@ -12,12 +12,11 @@ const _token_addr = '8b9aLjo62TiDWr3JoszMWYAQH5iEvJFKyNZJQ73ghywJC7ACVHh',
 
 const testEncodeTokenAddr = async () => {
   const token_addr = await encodeTokenAddr(_token_hash, _token_index)
-  console.log('testEncodeTokenAddr:', token_addr === _token_addr)
+  console.log('testEncodeTotest.token.tskenAddr:', token_addr === _token_addr)
   return token_addr
 }
 
-describe('Test 1', async () => {
-  // testDecodeTokenAddr
+const testDecodeTokenAddr = async () => {
   const token_addr = await testEncodeTokenAddr()
   const { opHash, index } = await decodeTokenAddr(token_addr)
   console.log(
@@ -25,5 +24,6 @@ describe('Test 1', async () => {
     opHash === _token_hash,
     index === _token_index
   )
-  should(opHash).be.equal(_token_hash)
-})
+}
+
+testDecodeTokenAddr()

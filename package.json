@@ -6,7 +6,7 @@
   "types": "./types/index.d.ts",
   "scripts": {
     "lock": "npm shrinkwrap",
-    "test": "ts-node test/test.token.ts",
+    "test": "babel-node test/test.token.js",
     "test:1": "mocha -r ts-node/register test/test.token.ts --colors",
     "postinstall": "tsc -d -p .",
     "build": "npx rimraf dist && npx babel src --out-dir dist --source-maps"
