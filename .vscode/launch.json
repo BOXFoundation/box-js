@@ -1,14 +1,23 @@
 {
   "version": "0.2.0",
-  "configurations": [
-
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "test.token",
-      "program": "${workspaceFolder}/test/test.token.js",
-      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/babel-node",
-      "runtimeArgs": ["--nolazy"]
-    }
-  ]
+  "configurations": [{
+    // 调试类型是 node
+    "type": "node",
+    // 使用 launch 方式，另一种 attach 方式可用于调试已存在的 node 进程。
+    "request": "launch",
+    // 该调试配置的名称，主要用于在 select 控件里面选择本配置。
+    "name": "test debug",
+    // 类似于命令行参数
+    "runtimeArgs": [
+      "--inspect-brk",
+      "${workspaceFolder}/node_modules/.bin/jest",
+      "--runInBand"
+    ],
+    // node 的可执行程序
+    "runtimeExecutable": "/usr/local/bin/node",
+    // 使用什么终端工具。integratedTerminal 表示使用 Visual Studio Code 内置的终端工具，也可以配置成使用操作系统默认的终端工具。
+    "console": "integratedTerminal",
+    // 打开 console 的时机。这个 console 类似于 Chrome 开发者工具 console 的作用。
+    "internalConsoleOptions": "openOnSessionStart"
+  }]
 }

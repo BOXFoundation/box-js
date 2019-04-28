@@ -12,5 +12,20 @@
   ],
   "plugins": ["transform-runtime"],
   "sourceMaps": "inline",
-  "retainLines": true
+  "retainLines": true,
+  "env": {
+    "test": {
+      "presets": ["env", "stage-2"],
+      "plugins": [
+        "istanbul",
+        [
+          "transform-runtime",
+          {
+            "polyfill": false,
+            "regenerator": false
+          }
+        ]
+      ]
+    }
+  }
 }
