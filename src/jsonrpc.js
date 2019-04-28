@@ -39,43 +39,6 @@ export default class JsonRpc {
   }
 
   /**
-   * @func fetch-encapsulation
-   * @param {string} path
-   * @param {object} body
-   * @returns {object} fetch
-   * @memberof JsonRpc
-   */
-  fetch = async (path, body = {}) => {
-    console.log(`[fetch:${path}]:\n`, JSON.stringify(body), '\n')
-    let res
-    let fetch = {
-      path
-    }
-    try {
-      res = await this._fetch(this.endpoint + this.publicPath + path, {
-        body: JSON.stringify(body),
-        method: 'POST'
-      })
-      if (res.status >= 400) {
-        fetch.code = res.status
-        fetch.statusText = res.statusText
-        throw new RpcError(fetch)
-      }
-      fetch = await res.json()
-      if (fetch.code !== 0) {
-        throw new RpcError(fetch)
-      }
-    } catch (e) {
-      e.isFetchError = true
-      throw e
-    }
-    if (!res.ok) {
-      throw new RpcError(fetch)
-    }
-    return fetch
-  }
-
-  /**
    * @func get-block-height returns height of current tail block
    * @returns
    * @memberof JsonRpc

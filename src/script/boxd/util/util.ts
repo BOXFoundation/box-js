@@ -137,3 +137,47 @@ export class RpcError extends Error {
     this.json = json
   }
 }
+
+export class Rpc {
+  endpoint: string
+  fetch: any
+  constructor(endpoint: string, fetch: any) {
+    if (!endpoint) {
+      throw new Error('rpc.endpoint is required!')
+    }
+    if (!fetch) {
+      throw new Error('rpc.fetch is required!')
+    }
+    this.endpoint = endpoint
+    this.fetch = fetch
+  }
+  _fetch = async (path: string, body: object = {}) => {
+    console.log(`[fetch:${path}]:\n`, JSON.stringify(body), '\n')
+    let res
+    let fetch: any = {
+      path
+    }
+    try {
+      res = await this.fetch(this.endpoint + '/v1' + path, {
+        body: JSON.stringify(body),
+        method: 'POST'
+      })
+      if (res.status >= 400) {
+        fetch.code = res.status
+        fetch.statusText = res.statusText
+        throw new RpcError(fetch)
+      }
+      fetch = await res.json()
+      if (fetch.code !== 0) {
+        throw new RpcError(fetch)
+      }
+    } catch (e) {
+      e.isFetchError = true
+      throw e
+    }
+    if (!res.ok) {
+      throw new RpcError(fetch)
+    }
+    return fetch
+  }
+}

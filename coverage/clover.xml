@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1556444687951" clover="3.2.0">
-  <project timestamp="1556444687951" name="All files">
-    <metrics statements="72" coveredstatements="38" conditionals="21" coveredconditionals="1" methods="17" coveredmethods="6" elements="110" coveredelements="45" complexity="0" loc="72" ncloc="72" packages="3" files="4" classes="4"/>
+<coverage generated="1556454003629" clover="3.2.0">
+  <project timestamp="1556454003629" name="All files">
+    <metrics statements="92" coveredstatements="40" conditionals="23" coveredconditionals="1" methods="19" coveredmethods="7" elements="134" coveredelements="48" complexity="0" loc="92" ncloc="92" packages="3" files="4" classes="4"/>
     <package name="contract.token">
       <metrics statements="14" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
       <file name="token.ts" path="/Users/air/jimmy/repo/contentbox/npm-box-js/src/script/boxd/contract/token/token.ts">
@@ -23,13 +23,13 @@
       </file>
     </package>
     <package name="util">
-      <metrics statements="47" coveredstatements="18" conditionals="21" coveredconditionals="1" methods="9" coveredmethods="3"/>
+      <metrics statements="67" coveredstatements="20" conditionals="23" coveredconditionals="1" methods="11" coveredmethods="4"/>
       <file name="core.ts" path="/Users/air/jimmy/repo/contentbox/npm-box-js/src/script/boxd/util/core.ts">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
       </file>
       <file name="util.ts" path="/Users/air/jimmy/repo/contentbox/npm-box-js/src/script/boxd/util/util.ts">
-        <metrics statements="46" coveredstatements="17" conditionals="21" coveredconditionals="1" methods="9" coveredmethods="3"/>
+        <metrics statements="66" coveredstatements="19" conditionals="23" coveredconditionals="1" methods="11" coveredmethods="4"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
@@ -76,6 +76,26 @@
         <line num="136" count="0" type="stmt"/>
         <line num="137" count="0" type="stmt"/>
         <line num="139" count="1" type="stmt"/>
+        <line num="141" count="1" type="stmt"/>
+        <line num="144" count="0" type="stmt"/>
+        <line num="146" count="0" type="stmt"/>
+        <line num="149" count="0" type="stmt"/>
+        <line num="151" count="0" type="stmt"/>
+        <line num="152" count="0" type="stmt"/>
+        <line num="154" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="155" count="0" type="stmt"/>
+        <line num="157" count="0" type="stmt"/>
+        <line num="161" count="0" type="stmt"/>
+        <line num="166" count="0" type="stmt"/>
+        <line num="167" count="0" type="stmt"/>
+        <line num="168" count="0" type="stmt"/>
+        <line num="170" count="0" type="stmt"/>
+        <line num="172" count="0" type="stmt"/>
+        <line num="175" count="0" type="stmt"/>
+        <line num="176" count="0" type="stmt"/>
+        <line num="179" count="0" type="stmt"/>
+        <line num="181" count="0" type="stmt"/>
+        <line num="183" count="1" type="stmt"/>
       </file>
     </package>
     <package name="util.crypto">
