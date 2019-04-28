@@ -11,8 +11,9 @@
     "outDir": "./dist",
     "module": "commonjs",
     "target": "es5",
-    "lib": ["dom", "es7"],
+    "lib": ["dom", "es7", "scripthost"],
     "moduleResolution": "node",
+    "locale": "zh-cn",
     "allowJs": false,
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
@@ -21,13 +22,10 @@
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "esModuleInterop": true, // 导入语法 import
-    "noImplicitAny": true //【最佳实践】true打开的话对应我们要用任何的Library都需要.d.ts即使是空定义，放心下载
+    "noImplicitAny": true, //【最佳实践】true打开的话对应我们要用任何的Library都需要.d.ts即使是空定义，放心下载
   },
   "exclude": [
     "config",
     "dist"
-  ],
-  "include": [
-    "node_modules"
   ]
 }
