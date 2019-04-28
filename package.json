@@ -7,7 +7,7 @@
   "scripts": {
     "lock": "npm shrinkwrap",
     "test": "babel-node test/test.token.js",
-    "test:1": "mocha -r ts-node/register test/test.token.ts --colors",
+    "test:1": "mocha -r ts-node/register --ignore=false test/test.token.ts --colors",
     "postinstall": "tsc -d -p .",
     "build": "npx rimraf dist && npx babel src --out-dir dist --source-maps"
   },

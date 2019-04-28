@@ -1,4 +1,4 @@
-import base58 from 'bs58'
+import bs58 from 'bs58'
 import { putUint32 } from '../../util/util'
 
 const op_hash_len = 32
@@ -14,14 +14,13 @@ const getUint32 = (buf: Buffer) => {
 /**
  * @export hash+index=>token_address
  * @param [*opHash] string
- * @param [*index] string
+ * @param [*index] number
  * @returns [token_address] string
  */
-export const encodeTokenAddr = (opHash: string, index: string): string => {
+export const encodeTokenAddr = (opHash: string, index: number): string => {
   const before = Buffer.from(opHash, 'hex')
   const end = putUint32(Buffer.alloc(4), Number(index))
-  console.log('base58:', base58)
-  return base58.encode(Buffer.concat([before, Buffer.from(':'), end]))
+  return bs58.encode(Buffer.concat([before, Buffer.from(':'), end]))
 }
 
 /**
@@ -30,7 +29,7 @@ export const encodeTokenAddr = (opHash: string, index: string): string => {
  * @returns [{hash,index}] object
  */
 export const decodeTokenAddr = (token_address: string): any => {
-  const token_addr_buf = base58.decode(token_address)
+  const token_addr_buf = bs58.decode(token_address)
   const opHash = token_addr_buf.slice(0, op_hash_len).toString('hex')
   const index = getUint32(token_addr_buf.slice(op_hash_len + 1))
   return {
