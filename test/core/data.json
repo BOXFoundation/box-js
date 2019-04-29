@@ -1,0 +1,57 @@
+{
+  "token_addr": "8b9aLjo62TiDWr3JoszMWYAQH5iEvJFKyNZJQ73ghywJC7ACVHh",
+  "token_hash": "e26dc08ca79a9a07a82e2cef5350ae74f2590385fa1d316a5c7e9500c749ab71",
+  "token_index": 0,
+  "acc_list": {
+    "b1nebwpTAb6GZEqtSZnSciKYMbcs6hyVCst": {
+      "cryptoJSON": {
+        "id": "",
+        "address": "b1nebwpTAb6GZEqtSZnSciKYMbcs6hyVCst",
+        "crypto": {
+          "cipher": "aes-128-ctr",
+          "ciphertext": "b3cda41b32173a2c9e2c2787a56594e9f77053739491d76e7b2c565f1964d8c0",
+          "cipherparams": {
+            "iv": "e02057d44cb1e16cd20d3e973b0c4d82"
+          },
+          "mac": "418a64c2b8f65ff1771f4b566e984ea05eea4d7ae65c07ef1c567f4affc73490",
+          "kdfparams": {
+            "salt": "a37cd2c3058eec28808b59df77a0879f8b5cce1384d425632108d2a42d1382b4",
+            "n": 262144,
+            "r": 8,
+            "p": 1,
+            "dklen": 32
+          }
+        }
+      },
+      "update_time": 1556510736408,
+      "name": "acc_222",
+      "P2PKH": "b1nebwpTAb6GZEqtSZnSciKYMbcs6hyVCst"
+    },
+    "b1dswv8nXzTyRCEqtg5r4qDJEQSVELdzxFm": {
+      "cryptoJSON": {
+        "id": "",
+        "address": "b1dswv8nXzTyRCEqtg5r4qDJEQSVELdzxFm",
+        "crypto": {
+          "cipher": "aes-128-ctr",
+          "ciphertext": "cc06c515bc4adbd21d5138bee86d6e24f1d5a287d3a24445a2b677c91b433fd4",
+          "cipherparams": {
+            "iv": "53ca75f189261899d3b32edf801ef877"
+          },
+          "mac": "15883c3721825e7be7de7d30ccbdd2a5a60044b9613501b75e861a1a6f40dfb2",
+          "kdfparams": {
+            "salt": "5baeceb3cf8429c91ee22cf053858f1a530c21acd6ba12be40bde94b2c33ee54",
+            "n": 262144,
+            "r": 8,
+            "p": 1,
+            "dklen": 32
+          }
+        }
+      },
+      "update_time": 1556510799187,
+      "P2PKH": "b1dswv8nXzTyRCEqtg5r4qDJEQSVELdzxFm",
+      "name": "Account21"
+    }
+  },
+  "acc_pwd": "1",
+  "acc_name": "little dog Huang"
+}
