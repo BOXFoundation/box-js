@@ -1,6 +1,6 @@
 import 'jest'
 import Account from '../src/boxd/account/account'
-import Core from './core/data.json'
+import Core from './json/data.json'
 
 let result_acc_list
 

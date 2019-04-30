@@ -3,7 +3,7 @@ import {
   unlockPrivateKeyWithPassphrase
 } from '../util/crypto/keystore'
 import { newPrivateKey } from '../util/crypto/privatekey'
-import { Acc, Crypto } from './core'
+import { Acc, Crypto } from './interface'
 
 /**
  * @func get-cryptoJson-with-privateKey&password

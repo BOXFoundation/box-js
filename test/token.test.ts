@@ -1,7 +1,7 @@
 import 'jest'
 import { encodeTokenAddr, decodeTokenAddr } from '../src/boxd/core/token/token'
 
-const Core = require('./core/data.json')
+const Core = require('./json/data.json')
 
 test('Encode Token Address', async () => {
   // test func [encodeTokenAddr]

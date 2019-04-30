@@ -1,4 +1,4 @@
-import { opcode } from './core'
+import { opcode } from './data'
 import { hash256 } from './crypto/hash'
 
 const { OP_PUSH_DATA1, OP_PUSH_DATA2, OP_PUSH_DATA4 } = opcode

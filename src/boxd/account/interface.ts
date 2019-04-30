@@ -25,7 +25,7 @@ export interface Acc {
   name: string
 }
 
-export interface cryptoJSON {
+export interface CryptoJSON {
   id: string
   address: string
   crypto: {
@@ -49,5 +49,5 @@ export interface Crypto {
   P2PKH: string
   P2SH: string
   privateKey: bitcore.PrivateKey
-  cryptoJson: cryptoJSON
+  cryptoJson: CryptoJSON
 }
