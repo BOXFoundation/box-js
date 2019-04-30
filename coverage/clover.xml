@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1556612294076" clover="3.2.0">
-  <project timestamp="1556612294076" name="All files">
+<coverage generated="1556612751726" clover="3.2.0">
+  <project timestamp="1556612751726" name="All files">
     <metrics statements="225" coveredstatements="121" conditionals="43" coveredconditionals="4" methods="47" coveredmethods="24" elements="315" coveredelements="149" complexity="0" loc="225" ncloc="225" packages="5" files="9" classes="9"/>
     <package name="boxd.account">
       <metrics statements="25" coveredstatements="21" conditionals="4" coveredconditionals="3" methods="8" coveredmethods="5"/>

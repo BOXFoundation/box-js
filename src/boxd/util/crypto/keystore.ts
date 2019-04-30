@@ -1,6 +1,7 @@
 import scrypt from 'scrypt.js'
 import randomBytes from 'randombytes'
 import { getCiphertext, getMac } from './aes'
+import { CryptoJson } from '../interface'
 
 const _STRING_ENC_ = 'hex'
 // The AES block size in bytes. see go/1.11.2/libexec/src/crypto/aes/cipher.go
@@ -24,8 +25,8 @@ const scryptOpt = {
  * @param {number} dklen
  * @returns {Buffer}
  */
-const getDerivedKey = (
-  passphrase: ArrayBuffer | SharedArrayBuffer,
+export const getDerivedKey = (
+  passphrase: string,
   salt: Buffer,
   n: number,
   r: number,
@@ -58,7 +59,7 @@ export const getCryptoJSON = (
     toP2PKHAddress: () => string
   },
   passphrase: any
-) => {
+): CryptoJson => {
   if (!privateKey) {
     throw new Error('PrivateKey is require!')
   }

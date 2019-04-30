@@ -1,9 +1,17 @@
+import bitcore from 'bitcore-lib'
+import { sha256, hash160 } from '../util/crypto/hash'
 import {
   getCryptoJSON,
   unlockPrivateKeyWithPassphrase
 } from '../util/crypto/keystore'
+import bs58 from 'bs58'
 import { newPrivateKey } from '../util/crypto/privatekey'
-import { Acc, Crypto } from './interface'
+import { Acc } from './interface'
+import { CryptoJson, Crypto } from '../util/interface'
+import { getDerivedKey } from '../util/crypto/keystore'
+import { getMac, getCiphertext } from '../util/crypto/aes'
+
+const OP_CODE_TYPE = 'hex'
 
 /**
  * @func get-cryptoJson-with-privateKey&password
@@ -19,6 +27,22 @@ const getCrypto = (
   pwd: string
 ) => {
   return getCryptoJSON(privateKey, pwd)
+}
+
+const getAddress = (_this: bitcore.PrivateKey, prefixHex: string) => {
+  return function() {
+    const sha256Content = prefixHex + this.pkh
+    const checksum = sha256(
+      sha256(Buffer.from(sha256Content, OP_CODE_TYPE))
+    ).slice(0, 4)
+    const content = sha256Content.concat(checksum.toString(OP_CODE_TYPE))
+    this.P2PKHAddress = bs58.encode(Buffer.from(content, OP_CODE_TYPE))
+    return this.P2PKHAddress
+  }.bind(_this)
+}
+
+const getPublicAddress = (privateKey: bitcore.PrivateKey) => {
+  return hash160(privateKey.toPublicKey().toBuffer()).toString('hex')
 }
 
 export default class Account {
@@ -38,6 +62,112 @@ export default class Account {
     this.impAccWithKeyStore = unlockPrivateKeyWithPassphrase
     this.newPrivateKey = newPrivateKey
     this.updateAccount = updateAccount
+  }
+
+  /**
+   * @func dump-P2PKHAddress-from-PrivateKey
+   * @param [*privateKey] string | Buffer
+   * @returns [P2PKH_Address] string
+   * @memberof Account
+   */
+  dumpAddrFromPrivKey(privateKey: string | Buffer): string {
+    if (privateKey instanceof Buffer) {
+      privateKey = privateKey.toString(OP_CODE_TYPE)
+    }
+    const privateKey_bitc: any = new bitcore.PrivateKey(privateKey)
+    return getAddress(privateKey_bitc, '1326')
+  }
+
+  /**
+   * @func dump-KeyStore-from-PrivateKey
+   * @param [*privateKey_str] string
+   * @param [*pwd] string
+   * @returns [KeyStore] CryptoJson
+   * @memberof Account
+   */
+  dumpKeyStoreFromPrivKey(privateKey_str: string, pwd: string): CryptoJson {
+    const privateKey = newPrivateKey(privateKey_str)
+    return getCrypto(privateKey, pwd)
+  }
+
+  /**
+   * @func dump-PrivateKey-from-KeyStore
+   * @param [*keyStore] CryptoJson
+   * @param [*pwd] string
+   * @returns [PrivateKey] string
+   * @memberof Account
+   */
+  dumpPrivKeyFromKeyStore(keyStore: CryptoJson, pwd: string): string {
+    if (!pwd) {
+      throw new Error('Passphrase is require!')
+    }
+    if (!keyStore) {
+      throw new Error('ksJSON is require!')
+    }
+    const cpt = keyStore.crypto
+    const kdfParams = cpt.kdfparams
+    const saltBuffer = Buffer.from(kdfParams.salt, OP_CODE_TYPE)
+    const derivedKey = getDerivedKey(
+      pwd,
+      saltBuffer,
+      kdfParams.n,
+      kdfParams.r,
+      kdfParams.p,
+      kdfParams.dklen
+    )
+
+    const aesKey = derivedKey.slice(0, 16).toString(OP_CODE_TYPE)
+    const sha256Key = derivedKey.slice(16, 32).toString(OP_CODE_TYPE)
+    const mac = getMac(sha256Key, cpt.ciphertext)
+    if (mac !== cpt.mac) {
+      throw new Error('passphrase is error!')
+    }
+    const privateKeyHexStr = getCiphertext(
+      aesKey,
+      cpt.ciphertext,
+      cpt.cipherparams.iv
+    )
+    if (!privateKeyHexStr) {
+      throw new Error("Can't find privateKey!")
+    }
+    return privateKeyHexStr
+  }
+
+  /**
+   * @func dump-PublicKey-from-PrivateKey
+   * @param [*privateKey] string | Buffer
+   * @returns [PublicKey] string
+   * @memberof Account
+   */
+  dumpPubKeyFromPrivKey(privateKey: string | Buffer): string {
+    if (privateKey instanceof Buffer) {
+      privateKey = privateKey.toString(OP_CODE_TYPE)
+    }
+    const privateKey_bitc: any = new bitcore.PrivateKey(privateKey)
+    return getPublicAddress(privateKey_bitc)
+  }
+
+  /**
+   * @func dump-PublicKey-from-Address
+   * @param [*addr] string
+   * @returns [PublicKey] string
+   * @memberof Account
+   */
+  dumpPubKeyHashFromAddr(addr: string) {
+    // todo
+  }
+
+  /**
+   * @func dump-PublicKey-from-Address
+   * @param [*privateKey] string
+   * @returns [PublicKey] string
+   * @memberof Account
+   */
+  dumpPubKeyHashFromPrivKey(privateKey: string | Buffer) {
+    if (privateKey instanceof Buffer) {
+      privateKey = privateKey.toString(OP_CODE_TYPE)
+    }
+    // todo
   }
 
   /**
