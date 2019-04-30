@@ -1,9 +1,9 @@
-import { RpcError, Rpc } from '../util/util'
 import {
   getCryptoJSON,
   unlockPrivateKeyWithPassphrase
 } from '../util/crypto/keystore'
 import { newPrivateKey } from '../util/crypto/privatekey'
+import { Acc, Crypto } from './core'
 
 /**
  * get cryptoJSON with privateKey and password
@@ -15,8 +15,8 @@ import { newPrivateKey } from '../util/crypto/privatekey'
  */
 const getCrypto = (
   privateKey: {
-    toString: (arg0: string) => void
-    toP2PKHAddress: () => void
+    toString: (arg0: string) => string
+    toP2PKHAddress: () => string
   },
   pass: any
 ) => {
@@ -32,66 +32,68 @@ const getCrypto = (
   // }
 }
 
-export default class Account extends Rpc {
+export default class Account {
   unlockPrivateKeyWithPassphrase: (
     ksJSON: { crypto: any },
     passphrase: any
   ) => any
-  walletsMap: object
+  acc_list: { [acc_addr: string]: Acc }
   newPrivateKey: any
   updateAccount: any
 
-  constructor({ walletsMap = {}, updateAccount }) {
-    super('endpoint', 'fetch')
+  constructor(
+    acc_list: { [acc_addr: string]: Acc },
+    updateAccount: object = (new_acc_list: object) => {
+      return new_acc_list
+    }
+  ) {
     this.unlockPrivateKeyWithPassphrase = unlockPrivateKeyWithPassphrase
-    this.walletsMap = walletsMap
+    this.acc_list = acc_list
     this.newPrivateKey = newPrivateKey
     this.updateAccount = updateAccount
   }
 
   /**
-   * creat an account with a password
-   *
-   * @param {string} pass
-   * @param {string} privateKeyHexStr
-   * @returns
+   * @func get-Crypto-Account
+   * @param [*pwd] string
+   * @param [*privateKey_str] string
+   * @returns {} Crypto
    * @memberof Wallet
    */
-  createWallet(pass: any, privateKeyHexStr: string) {
-    const privateKey = newPrivateKey(privateKeyHexStr)
-    const cryptoJSON = getCrypto(privateKey, pass)
+  getCryptoAcc(pwd: string, privateKey_str?: string): Crypto {
+    const privateKey = newPrivateKey(privateKey_str)
+    const cryptoJson = getCrypto(privateKey, pwd)
     return {
       P2PKH: privateKey.toP2PKHAddress(),
       P2SH: privateKey.toP2SHAddress(),
       privateKey,
-      cryptoJSON
+      cryptoJson
     }
   }
 
   /**
-   * add new wallet to wallet list
-   *
+   * @func add-new-wallet-to-walletList
    * @param {object} cryptoJSON
    * @memberof Wallet
    */
-  addToWalletList(cryptoJSON: { address: any }, otherInfo: any) {
+  addToAccList(cryptoJSON: { address: any }, otherInfo: any): void {
     const address = cryptoJSON.address
     const update_time = Date.now()
-    if (this.walletsMap[address]) {
+    if (this.acc_list[address]) {
       console.error('This wallet already existed. It will be rewrited!')
     }
-    this.walletsMap[address] = {
+    this.acc_list[address] = {
       cryptoJSON,
       ...{
         update_time
       },
       ...otherInfo
     }
-    this.updateAccount && this.updateAccount(this.walletsMap)
+    this.updateAccount && this.updateAccount(this.acc_list)
   }
 
-  listWallets() {
-    return Object.values(this.walletsMap).sort(
+  sortAccList() {
+    return Object.values(this.acc_list).sort(
       (a, b) => a.update_time - b.update_time
     )
   }

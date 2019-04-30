@@ -1,5 +1,5 @@
-import * as scrypt from 'scrypt.js'
-import * as randomBytes from 'randombytes'
+import scrypt from 'scrypt.js'
+import randomBytes from 'randombytes'
 import { getCiphertext, getMac } from './aes'
 
 const _STRING_ENC_ = 'hex'
@@ -53,7 +53,10 @@ const getDerivedKey = (
  * @returns
  */
 export const getCryptoJSON = (
-  privateKey: { toString: (arg0: string) => void; toP2PKHAddress: () => void },
+  privateKey: {
+    toString: (arg0: string) => string
+    toP2PKHAddress: () => string
+  },
   passphrase: any
 ) => {
   if (!privateKey) {

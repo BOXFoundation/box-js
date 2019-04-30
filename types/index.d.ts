@@ -36,7 +36,7 @@ export class Wallet {
 
   getCrypto(privateKey: bitcore.PrivateKey, password: string): cryptoJSON
 
-  addToWalletList(cryptoJSON: cryptoJSON, otherInfo?: object): null
+  addToAccList(cryptoJSON: cryptoJSON, otherInfo?: object): null
 
   listWallets(): string[]
 }

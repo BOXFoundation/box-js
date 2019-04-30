@@ -26,30 +26,6 @@
       "update_time": 1556510736408,
       "name": "acc_222",
       "P2PKH": "b1nebwpTAb6GZEqtSZnSciKYMbcs6hyVCst"
-    },
-    "b1dswv8nXzTyRCEqtg5r4qDJEQSVELdzxFm": {
-      "cryptoJSON": {
-        "id": "",
-        "address": "b1dswv8nXzTyRCEqtg5r4qDJEQSVELdzxFm",
-        "crypto": {
-          "cipher": "aes-128-ctr",
-          "ciphertext": "cc06c515bc4adbd21d5138bee86d6e24f1d5a287d3a24445a2b677c91b433fd4",
-          "cipherparams": {
-            "iv": "53ca75f189261899d3b32edf801ef877"
-          },
-          "mac": "15883c3721825e7be7de7d30ccbdd2a5a60044b9613501b75e861a1a6f40dfb2",
-          "kdfparams": {
-            "salt": "5baeceb3cf8429c91ee22cf053858f1a530c21acd6ba12be40bde94b2c33ee54",
-            "n": 262144,
-            "r": 8,
-            "p": 1,
-            "dklen": 32
-          }
-        }
-      },
-      "update_time": 1556510799187,
-      "P2PKH": "b1dswv8nXzTyRCEqtg5r4qDJEQSVELdzxFm",
-      "name": "Account21"
     }
   },
   "acc_pwd": "1",
