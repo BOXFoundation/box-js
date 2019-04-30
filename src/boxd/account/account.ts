@@ -153,7 +153,7 @@ export default class Account {
    * @returns [PublicKey] string
    * @memberof Account
    */
-  dumpPubKeyHashFromAddr(addr: string) {
+  dumpPubKeyHashFromAddr() {
     // todo
   }
 
