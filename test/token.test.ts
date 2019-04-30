@@ -1,8 +1,5 @@
 import 'jest'
-import {
-  encodeTokenAddr,
-  decodeTokenAddr
-} from '../src/script/boxd/contract/token/token'
+import { encodeTokenAddr, decodeTokenAddr } from '../src/boxd/core/token/token'
 
 const Core = require('./core/data.json')
 

@@ -6,7 +6,7 @@
   "types": "./types/index.d.ts",
   "scripts": {
     "lock": "npm shrinkwrap",
-    "test": "jest test/account.test.ts --colors --coverage",
+    "test": "jest --colors --coverage",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "build": "npx rimraf dist && npx babel src --out-dir dist --source-maps"
   },
@@ -69,7 +69,14 @@
     ],
     "collectCoverage": false,
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(tsx?)$",
-    "moduleFileExtensions": ["js", "json", "jsx", "ts", "tsx", "node"],
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "jsx",
+      "ts",
+      "tsx",
+      "node"
+    ],
     "globals": {
       "ts-jest": {
         "skipBabel": true

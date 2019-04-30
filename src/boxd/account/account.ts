@@ -6,37 +6,24 @@ import { newPrivateKey } from '../util/crypto/privatekey'
 import { Acc, Crypto } from './core'
 
 /**
- * get cryptoJSON with privateKey and password
- *
- * @param {any} privateKey
- * @param {string} pass
- * @returns
- * @memberof Wallet
+ * @func get-cryptoJson-with-privateKey&password
+ * @param [*privateKey] {toString, toP2PKHAddress}
+ * @param [*pwd] string
+ * @returns [cryptoJson]
  */
 const getCrypto = (
   privateKey: {
     toString: (arg0: string) => string
     toP2PKHAddress: () => string
   },
-  pass: any
+  pwd: string
 ) => {
-  return getCryptoJSON(privateKey, pass)
-  // const cryptoJSON = getCryptoJSON(privateKey, pass);
-  // const proviteKeyStr = unlockPrivateKeyWithPassphrase(cryptoJSON, pass);
-  // const anotherPrivateKey = newPrivateKey(proviteKeyStr);
-
-  // if (isEqualTo(anotherPrivateKey, privateKey)) {
-  //   return cryptoJSON;
-  // } else {
-  //   throw new Error('Generate cryptoJSON failed!');
-  // }
+  return getCryptoJSON(privateKey, pwd)
 }
 
 export default class Account {
-  unlockPrivateKeyWithPassphrase: (
-    ksJSON: { crypto: any },
-    passphrase: any
-  ) => any
+  // import an account by KeyStore
+  impAccWithKeyStore: (ksJSON: { crypto: any }, pwd: string) => any
   acc_list: { [acc_addr: string]: Acc }
   newPrivateKey: any
   updateAccount: any
@@ -47,8 +34,8 @@ export default class Account {
       return new_acc_list
     }
   ) {
-    this.unlockPrivateKeyWithPassphrase = unlockPrivateKeyWithPassphrase
     this.acc_list = acc_list
+    this.impAccWithKeyStore = unlockPrivateKeyWithPassphrase
     this.newPrivateKey = newPrivateKey
     this.updateAccount = updateAccount
   }
@@ -58,7 +45,7 @@ export default class Account {
    * @param [*pwd] string
    * @param [*privateKey_str] string
    * @returns {} Crypto
-   * @memberof Wallet
+   * @memberof Account
    */
   getCryptoAcc(pwd: string, privateKey_str?: string): Crypto {
     const privateKey = newPrivateKey(privateKey_str)
@@ -73,17 +60,17 @@ export default class Account {
 
   /**
    * @func add-new-wallet-to-walletList
-   * @param {object} cryptoJSON
-   * @memberof Wallet
+   * @param {*cryptoJson} { address ... }
+   * @memberof Account
    */
-  addToAccList(cryptoJSON: { address: any }, otherInfo: any): void {
-    const address = cryptoJSON.address
+  addToAccList(cryptoJson: { address: string }, otherInfo: any): void {
+    const address = cryptoJson.address
     const update_time = Date.now()
     if (this.acc_list[address]) {
-      console.error('This wallet already existed. It will be rewrited!')
+      console.warn('This Account already existed. It will be rewrited...')
     }
     this.acc_list[address] = {
-      cryptoJSON,
+      cryptoJson,
       ...{
         update_time
       },

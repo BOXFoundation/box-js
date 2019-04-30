@@ -22,22 +22,21 @@ function getAddress(_this: bitcore.PrivateKey, prefixHex: string) {
 }
 
 /**
- * creat a new accont
- *
- * @param {string} privateKeyStr
+ * @export new-PrivateKey
+ * @param [privateKeyStr] string
  */
-export function newPrivateKey(privateKeyStr?: string) {
-  const newPrivateKey: any = new bitcore.PrivateKey(privateKeyStr)
-  newPrivateKey.signMsg = (sigHash: any) => {
+export const newPrivateKey = (privateKeyStr?: string) => {
+  const new_privateKey: any = new bitcore.PrivateKey(privateKeyStr)
+  new_privateKey.signMsg = (sigHash: any) => {
     const eccPrivateKey =
       privateKeyStr && fromPrivateKey(Buffer.from(privateKeyStr, 'hex'))
     return eccPrivateKey.sign(sigHash).sig
   }
-  newPrivateKey.pkh = getPublicAddress(newPrivateKey)
-  newPrivateKey.toP2PKHAddress = getAddress(newPrivateKey, prefix.P2PKH)
-  newPrivateKey.toP2SHAddress = getAddress(newPrivateKey, prefix.P2SH)
+  new_privateKey.pkh = getPublicAddress(new_privateKey)
+  new_privateKey.toP2PKHAddress = getAddress(new_privateKey, prefix.P2PKH)
+  new_privateKey.toP2SHAddress = getAddress(new_privateKey, prefix.P2SH)
 
-  return newPrivateKey
+  return new_privateKey
 }
 
 export const getPublicAddress = (privateKey: bitcore.PrivateKey) => {
