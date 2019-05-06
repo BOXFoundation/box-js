@@ -5,11 +5,14 @@ import {
   unlockPrivateKeyWithPassphrase
 } from '../util/crypto/keystore'
 import bs58 from 'bs58'
+import secp256k1 from 'secp256k1'
 import { newPrivateKey } from '../util/crypto/privatekey'
 import { Acc } from './interface'
 import { CryptoJson, Crypto } from '../util/interface'
 import { getDerivedKey } from '../util/crypto/keystore'
 import { getMac, getCiphertext } from '../util/crypto/aes'
+
+console.log('secp256k1:', secp256k1)
 
 const OP_CODE_TYPE = 'hex'
 
@@ -30,19 +33,21 @@ const getCrypto = (
 }
 
 const getAddress = (_this: bitcore.PrivateKey, prefixHex: string) => {
-  return function() {
-    const sha256Content = prefixHex + this.pkh
-    const checksum = sha256(
-      sha256(Buffer.from(sha256Content, OP_CODE_TYPE))
-    ).slice(0, 4)
-    const content = sha256Content.concat(checksum.toString(OP_CODE_TYPE))
-    this.P2PKHAddress = bs58.encode(Buffer.from(content, OP_CODE_TYPE))
-    return this.P2PKHAddress
-  }.bind(_this)
+  const sha256Content = prefixHex + this.pkh
+  const checksum = sha256(
+    sha256(Buffer.from(sha256Content, OP_CODE_TYPE))
+  ).slice(0, 4)
+  const content = sha256Content.concat(checksum.toString(OP_CODE_TYPE))
+  const P2PKHAddress = bs58.encode(Buffer.from(content, OP_CODE_TYPE))
+  return P2PKHAddress
 }
 
-const getPublicAddress = (privateKey: bitcore.PrivateKey) => {
+const getPubKeyHash = (privateKey: bitcore.PrivateKey) => {
   return hash160(privateKey.toPublicKey().toBuffer()).toString('hex')
+}
+
+const getPubKey = (privateKey: string) => {
+  return secp256k1.publicKeyCreate(Buffer.from(privateKey, OP_CODE_TYPE))
 }
 
 export default class Account {
@@ -65,7 +70,7 @@ export default class Account {
   }
 
   /**
-   * @func dump-P2PKHAddress-from-PrivateKey
+   * @func dump-P2PKH-Address-from-PrivateKey
    * @param [*privateKey] string | Buffer
    * @returns [P2PKH_Address] string
    * @memberof Account
@@ -88,6 +93,37 @@ export default class Account {
   dumpKeyStoreFromPrivKey(privateKey_str: string, pwd: string): CryptoJson {
     const privateKey = newPrivateKey(privateKey_str)
     return getCrypto(privateKey, pwd)
+  }
+
+  /**
+   * @func dump-PublicKey-from-PrivateKey
+   * @param [*privateKey] string | Buffer
+   * @returns [PublicKey] string
+   * @memberof Account
+   */
+  dumpPubKeyFromPrivKey(privateKey: string | Buffer): any {
+    if (privateKey instanceof Buffer) {
+      privateKey = privateKey.toString(OP_CODE_TYPE)
+    }
+    const PubKey = getPubKey(privateKey)
+    console.log('PubKey:', typeof PubKey, PubKey)
+    return PubKey
+  }
+
+  /**
+   * @func dump-PublicKey-Hash-from-Address
+   * @param [*privateKey] string
+   * @returns [PublicKey] string
+   * @memberof Account
+   */
+  dumpPubKeyHashFromPrivKey(privateKey: string | Buffer): string {
+    if (privateKey instanceof Buffer) {
+      privateKey = privateKey.toString(OP_CODE_TYPE)
+    }
+    const privateKey_bitc: bitcore.PrivateKey = new bitcore.PrivateKey(
+      privateKey
+    )
+    return getPubKeyHash(privateKey_bitc)
   }
 
   /**
@@ -134,40 +170,14 @@ export default class Account {
   }
 
   /**
-   * @func dump-PublicKey-from-PrivateKey
-   * @param [*privateKey] string | Buffer
-   * @returns [PublicKey] string
-   * @memberof Account
-   */
-  dumpPubKeyFromPrivKey(privateKey: string | Buffer): string {
-    if (privateKey instanceof Buffer) {
-      privateKey = privateKey.toString(OP_CODE_TYPE)
-    }
-    const privateKey_bitc: any = new bitcore.PrivateKey(privateKey)
-    return getPublicAddress(privateKey_bitc)
-  }
-
-  /**
-   * @func dump-PublicKey-from-Address
+   * @func dump-PublicKey-Hash-from-Address
    * @param [*addr] string
    * @returns [PublicKey] string
    * @memberof Account
    */
-  dumpPubKeyHashFromAddr() {
-    // todo
-  }
-
-  /**
-   * @func dump-PublicKey-from-Address
-   * @param [*privateKey] string
-   * @returns [PublicKey] string
-   * @memberof Account
-   */
-  dumpPubKeyHashFromPrivKey(privateKey: string | Buffer) {
-    if (privateKey instanceof Buffer) {
-      privateKey = privateKey.toString(OP_CODE_TYPE)
-    }
-    // todo
+  dumpPubKeyHashFromAddr(addr: string) {
+    const addr_bitc: bitcore.Address = new bitcore.Address(addr)
+    console.log('addr_bitc:', addr_bitc)
   }
 
   /**

@@ -30,5 +30,8 @@
   },
   "acc_privateKey": "7763dcadc5618ede3ff856d062a99d10198ee1e619d6209ccdcc5fb95bfc5071",
   "acc_pwd": "1",
-  "acc_name": "little dog Huang"
+  "acc_name": "little dog Huang",
+  "acc_privateKey_1": "4fd7346602d5fae2404efca9a35ba2ba470fffed1672d52f8581845e424179be",
+  "acc_addr": "b1WpdQ1odtmVEMqTTTmpT5xjbudTJg1jtvX",
+  "acc_publicKey": "211039cd998713a81407612a21c285adf6efe508"
 }

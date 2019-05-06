@@ -11,6 +11,12 @@ const updateAccount = (new_acc_list = {}) => {
 
 const acc = new Account(Core.acc_list, updateAccount)
 
+test('dumpAddrFromPrivKey', async () => {
+  // test func [dumpAddrFromPrivKey]
+  const addr = acc.dumpAddrFromPrivKey(Core.acc_privateKey_1)
+  expect(addr).toEqual(Core.acc_addr)
+})
+
 test('Create an account', async () => {
   // test func [getCryptoAcc]
   const { cryptoJson, P2PKH } = acc.getCryptoAcc(Core.acc_pwd)

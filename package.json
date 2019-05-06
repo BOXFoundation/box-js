@@ -6,7 +6,7 @@
   "types": "./types/index.d.ts",
   "scripts": {
     "lock": "npm shrinkwrap",
-    "test": "jest --colors --coverage",
+    "test": "jest test/account.test.ts --colors --coverage",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "build": "npx rimraf dist && npx babel src --out-dir dist --source-maps"
   },
@@ -18,7 +18,9 @@
     "@types/create-hash": "^1.2.0",
     "@types/jest": "^24.0.11",
     "@types/node": "^11.13.7",
+    "@types/secp256k1": "^3.5.0",
     "@types/should": "^13.0.0",
+    "@types/tiny-secp256k1": "^1.0.0",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^10.0.1",
     "babel-plugin-promise": "^1.0.3",
@@ -45,6 +47,7 @@
     "randombytes": "^2.0.6",
     "rimraf": "^2.6.3",
     "scrypt.js": "^0.2.0",
+    "secp256k1": "^3.6.2",
     "tiny-secp256k1": "^1.0.1"
   },
   "directories": {

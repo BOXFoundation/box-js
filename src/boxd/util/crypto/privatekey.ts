@@ -1,5 +1,5 @@
 import bitcore from 'bitcore-lib'
-const { fromPrivateKey } = require('./ecpair')
+import { fromPrivateKey } from './ecpair'
 import { hash160, sha256 } from './hash'
 import bs58 from 'bs58'
 
