@@ -33,5 +33,6 @@
   "acc_name": "little dog Huang",
   "acc_privateKey_1": "4fd7346602d5fae2404efca9a35ba2ba470fffed1672d52f8581845e424179be",
   "acc_addr": "b1WpdQ1odtmVEMqTTTmpT5xjbudTJg1jtvX",
-  "acc_publicKey": "211039cd998713a81407612a21c285adf6efe508"
+  "acc_publicKey": "02dec72cf6871d2746da558dd13fa9a1c96fd4cac193eb06ec6e97d8762e766720",
+  "acc_publickey_hash": "211039cd998713a81407612a21c285adf6efe508"
 }

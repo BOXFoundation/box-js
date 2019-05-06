@@ -6,13 +6,12 @@ import {
 } from '../util/crypto/keystore'
 import bs58 from 'bs58'
 import secp256k1 from 'secp256k1'
+import secp_tiny from 'tiny-secp256k1'
 import { newPrivateKey } from '../util/crypto/privatekey'
 import { Acc } from './interface'
 import { CryptoJson, Crypto } from '../util/interface'
 import { getDerivedKey } from '../util/crypto/keystore'
 import { getMac, getCiphertext } from '../util/crypto/aes'
-
-console.log('secp256k1:', secp256k1)
 
 const OP_CODE_TYPE = 'hex'
 
@@ -32,22 +31,30 @@ const getCrypto = (
   return getCryptoJSON(privateKey, pwd)
 }
 
-const getAddress = (_this: bitcore.PrivateKey, prefixHex: string) => {
-  const sha256Content = prefixHex + this.pkh
+const getCheckSum = hex => {
+  return sha256(sha256(Buffer.from(hex, OP_CODE_TYPE))).slice(0, 4)
+}
+
+const getAddress = (privateKey_str: string, prefixHex: string) => {
+  const privateKey = new bitcore.PrivateKey(privateKey_str)
+  privateKey['pkh'] = getPubKeyHash(privateKey)
+  const sha256Content = prefixHex + privateKey['pkh']
   const checksum = sha256(
     sha256(Buffer.from(sha256Content, OP_CODE_TYPE))
   ).slice(0, 4)
   const content = sha256Content.concat(checksum.toString(OP_CODE_TYPE))
-  const P2PKHAddress = bs58.encode(Buffer.from(content, OP_CODE_TYPE))
-  return P2PKHAddress
+  privateKey['P2PKH'] = bs58.encode(Buffer.from(content, OP_CODE_TYPE))
+  return privateKey['P2PKH']
 }
 
 const getPubKeyHash = (privateKey: bitcore.PrivateKey) => {
-  return hash160(privateKey.toPublicKey().toBuffer()).toString('hex')
+  return hash160(privateKey.toPublicKey().toBuffer()).toString(OP_CODE_TYPE)
 }
 
 const getPubKey = (privateKey: string) => {
-  return secp256k1.publicKeyCreate(Buffer.from(privateKey, OP_CODE_TYPE))
+  return secp256k1
+    .publicKeyCreate(Buffer.from(privateKey, OP_CODE_TYPE))
+    .toString(OP_CODE_TYPE)
 }
 
 export default class Account {
@@ -75,24 +82,38 @@ export default class Account {
    * @returns [P2PKH_Address] string
    * @memberof Account
    */
-  dumpAddrFromPrivKey(privateKey: string | Buffer): string {
-    if (privateKey instanceof Buffer) {
-      privateKey = privateKey.toString(OP_CODE_TYPE)
+  dumpAddrFromPrivKey(privateKey: string | Buffer): any {
+    try {
+      if (privateKey instanceof Buffer) {
+        privateKey = privateKey.toString(OP_CODE_TYPE)
+      }
+      if (!secp_tiny.isPrivate(Buffer.from(privateKey, 'hex'))) {
+        throw new Error('Inputed privateKey type Error!')
+      } else {
+        return getAddress(privateKey, '1326')
+      }
+    } catch (err) {
+      console.log('DumpAddrFromPrivKey Error:', err)
+      return privateKey
     }
-    const privateKey_bitc: any = new bitcore.PrivateKey(privateKey)
-    return getAddress(privateKey_bitc, '1326')
   }
 
   /**
    * @func dump-KeyStore-from-PrivateKey
-   * @param [*privateKey_str] string
+   * @param [*privateKey_str] string | Buffer
    * @param [*pwd] string
    * @returns [KeyStore] CryptoJson
    * @memberof Account
    */
-  dumpKeyStoreFromPrivKey(privateKey_str: string, pwd: string): CryptoJson {
-    const privateKey = newPrivateKey(privateKey_str)
-    return getCrypto(privateKey, pwd)
+  dumpKeyStoreFromPrivKey(
+    privateKey: string | Buffer,
+    pwd: string
+  ): CryptoJson {
+    if (privateKey instanceof Buffer) {
+      privateKey = privateKey.toString(OP_CODE_TYPE)
+    }
+    const privateKey_res = newPrivateKey(privateKey)
+    return getCrypto(privateKey_res, pwd)
   }
 
   /**
@@ -101,19 +122,18 @@ export default class Account {
    * @returns [PublicKey] string
    * @memberof Account
    */
-  dumpPubKeyFromPrivKey(privateKey: string | Buffer): any {
+  dumpPubKeyFromPrivKey(privateKey: string | Buffer): string {
     if (privateKey instanceof Buffer) {
       privateKey = privateKey.toString(OP_CODE_TYPE)
     }
     const PubKey = getPubKey(privateKey)
-    console.log('PubKey:', typeof PubKey, PubKey)
     return PubKey
   }
 
   /**
-   * @func dump-PublicKey-Hash-from-Address
+   * @func dump-PublicKey-Hash-from-PrivateKey
    * @param [*privateKey] string
-   * @returns [PublicKey] string
+   * @returns [PublicKey_hash] string
    * @memberof Account
    */
   dumpPubKeyHashFromPrivKey(privateKey: string | Buffer): string {
@@ -176,8 +196,17 @@ export default class Account {
    * @memberof Account
    */
   dumpPubKeyHashFromAddr(addr: string) {
-    const addr_bitc: bitcore.Address = new bitcore.Address(addr)
-    console.log('addr_bitc:', addr_bitc)
+    const decoded = bs58.decode(addr)
+    if (decoded.length < 4) {
+      throw new Error(`Address length: ${decoded.length} is too short`)
+    }
+    const len = decoded.length
+    const pubKey_hash = decoded.slice(0, len - 4)
+    const checksum = getCheckSum(pubKey_hash)
+    if (!checksum.equals(decoded.slice(len - 4))) {
+      throw new Error(`Address type error`)
+    }
+    return pubKey_hash.slice(2).toString(OP_CODE_TYPE)
   }
 
   /**
