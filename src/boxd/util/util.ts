@@ -104,6 +104,9 @@ export const getSignHash = (protobuf: string) => {
   return hash256(Buffer.from(protobuf, 'base64'))
 }
 
+// fetchTokenUtxos todo
+// fetchUtxos todo
+
 /**
  * @exportClass [Rpc-Error]
  * @extends Error
@@ -155,33 +158,36 @@ export class Rpc {
     this.endpoint = endpoint
     this.fetch = fetch
   }
-  _fetch = async (path: string, body: object = {}) => {
-    console.log(`[fetch:${path}]:\n`, JSON.stringify(body), '\n')
-    let res
-    let fetch: any = {
-      path
-    }
-    try {
-      res = await this.fetch(this.endpoint + '/v1' + path, {
-        body: JSON.stringify(body),
-        method: 'POST'
-      })
-      if (res.status >= 400) {
-        fetch.code = res.status
-        fetch.statusText = res.statusText
+  _fetch(path: string, body: object = {}) {
+    const setFetch = async () => {
+      console.log(`[fetch:${path}]:\n`, JSON.stringify(body), '\n')
+      let res
+      let fetch: any = {
+        path
+      }
+      try {
+        res = await this.fetch(this.endpoint + '/v1' + path, {
+          body: JSON.stringify(body),
+          method: 'POST'
+        })
+        if (res.status >= 400) {
+          fetch.code = res.status
+          fetch.statusText = res.statusText
+          throw new RpcError(fetch)
+        }
+        fetch = await res.json()
+        if (fetch.code !== 0) {
+          throw new RpcError(fetch)
+        }
+      } catch (e) {
+        e.isFetchError = true
+        throw e
+      }
+      if (!res.ok) {
         throw new RpcError(fetch)
       }
-      fetch = await res.json()
-      if (fetch.code !== 0) {
-        throw new RpcError(fetch)
-      }
-    } catch (e) {
-      e.isFetchError = true
-      throw e
+      return fetch
     }
-    if (!res.ok) {
-      throw new RpcError(fetch)
-    }
-    return fetch
+    setFetch()
   }
 }

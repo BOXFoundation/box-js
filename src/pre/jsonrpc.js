@@ -1,4 +1,3 @@
-import RpcError from './rpc-error'
 import {
   signTxWithAcc,
   checkTx

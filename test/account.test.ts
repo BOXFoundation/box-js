@@ -16,8 +16,6 @@ const acc = new Account(Core.acc_list, updateAccount)
 
 test('Dump PublicKey from PrivateKey(string | Buffer)', async () => {
   // test func [dumpAddrFromPrivKey]
-  const hex = Buffer.from(Core.acc_privateKey_1, OP_CODE_TYPE)
-  console.log('hex:', hex)
   let addr = await acc.dumpAddrFromPrivKey(Core.acc_privateKey_1)
   expect(addr).toEqual(Core.acc_addr)
   addr = await acc.dumpAddrFromPrivKey(acc_buf)
