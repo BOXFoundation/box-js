@@ -158,6 +158,7 @@ export class Rpc {
     this.endpoint = endpoint
     this.fetch = fetch
   }
+
   _fetch(path: string, body: object = {}) {
     const setFetch = async () => {
       console.log(`[fetch:${path}]:\n`, JSON.stringify(body), '\n')

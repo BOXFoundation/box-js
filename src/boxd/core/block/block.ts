@@ -1,6 +1,4 @@
-import bitcore from 'bitcore-lib'
-
-const OP_CODE_TYPE = 'hex'
+// const OP_CODE_TYPE = 'hex'
 
 /**
  * @export add-Node

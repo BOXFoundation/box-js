@@ -1,4 +1,5 @@
 {
+  "endpoint": "http://39.97.169.1:19110",
   "token_addr": "8b9aLjo62TiDWr3JoszMWYAQH5iEvJFKyNZJQ73ghywJC7ACVHh",
   "token_hash": "e26dc08ca79a9a07a82e2cef5350ae74f2590385fa1d316a5c7e9500c749ab71",
   "token_index": 0,
@@ -34,5 +35,15 @@
   "acc_privateKey_1": "4fd7346602d5fae2404efca9a35ba2ba470fffed1672d52f8581845e424179be",
   "acc_addr": "b1WpdQ1odtmVEMqTTTmpT5xjbudTJg1jtvX",
   "acc_publicKey": "02dec72cf6871d2746da558dd13fa9a1c96fd4cac193eb06ec6e97d8762e766720",
-  "acc_publickey_hash": "211039cd998713a81407612a21c285adf6efe508"
+  "acc_publickey_hash": "211039cd998713a81407612a21c285adf6efe508",
+  "split_from": "b1ZWSdrg48g145VdcmBwMPVuDFdaxDLoktk",
+  "split_addrs": [
+    "b1oLGVzM7znUJid2B6zPWvwbiqmRV8HDcq1",
+    "b1oLGVzM7znUJid2B6zPWvwbiqmRV8HDcq1"
+  ],
+  "split_weights": [
+    100000,
+    900000
+  ],
+  "split_fee": "20000"
 }

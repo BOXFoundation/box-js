@@ -1,1 +1,1 @@
-import bitcore from 'bitcore-lib'
+// import bitcore from 'bitcore-lib'

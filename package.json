@@ -6,7 +6,7 @@
   "types": "./types/index.d.ts",
   "scripts": {
     "lock": "npm shrinkwrap",
-    "test": "jest test/account.test.ts --colors --coverage",
+    "test": "jest test/core.split.test.ts --colors --coverage",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "build": "npx rimraf dist && npx babel src --out-dir dist --source-maps"
   },
@@ -42,6 +42,7 @@
     "create-hash": "^1.2.0",
     "crypto-js": "^3.1.9-1",
     "esm": "^3.2.22",
+    "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.11",
     "protobufjs": "^6.8.8",
     "randombytes": "^2.0.6",
