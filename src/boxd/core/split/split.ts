@@ -1,10 +1,11 @@
 import { SplitAddrTxReq } from '../request'
 import { fetchRPC } from '../../util/rpc'
+// import { UnsignedSplitAddrTx } from '../response'
 
 /**
  * @export make-Unsigned-Split-Address-Tx
  * @param [*split_addr_tx] SplitAddrTxReq
- * @returns [response]
+ * @returns [promise] UnsignedSplitAddrTx
  */
 export const makeUnsignedSplitAddrTx = async (
   _fetch: any,

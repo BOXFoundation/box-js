@@ -3,7 +3,7 @@ import { fetchRPC } from '../../util/rpc'
 /**
  * @export add-Node
  * @param [*nodeId] string
- * @returns [response]
+ * @returns [promise]
  */
 export const addNode = async (
   _fetch: any,
@@ -16,7 +16,7 @@ export const addNode = async (
 /**
  * @export get-Block-by-Height
  * @param [height] number
- * @returns [response]
+ * @returns [promise]
  */
 export const getBlockByHeight = async (
   _fetch: any,
@@ -26,67 +26,85 @@ export const getBlockByHeight = async (
   return await fetchRPC(_fetch, endpoint, '/ctl/getblock', { height })
 }
 
-//todo
-
 /**
  * @export get-Block-by-BlockHash
  * @param [blockHash] string
- * @returns [response]
+ * @returns [promise]
  */
-export const getBlockByBlockHash = (_fetch: any, blockHash: string) => {
-  return _fetch('/ctl/getblock', blockHash)
+export const getBlockByBlockHash = async (
+  _fetch: any,
+  endpoint: string,
+  blockHash: string
+) => {
+  return await _fetch(_fetch, endpoint, '/ctl/getblock', blockHash)
 }
 
 /**
- * @export get-Block-Hash
- * @param [blockHeight] Number
- * @returns [response]
+ * @export get-BlockHash
+ * @param [blockHeight] number
+ * @returns [promise]
  */
-export const getBlockHash = (_fetch: any, blockHeight: number) => {
-  return _fetch('/ctl/getblockhash', blockHeight)
+export const getBlockHash = async (
+  _fetch: any,
+  endpoint: string,
+  blockHeight: number
+) => {
+  return await _fetch(_fetch, endpoint, '/ctl/getblockhash', blockHeight)
 }
 
 /**
  * @export get-BlockHeader-by-Height
  * @param [height] number
- * @returns [response]
+ * @returns [promise]
  */
-export const getBlockHeaderByHeight = (_fetch: any, height: number) => {
-  return _fetch('/ctl/getblockheader', height)
+export const getBlockHeaderByHeight = async (
+  _fetch: any,
+  endpoint: string,
+  height: number
+) => {
+  return await _fetch(_fetch, endpoint, '/ctl/getblockheader', height)
 }
 
 /**
- * @export get-Block-Header-by-Hash
+ * @export get-BlockHeader-by-Hash
  * @param [hash] string
- * @returns [response]
+ * @returns [promise]
  */
-export const getBlockHeaderByHash = (_fetch: any, hash: string) => {
-  return _fetch('/ctl/getblockheader', hash)
+export const getBlockHeaderByHash = async (
+  _fetch: any,
+  endpoint: string,
+  hash: string
+) => {
+  return await _fetch(_fetch, endpoint, '/ctl/getblockheader', hash)
 }
 
 /**
- * @export get-Block-Height
+ * @export get-BlockHeight
  * @param null
- * @returns [response]
+ * @returns [promise]
  */
-export const getBlockHeight = (_fetch: any) => {
-  return _fetch('/ctl/getblockheight')
+export const getBlockHeight = async (_fetch: any, endpoint: string) => {
+  return await _fetch(_fetch, endpoint, '/ctl/getblockheight')
 }
 
 /**
- * @export get-Node-Info
+ * @export get-NodeInfo
  * @param null
- * @returns [response]
+ * @returns [promise]
  */
-export const getNodeInfo = (_fetch: any) => {
-  return _fetch('/ctl/getnodeinfo')
+export const getNodeInfo = async (_fetch: any, endpoint: string) => {
+  return await _fetch(_fetch, endpoint, '/ctl/getnodeinfo')
 }
 
 /**
- * @export view-Block-Detail
+ * @export view-BlockDetail
  * @param [hash] string
- * @returns [response]
+ * @returns [promise]
  */
-export const viewBlockDetail = (_fetch: any, hash: string) => {
-  return _fetch('/block/detail', hash)
+export const viewBlockDetail = async (
+  _fetch: any,
+  endpoint: string,
+  hash: string
+) => {
+  return _fetch(_fetch, endpoint, '/block/detail', hash)
 }

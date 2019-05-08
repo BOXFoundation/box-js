@@ -1,13 +1,15 @@
 import { RPC } from '../util/rpc'
-/* import {
+import {
   addNode,
-  getBlock,
+  getBlockByHeight,
+  getBlockByBlockHash,
   getBlockHash,
-  getBlockHeader,
+  getBlockHeaderByHeight,
+  getBlockHeaderByHash,
   getBlockHeight,
   getNodeInfo,
   viewBlockDetail
-} from './block/block' */
+} from './block/block'
 import { makeUnsignedSplitAddrTx } from './split/split'
 // import { makeUnsignedTx } from './tx/tx'
 import { SplitAddrTxReq } from './request'
@@ -29,61 +31,31 @@ export class Core extends RPC {
   }
 
   // block
-  /*   addNode(nodeId) {
-    addNode(this.fetch, nodeId)
-  }
-  getBlock(param) {
-    getBlock(this.fetch, param)
-  }
-  getBlockHash(blockHeight) {
-    getBlockHash(this.fetch, blockHeight)
-  }
-  getBlockHeader(param) {
-    getBlockHeader(this.fetch, param)
-  }
-  getBlockHeight() {
-    getBlockHeight(this.fetch)
-  }
-  getNodeInfo() {
-    getNodeInfo(this.fetch)
-  }
-  viewBlockDetail(hash) {
-    viewBlockDetail(this.fetch, hash)
-  } */
-}
-
-/* export class Core extends Rpc {
-  constructor(endpoint: string, _fetch: any) {
-    super(endpoint, _fetch)
-  }
-  fetch(_fetch: string, body: object = {}) {
-    console.log('Slithering...')
-    super.fetch(_fetch, body)
-  }
-  // block
   addNode(nodeId) {
-    addNode(this.fetch, nodeId)
+    addNode(this._fetch, this.endpoint, nodeId)
   }
-  getBlock(param) {
-    getBlock(this.fetch, param)
+  getBlockByHeight(height) {
+    getBlockByHeight(this._fetch, this.endpoint, height)
+  }
+  getBlockByBlockHash(blockHash) {
+    getBlockByBlockHash(this._fetch, this.endpoint, blockHash)
   }
   getBlockHash(blockHeight) {
-    getBlockHash(this.fetch, blockHeight)
+    getBlockHash(this._fetch, this.endpoint, blockHeight)
   }
-  getBlockHeader(param) {
-    getBlockHeader(this.fetch, param)
+  getBlockHeaderByHeight(height) {
+    getBlockHeaderByHeight(this._fetch, this.endpoint, height)
+  }
+  getBlockHeaderByHash(hash) {
+    getBlockHeaderByHash(this._fetch, this.endpoint, hash)
   }
   getBlockHeight() {
-    getBlockHeight(this.fetch)
+    getBlockHeight(this._fetch, this.endpoint)
   }
   getNodeInfo() {
-    getNodeInfo(this.fetch)
+    getNodeInfo(this._fetch, this.endpoint)
   }
   viewBlockDetail(hash) {
-    viewBlockDetail(this.fetch, hash)
+    viewBlockDetail(this._fetch, this.endpoint, hash)
   }
-  // split
-  makeUnsignedSplitAddrTx(split_addr_tx) {
-    makeUnsignedSplitAddrTx(this.fetch, split_addr_tx)
-  }
-} */
+}

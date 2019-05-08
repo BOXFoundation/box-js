@@ -5,7 +5,7 @@ import { getSignHash, signatureScript } from '../../util/util'
 /**
  * @export create-Raw-Transaction
  * @param [*raw] Raw
- * @returns [response]
+ * @returns [promise]
  */
 export const createRawTransaction = (_fetch: any, raw: Raw) => {
   return _fetch('/tx/getrawtransaction', raw)
@@ -14,7 +14,7 @@ export const createRawTransaction = (_fetch: any, raw: Raw) => {
 /**
  * @export send-Raw-Transaction
  * @param [*raw_tx] string
- * @returns [response]
+ * @returns [promise]
  */
 export const sendRawTransaction = (_fetch: any, raw_tx: string) => {
   return _fetch('/todo', raw_tx)
@@ -23,7 +23,7 @@ export const sendRawTransaction = (_fetch: any, raw_tx: string) => {
 /**
  * @export make-Unsigned-Tx
  * @param [*tx] TX
- * @returns [response]
+ * @returns [promise]
  */
 export const makeUnsignedTx = (_fetch: any, tx: TX) => {
   return _fetch('/tx/makeunsignedtx', tx)
@@ -32,7 +32,7 @@ export const makeUnsignedTx = (_fetch: any, tx: TX) => {
 /**
  * @export sign-Transaction
  * @param [*tx] TX
- * @returns [response]
+ * @returns [promise]
  */
 export const signTransaction = (acc, tx, protoBufs) => {
   for (let idx = 0; idx < tx.vin.length; idx++) {
@@ -47,7 +47,7 @@ export const signTransaction = (acc, tx, protoBufs) => {
 /**
  * @export send-Transaction
  * @param [*signedTx]
- * @returns [response]
+ * @returns [promise]
  */
 export const sendTransaction = (_fetch: any, signedTx) => {
   return _fetch('/tx/sendtransaction', signedTx)
@@ -77,7 +77,7 @@ export const getBalances = (
 /**
  * @export view-TX-Detail
  * @param [hash] string
- * @returns [response]
+ * @returns [promise]
  */
 export const viewTxDetail = (_fetch: any, hash: string) => {
   return _fetch('/tx/detail', hash)

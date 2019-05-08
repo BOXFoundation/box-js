@@ -41,7 +41,7 @@ export const getTokenbalances = (
 /**
  * @export make-Unsigned-Token-Issue-Tx
  * @param [*token_issue_tx] TokenIssueTx
- * @returns [response]
+ * @returns [promise]
  */
 export const makeUnsignedTokenIssueTx = (
   _fetch: any,
@@ -53,7 +53,7 @@ export const makeUnsignedTokenIssueTx = (
 /**
  * @export make-Unsigned-Token-Transfer-Tx
  * @param [*token_transfer_tx] TokenTransferTx
- * @returns [response]
+ * @returns [promise]
  */
 export const makeUnsignedTokenTransferTx = (
   _fetch: any,
