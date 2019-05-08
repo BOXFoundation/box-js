@@ -1,4 +1,4 @@
-import { Rpc } from '../util/util'
+import { RPC } from '../util/rpc'
 /* import {
   addNode,
   getBlock,
@@ -10,14 +10,21 @@ import { Rpc } from '../util/util'
 } from './block/block' */
 import { makeUnsignedSplitAddrTx } from './split/split'
 // import { makeUnsignedTx } from './tx/tx'
+import { SplitAddrTxReq } from './request'
 
-export class Core extends Rpc {
+/**
+ * @class [Core]
+ * @extends RPC
+ * @constructs _fetch // user incoming
+ * @constructs endpoint string // user incoming
+ */
+export class Core extends RPC {
   constructor(_fetch: any, endpoint: string) {
     super(_fetch, endpoint)
   }
 
   // split
-  makeUnsignedSplitAddrTx(split_addr_tx) {
+  makeUnsignedSplitAddrTx(split_addr_tx: SplitAddrTxReq) {
     return makeUnsignedSplitAddrTx(this._fetch, this.endpoint, split_addr_tx)
   }
 

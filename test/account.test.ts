@@ -5,11 +5,11 @@ import Keystore from './json/keystore.json'
 
 const OP_CODE_TYPE = 'hex'
 const acc_buf = Buffer.from(Data.acc_privateKey_1, OP_CODE_TYPE)
-let result_acc_list
+let acc_list_result
 
-const updateAccount = (new_acc_list = {}) => {
-  // console.log('new_acc_list', new_acc_list)
-  result_acc_list = new_acc_list
+const updateAccount = (acc_list_new = {}) => {
+  // console.log('acc_list_new', acc_list_new)
+  acc_list_result = acc_list_new
 }
 
 const acc = new Account(Data.acc_list, updateAccount)
@@ -76,8 +76,8 @@ test('Create an account', async () => {
     name: Data.acc_name,
     P2PKH
   })
-  expect(result_acc_list[P2PKH].name).toEqual(Data.acc_name)
-  expect(result_acc_list[P2PKH].P2PKH).toEqual(P2PKH)
+  expect(acc_list_result[P2PKH].name).toEqual(Data.acc_name)
+  expect(acc_list_result[P2PKH].P2PKH).toEqual(P2PKH)
 })
 
 test('Import an account by KeyStore', async () => {})
@@ -94,6 +94,6 @@ test('Import an account by PrivateKey', async () => {
     name: Data.acc_name,
     P2PKH
   })
-  expect(result_acc_list[P2PKH].name).toEqual(Data.acc_name)
-  expect(result_acc_list[P2PKH].P2PKH).toEqual(P2PKH)
+  expect(acc_list_result[P2PKH].name).toEqual(Data.acc_name)
+  expect(acc_list_result[P2PKH].P2PKH).toEqual(P2PKH)
 })

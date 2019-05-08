@@ -1,7 +1,7 @@
 import scrypt from 'scrypt.js'
 import randomBytes from 'randombytes'
 import { getCiphertext, getMac } from './aes'
-import { CryptoJson } from '../interface'
+import { CryptoJson } from '../request'
 
 const _STRING_ENC_ = 'hex'
 // The AES block size in bytes. see go/1.11.2/libexec/src/crypto/aes/cipher.go

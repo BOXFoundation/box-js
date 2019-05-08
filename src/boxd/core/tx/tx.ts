@@ -1,12 +1,10 @@
 import bitcore from 'bitcore-lib'
-import { TX, Raw, UnSignedTx } from './request'
+import { TX, Raw } from '../request'
 import { getSignHash, signatureScript } from '../../util/util'
-
-const OP_CODE_TYPE = 'hex'
 
 /**
  * @export create-Raw-Transaction
- * @param [*nodeId] string
+ * @param [*raw] Raw
  * @returns [response]
  */
 export const createRawTransaction = (_fetch: any, raw: Raw) => {
@@ -15,11 +13,11 @@ export const createRawTransaction = (_fetch: any, raw: Raw) => {
 
 /**
  * @export send-Raw-Transaction
- * @param [*rawTransaction] string
+ * @param [*raw_tx] string
  * @returns [response]
  */
-export const sendRawTransaction = (_fetch: any, rawTransaction: string) => {
-  return _fetch('/todo', rawTransaction)
+export const sendRawTransaction = (_fetch: any, raw_tx: string) => {
+  return _fetch('/todo', raw_tx)
 }
 
 /**

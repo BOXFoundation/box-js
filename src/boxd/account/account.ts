@@ -8,8 +8,8 @@ import bs58 from 'bs58'
 import secp256k1 from 'secp256k1'
 import secp_tiny from 'tiny-secp256k1'
 import { newPrivateKey } from '../util/crypto/privatekey'
-import { Acc } from './interface'
-import { CryptoJson, Crypto } from '../util/interface'
+import { Acc } from './request'
+import { CryptoJson, Crypto } from '../util/request'
 import { getDerivedKey } from '../util/crypto/keystore'
 import { getMac, getCiphertext } from '../util/crypto/aes'
 
@@ -66,8 +66,8 @@ export default class Account {
 
   constructor(
     acc_list: { [acc_addr: string]: Acc },
-    updateAccount: object = (new_acc_list: object) => {
-      return new_acc_list
+    updateAccount: object = (acc_list_new: object) => {
+      return acc_list_new
     }
   ) {
     this.acc_list = acc_list

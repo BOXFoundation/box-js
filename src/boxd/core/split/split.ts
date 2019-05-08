@@ -1,15 +1,20 @@
-import { SplitCreate } from './request'
-import { fetch } from '../../util/util'
+import { SplitAddrTxReq } from '../request'
+import { fetchRPC } from '../../util/rpc'
 
 /**
  * @export make-Unsigned-Split-Address-Tx
- * @param [*split_addr_tx] SplitAddrTx
+ * @param [*split_addr_tx] SplitAddrTxReq
  * @returns [response]
  */
 export const makeUnsignedSplitAddrTx = async (
   _fetch: any,
   endpoint: string,
-  split_addr_tx: SplitCreate
+  split_addr_tx: SplitAddrTxReq
 ) => {
-  return await fetch(_fetch, endpoint, '/tx/makeunsignedtx', split_addr_tx)
+  return await fetchRPC(
+    _fetch,
+    endpoint,
+    '/tx/makeunsignedtx/splitaddr',
+    split_addr_tx
+  )
 }

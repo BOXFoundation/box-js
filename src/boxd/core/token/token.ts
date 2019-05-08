@@ -5,7 +5,7 @@ import {
   TokenBalances,
   TokenIssueTx,
   TokenTransferTx
-} from './request'
+} from '../request'
 
 const op_hash_len = 32
 
