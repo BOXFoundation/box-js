@@ -146,49 +146,59 @@ export class RpcError extends Error {
 }
 
 export class Rpc {
+  _fetch: any
   endpoint: string
-  fetch: any
-  constructor(endpoint: string, fetch: any) {
+  constructor(_fetch: any, endpoint: string) {
+    console.log('flag _fetch:', _fetch)
+    if (!_fetch) {
+      throw new Error('rpc.fetch is required!')
+    }
     if (!endpoint) {
       throw new Error('rpc.endpoint is required!')
     }
-    if (!fetch) {
-      throw new Error('rpc.fetch is required!')
-    }
+    this._fetch = _fetch
     this.endpoint = endpoint
-    this.fetch = fetch
   }
+}
 
-  _fetch(path: string, body: object = {}) {
-    const setFetch = async () => {
-      console.log(`[fetch:${path}]:\n`, JSON.stringify(body), '\n')
-      let res
-      let fetch: any = {
-        path
-      }
-      try {
-        res = await this.fetch(this.endpoint + '/v1' + path, {
-          body: JSON.stringify(body),
-          method: 'POST'
-        })
-        if (res.status >= 400) {
-          fetch.code = res.status
-          fetch.statusText = res.statusText
-          throw new RpcError(fetch)
-        }
-        fetch = await res.json()
-        if (fetch.code !== 0) {
-          throw new RpcError(fetch)
-        }
-      } catch (e) {
-        e.isFetchError = true
-        throw e
-      }
-      if (!res.ok) {
-        throw new RpcError(fetch)
-      }
-      return fetch
-    }
-    setFetch()
+export const fetch = async (
+  _fetch: any,
+  endpoint: string,
+  path: string,
+  body: object = {}
+) => {
+  console.log('_fetch param._fetch:', _fetch)
+  console.log('_fetch param.endpoint:', endpoint)
+  console.log('_fetch param.path:', path)
+  console.log('_fetch param.body:', body)
+  // console.log(`[fetch:${path}]:\n`, JSON.stringify(body), '\n')
+  let res
+  let json: any = {
+    path
   }
+  try {
+    res = await _fetch(endpoint + '/v1' + path, {
+      body: JSON.stringify(body),
+      method: 'POST'
+    })
+    console.log('fetch res:', res)
+    if (res.status >= 400) {
+      console.log('fetch:1')
+      json.code = res.status
+      json.statusText = res.statusText
+      throw new RpcError(json)
+    }
+    if (json.code !== 0) {
+      console.log('fetch:2')
+      throw new RpcError(json)
+    }
+    json = res.json()
+  } catch (e) {
+    e.isFetchError = true
+    throw e
+  }
+  if (!res.ok) {
+    throw new RpcError(json)
+  }
+  return json
 }

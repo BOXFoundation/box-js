@@ -1,9 +1,10 @@
 import 'jest'
+import { Core } from '../src/boxd/core/core'
+
 import fetch from 'isomorphic-fetch'
-import Core from '../src/boxd/core/core'
 
 import Data from './json/data.json'
-const cor = new Core(Data.endpoint, fetch)
+const cor = new Core(fetch, Data.endpoint)
 
 test('Make Unsigned Split Address Tx', async () => {
   // test func [Core.makeUnsignedSplitAddrTx]
