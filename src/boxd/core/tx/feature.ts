@@ -8,7 +8,7 @@ namespace TX {
    * @returns [promise]
    */
   export const signTransactionByAcc = async (unSignedTx: SignedTxByAccReq) => {
-    let { acc, tx, protoBufs } = unSignedTx
+    let { acc, tx, rawMsgs: protoBufs } = unSignedTx
     for (let idx = 0; idx < tx.vin.length; idx++) {
       const sigHashBuf = getSignHash(protoBufs[idx])
       const signBuf = acc['signMsg'](sigHashBuf)

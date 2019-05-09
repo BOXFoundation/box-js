@@ -1,5 +1,6 @@
 import { UnsignedTxReq, Raw } from '../request'
 import { fetchRPC } from '../../util/rpc'
+// const OP_CODE_TYPE = 'hex'
 
 namespace TX {
   /**
@@ -14,17 +15,6 @@ namespace TX {
   ) => {
     return await fetchRPC(_fetch, endpoint, '/tx/makeunsignedtx', tx)
   }
-
-  /**
-   * @export sign-Transaction-by-PrivKey
-   * @param [*unSignedTx] SignedTxByPrivKeyReq
-   * @returns [tx]
-   */
-  /*   export const signTransactionByPrivKey = async (
-    unSignedTx: SignedTxByPrivKeyReq
-  ) => {
-    // return tx
-  } */
 
   /**
    * @export create-Raw-Transaction
