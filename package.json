@@ -6,7 +6,7 @@
   "types": "./types/index.d.ts",
   "scripts": {
     "lock": "npm shrinkwrap",
-    "test": "jest --colors",
+    "test": "jest test/core.tx.test.ts --colors",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "build": "npx rimraf dist && npx babel src --out-dir dist --source-maps"
   },

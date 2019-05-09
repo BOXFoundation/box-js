@@ -15,13 +15,13 @@ export const fetchRPC = async (
   let response: any
   let result: any
   try {
-    // console.log(`[fetch] ${path}:\n`, JSON.stringify(body))
+    console.log(`[fetch] ${path}:\n`, JSON.stringify(body))
     // request
     response = await _fetch(endpoint + '/v1' + path, {
       body: JSON.stringify(body),
       method: 'POST'
     })
-    // console.log('[fetch] Res:', response)
+    console.log('[fetch] Res:', response)
     // handle
     if (response.status >= 400) {
       console.log('[fetch] Error: status >= 400')

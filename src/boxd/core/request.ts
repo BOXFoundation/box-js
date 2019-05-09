@@ -1,4 +1,4 @@
-// import bitcore from 'bitcore-lib'
+import bitcore from 'bitcore-lib'
 
 // Split
 export interface SplitAddrTxReq {
@@ -38,11 +38,23 @@ export interface TokenTransferTx {
 }
 
 // TX
-export interface TX {
+
+export interface UnsignedTxReq {
   from: string
   to: string[]
   amounts: string[]
   fee: string
+}
+
+export interface SignedTxByPrivKeyReq {
+  unsignedTx: any
+  privKey: string
+}
+
+export interface SignedTxByAccReq {
+  acc: bitcore.PrivateKey
+  tx: any
+  protoBufs: any
 }
 
 export interface Raw {

@@ -1,7 +1,7 @@
 import { RPC } from '../util/rpc'
 import Block from './block/block'
 import Split from './split/split'
-// import { makeUnsignedTx } from './tx/tx'
+import TX from './tx/tx'
 import { SplitAddrTxReq } from './request'
 
 /**
@@ -26,30 +26,35 @@ export class Core extends RPC {
 
   // block
   addNode(nodeId) {
-    Block.addNode(this._fetch, this.endpoint, nodeId)
+    return Block.addNode(this._fetch, this.endpoint, nodeId)
   }
   getBlockByHeight(height) {
-    Block.getBlockByHeight(this._fetch, this.endpoint, height)
+    return Block.getBlockByHeight(this._fetch, this.endpoint, height)
   }
   getBlockByBlockHash(blockHash) {
-    Block.getBlockByBlockHash(this._fetch, this.endpoint, blockHash)
+    return Block.getBlockByBlockHash(this._fetch, this.endpoint, blockHash)
   }
   getBlockHash(blockHeight) {
-    Block.getBlockHash(this._fetch, this.endpoint, blockHeight)
+    return Block.getBlockHash(this._fetch, this.endpoint, blockHeight)
   }
   getBlockHeaderByHeight(height) {
-    Block.getBlockHeaderByHeight(this._fetch, this.endpoint, height)
+    return Block.getBlockHeaderByHeight(this._fetch, this.endpoint, height)
   }
   getBlockHeaderByHash(hash) {
-    Block.getBlockHeaderByHash(this._fetch, this.endpoint, hash)
+    return Block.getBlockHeaderByHash(this._fetch, this.endpoint, hash)
   }
   getBlockHeight() {
-    Block.getBlockHeight(this._fetch, this.endpoint)
+    return Block.getBlockHeight(this._fetch, this.endpoint)
   }
   getNodeInfo() {
-    Block.getNodeInfo(this._fetch, this.endpoint)
+    return Block.getNodeInfo(this._fetch, this.endpoint)
   }
   viewBlockDetail(hash) {
-    Block.viewBlockDetail(this._fetch, this.endpoint, hash)
+    return Block.viewBlockDetail(this._fetch, this.endpoint, hash)
+  }
+
+  // TX
+  makeUnsignedTx(tx) {
+    return TX.makeUnsignedTx(this._fetch, this.endpoint, tx)
   }
 }

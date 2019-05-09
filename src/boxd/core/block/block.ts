@@ -37,7 +37,7 @@ namespace Block {
     endpoint: string,
     blockHash: string
   ) => {
-    return await _fetch(_fetch, endpoint, '/ctl/getblock', blockHash)
+    return await fetchRPC(_fetch, endpoint, '/ctl/getblock', { blockHash })
   }
 
   /**
@@ -50,7 +50,9 @@ namespace Block {
     endpoint: string,
     blockHeight: number
   ) => {
-    return await _fetch(_fetch, endpoint, '/ctl/getblockhash', blockHeight)
+    return await fetchRPC(_fetch, endpoint, '/ctl/getblockhash', {
+      blockHeight
+    })
   }
 
   /**
@@ -63,7 +65,7 @@ namespace Block {
     endpoint: string,
     height: number
   ) => {
-    return await _fetch(_fetch, endpoint, '/ctl/getblockheader', height)
+    return await fetchRPC(_fetch, endpoint, '/ctl/getblockheader', { height })
   }
 
   /**
@@ -76,7 +78,7 @@ namespace Block {
     endpoint: string,
     hash: string
   ) => {
-    return await _fetch(_fetch, endpoint, '/ctl/getblockheader', hash)
+    return await fetchRPC(_fetch, endpoint, '/ctl/getblockheader', { hash })
   }
 
   /**
@@ -85,7 +87,7 @@ namespace Block {
    * @returns [promise]
    */
   export const getBlockHeight = async (_fetch: any, endpoint: string) => {
-    return await _fetch(_fetch, endpoint, '/ctl/getblockheight')
+    return await fetchRPC(_fetch, endpoint, '/ctl/getblockheight')
   }
 
   /**
@@ -94,7 +96,7 @@ namespace Block {
    * @returns [promise]
    */
   export const getNodeInfo = async (_fetch: any, endpoint: string) => {
-    return await _fetch(_fetch, endpoint, '/ctl/getnodeinfo')
+    return await fetchRPC(_fetch, endpoint, '/ctl/getnodeinfo')
   }
 
   /**
@@ -107,7 +109,7 @@ namespace Block {
     endpoint: string,
     hash: string
   ) => {
-    return _fetch(_fetch, endpoint, '/block/detail', hash)
+    return fetchRPC(_fetch, endpoint, '/block/detail', { hash })
   }
 }
 export default Block

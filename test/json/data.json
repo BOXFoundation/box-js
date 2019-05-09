@@ -37,7 +37,7 @@
   "acc_addr_1": "b1ZWSdrg48g145VdcmBwMPVuDFdaxDLoktk",
   "acc_publicKey": "02dec72cf6871d2746da558dd13fa9a1c96fd4cac193eb06ec6e97d8762e766720",
   "acc_publickey_hash": "211039cd998713a81407612a21c285adf6efe508",
-  "split_addrs": [
+  "to_addrs": [
     "b1oLGVzM7znUJid2B6zPWvwbiqmRV8HDcq1",
     "b1oLGVzM7znUJid2B6zPWvwbiqmRV8HDcq1"
   ],
@@ -45,5 +45,33 @@
     100000,
     900000
   ],
-  "split_fee": "20000"
+  "amounts": [
+    30000,
+    40000
+  ],
+  "fee": "20000",
+  "nodeId": "todo",
+  "height": 5964046,
+  "block": {
+    "header": {
+      "version": 0,
+      "prev_block_hash": "zzzRVQgOnO2Guav9kfqY2K82KhHbJFKI7PR61ZdGrmw=",
+      "txs_root": "rkbRA7+/iHBm88x45zVxq0p6XIM4R3/G0odICT+6bVQ=",
+      "time_stamp": "1557371271",
+      "magic": 0,
+      "period_hash": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+      "candidates_hash": "Xfbg4nYTWdMKgnUFjimfzAOBU0VF9Vz0PkGYP11MlFY="
+    },
+    "txs": "object[]",
+    "height": 5964046,
+    "signature": "IE8u6BKYhRJ7V7HpaQzw3SUjbHzeSnHpS9ktVrrk9Md6QX7NRpcm3AbWlZK8LWR3tHcEsjht4hoC92bAUd7nMR8=",
+    "irreversible_info": {
+      "hash": "zzzRVQgOnO2Guav9kfqY2K82KhHbJFKI7PR61ZdGrmw=",
+      "signatures": "Array[]"
+    }
+  },
+  "blockHash": "6e6d6e9b1327cb65bd3648f6f44f2907319ed99c9698dccbae3cbb378054ebdf",
+  "rawMsgs": [
+    "EkEKJAog+b1IEt4Z0ONVXWsRiEl0C/WTxNLor+G1SOpoes0CFc0QARIZdqkUPogh+hsPn+9arz4btYeb82dywliIrBofCLDqARIZdqkU1i1F9JFZ5sBgn/c+1f2syH3XrguIrBofCMC4AhIZdqkU1i1F9JFZ5sBgn/c+1f2syH3XrguIrBogCI3OkwYSGXapFD6IIfobD5/vWq8+G7WHm/NncsJYiKw="
+  ]
 }
