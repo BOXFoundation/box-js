@@ -28,6 +28,8 @@ test('Make a BOX Transaction', async () => {
         privKey: Data.acc_privateKey_1
       })
       console.log('signed_tx:', signed_tx)
+      const tx_result = await cor.sendTransaction(signed_tx)
+      console.log('tx_result:', tx_result)
     })
     .catch(err => {
       console.error('makeUnsignedTx err:', err)

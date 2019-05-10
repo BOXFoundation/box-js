@@ -33,7 +33,7 @@ export class Core extends Http {
   }
 
   sendTransaction(signed_tx) {
-    return super.httpFetch('/tx/sendtransaction', signed_tx)
+    return super.httpFetch('/tx/sendtransaction', { tx: signed_tx })
   }
 
   // block

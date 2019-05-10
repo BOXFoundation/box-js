@@ -1,41 +1,3 @@
-/* export const fetchHttp = async (
-  _fetch: any,
-  endpoint: string,
-  path: string,
-  body: object = {}
-) => {
-  let response: any
-  let result: any
-  try {
-    console.log(`[fetch] ${path}:\n`, JSON.stringify(body))
-    // request
-    response = await _fetch(endpoint + '/v1' + path, {
-      body: JSON.stringify(body),
-      method: 'POST'
-    })
-    console.log('[fetch] Res:', response)
-    // handle
-    if (response.status >= 400) {
-      console.log('[fetch] Error: status >= 400')
-      result.code = response.status
-      result.statusText = response.statusText
-      throw new RpcError(result)
-    }
-    result = await response.json()
-    if (result.code !== 0) {
-      console.log('[fetch] Error: code !== 0')
-      throw new RpcError(result)
-    }
-  } catch (e) {
-    e.isFetchError = true
-    throw e
-  }
-  if (!response.ok) {
-    throw new RpcError(result)
-  }
-  return result
-} */
-
 /**
  * @class [Rpc-Error]
  * @extends Error
@@ -92,13 +54,13 @@ export class Http {
     let response: any
     let result: any
     try {
-      console.log(`[fetch] ${path}:\n`, JSON.stringify(body))
+      console.log(`[fetch] ${path}:\n`, body)
       // request
       response = await this._fetch(this.endpoint + '/v1' + path, {
         body: JSON.stringify(body),
         method: 'POST'
       })
-      console.log('[fetch] Res:', response)
+      // console.log('[fetch] Response:', response)
       // handle
       if (response.status >= 400) {
         console.log('[fetch] Error: status >= 400')
@@ -107,6 +69,7 @@ export class Http {
         throw new RpcError(result)
       }
       result = await response.json()
+      console.log('[fetch] Result:', result)
       if (result.code !== 0) {
         console.log('[fetch] Error: code !== 0')
         throw new RpcError(result)
