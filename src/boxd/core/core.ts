@@ -1,28 +1,39 @@
-import { RPC } from '../util/rpc'
+import { Http } from '../util/rpc'
 import Block from './block/block'
-import Split from './split/split'
-import { Transaction } from './tx/tx'
+// import Split from './split/split'
+// import { Transaction } from './tx/tx'
 import { PrivateKey } from '../util/crypto/privatekey'
-import { SplitAddrTxReq } from './request'
-
+import coreRequest from './request'
+import utilRequest from '../util/request'
 /**
  * @class [Core]
- * @extends RPC
+ * @extends Http
  * @constructs _fetch // user incoming
  * @constructs endpoint string // user incoming
  */
-export class Core extends RPC {
+export class Core extends Http {
   constructor(_fetch: any, endpoint: string) {
     super(_fetch, endpoint)
   }
 
   // split
-  makeUnsignedSplitAddrTx(split_addr_tx: SplitAddrTxReq) {
-    return Split.makeUnsignedSplitAddrTx(
-      this._fetch,
-      this.endpoint,
-      split_addr_tx
-    )
+  makeUnsignedSplitAddrTx(split_addr_tx: coreRequest.SplitAddrTxReq) {
+    return super.httpFetch('/tx/makeunsignedtx/splitaddr', split_addr_tx)
+  }
+
+  // TX
+  makeUnsignedTx(tx: coreRequest.UnsignedTxReq) {
+    return super.httpFetch('/tx/makeunsignedtx', tx)
+  }
+
+  signTransactionByPrivKey(unsigned_tx: utilRequest.SignedTxByPrivKeyReq) {
+    const _privKey = unsigned_tx.privKey
+    const privK = new PrivateKey(_privKey)
+    return privK.signTransactionByPrivKey(unsigned_tx)
+  }
+
+  sendTransaction(signed_tx) {
+    return super.httpFetch('/tx/sendtransaction', signed_tx)
   }
 
   // block
@@ -52,20 +63,5 @@ export class Core extends RPC {
   }
   viewBlockDetail(hash) {
     return Block.viewBlockDetail(this._fetch, this.endpoint, hash)
-  }
-
-  // TX
-  makeUnsignedTx(tx) {
-    return TX.makeUnsignedTx(this._fetch, this.endpoint, tx)
-  }
-
-  signTransactionByPrivKey(unsigned_tx) {
-    const _privKey = unsigned_tx.privKey
-    const privK = new PrivateKey(_privKey)
-    return privK.signTransactionByPrivKey(unsigned_tx)
-  }
-
-  sendTransaction(signed_tx) {
-    return TX.sendTransaction(this._fetch, this.endpoint, signed_tx)
   }
 }

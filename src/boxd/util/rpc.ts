@@ -1,12 +1,4 @@
-/**
- * @export fetch-RPC
- * @param [*_fetch]  // function of fetch
- * @param [*endpoint] string  // URL endpoint
- * @param [*path] string  // URL path
- * @param [*body] object  // request body
- * @returns [result]  // response => result
- */
-export const fetchRPC = async (
+/* export const fetchHttp = async (
   _fetch: any,
   endpoint: string,
   path: string,
@@ -42,7 +34,7 @@ export const fetchRPC = async (
     throw new RpcError(result)
   }
   return result
-}
+} */
 
 /**
  * @class [Rpc-Error]
@@ -83,13 +75,51 @@ export class RpcError extends Error {
 }
 
 /**
- * @class [RPC]
+ * @class [Http]
  * @constructs _fetch  // user incoming
  * @constructs endpoint string // user incoming
+ * @constructs path string  // URL path
  */
-export class RPC {
+export class Http {
   _fetch: any
   endpoint: string
+  /**
+   * @func http-Fetch-function
+   * @param [*body] object  // request body
+   * @returns [result]  // response => result
+   */
+  public async httpFetch(path: string, body: object) {
+    let response: any
+    let result: any
+    try {
+      console.log(`[fetch] ${path}:\n`, JSON.stringify(body))
+      // request
+      response = await this._fetch(this.endpoint + '/v1' + path, {
+        body: JSON.stringify(body),
+        method: 'POST'
+      })
+      console.log('[fetch] Res:', response)
+      // handle
+      if (response.status >= 400) {
+        console.log('[fetch] Error: status >= 400')
+        result.code = response.status
+        result.statusText = response.statusText
+        throw new RpcError(result)
+      }
+      result = await response.json()
+      if (result.code !== 0) {
+        console.log('[fetch] Error: code !== 0')
+        throw new RpcError(result)
+      }
+    } catch (e) {
+      e.isFetchError = true
+      throw e
+    }
+    if (!response.ok) {
+      throw new RpcError(result)
+    }
+    return result
+  }
   constructor(_fetch: any, endpoint: string) {
     if (!_fetch) {
       throw new Error('RPC.fetch is required!')

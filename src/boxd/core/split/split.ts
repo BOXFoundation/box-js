@@ -1,5 +1,4 @@
 import { SplitAddrTxReq } from '../request'
-import { fetchRPC } from '../../util/rpc'
 
 namespace Split {
   /**

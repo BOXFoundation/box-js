@@ -6,7 +6,7 @@ import Response from '../src/boxd/core/response'
 
 const cor = new Core(fetch, Data.endpoint)
 
-test('Make a Transaction', async () => {
+test('Make a BOX Transaction', async () => {
   // test func [Core.makeUnsignedTx]
   await cor
     .makeUnsignedTx({
