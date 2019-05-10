@@ -4,6 +4,7 @@ import { hash160, sha256 } from './hash'
 import { fromPrivateKey } from '../../util/crypto/ecpair'
 import { getSignHash, signatureScript } from '../../util/util'
 import Request from '../request'
+import { getCryptoJSON } from '../../util/crypto/keystore'
 
 const OP_CODE_TYPE = 'hex'
 const prefix = {
@@ -68,5 +69,14 @@ export class PrivateKey {
       tx.vin[idx].script_sig = scriptSig.toString('base64')
     }
     return tx
+  }
+
+  /**
+   * @func get-cryptoJson-with-privateKey&password
+   * @param [*pwd] string
+   * @returns [cryptoJson]
+   */
+  getCrypto = (pwd: string) => {
+    return getCryptoJSON(this.privKey, pwd)
   }
 }

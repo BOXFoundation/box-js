@@ -18,8 +18,7 @@ test('Make a BOX Transaction', async () => {
     .then(async (res: Response.UnsignedTx) => {
       console.log('makeUnsignedTx res:', res)
       expect(res.code).toEqual(0)
-      expect(res.rawMsgs).toEqual(Data.rawMsgs)
-      // test func [Core.makeUnsignedTx]
+      // test func [Core.signTransactionByPrivKey]
       const signed_tx = await cor.signTransactionByPrivKey({
         unsignedTx: {
           tx: res.tx,
@@ -28,6 +27,7 @@ test('Make a BOX Transaction', async () => {
         privKey: Data.acc_privateKey_1
       })
       console.log('signed_tx:', signed_tx)
+      // test func [Core.sendTransaction]
       const tx_result = await cor.sendTransaction(signed_tx)
       console.log('tx_result:', tx_result)
     })

@@ -1,5 +1,6 @@
 import 'jest'
 import Account from '../src/boxd/account/account'
+import AccountFeature from '../src/boxd/account/feature'
 import Data from './json/data.json'
 import Keystore from './json/keystore.json'
 
@@ -13,6 +14,7 @@ const updateAccount = (acc_list_new = {}) => {
 }
 
 const acc = new Account(Data.acc_list, updateAccount)
+const feature = new AccountFeature(Data.acc_list, updateAccount)
 
 test('Dump PublicKey from PrivateKey(string | Buffer)', async () => {
   // test func [dumpAddrFromPrivKey]
@@ -69,10 +71,10 @@ test('Dump PublicKey Hash from Address', async () => {
 
 test('Create an account', async () => {
   // test func [getCryptoAcc]
-  const { cryptoJson, P2PKH } = acc.getCryptoAcc(Data.acc_pwd)
+  const { cryptoJson, P2PKH } = feature.getCryptoAcc(Data.acc_pwd)
   expect(cryptoJson.address).toEqual(P2PKH)
   // test func [addToAccList]
-  acc.addToAccList(cryptoJson, {
+  feature.addToAccList(cryptoJson, {
     name: Data.acc_name,
     P2PKH
   })
@@ -84,13 +86,13 @@ test('Import an account by KeyStore', async () => {})
 
 test('Import an account by PrivateKey', async () => {
   // test func [getCryptoAcc]
-  const { cryptoJson, P2PKH } = acc.getCryptoAcc(
+  const { cryptoJson, P2PKH } = feature.getCryptoAcc(
     Data.acc_pwd,
     Data.acc_privateKey
   )
   expect(cryptoJson.address).toEqual(P2PKH)
   // test func [addToAccList]
-  acc.addToAccList(cryptoJson, {
+  feature.addToAccList(cryptoJson, {
     name: Data.acc_name,
     P2PKH
   })

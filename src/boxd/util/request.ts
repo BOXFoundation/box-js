@@ -31,7 +31,7 @@ namespace Request {
 
   export interface SignedTxByPrivKeyReq {
     unsignedTx: {
-      tx: Response.TX
+      tx: any //Response.TX
       rawMsgs: string[]
     }
     privKey: string

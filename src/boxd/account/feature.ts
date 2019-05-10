@@ -1,25 +1,6 @@
-import {
-  getCryptoJSON,
-  unlockPrivateKeyWithPassphrase
-} from '../util/crypto/keystore'
-import { newPrivateKey } from '../util/crypto/privatekey'
-import { Acc, Crypto } from './request'
-
-/**
- * @func get-cryptoJson-with-privateKey&password
- * @param [*privateKey] {toString, toP2PKHAddress}
- * @param [*pwd] string
- * @returns [cryptoJson]
- */
-const getCrypto = (
-  privateKey: {
-    toString: (arg0: string) => string
-    toP2PKHAddress: () => string
-  },
-  pwd: string
-) => {
-  return getCryptoJSON(privateKey, pwd)
-}
+import { unlockPrivateKeyWithPassphrase } from '../util/crypto/keystore'
+import { PrivateKey } from '../util/crypto/privatekey'
+import { Acc } from './request'
 
 export default class AccountFeature {
   // import an account by KeyStore
@@ -36,7 +17,6 @@ export default class AccountFeature {
   ) {
     this.acc_list = acc_list
     this.impAccWithKeyStore = unlockPrivateKeyWithPassphrase
-    this.newPrivateKey = newPrivateKey
     this.updateAccount = updateAccount
   }
 
@@ -47,13 +27,13 @@ export default class AccountFeature {
    * @returns {} Crypto
    * @memberof Account
    */
-  getCryptoAcc(pwd: string, privateKey_str?: string): Crypto {
-    const privateKey = newPrivateKey(privateKey_str)
-    const cryptoJson = getCrypto(privateKey, pwd)
+  getCryptoAcc(pwd: string, privateKey_str?: string) {
+    const privK = new PrivateKey(privateKey_str)
+    const cryptoJson = privK.getCrypto(pwd)
     return {
-      P2PKH: privateKey.toP2PKHAddress(),
-      P2SH: privateKey.toP2SHAddress(),
-      privateKey,
+      P2PKH: privK.privKey.toP2PKHAddress(),
+      P2SH: privK.privKey.toP2SHAddress(),
+      privateKey: privK.privKey,
       cryptoJson
     }
   }

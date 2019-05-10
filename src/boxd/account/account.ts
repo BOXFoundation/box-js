@@ -1,35 +1,16 @@
 import bitcore from 'bitcore-lib'
 import { sha256, hash160 } from '../util/crypto/hash'
-import {
-  getCryptoJSON,
-  unlockPrivateKeyWithPassphrase
-} from '../util/crypto/keystore'
+import { unlockPrivateKeyWithPassphrase } from '../util/crypto/keystore'
 import bs58 from 'bs58'
 import secp256k1 from 'secp256k1'
 import secp_tiny from 'tiny-secp256k1'
-import { newPrivateKey } from '../util/crypto/privatekey'
+import { PrivateKey } from '../util/crypto/privatekey'
 import { Acc } from './request'
-import { CryptoJson, Crypto } from '../util/request'
+import Request from '../util/request'
 import { getDerivedKey } from '../util/crypto/keystore'
 import { getMac, getCiphertext } from '../util/crypto/aes'
 
 const OP_CODE_TYPE = 'hex'
-
-/**
- * @func get-cryptoJson-with-privateKey&password
- * @param [*privateKey] {toString, toP2PKHAddress}
- * @param [*pwd] string
- * @returns [cryptoJson]
- */
-const getCrypto = (
-  privateKey: {
-    toString: (arg0: string) => string
-    toP2PKHAddress: () => string
-  },
-  pwd: string
-) => {
-  return getCryptoJSON(privateKey, pwd)
-}
 
 const getCheckSum = hex => {
   return sha256(sha256(Buffer.from(hex, OP_CODE_TYPE))).slice(0, 4)
@@ -61,7 +42,6 @@ export default class Account {
   // import an account by KeyStore
   impAccWithKeyStore: (ksJSON: { crypto: any }, pwd: string) => any
   acc_list: { [acc_addr: string]: Acc }
-  newPrivateKey: any
   updateAccount: any
 
   constructor(
@@ -72,7 +52,6 @@ export default class Account {
   ) {
     this.acc_list = acc_list
     this.impAccWithKeyStore = unlockPrivateKeyWithPassphrase
-    this.newPrivateKey = newPrivateKey
     this.updateAccount = updateAccount
   }
 
@@ -108,12 +87,12 @@ export default class Account {
   dumpKeyStoreFromPrivKey(
     privateKey: string | Buffer,
     pwd: string
-  ): CryptoJson {
+  ): Request.CryptoJson {
     if (privateKey instanceof Buffer) {
       privateKey = privateKey.toString(OP_CODE_TYPE)
     }
-    const privateKey_res = newPrivateKey(privateKey)
-    return getCrypto(privateKey_res, pwd)
+    const privK = new PrivateKey(privateKey)
+    return privK.getCrypto(pwd)
   }
 
   /**
@@ -153,7 +132,7 @@ export default class Account {
    * @returns [PrivateKey] string
    * @memberof Account
    */
-  dumpPrivKeyFromKeyStore(keyStore: CryptoJson, pwd: string): string {
+  dumpPrivKeyFromKeyStore(keyStore: Request.CryptoJson, pwd: string): string {
     if (!pwd) {
       throw new Error('Passphrase is require!')
     }
@@ -207,50 +186,5 @@ export default class Account {
       throw new Error(`Address type error`)
     }
     return pubKey_hash.slice(2).toString(OP_CODE_TYPE)
-  }
-
-  /**
-   * @func get-Crypto-Account
-   * @param [*pwd] string
-   * @param [*privateKey_str] string
-   * @returns {} Crypto
-   * @memberof Account
-   */
-  getCryptoAcc(pwd: string, privateKey_str?: string): Crypto {
-    const privateKey = newPrivateKey(privateKey_str)
-    const cryptoJson = getCrypto(privateKey, pwd)
-    return {
-      P2PKH: privateKey.toP2PKHAddress(),
-      P2SH: privateKey.toP2SHAddress(),
-      privateKey,
-      cryptoJson
-    }
-  }
-
-  /**
-   * @func add-new-wallet-to-walletList
-   * @param {*cryptoJson} { address ... }
-   * @memberof Account
-   */
-  addToAccList(cryptoJson: { address: string }, otherInfo: any): void {
-    const address = cryptoJson.address
-    const update_time = Date.now()
-    if (this.acc_list[address]) {
-      console.warn('This Account already existed. It will be rewrited...')
-    }
-    this.acc_list[address] = {
-      cryptoJson,
-      ...{
-        update_time
-      },
-      ...otherInfo
-    }
-    this.updateAccount && this.updateAccount(this.acc_list)
-  }
-
-  sortAccList() {
-    return Object.values(this.acc_list).sort(
-      (a, b) => a.update_time - b.update_time
-    )
   }
 }

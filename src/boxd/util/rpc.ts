@@ -63,7 +63,7 @@ export class Http {
       // console.log('[fetch] Response:', response)
       // handle
       if (response.status >= 400) {
-        console.log('[fetch] Error: status >= 400')
+        // console.log('[fetch] Error: status >= 400')
         result.code = response.status
         result.statusText = response.statusText
         throw new RpcError(result)
@@ -71,7 +71,7 @@ export class Http {
       result = await response.json()
       console.log('[fetch] Result:', result)
       if (result.code !== 0) {
-        console.log('[fetch] Error: code !== 0')
+        // console.log('[fetch] Error: code !== 0')
         throw new RpcError(result)
       }
     } catch (e) {
