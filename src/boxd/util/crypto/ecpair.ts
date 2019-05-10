@@ -1,7 +1,7 @@
 import * as ecc from 'tiny-secp256k1'
 import { getNumberByte } from '../util'
 
-const canonicalizeInt = (b: Buffer | Uint8Array) => {
+function canonicalizeInt(b: Buffer | Uint8Array) {
   if (b.length === 0) {
     b = Buffer.from([0x00])
   }
@@ -11,7 +11,7 @@ const canonicalizeInt = (b: Buffer | Uint8Array) => {
   return b
 }
 
-const ECPair = (d: any, Q: any, options: { compressed?: any }) => {
+function ECPair(d: any, Q: any, options: { compressed?: any }) {
   options = options || {}
 
   this.compressed = options.compressed === undefined ? true : options.compressed
@@ -22,28 +22,25 @@ const ECPair = (d: any, Q: any, options: { compressed?: any }) => {
 
 Object.defineProperty(ECPair.prototype, 'privateKey', {
   enumerable: false,
-  get: () => {
+  get: function() {
     return this.__d
   }
 })
 
 Object.defineProperty(ECPair.prototype, 'publicKey', {
-  get: () => {
+  get: function() {
     if (!this.__Q) this.__Q = ecc.pointFromScalar(this.__d, this.compressed)
     return this.__Q
   }
 })
 
-ECPair.prototype.sign = (hash: any) => {
+ECPair.prototype.sign = function(hash: Buffer) {
   if (!this.__d) throw new Error('Missing private key')
   const signature = ecc.sign(hash, this.__d)
-  return {
-    sig: this.toCompact(signature),
-    signature
-  }
+  return { sig: this.toCompact(signature), signature }
 }
 
-ECPair.prototype.toCompact = (signature: any) => {
+ECPair.prototype.toCompact = function(signature: any) {
   const rb = canonicalizeInt(signature.slice(0, 32))
   const sb = canonicalizeInt(signature.slice(32))
 
@@ -63,12 +60,12 @@ ECPair.prototype.toCompact = (signature: any) => {
   return allBytes
 }
 
-ECPair.prototype.verify = (hash: any, signature: any) => {
+ECPair.prototype.verify = function(hash: any, signature: any) {
   return ecc.verify(hash, this.publicKey, signature)
 }
 
-export const fromPrivateKey = (buffer: Buffer, options?: any) => {
-  if (!ecc.isPrivate(buffer))
+export const fromPrivateKey = function(buf: Buffer, options?: any) {
+  if (!ecc.isPrivate(buf))
     throw new TypeError('Private key not in range [1, n)')
-  return new ECPair(buffer, null, options)
+  return new ECPair(buf, null, options)
 }

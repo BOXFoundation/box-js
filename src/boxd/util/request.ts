@@ -1,7 +1,7 @@
 import bitcore from 'bitcore-lib'
-import { request } from 'http'
+import Response from '../core/response'
 
-namespace request {
+namespace Request {
   export interface CryptoJson {
     id: string
     address: string
@@ -37,3 +37,5 @@ namespace request {
     privKey: string
   }
 }
+
+export default Request

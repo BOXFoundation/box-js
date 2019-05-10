@@ -3,7 +3,7 @@ import bs58 from 'bs58'
 import { hash160, sha256 } from './hash'
 import { fromPrivateKey } from '../../util/crypto/ecpair'
 import { getSignHash, signatureScript } from '../../util/util'
-import { SignedTxByPrivKeyReq } from '../'
+import Request from '../request'
 
 const OP_CODE_TYPE = 'hex'
 const prefix = {
@@ -32,18 +32,18 @@ const getPublicAddress = (privateKey: bitcore.PrivateKey) => {
  * @constructs [privateKey]
  */
 export class PrivateKey {
-  privateKey
+  privKey
   constructor(privateKey_str) {
-    this.privateKey = new bitcore.PrivateKey(privateKey_str)
-    this.privateKey.signMsg = sigHash => {
+    this.privKey = new bitcore.PrivateKey(privateKey_str)
+    this.privKey.signMsg = sigHash => {
       const eccPrivateKey =
         privateKey_str &&
         fromPrivateKey(Buffer.from(privateKey_str, OP_CODE_TYPE))
       return eccPrivateKey.sign(sigHash).sig
     }
-    this.privateKey.pkh = getPublicAddress(this.privateKey)
-    this.privateKey.toP2PKHAddress = getAddress(this.privateKey, prefix.P2PKH)
-    this.privateKey.toP2SHAddress = getAddress(this.privateKey, prefix.P2SH)
+    this.privKey.pkh = getPublicAddress(this.privKey)
+    this.privKey.toP2PKHAddress = getAddress(this.privKey, prefix.P2PKH)
+    this.privKey.toP2SHAddress = getAddress(this.privKey, prefix.P2SH)
   }
 
   /**
@@ -51,17 +51,19 @@ export class PrivateKey {
    * @param [*unsigned_tx] SignedTxByPrivKeyReq
    * @returns [tx]
    */
-  signTransactionByPrivKey = async (unsigned_tx: SignedTxByPrivKeyReq) => {
+  signTransactionByPrivKey = async (
+    unsigned_tx: Request.SignedTxByPrivKeyReq
+  ) => {
     let { tx, rawMsgs } = unsigned_tx.unsignedTx
-    let privKey = unsigned_tx.privKey
+    let _privKey = unsigned_tx.privKey
     for (let idx = 0; idx < tx.vin.length; idx++) {
       const sigHashBuf = getSignHash(rawMsgs[idx])
       const eccPrivKey =
-        privKey && fromPrivateKey(Buffer.from(privKey, OP_CODE_TYPE))
+        _privKey && fromPrivateKey(Buffer.from(_privKey, OP_CODE_TYPE))
       const signBuf = eccPrivKey.sign(sigHashBuf).sig
       const scriptSig = signatureScript(
         signBuf,
-        privKey.toPublicKey().toBuffer()
+        this.privKey.toPublicKey().toBuffer()
       )
       tx.vin[idx].script_sig = scriptSig.toString('base64')
     }

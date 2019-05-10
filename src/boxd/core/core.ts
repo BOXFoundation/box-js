@@ -1,7 +1,8 @@
 import { RPC } from '../util/rpc'
 import Block from './block/block'
 import Split from './split/split'
-import TX from './tx/tx'
+import { Transaction } from './tx/tx'
+import { PrivateKey } from '../util/crypto/privatekey'
 import { SplitAddrTxReq } from './request'
 
 /**
@@ -56,5 +57,15 @@ export class Core extends RPC {
   // TX
   makeUnsignedTx(tx) {
     return TX.makeUnsignedTx(this._fetch, this.endpoint, tx)
+  }
+
+  signTransactionByPrivKey(unsigned_tx) {
+    const _privKey = unsigned_tx.privKey
+    const privK = new PrivateKey(_privKey)
+    return privK.signTransactionByPrivKey(unsigned_tx)
+  }
+
+  sendTransaction(signed_tx) {
+    return TX.sendTransaction(this._fetch, this.endpoint, signed_tx)
   }
 }

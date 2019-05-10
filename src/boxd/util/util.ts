@@ -91,7 +91,6 @@ export function addOperand(strBuf: Buffer | Uint8Array, operand: Buffer) {
 export const signatureScript = (sigBuf: Buffer, pubKeyBuf: Buffer) => {
   const before = addOperand(Buffer.from([]), sigBuf)
   const end = addOperand(before, pubKeyBuf)
-  console.log('before:', before.toString(OP_CODE_TYPE))
   return end
 }
 

@@ -6,7 +6,7 @@ import Response from '../src/boxd/core/response'
 
 const cor = new Core(fetch, Data.endpoint)
 
-test('Make Unsigned Transaction', async () => {
+test('Make a Transaction', async () => {
   // test func [Core.makeUnsignedTx]
   await cor
     .makeUnsignedTx({
@@ -15,10 +15,19 @@ test('Make Unsigned Transaction', async () => {
       amounts: Data.amounts,
       fee: Data.fee
     })
-    .then((res: Response.UnsignedTx) => {
+    .then(async (res: Response.UnsignedTx) => {
       console.log('makeUnsignedTx res:', res)
       expect(res.code).toEqual(0)
       expect(res.rawMsgs).toEqual(Data.rawMsgs)
+      // test func [Core.makeUnsignedTx]
+      const signed_tx = await cor.signTransactionByPrivKey({
+        unsignedTx: {
+          tx: res.tx,
+          rawMsgs: res.rawMsgs
+        },
+        privKey: Data.acc_privateKey_1
+      })
+      console.log('signed_tx:', signed_tx)
     })
     .catch(err => {
       console.error('makeUnsignedTx err:', err)
