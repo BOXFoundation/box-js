@@ -3,8 +3,10 @@ import Block from './block/block'
 // import Split from './split/split'
 // import { Transaction } from './tx/tx'
 import { PrivateKey } from '../util/crypto/privatekey'
-import coreRequest from './request'
-import utilRequest from '../util/request'
+import CoreRequest from './request'
+import UtilRequest from '../util/request'
+import coreResponse from './response'
+
 /**
  * @class [Core]
  * @extends Http
@@ -17,23 +19,35 @@ export class Core extends Http {
   }
 
   // split
-  makeUnsignedSplitAddrTx(split_addr_tx: coreRequest.SplitAddrTxReq) {
+  makeUnsignedSplitAddrTx(split_addr_tx: CoreRequest.SplitAddrTxReq) {
     return super.httpFetch('/tx/makeunsignedtx/splitaddr', split_addr_tx)
   }
 
   // TX
-  makeUnsignedTx(tx: coreRequest.UnsignedTxReq) {
+  makeUnsignedTx(tx: CoreRequest.OrgTxReq) {
     return super.httpFetch('/tx/makeunsignedtx', tx)
   }
 
-  signTransactionByPrivKey(unsigned_tx: utilRequest.SignedTxByPrivKeyReq) {
+  signTransactionByPrivKey(unsigned_tx: UtilRequest.SignedTxByPrivKeyReq) {
     const _privKey = unsigned_tx.privKey
     const privK = new PrivateKey(_privKey)
     return privK.signTransactionByPrivKey(unsigned_tx)
   }
 
-  sendTransaction(signed_tx) {
+  sendTransaction(signed_tx: coreResponse.TX) {
     return super.httpFetch('/tx/sendtransaction', { tx: signed_tx })
+  }
+
+  viewTxDetail(hash: string) {
+    return super.httpFetch('/tx/detail', { hash })
+  }
+
+  getBalance(addr: string) {
+    return super.httpFetch('/tx/getbalance', { addrs: [addr] })
+  }
+
+  getBalances(addrs: string[]) {
+    return super.httpFetch('/tx/getbalance', { addrs })
   }
 
   // block

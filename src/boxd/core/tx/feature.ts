@@ -1,5 +1,5 @@
 import { getSignHash, signatureScript } from '../../util/util'
-import { SignedTxByAccReq } from '../request'
+import Request from '../request'
 
 namespace TX {
   /**
@@ -7,7 +7,9 @@ namespace TX {
    * @param [*acc] Account
    * @returns [promise]
    */
-  export const signTransactionByAcc = async (unSignedTx: SignedTxByAccReq) => {
+  export const signTransactionByAcc = async (
+    unSignedTx: Request.SignedTxByAccReq
+  ) => {
     let { acc, tx, rawMsgs: protoBufs } = unSignedTx
     for (let idx = 0; idx < tx.vin.length; idx++) {
       const sigHashBuf = getSignHash(protoBufs[idx])

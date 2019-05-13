@@ -16,7 +16,7 @@ test('Make a BOX Transaction', async () => {
       fee: Data.fee
     })
     .then(async (res: Response.UnsignedTx) => {
-      console.log('makeUnsignedTx res:', res)
+      console.log('unsigned_tx:', res)
       expect(res.code).toEqual(0)
       // test func [Core.signTransactionByPrivKey]
       const signed_tx = await cor.signTransactionByPrivKey({
@@ -30,8 +30,40 @@ test('Make a BOX Transaction', async () => {
       // test func [Core.sendTransaction]
       const tx_result = await cor.sendTransaction(signed_tx)
       console.log('tx_result:', tx_result)
+      // todo test func [Core.signTransactionByAcc]
+      const tx_detail = await cor.viewTxDetail(tx_result.hash)
+      console.log('tx_detail:', tx_detail)
     })
     .catch(err => {
       console.error('makeUnsignedTx err:', err)
+      expect(0).toBe(1)
     })
 })
+
+/* test('Get the BOX Balance of the given Address', async () => {
+  // test func [Core.getBalance]
+  await cor
+    .getBalance(Data.acc_addr_1)
+    .then(async res => {
+      console.log('getBalance res:', JSON.stringify(res))
+      expect(res.code).toEqual(0)
+    })
+    .catch(err => {
+      console.log('getBalance Error:', err)
+      expect(0).toBe(1)
+    })
+})
+
+test('Get the BOX Balances of the given Addresses', async () => {
+  // test func [Core.getBalances]
+  await cor
+    .getBalances([Data.acc_addr, Data.acc_addr_1])
+    .then(async res => {
+      console.log('getBalances res:', JSON.stringify(res))
+      expect(res.code).toEqual(0)
+    })
+    .catch(err => {
+      console.log('getBalances Error:', err)
+      expect(0).toBe(1)
+    })
+}) */

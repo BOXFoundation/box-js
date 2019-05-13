@@ -1,7 +1,7 @@
 import bitcore from 'bitcore-lib'
 import Response from './response'
 
-namespace Request {
+namespace HttpRequest {
   // Split
   export interface SplitAddrTxReq {
     from: string
@@ -40,7 +40,14 @@ namespace Request {
   }
 
   // TX
-  export interface UnsignedTxReq {
+  export interface Raw {
+    address: string
+    to: string[]
+    fee: string
+    utxoList: string[]
+  }
+
+  export interface OrgTxReq {
     from: string
     to: string[]
     amounts: number[]
@@ -52,17 +59,6 @@ namespace Request {
     tx: Response.TX
     rawMsgs: string[]
   }
-
-  export interface Raw {
-    address: string
-    to: string[]
-    fee: string
-    utxoList: string[]
-  }
-  export interface UnSignedTx {
-    tx
-    rawMsgs
-  }
 }
 
-export default Request
+export default HttpRequest

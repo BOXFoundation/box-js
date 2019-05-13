@@ -1,7 +1,7 @@
 import bitcore from 'bitcore-lib'
 import Response from '../core/response'
 
-namespace Request {
+namespace HttpRequest {
   export interface CryptoJson {
     id: string
     address: string
@@ -38,4 +38,4 @@ namespace Request {
   }
 }
 
-export default Request
+export default HttpRequest
