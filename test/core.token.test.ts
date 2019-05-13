@@ -1,7 +1,9 @@
 import 'jest'
 import fetch from 'isomorphic-fetch'
 import { Core } from '../src/boxd/core/core'
+// import TokenUtil from '../src/boxd/core/token/util'
 import Data from './json/data.json'
+
 /* import { encodeTokenAddr, decodeTokenAddr } from '../src/boxd/core/token/token'
 
 const Data = require('./json/data.json')
@@ -21,7 +23,7 @@ test('Decode Token Address', async () => {
 
 const cor = new Core(fetch, Data.endpoint_1)
 
-test('Issue a Token', async () => {
+test('Issue a Token and get the Token Balance', async done => {
   // test func [Core.makeUnsignedTokenIssueTx]
   await cor
     .makeUnsignedTokenIssueTx({
@@ -36,21 +38,37 @@ test('Issue a Token', async () => {
       }
     })
     .then(async res => {
-      console.log('res:', JSON.stringify(res))
+      // console.log('unsign_token:', JSON.stringify(res))
       expect(res.code).toEqual(0)
       // test func [Core.signTransactionByPrivKey]
-      const signed_tx = await cor.signTransactionByPrivKey({
+      const signed_token = await cor.signTransactionByPrivKey({
         unsignedTx: {
           tx: res.tx,
           rawMsgs: res.rawMsgs
         },
         privKey: Data.acc_privateKey_1
       })
-      // console.log('signed_tx:', JSON.stringify(signed_tx))
+      // console.log('signed_token:', JSON.stringify(signed_token))
       // test func [Core.sendTransaction]
-      const tx_result = await cor.sendTransaction(signed_tx)
-      // console.log('tx_result:', tx_result)
-      expect(tx_result.code).toEqual(0)
+      const issue_result = await cor.sendTransaction(signed_token)
+      console.log('issue_result:', issue_result)
+      expect(issue_result.code).toEqual(0)
+      /*       const { opHash, index } = await TokenUtil.decodeTokenAddr(
+        issue_result.hash
+      )
+      const token_addr = await TokenUtil.encodeTokenAddr({ opHash, index })
+      expect(token_addr).toEqual(issue_result.hash) */
+      setTimeout(async () => {
+        const token_balance = await cor.getTokenbalance({
+          addr: Data.acc_addr_1,
+          tokenHash: issue_result.hash,
+          tokenIndex: 0
+        })
+        console.log('token_balance:', token_balance)
+        expect(token_balance.code).toEqual(0)
+        expect(token_balance).toEqual(Data.token_supply)
+        done()
+      }, 10000)
     })
     .catch(err => {
       console.error('Issue a Token Error:', err)

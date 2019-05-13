@@ -1,7 +1,7 @@
 import bitcore from 'bitcore-lib'
 import Response from './response'
 
-namespace HttpRequest {
+namespace Request {
   // Split
   export interface SplitAddrTxReq {
     from: string
@@ -11,19 +11,19 @@ namespace HttpRequest {
   }
 
   // Token
-  export interface TokenBalance {
+  export interface TokenBalanceReq {
     addr: string
     tokenHash: string
     tokenIndex: number
   }
 
-  export interface TokenBalances {
+  export interface TokenBalancesReq {
     addrs: string[]
     tokenHash: string
     tokenIndex: number
   }
 
-  export interface TokenIssueTx {
+  export interface TokenIssueTxReq {
     issuer: string
     owner: string
     tag: {
@@ -66,4 +66,4 @@ namespace HttpRequest {
   }
 }
 
-export default HttpRequest
+export default Request

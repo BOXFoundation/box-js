@@ -24,8 +24,17 @@ export class Core extends Http {
   }
 
   // token
-  makeUnsignedTokenIssueTx(token_issue_tx: CoreRequest.TokenIssueTx) {
+  makeUnsignedTokenIssueTx(token_issue_tx: CoreRequest.TokenIssueTxReq) {
     return super.httpFetch('/tx/makeunsignedtx/token/issue', token_issue_tx)
+  }
+
+  getTokenbalance(token: CoreRequest.TokenBalanceReq) {
+    token['addrs'] = [token.addr]
+    return super.httpFetch('/tx/gettokenbalance', token)
+  }
+
+  getTokenbalances(tokens: CoreRequest.TokenBalancesReq) {
+    return super.httpFetch('/tx/gettokenbalance', tokens)
   }
 
   // TX
