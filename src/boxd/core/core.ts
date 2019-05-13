@@ -50,6 +50,14 @@ export class Core extends Http {
     return super.httpFetch('/tx/getbalance', { addrs })
   }
 
+  createRawTransaction(raw: CoreRequest.Raw) {
+    return super.httpFetch('/tx/getrawtransaction', raw)
+  }
+
+  sendRawTransaction(raw_tx: string) {
+    return super.httpFetch('/todo', { raw_tx })
+  }
+
   // block
   addNode(nodeId) {
     return Block.addNode(this._fetch, this.endpoint, nodeId)

@@ -1,5 +1,6 @@
 {
   "endpoint": "http://39.97.169.1:19110",
+  "endpoint_1": "http://127.0.0.1:19110",
   "token_addr": "8b9aLjo62TiDWr3JoszMWYAQH5iEvJFKyNZJQ73ghywJC7ACVHh",
   "token_hash": "e26dc08ca79a9a07a82e2cef5350ae74f2590385fa1d316a5c7e9500c749ab71",
   "token_index": 0,
@@ -30,14 +31,17 @@
     }
   },
   "acc_privateKey": "7763dcadc5618ede3ff856d062a99d10198ee1e619d6209ccdcc5fb95bfc5071",
-  "acc_privateKey_1": "4fd7346602d5fae2404efca9a35ba2ba470fffed1672d52f8581845e424179be",
+  "acc_privateKey_1": "1b8e5830ae669496a11f00c90b12ecb8ccf1b6e2660a86ab1dbd24085b43247f",
   "acc_pwd": "1",
   "acc_name": "little dog Huang",
   "acc_addr": "b1WpdQ1odtmVEMqTTTmpT5xjbudTJg1jtvX",
   "acc_addr_1": "b1ZWSdrg48g145VdcmBwMPVuDFdaxDLoktk",
+  "acc_addr_2": "b1ndoQmEd83y4Fza5PzbUQDYpT3mV772J5o",
+  "acc_addr_3": "b1fc1Vzz73WvBtzNQNbBSrxNCUC1Zrbnq4m",
   "acc_publicKey": "02dec72cf6871d2746da558dd13fa9a1c96fd4cac193eb06ec6e97d8762e766720",
   "acc_publickey_hash": "211039cd998713a81407612a21c285adf6efe508",
   "to_addrs": [
+    "b1oLGVzM7znUJid2B6zPWvwbiqmRV8HDcq1",
     "b1oLGVzM7znUJid2B6zPWvwbiqmRV8HDcq1"
   ],
   "split_weights": [
@@ -45,7 +49,8 @@
     900000
   ],
   "amounts": [
-    10000
+    10000,
+    30000
   ],
   "fee": "20000",
   "nodeId": "todo",
