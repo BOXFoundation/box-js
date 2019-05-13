@@ -105,5 +105,9 @@
   },
   "unsignTx_rawMsgs": [
     "EkEKJAog+b1IEt4Z0ONVXWsRiEl0C/WTxNLor+G1SOpoes0CFc0QARIZdqkUPogh+hsPn+9arz4btYeb82dywliIrBofCMCaDBIZdqkU1i1F9JFZ5sBgn/c+1f2syH3XrguIrBogCL3WiwYSGXapFD6IIfobD5/vWq8+G7WHm/NncsJYiKw="
-  ]
+  ],
+  "token_name": "UFO",
+  "token_symbol": "U",
+  "token_supply": 10000,
+  "token_decimal": 3
 }

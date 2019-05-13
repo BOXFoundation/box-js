@@ -23,6 +23,11 @@ export class Core extends Http {
     return super.httpFetch('/tx/makeunsignedtx/splitaddr', split_addr_tx)
   }
 
+  // token
+  makeUnsignedTokenIssueTx(token_issue_tx: CoreRequest.TokenIssueTx) {
+    return super.httpFetch('/tx/makeunsignedtx/token/issue', token_issue_tx)
+  }
+
   // TX
   makeUnsignedTx(tx: CoreRequest.OrgTxReq) {
     return super.httpFetch('/tx/makeunsignedtx', tx)

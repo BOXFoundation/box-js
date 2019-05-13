@@ -26,7 +26,12 @@ namespace HttpRequest {
   export interface TokenIssueTx {
     issuer: string
     owner: string
-    tag: string
+    tag: {
+      decimal: number
+      name: string
+      supply: number
+      symbol: string
+    }
     fee: string
   }
 
@@ -44,7 +49,7 @@ namespace HttpRequest {
     address: string
     to: string[]
     fee: string
-    utxoList: string[]
+    // utxoList: string[]
   }
 
   export interface OrgTxReq {
