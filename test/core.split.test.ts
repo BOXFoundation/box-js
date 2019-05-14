@@ -4,7 +4,7 @@ import fetch from 'isomorphic-fetch'
 import Data from './json/data.json'
 import Response from '../src/boxd/core/response'
 
-const cor = new Core(fetch, Data.endpoint)
+const cor = new Core(fetch, Data.endpoint_test)
 
 test('Make Unsigned Split Address Transaction', async () => {
   // test func [Core.makeUnsignedSplitAddrTx]

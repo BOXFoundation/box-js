@@ -4,7 +4,7 @@ import { Core } from '../src/boxd/core/core'
 import TokenUtil from '../src/boxd/core/token/util'
 import Data from './json/data.json'
 
-const cor = new Core(fetch, Data.endpoint_1)
+const cor = new Core(fetch, Data.endpoint_test)
 let token_hash
 
 test('Issue a Token and get the Token Balance', async done => {

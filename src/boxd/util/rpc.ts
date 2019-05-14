@@ -50,7 +50,7 @@ export class Http {
    * @param [*body] object  // request body
    * @returns [result]  // response => result
    */
-  public async httpFetch(path: string, body: object) {
+  public async httpFetch(path: string, body: object = {}, isRemote = true) {
     let response: any
     let result: any
     try {
@@ -62,7 +62,7 @@ export class Http {
       })
       // console.log('[fetch] Response:', response)
       // handle
-      if (response.status >= 400) {
+      if (isRemote && response.status >= 400) {
         // console.log('[fetch] Error: status >= 400')
         result.code = response.status
         result.statusText = response.statusText
@@ -70,7 +70,7 @@ export class Http {
       }
       result = await response.json()
       console.log('[fetch] Result:', result)
-      if (result.code !== 0) {
+      if (isRemote && result.code !== 0) {
         // console.log('[fetch] Error: code !== 0')
         throw new RpcError(result)
       }
@@ -78,7 +78,7 @@ export class Http {
       e.isFetchError = true
       throw e
     }
-    if (!response.ok) {
+    if (isRemote && !response.ok) {
       throw new RpcError(result)
     }
     return result

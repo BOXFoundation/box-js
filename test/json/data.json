@@ -1,6 +1,6 @@
 {
-  "endpoint": "http://39.97.169.1:19110",
-  "endpoint_1": "http://127.0.0.1:19110",
+  "endpoint_test": "http://39.97.169.1:19110",
+  "endpoint_local": "http://127.0.0.1:19110",
   "token_addr": "8b9aLjo62TiDWr3JoszMWYAQH5iEvJFKyNZJQ73ghywJC7ACVHh",
   "token_hash": "e26dc08ca79a9a07a82e2cef5350ae74f2590385fa1d316a5c7e9500c749ab71",
   "token_index": 0,
@@ -52,7 +52,7 @@
   ],
   "fee": "20000",
   "nodeId": "todo",
-  "height": 5964046,
+  "blockHeight": 6406299,
   "block": {
     "header": {
       "version": 0,
@@ -71,7 +71,7 @@
       "signatures": "Array[]"
     }
   },
-  "blockHash": "6e6d6e9b1327cb65bd3648f6f44f2907319ed99c9698dccbae3cbb378054ebdf",
+  "blockHash": "4550b95b53dc37835c8a19c9a73df6e25f64e549be558c31656fa03bf98aed93",
   "rawMsgs": [
     "EkEKJAog+b1IEt4Z0ONVXWsRiEl0C/WTxNLor+G1SOpoes0CFc0QARIZdqkUPogh+hsPn+9arz4btYeb82dywliIrBofCLDqARIZdqkU1i1F9JFZ5sBgn/c+1f2syH3XrguIrBofCMC4AhIZdqkU1i1F9JFZ5sBgn/c+1f2syH3XrguIrBogCI3OkwYSGXapFD6IIfobD5/vWq8+G7WHm/NncsJYiKw="
   ],

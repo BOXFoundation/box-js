@@ -1,7 +1,4 @@
 import { Http } from '../util/rpc'
-import Block from './block/block'
-// import Split from './split/split'
-// import { Transaction } from './tx/tx'
 import { PrivateKey } from '../util/crypto/privatekey'
 import CoreRequest from './request'
 import UtilRequest from '../util/request'
@@ -80,31 +77,42 @@ export class Core extends Http {
   }
 
   // block
-  addNode(nodeId) {
-    return Block.addNode(this._fetch, this.endpoint, nodeId)
+  // todo
+  getNodeInfo() {
+    return super.httpFetch('/ctl/getnodeinfo', {}, false)
   }
-  getBlockByHeight(height) {
-    return Block.getBlockByHeight(this._fetch, this.endpoint, height)
+  addNode(nodeId: string) {
+    return super.httpFetch('/ctl/addnode', { nodeId }, false)
   }
-  getBlockByBlockHash(blockHash) {
-    return Block.getBlockByBlockHash(this._fetch, this.endpoint, blockHash)
+  getBlockHash(blockHeight: number) {
+    return super.httpFetch('/ctl/getblockhash', { blockHeight })
   }
-  getBlockHash(blockHeight) {
-    return Block.getBlockHash(this._fetch, this.endpoint, blockHeight)
+  getBlockByBlockHash(blockHash: string) {
+    return super.httpFetch('/ctl/getblock', { blockHash })
   }
-  getBlockHeaderByHeight(height) {
-    return Block.getBlockHeaderByHeight(this._fetch, this.endpoint, height)
+  public async getBlockByHeight(block_height: number) {
+    return await this.getBlockHash(block_height)
+      .then(block_hash => {
+        console.log('getBlockHash res:', block_hash)
+        return super.httpFetch('/ctl/getblock', {
+          blockHash: block_hash.hash
+        })
+      })
+      .catch(err => {
+        console.log('getBlockHash Error:', err)
+        throw new Error('getBlockHash Error')
+      })
   }
-  getBlockHeaderByHash(hash) {
-    return Block.getBlockHeaderByHash(this._fetch, this.endpoint, hash)
+  getBlockHeaderByHeight(height: number) {
+    return super.httpFetch('/ctl/getblockheader', { height })
+  }
+  getBlockHeaderByHash(hash: string) {
+    return super.httpFetch('/ctl/getblockheader', { hash })
   }
   getBlockHeight() {
-    return Block.getBlockHeight(this._fetch, this.endpoint)
+    return super.httpFetch('/ctl/getblockheight')
   }
-  getNodeInfo() {
-    return Block.getNodeInfo(this._fetch, this.endpoint)
-  }
-  viewBlockDetail(hash) {
-    return Block.viewBlockDetail(this._fetch, this.endpoint, hash)
+  viewBlockDetail(hash: string) {
+    return super.httpFetch('/block/detail', { hash })
   }
 }

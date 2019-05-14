@@ -1,5 +1,4 @@
 import bitcore from 'bitcore-lib'
-
 export class Transaction {
   TX
   constructor() {
