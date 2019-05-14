@@ -16,7 +16,10 @@ namespace Util {
    * @param [*index] number
    * @returns [token_address] string
    */
-  export const encodeTokenAddr = (token_addr): string => {
+  export const encodeTokenAddr = (token_addr: {
+    opHash: string
+    index: number
+  }): string => {
     const { opHash, index } = token_addr
     const before = Buffer.from(opHash, 'hex')
     const end = putUint32(Buffer.alloc(4), Number(index))

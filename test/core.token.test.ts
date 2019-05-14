@@ -1,7 +1,7 @@
 import 'jest'
 import fetch from 'isomorphic-fetch'
 import { Core } from '../src/boxd/core/core'
-// import TokenUtil from '../src/boxd/core/token/util'
+import TokenUtil from '../src/boxd/core/token/util'
 import Data from './json/data.json'
 
 /* import { encodeTokenAddr, decodeTokenAddr } from '../src/boxd/core/token/token'
@@ -53,25 +53,31 @@ test('Issue a Token and get the Token Balance', async done => {
       const issue_result = await cor.sendTransaction(signed_token)
       console.log('issue_result:', issue_result)
       expect(issue_result.code).toEqual(0)
-      /*       const { opHash, index } = await TokenUtil.decodeTokenAddr(
-        issue_result.hash
-      )
-      const token_addr = await TokenUtil.encodeTokenAddr({ opHash, index })
-      expect(token_addr).toEqual(issue_result.hash) */
+      // test func [TokenUtil.encodeTokenAddr]
+      const token_addr = await TokenUtil.encodeTokenAddr({
+        opHash: issue_result.hash,
+        index: 0
+      })
+      // test func [TokenUtil.decodeTokenAddr]
+      const { opHash, index } = await TokenUtil.decodeTokenAddr(token_addr)
+      expect(opHash).toEqual(issue_result.hash)
+      expect(index).toEqual(0)
       setTimeout(async () => {
-        const token_balance = await cor.getTokenbalance({
-          addr: Data.acc_addr_1,
+        const token_balances = await cor.getTokenbalances({
+          addrs: [Data.acc_addr, Data.acc_addr_1],
           tokenHash: issue_result.hash,
           tokenIndex: 0
         })
-        console.log('token_balance:', token_balance)
-        expect(token_balance.code).toEqual(0)
-        expect(token_balance).toEqual(Data.token_supply)
+        console.log('token_balances:', token_balances)
+        expect(token_balances.code).toEqual(0)
+        expect(
+          token_balances.balances[1] / Math.pow(10, Data.token_decimal)
+        ).toEqual(Data.token_supply)
         done()
-      }, 10000)
+      }, 3000)
     })
     .catch(err => {
-      console.error('Issue a Token Error:', err)
+      console.error('Issue a Token and get the Token Balance Error:', err)
       expect(0).toBe(1)
     })
 })
