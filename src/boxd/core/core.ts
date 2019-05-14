@@ -81,37 +81,55 @@ export class Core extends Http {
   getNodeInfo() {
     return super.httpFetch('/ctl/getnodeinfo', {}, false)
   }
+
   addNode(nodeId: string) {
     return super.httpFetch('/ctl/addnode', { nodeId }, false)
   }
-  getBlockHash(blockHeight: number) {
+
+  getBlockHashByHeight(blockHeight: number) {
     return super.httpFetch('/ctl/getblockhash', { blockHeight })
   }
-  getBlockByBlockHash(blockHash: string) {
+
+  getBlockByHash(blockHash: string) {
     return super.httpFetch('/ctl/getblock', { blockHash })
   }
+
   public async getBlockByHeight(block_height: number) {
-    return await this.getBlockHash(block_height)
+    return await this.getBlockHashByHeight(block_height)
       .then(block_hash => {
-        console.log('getBlockHash res:', block_hash)
+        // console.log('getBlockHashByHeight res:', block_hash)
         return super.httpFetch('/ctl/getblock', {
           blockHash: block_hash.hash
         })
       })
       .catch(err => {
-        console.log('getBlockHash Error:', err)
-        throw new Error('getBlockHash Error')
+        console.log('getBlockHashByHeight Error:', err)
+        throw new Error('getBlockHashByHeight Error')
       })
   }
-  getBlockHeaderByHeight(height: number) {
-    return super.httpFetch('/ctl/getblockheader', { height })
+
+  getBlockHeaderByHash(blockHash: string) {
+    return super.httpFetch('/ctl/getblockheader', { blockHash })
   }
-  getBlockHeaderByHash(hash: string) {
-    return super.httpFetch('/ctl/getblockheader', { hash })
+
+  public async getBlockHeaderByHeight(block_height: number) {
+    return await this.getBlockHashByHeight(block_height)
+      .then(block_hash => {
+        // console.log('getBlockHashByHeight res:', block_hash)
+        return super.httpFetch('/ctl/getblockheader', {
+          blockHash: block_hash.hash
+        })
+      })
+      .catch(err => {
+        console.log('getBlockHashByHeight Error:', err)
+        throw new Error('getBlockHashByHeight Error')
+      })
   }
+
   getBlockHeight() {
     return super.httpFetch('/ctl/getblockheight')
   }
+
   viewBlockDetail(hash: string) {
     return super.httpFetch('/block/detail', { hash })
   }
