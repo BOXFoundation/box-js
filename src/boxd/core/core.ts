@@ -37,6 +37,13 @@ export class Core extends Http {
     return super.httpFetch('/tx/gettokenbalance', tokens)
   }
 
+  makeUnsignedTokenTransferTx(token_transfer_tx: CoreRequest.OrgTokenTxReq) {
+    return super.httpFetch(
+      '/tx/makeunsignedtx/token/transfer',
+      token_transfer_tx
+    )
+  }
+
   // TX
   makeUnsignedTx(tx: CoreRequest.OrgTxReq) {
     return super.httpFetch('/tx/makeunsignedtx', tx)

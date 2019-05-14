@@ -4,24 +4,8 @@ import { Core } from '../src/boxd/core/core'
 import TokenUtil from '../src/boxd/core/token/util'
 import Data from './json/data.json'
 
-/* import { encodeTokenAddr, decodeTokenAddr } from '../src/boxd/core/token/token'
-
-const Data = require('./json/data.json')
-
-test('Encode Token Address', async () => {
-  // test func [encodeTokenAddr]
-  const token_addr = await encodeTokenAddr(Data.token_hash, Data.token_index)
-  expect(token_addr).toEqual(Data.token_addr)
-})
-
-test('Decode Token Address', async () => {
-  // test func [decodeTokenAddr]
-  const { opHash, index } = await decodeTokenAddr(Data.token_addr)
-  expect(opHash).toEqual(Data.token_hash)
-  expect(index).toEqual(Data.token_index)
-}) */
-
 const cor = new Core(fetch, Data.endpoint_1)
+let token_hash
 
 test('Issue a Token and get the Token Balance', async done => {
   // test func [Core.makeUnsignedTokenIssueTx]
@@ -51,21 +35,22 @@ test('Issue a Token and get the Token Balance', async done => {
       // console.log('signed_token:', JSON.stringify(signed_token))
       // test func [Core.sendTransaction]
       const issue_result = await cor.sendTransaction(signed_token)
-      console.log('issue_result:', issue_result)
+      // console.log('issue_result:', issue_result)
+      token_hash = issue_result.hash
       expect(issue_result.code).toEqual(0)
       // test func [TokenUtil.encodeTokenAddr]
       const token_addr = await TokenUtil.encodeTokenAddr({
-        opHash: issue_result.hash,
+        opHash: token_hash,
         index: 0
       })
       // test func [TokenUtil.decodeTokenAddr]
       const { opHash, index } = await TokenUtil.decodeTokenAddr(token_addr)
-      expect(opHash).toEqual(issue_result.hash)
+      expect(opHash).toEqual(token_hash)
       expect(index).toEqual(0)
       setTimeout(async () => {
         const token_balances = await cor.getTokenbalances({
           addrs: [Data.acc_addr, Data.acc_addr_1],
-          tokenHash: issue_result.hash,
+          tokenHash: token_hash,
           tokenIndex: 0
         })
         console.log('token_balances:', token_balances)
@@ -78,6 +63,44 @@ test('Issue a Token and get the Token Balance', async done => {
     })
     .catch(err => {
       console.error('Issue a Token and get the Token Balance Error:', err)
+      expect(0).toBe(1)
+    })
+})
+
+test('Make a Token Transaction', async () => {
+  // test func [Core.makeUnsignedTokenTransferTx]
+  await cor
+    .makeUnsignedTokenTransferTx({
+      amounts: Data.amounts,
+      fee: Data.fee,
+      from: Data.acc_addr_1,
+      to: Data.to_addrs,
+      token_hash: token_hash,
+      token_index: 0
+    })
+    .then(async res => {
+      // console.log('unsigned_Token:', JSON.stringify(res))
+      expect(res.code).toEqual(0)
+      // test func [Core.signTransactionByPrivKey]
+      const signed_Token = await cor.signTransactionByPrivKey({
+        unsignedTx: {
+          tx: res.tx,
+          rawMsgs: res.rawMsgs
+        },
+        privKey: Data.acc_privateKey_1
+      })
+      // console.log('signed_Token:', JSON.stringify(signed_Token))
+      // test func [Core.sendTransaction]
+      const token_result = await cor.sendTransaction(signed_Token)
+      console.log('token_result:', token_result)
+      expect(token_result.code).toEqual(0)
+      const token_detail = await cor.viewTxDetail(token_result.hash)
+      // console.log('token_detail:', token_detail)
+      expect(token_detail.code).toEqual(0)
+      expect(token_detail.detail.hash).toEqual(token_result.hash)
+    })
+    .catch(err => {
+      console.error('Make a Token Transaction Error:', err)
       expect(0).toBe(1)
     })
 })

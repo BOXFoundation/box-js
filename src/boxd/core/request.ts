@@ -35,13 +35,13 @@ namespace Request {
     fee: string
   }
 
-  export interface TokenTransferTx {
-    token_hash: string
-    token_index: number
-    from: string
-    to: string[]
+  export interface OrgTokenTxReq {
     amounts: number[]
     fee: string
+    from: string
+    to: string[]
+    token_hash: string
+    token_index: number
   }
 
   // TX
