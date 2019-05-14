@@ -46,10 +46,11 @@ namespace Request {
 
   // TX
   export interface Raw {
-    address: string
+    addr: string
     to: string[]
+    amount: number[]
     fee: string
-    // utxoList: string[]
+    privKey: string
   }
 
   export interface OrgTxReq {
@@ -63,6 +64,10 @@ namespace Request {
     acc: bitcore.PrivateKey
     tx: Response.TX
     rawMsgs: string[]
+  }
+  export interface SetchUtxosReq {
+    addr: string
+    amount: number
   }
 }
 

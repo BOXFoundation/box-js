@@ -2,7 +2,7 @@ import { Http } from '../util/rpc'
 import { PrivateKey } from '../util/crypto/privatekey'
 import CoreRequest from './request'
 import UtilRequest from '../util/request'
-import coreResponse from './response'
+import CoreResponse from './response'
 
 /**
  * @class [Core]
@@ -52,7 +52,7 @@ export class Core extends Http {
     return privK.signTransactionByPrivKey(unsigned_tx)
   }
 
-  sendTransaction(signed_tx: coreResponse.TX) {
+  sendTransaction(signed_tx: CoreResponse.TX) {
     return super.httpFetch('/tx/sendtransaction', { tx: signed_tx })
   }
 
@@ -68,9 +68,37 @@ export class Core extends Http {
     return super.httpFetch('/tx/getbalance', { addrs })
   }
 
-  createRawTransaction(raw: CoreRequest.Raw) {
-    return super.httpFetch('/tx/getrawtransaction', raw)
+  fetchUtxos(fetch_utxos_req: CoreRequest.SetchUtxosReq) {
+    return super.httpFetch('/tx/fetchutxos', fetch_utxos_req, false)
   }
+
+  /*   public async createRawTransaction(raw: CoreRequest.Raw) {
+    const { addr, to, amount, fee, privKey } = raw
+    await this.fetchUtxos({ addr, amount })
+      .then(res => {
+        if ((res.code = 0)) {
+          const utxos: CoreResponse.Utxo[] = res.utxos
+          console.log('utxos:', utxos)
+          super
+            .httpFetch('/tx/getrawtransaction', {
+              from: addr,
+              to,
+              fee,
+              utxos
+            })
+            .then(res => {
+              console.log('unsigned_tx:', res)
+              console.log('privKey:', privKey)
+            })
+        } else {
+          throw new Error('createRawTransaction Error')
+        }
+      })
+      .catch(err => {
+        console.log('createRawTransaction Error:', err)
+        throw new Error('createRawTransaction Error')
+      })
+  } */
 
   sendRawTransaction(raw_tx: string) {
     return super.httpFetch('/todo', { raw_tx })
