@@ -187,3 +187,5 @@ BoxMask-js
   viewTxDetail = async (\_fetch: any, endpoint: string, hash: string) => {
   return \_fetch(\_fetch, endpoint, '/tx/detail', { hash })
   }
+
+  ./integration_tests -scope=continue

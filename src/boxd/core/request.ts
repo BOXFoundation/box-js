@@ -45,10 +45,13 @@ namespace Request {
   }
 
   // TX
+  export interface ToMap {
+    [to_addr: string]: number
+  }
+
   export interface Raw {
     addr: string
-    to: string[]
-    amount: number[]
+    to: ToMap
     fee: string
     privKey: string
   }
@@ -65,6 +68,7 @@ namespace Request {
     tx: Response.TX
     rawMsgs: string[]
   }
+
   export interface SetchUtxosReq {
     addr: string
     amount: number

@@ -69,26 +69,43 @@ export class Core extends Http {
   }
 
   fetchUtxos(fetch_utxos_req: CoreRequest.SetchUtxosReq) {
-    return super.httpFetch('/tx/fetchutxos', fetch_utxos_req, false)
+    return super.httpFetch('/tx/fetchutxos', fetch_utxos_req)
   }
 
-  /*   public async createRawTransaction(raw: CoreRequest.Raw) {
-    const { addr, to, amount, fee, privKey } = raw
-    await this.fetchUtxos({ addr, amount })
-      .then(res => {
-        if ((res.code = 0)) {
+  public async createRawTransaction(raw: CoreRequest.Raw) {
+    const { addr, to, fee, privKey } = raw
+    let sum = 0
+    await Object.keys(to).forEach(item => {
+      sum += Number(to[item])
+    })
+    sum += Number(fee)
+    await this.fetchUtxos({ addr, amount: sum })
+      .then(async res => {
+        console.log('fetchUtxos res:', res)
+        if (res.code === 0) {
           const utxos: CoreResponse.Utxo[] = res.utxos
-          console.log('utxos:', utxos)
-          super
-            .httpFetch('/tx/getrawtransaction', {
-              from: addr,
-              to,
-              fee,
-              utxos
-            })
+          await super
+            .httpFetch(
+              '/tx/getrawtransaction',
+              {
+                from: addr,
+                to,
+                fee,
+                utxos
+              },
+              false
+            )
             .then(res => {
               console.log('unsigned_tx:', res)
               console.log('privKey:', privKey)
+              // todo verify
+              return this.signTransactionByPrivKey({
+                unsignedTx: {
+                  tx: res.tx,
+                  rawMsgs: res.rawMsgs
+                },
+                privKey
+              })
             })
         } else {
           throw new Error('createRawTransaction Error')
@@ -98,7 +115,7 @@ export class Core extends Http {
         console.log('createRawTransaction Error:', err)
         throw new Error('createRawTransaction Error')
       })
-  } */
+  }
 
   sendRawTransaction(raw_tx: string) {
     return super.httpFetch('/todo', { raw_tx })

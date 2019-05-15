@@ -2,11 +2,11 @@ import 'jest'
 import { Core } from '../src/boxd/core/core'
 import fetch from 'isomorphic-fetch'
 import Data from './json/data.json'
-// import Response from '../src/boxd/core/response'
+import Response from '../src/boxd/core/response'
 
-const cor = new Core(fetch, Data.endpoint_test)
+const cor = new Core(fetch, Data.endpoint_local)
 
-/* test('Make a BOX Transaction', async () => {
+test('Make a BOX Transaction', async () => {
   // test func [Core.makeUnsignedTx]
   await cor
     .makeUnsignedTx({
@@ -56,9 +56,8 @@ test('Get the BOX Balance of the given Address', async () => {
       expect(0).toBe(1)
     })
 })
-*/
 
-/* test('Get the BOX Balances of the given Addresses', async () => {
+test('Get the BOX Balances of the given Addresses', async () => {
   // test func [Core.getBalances]
   await cor
     .getBalances([Data.acc_addr, Data.acc_addr_1])
@@ -70,15 +69,14 @@ test('Get the BOX Balance of the given Address', async () => {
       console.log('getBalances Error:', err)
       expect(0).toBe(1)
     })
-}) */
+})
 
 /* test('Make a Raw Transaction', async () => {
   // test func [Core.createRawTransaction]
   await cor
     .createRawTransaction({
       addr: Data.acc_addr_1,
-      to: Data.to_addrs,
-      amount: Data.amounts,
+      to: Data.to_map,
       fee: Data.fee,
       privKey: Data.acc_privateKey_1
     })
@@ -91,20 +89,3 @@ test('Get the BOX Balance of the given Address', async () => {
       expect(0).toBe(1)
     })
 }) */
-
-test('Make a Raw Transaction', async () => {
-  // test func [Core.createRawTransaction]
-  await cor
-    .fetchUtxos({
-      addr: Data.acc_addr_1,
-      amount: Data.amount
-    })
-    .then(async res => {
-      console.log('fetchUtxos res:', JSON.stringify(res))
-      // expect(res.code).toEqual(0)
-    })
-    .catch(err => {
-      console.error('Make a Raw Transaction Error:', err)
-      expect(0).toBe(1)
-    })
-})

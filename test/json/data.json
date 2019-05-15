@@ -42,6 +42,10 @@
     "b1oLGVzM7znUJid2B6zPWvwbiqmRV8HDcq1",
     "b1oLGVzM7znUJid2B6zPWvwbiqmRV8HDcq1"
   ],
+  "to_map": {
+    "b1oLGVzM7znUJid2B6zPWvwbiqmRV8HDcq1": 10001,
+    "b1WpdQ1odtmVEMqTTTmpT5xjbudTJg1jtvX": 30003
+  },
   "split_weights": [
     100000,
     900000
