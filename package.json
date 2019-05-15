@@ -5,9 +5,8 @@
   "main": "dist/index.js",
   "types": "./types/index.d.ts",
   "scripts": {
-    "lock": "npm shrinkwrap",
+    "lock": "npm shrinkwrap--dev",
     "test": "jest --coverage --colors",
-    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "build": "npx rimraf dist && npx babel src --out-dir dist --source-maps"
   },
   "author": "",
@@ -31,11 +30,16 @@
     "babel-preset-stage-1": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "babel-register": "^6.26.0",
+    "browserify": "^16.2.3",
+    "gulp-util": "^3.0.8",
     "jest": "^24.7.1",
     "node-fetch": "^2.3.0",
     "should": "^13.2.3",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.4.5"
+    "tsify": "^4.0.1",
+    "typescript": "^3.4.5",
+    "vinyl-source-stream": "^2.0.0",
+    "watchify": "^3.11.1"
   },
   "dependencies": {
     "bitcore-lib": "^0.16.0",
@@ -43,6 +47,8 @@
     "create-hash": "^1.2.0",
     "crypto-js": "^3.1.9-1",
     "esm": "^3.2.22",
+    "gulp": "^4.0.2",
+    "gulp-typescript": "^5.0.1",
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.11",
     "protobufjs": "^6.8.8",

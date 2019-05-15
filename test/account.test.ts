@@ -8,9 +8,9 @@ const OP_CODE_TYPE = 'hex'
 const acc_buf = Buffer.from(Data.acc_privateKey_1, OP_CODE_TYPE)
 let acc_list_result
 
-const updateAccount = (acc_list_new = {}) => {
-  // console.log('acc_list_new', acc_list_new)
-  acc_list_result = acc_list_new
+const updateAccount = (new_acc_list = {}) => {
+  // console.log('new_acc_list', new_acc_list)
+  acc_list_result = new_acc_list
 }
 
 const acc = new Account(Data.acc_list, updateAccount)

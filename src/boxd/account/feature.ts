@@ -11,8 +11,8 @@ export default class AccountFeature {
 
   constructor(
     acc_list: { [acc_addr: string]: Acc },
-    updateAccount: object = (acc_list_new: object) => {
-      return acc_list_new
+    updateAccount: object = (new_acc_list: object) => {
+      return new_acc_list
     }
   ) {
     this.acc_list = acc_list
