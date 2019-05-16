@@ -26,10 +26,6 @@
     "noImplicitAny": false, //【最佳实践】true打开的话对应我们要用任何的Library都需要.d.ts即使是空定义，放心下载
     "resolveJsonModule": true // 允许 import json
   },
-  "files": [
-    "src/boxd"
-  ],
-  "include": ["src/**/*.ts"],
   "exclude": [
     "node_modules",
     "dist"

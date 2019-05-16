@@ -1,47 +1,20 @@
-import bitcore from 'bitcore-lib'
 import bs58 from 'bs58'
-import secp256k1 from 'secp256k1'
 import secp_tiny from 'tiny-secp256k1'
-import { sha256, hash160 } from '../util/crypto/hash'
-// import { unlockPrivateKeyWithPassphrase } from '../util/crypto/keystore'
+import { sha256 } from '../util/crypto/hash'
 import { PrivateKey } from '../util/crypto/privatekey'
-import { Acc } from './request'
 import { getDerivedKey } from '../util/crypto/keystore'
 import { getMac, getCiphertext } from '../util/crypto/aes'
+import AccRequest from './request'
 import UtilRequest from '../util/request'
 
 const OP_CODE_TYPE = 'hex'
 
 const getCheckSum = (hex: string | Buffer) => {
-  let result
   if (hex instanceof Buffer) {
-    result = sha256(sha256(hex)).slice(0, 4)
+    return sha256(sha256(hex)).slice(0, 4)
   } else {
-    result = sha256(sha256(Buffer.from(hex, OP_CODE_TYPE))).slice(0, 4)
+    return sha256(sha256(Buffer.from(hex, OP_CODE_TYPE))).slice(0, 4)
   }
-  return result
-}
-
-const getAddress = (privateKey_str: string, prefixHex: string) => {
-  const privateKey = new bitcore.PrivateKey(privateKey_str)
-  privateKey['pkh'] = getPubKeyHash(privateKey)
-  const sha256Content = prefixHex + privateKey['pkh']
-  const checksum = sha256(
-    sha256(Buffer.from(sha256Content, OP_CODE_TYPE))
-  ).slice(0, 4)
-  const content = sha256Content.concat(checksum.toString(OP_CODE_TYPE))
-  privateKey['P2PKH'] = bs58.encode(Buffer.from(content, OP_CODE_TYPE))
-  return privateKey['P2PKH']
-}
-
-const getPubKeyHash = (privateKey: bitcore.PrivateKey) => {
-  return hash160(privateKey.toPublicKey().toBuffer()).toString(OP_CODE_TYPE)
-}
-
-const getPubKey = (privateKey: string) => {
-  return secp256k1
-    .publicKeyCreate(Buffer.from(privateKey, OP_CODE_TYPE))
-    .toString(OP_CODE_TYPE)
 }
 
 /**
@@ -52,11 +25,11 @@ const getPubKey = (privateKey: string) => {
 export default class Account {
   // import an account by KeyStore
   // impAccWithKeyStore: (ksJSON: { crypto: any }, pwd: string) => any
-  acc_list: { [acc_addr: string]: Acc }
+  acc_list: { [acc_addr: string]: AccRequest.Acc }
   updateAccount: any
 
   constructor(
-    acc_list: { [acc_addr: string]: Acc },
+    acc_list: { [acc_addr: string]: AccRequest.Acc },
     updateAccount: object = (new_acc_list: object) => {
       return new_acc_list
     }
@@ -80,7 +53,8 @@ export default class Account {
       if (!secp_tiny.isPrivate(Buffer.from(privKey, OP_CODE_TYPE))) {
         throw new Error('Inputed privateKey type Error!')
       } else {
-        return getAddress(privKey, '1326')
+        const privK = new PrivateKey(privKey)
+        return privK.privKey.toP2PKHAddress
       }
     } catch (err) {
       console.log('dumpAddrFromPrivKey Error:', err)
@@ -125,7 +99,8 @@ export default class Account {
       if (!secp_tiny.isPrivate(Buffer.from(privKey, OP_CODE_TYPE))) {
         throw new Error('Inputed privateKey type Error!')
       } else {
-        return getPubKey(privKey)
+        const privK = new PrivateKey(privKey)
+        return privK.privKey.toPublicKey().toString(OP_CODE_TYPE)
       }
     } catch (err) {
       console.log('dumpPubKeyFromPrivKey Error:', err)
@@ -146,8 +121,8 @@ export default class Account {
       if (!secp_tiny.isPrivate(Buffer.from(privKey, OP_CODE_TYPE))) {
         throw new Error('Inputed privateKey type Error!')
       } else {
-        const privKey_bitc: bitcore.PrivateKey = new bitcore.PrivateKey(privKey)
-        return getPubKeyHash(privKey_bitc)
+        const privK = new PrivateKey(privKey)
+        return privK.privKey.pkh
       }
     } catch (err) {
       console.log('dumpPubKeyHashFromPrivKey Error:', err)
@@ -209,7 +184,7 @@ export default class Account {
   dumpPubKeyHashFromAddr(addr: string) {
     const decoded = bs58.decode(addr)
     if (decoded.length < 4) {
-      throw new Error(`Address length: ${decoded.length} is too short`)
+      throw new Error(`Address length: ${decoded.length} is too short!`)
     }
     const len = decoded.length
     const pubKey_hash = decoded.slice(0, len - 4)

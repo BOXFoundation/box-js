@@ -30,14 +30,12 @@
       "P2PKH": "b1nebwpTAb6GZEqtSZnSciKYMbcs6hyVCst"
     }
   },
-  "acc_privateKey": "7763dcadc5618ede3ff856d062a99d10198ee1e619d6209ccdcc5fb95bfc5071",
-  "acc_privateKey_1": "1b8e5830ae669496a11f00c90b12ecb8ccf1b6e2660a86ab1dbd24085b43247f",
+  "acc_addr": "b1ZWSdrg48g145VdcmBwMPVuDFdaxDLoktk",
   "acc_pwd": "1",
-  "acc_name": "little dog Huang",
-  "acc_addr": "b1WpdQ1odtmVEMqTTTmpT5xjbudTJg1jtvX",
-  "acc_addr_1": "b1ZWSdrg48g145VdcmBwMPVuDFdaxDLoktk",
-  "acc_publicKey": "02dec72cf6871d2746da558dd13fa9a1c96fd4cac193eb06ec6e97d8762e766720",
-  "acc_publickey_hash": "211039cd998713a81407612a21c285adf6efe508",
+  "acc_name": "Little dog Huang",
+  "acc_privateKey": "1b8e5830ae669496a11f00c90b12ecb8ccf1b6e2660a86ab1dbd24085b43247f",
+  "acc_publicKey": "025ba62e6e028dd6519a48d1064bae0c371df73afebb70ad90adba52fad2ff0e25",
+  "acc_publickey_hash": "3e8821fa1b0f9fef5aaf3e1bb5879bf36772c258",
   "to_addrs": [
     "b1oLGVzM7znUJid2B6zPWvwbiqmRV8HDcq1",
     "b1oLGVzM7znUJid2B6zPWvwbiqmRV8HDcq1"

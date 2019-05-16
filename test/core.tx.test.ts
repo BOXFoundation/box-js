@@ -10,7 +10,7 @@ test('Make a BOX Transaction', async () => {
   // test func [Core.makeUnsignedTx]
   await cor
     .makeUnsignedTx({
-      from: Data.acc_addr_1,
+      from: Data.acc_addr,
       to: Data.to_addrs,
       amounts: Data.amounts,
       fee: Data.fee
@@ -24,7 +24,7 @@ test('Make a BOX Transaction', async () => {
           tx: res.tx,
           rawMsgs: res.rawMsgs
         },
-        privKey: Data.acc_privateKey_1
+        privKey: Data.acc_privateKey
       })
       // console.log('signed_tx:', JSON.stringify(signed_tx))
       // test func [Core.sendTransaction]
@@ -46,7 +46,7 @@ test('Make a BOX Transaction', async () => {
 test('Get the BOX Balance of the given Address', async () => {
   // test func [Core.getBalance]
   await cor
-    .getBalance(Data.acc_addr_1)
+    .getBalance(Data.acc_addr)
     .then(async res => {
       // console.log('getBalance res:', JSON.stringify(res))
       expect(res.code).toEqual(0)
@@ -60,7 +60,7 @@ test('Get the BOX Balance of the given Address', async () => {
 test('Get the BOX Balances of the given Addresses', async () => {
   // test func [Core.getBalances]
   await cor
-    .getBalances([Data.acc_addr, Data.acc_addr_1])
+    .getBalances([Data.acc_addr, Data.acc_addr])
     .then(async res => {
       // console.log('getBalances res:', JSON.stringify(res))
       expect(res.code).toEqual(0)
@@ -75,10 +75,10 @@ test('Get the BOX Balances of the given Addresses', async () => {
   // test func [Core.createRawTransaction]
   await cor
     .createRawTransaction({
-      addr: Data.acc_addr_1,
+      addr: Data.acc_addr,
       to: Data.to_map,
       fee: Data.fee,
-      privKey: Data.acc_privateKey_1
+      privKey: Data.acc_privateKey
     })
     .then(async res => {
       console.log('createRawTransaction res:', JSON.stringify(res))

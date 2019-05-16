@@ -1,6 +1,8 @@
 import * as ecc from 'tiny-secp256k1'
 import { getNumberByte } from '../util'
 
+const OP_CODE_TYPE = 'hex'
+
 function canonicalizeInt(b: Buffer | Uint8Array) {
   if (b.length === 0) {
     b = Buffer.from([0x00])
@@ -64,8 +66,9 @@ ECPair.prototype.verify = function(hash: any, signature: any) {
   return ecc.verify(hash, this.publicKey, signature)
 }
 
-export const fromPrivateKey = function(buf: Buffer, options?: any) {
-  if (!ecc.isPrivate(buf))
+export const getECfromPrivKey = function(privkey, options?: any) {
+  privkey = Buffer.from(privkey, OP_CODE_TYPE)
+  if (!ecc.isPrivate(privkey))
     throw new TypeError('Private key not in range [1, n)')
-  return new ECPair(buf, null, options)
+  return new ECPair(privkey, null, options)
 }

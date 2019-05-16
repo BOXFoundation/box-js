@@ -1,16 +1,16 @@
 import { unlockPrivateKeyWithPassphrase } from '../util/crypto/keystore'
 import { PrivateKey } from '../util/crypto/privatekey'
-import { Acc } from './request'
+import AccRequest from './request'
 
 export default class AccountFeature {
   // import an account by KeyStore
   impAccWithKeyStore: (ksJSON: { crypto: any }, pwd: string) => any
-  acc_list: { [acc_addr: string]: Acc }
+  acc_list: { [acc_addr: string]: AccRequest.Acc }
   newPrivateKey: any
   updateAccount: any
 
   constructor(
-    acc_list: { [acc_addr: string]: Acc },
+    acc_list: { [acc_addr: string]: AccRequest.Acc },
     updateAccount: object = (new_acc_list: object) => {
       return new_acc_list
     }
@@ -31,8 +31,8 @@ export default class AccountFeature {
     const privK = new PrivateKey(privateKey_str)
     const cryptoJson = privK.getCrypto(pwd)
     return {
-      P2PKH: privK.privKey.toP2PKHAddress(),
-      P2SH: privK.privKey.toP2SHAddress(),
+      P2PKH: privK.privKey.toP2PKHAddress,
+      P2SH: privK.privKey.toP2SHAddress,
       privateKey: privK.privKey,
       cryptoJson
     }

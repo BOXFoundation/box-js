@@ -33,17 +33,9 @@ export const getDerivedKey = (
   p: number,
   dklen: number
 ) => {
-  return scrypt(
-    Buffer.from(passphrase),
-    salt,
-    n,
-    r,
-    p,
-    dklen,
-    (progress: any) => {
-      console.log('progress:', progress)
-    }
-  )
+  return scrypt(Buffer.from(passphrase), salt, n, r, p, dklen, progress => {
+    console.log('progress:', progress)
+  })
 }
 
 /**
@@ -55,10 +47,10 @@ export const getDerivedKey = (
  */
 export const getCryptoJSON = (
   privateKey: {
-    toString: (arg0: string) => string
-    toP2PKHAddress: () => string
+    toString: (arg0: string) => void
+    toP2PKHAddress
   },
-  passphrase: any
+  passphrase: string
 ): UtilRequest.CryptoJson => {
   if (!privateKey) {
     throw new Error('PrivateKey is require!')
@@ -70,7 +62,7 @@ export const getCryptoJSON = (
 
   try {
     const privateKeyHexStr = privateKey.toString(_STRING_ENC_)
-    const address = privateKey.toP2PKHAddress()
+    const address = privateKey.toP2PKHAddress
 
     const salt = randomBytes(32)
     const iv = randomBytes(aesBlockSize).toString(_STRING_ENC_)
@@ -117,8 +109,8 @@ export const getCryptoJSON = (
  * @param {string} passphrase
  */
 export const unlockPrivateKeyWithPassphrase = (
-  ksJSON: { crypto: any },
-  passphrase: any
+  ksJSON: { crypto },
+  passphrase: string
 ) => {
   if (!passphrase) {
     throw new Error('Passphrase is require!')
