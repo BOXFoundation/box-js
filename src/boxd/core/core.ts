@@ -1,4 +1,4 @@
-import { Http } from '../util/rpc'
+import { Http } from '../util/http'
 import { PrivateKey } from '../util/crypto/privatekey'
 import CoreRequest from './request'
 import UtilRequest from '../util/request'

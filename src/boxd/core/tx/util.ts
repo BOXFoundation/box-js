@@ -1,4 +1,4 @@
-import { getSignHash, signatureScript } from '../../util/util'
+import CommonUtil from '../../util/util'
 import Request from '../request'
 
 namespace TX {
@@ -12,9 +12,12 @@ namespace TX {
   ) => {
     let { acc, tx, rawMsgs: protoBufs } = unSignedTx
     for (let idx = 0; idx < tx.vin.length; idx++) {
-      const sigHashBuf = getSignHash(protoBufs[idx])
+      const sigHashBuf = CommonUtil.getSignHash(protoBufs[idx])
       const signBuf = acc['signMsg'](sigHashBuf)
-      const scriptSig = signatureScript(signBuf, acc.toPublicKey().toBuffer())
+      const scriptSig = CommonUtil.signatureScript(
+        signBuf,
+        acc.toPublicKey().toBuffer()
+      )
       tx.vin[idx].script_sig = scriptSig.toString('base64')
     }
     return tx

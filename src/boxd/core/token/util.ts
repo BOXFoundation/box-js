@@ -1,5 +1,5 @@
 import bs58 from 'bs58'
-import { putUint32 } from '../../util/util'
+import CommonUtil from '../../util/util'
 namespace Util {
   const op_hash_len = 32
   /**
@@ -22,7 +22,7 @@ namespace Util {
   }): string => {
     const { opHash, index } = token_addr
     const before = Buffer.from(opHash, 'hex')
-    const end = putUint32(Buffer.alloc(4), Number(index))
+    const end = CommonUtil.putUint32(Buffer.alloc(4), Number(index))
     return bs58.encode(Buffer.concat([before, Buffer.from(':'), end]))
   }
 

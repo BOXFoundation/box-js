@@ -1,5 +1,5 @@
-import { unlockPrivateKeyWithPassphrase } from '../util/crypto/keystore'
 import { PrivateKey } from '../util/crypto/privatekey'
+import Keystore from '../util/crypto/keystore'
 import AccRequest from './request'
 
 export default class AccountFeature {
@@ -16,7 +16,7 @@ export default class AccountFeature {
     }
   ) {
     this.acc_list = acc_list
-    this.impAccWithKeyStore = unlockPrivateKeyWithPassphrase
+    this.impAccWithKeyStore = Keystore.unlockPrivateKeyWithPassphrase
     this.updateAccount = updateAccount
   }
 
@@ -29,7 +29,7 @@ export default class AccountFeature {
    */
   getCryptoAcc(pwd: string, privateKey_str?: string) {
     const privK = new PrivateKey(privateKey_str)
-    const cryptoJson = privK.getCrypto(pwd)
+    const cryptoJson = privK.getCryptoByPrivKey(pwd)
     return {
       P2PKH: privK.privKey.toP2PKHAddress,
       P2SH: privK.privKey.toP2SHAddress,

@@ -2,7 +2,7 @@ import 'jest'
 import Account from '../src/boxd/account/account'
 import AccountFeature from '../src/boxd/account/feature'
 import Data from './json/data.json'
-import Keystore from './json/keystore.json'
+import KeystoreJson from './json/keystore.json'
 
 const OP_CODE_TYPE = 'hex'
 const acc_buf = Buffer.from(Data.acc_privateKey, OP_CODE_TYPE)
@@ -59,7 +59,7 @@ test('Dump PublicKey Hash from Address', async () => {
 
 test('Dump PrivateKey from KeyStore', async () => {
   // test func [dumpPrivKeyFromKeyStore]
-  const privateKey = acc.dumpPrivKeyFromKeyStore(Keystore, Data.acc_pwd)
+  const privateKey = acc.dumpPrivKeyFromKeyStore(KeystoreJson, Data.acc_pwd)
   expect(privateKey).toEqual(Data.acc_privateKey)
 })
 

@@ -1,9 +1,9 @@
 import bs58 from 'bs58'
 import secp_tiny from 'tiny-secp256k1'
-import { sha256 } from '../util/crypto/hash'
+import Hash from '../util/crypto/hash'
 import { PrivateKey } from '../util/crypto/privatekey'
-import { getDerivedKey } from '../util/crypto/keystore'
-import { getMac, getCiphertext } from '../util/crypto/aes'
+import Keystore from '../util/crypto/keystore'
+import Aes from '../util/crypto/aes'
 import AccRequest from './request'
 import UtilRequest from '../util/request'
 
@@ -11,9 +11,9 @@ const OP_CODE_TYPE = 'hex'
 
 const getCheckSum = (hex: string | Buffer) => {
   if (hex instanceof Buffer) {
-    return sha256(sha256(hex)).slice(0, 4)
+    return Hash.sha256(Hash.sha256(hex)).slice(0, 4)
   } else {
-    return sha256(sha256(Buffer.from(hex, OP_CODE_TYPE))).slice(0, 4)
+    return Hash.sha256(Hash.sha256(Buffer.from(hex, OP_CODE_TYPE))).slice(0, 4)
   }
 }
 
@@ -77,7 +77,7 @@ export default class Account {
         throw new Error('Inputed privateKey type Error!')
       } else {
         const privK = new PrivateKey(privKey)
-        const keystore: UtilRequest.CryptoJson = privK.getCrypto(pwd)
+        const keystore: UtilRequest.CryptoJson = privK.getCryptoByPrivKey(pwd)
         return keystore
       }
     } catch (err) {
@@ -136,10 +136,10 @@ export default class Account {
    * @returns [PrivateKey] string
    * @memberof Account
    */
-  dumpPrivKeyFromKeyStore(
+  public async dumpPrivKeyFromKeyStore(
     keyStore: UtilRequest.CryptoJson,
     pwd: string
-  ): string {
+  ) {
     if (!pwd) {
       throw new Error('Passphrase is require!')
     }
@@ -149,7 +149,7 @@ export default class Account {
     const cpt = keyStore.crypto
     const kdfParams = cpt.kdfparams
     const saltBuffer = Buffer.from(kdfParams.salt, OP_CODE_TYPE)
-    const derivedKey = getDerivedKey(
+    const derivedKey = Keystore.getDerivedKey(
       pwd,
       saltBuffer,
       kdfParams.n,
@@ -160,11 +160,11 @@ export default class Account {
 
     const aesKey = derivedKey.slice(0, 16).toString(OP_CODE_TYPE)
     const sha256Key = derivedKey.slice(16, 32).toString(OP_CODE_TYPE)
-    const mac = getMac(sha256Key, cpt.ciphertext)
+    const mac = Aes.getMac(sha256Key, cpt.ciphertext)
     if (mac !== cpt.mac) {
       throw new Error('Wrong passphrase!')
     }
-    const privateKeyHexStr = getCiphertext(
+    const privateKeyHexStr = await Aes.getCiphertext(
       aesKey,
       cpt.ciphertext,
       cpt.cipherparams.iv

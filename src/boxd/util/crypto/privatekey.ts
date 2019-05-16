@@ -1,9 +1,9 @@
 import bitcore from 'bitcore-lib'
 import bs58 from 'bs58'
-import { hash160, sha256 } from './hash'
-import { getECfromPrivKey } from '../../util/crypto/ecpair'
-import { getSignHash, signatureScript } from '../../util/util'
-import { getCryptoJSON } from '../../util/crypto/keystore'
+import Hash from './hash'
+import Ecpair from './ecpair'
+import CommonUtil from '../../util/util'
+import Keystore from './keystore'
 import UtilRequest from '../request'
 
 const OP_CODE_TYPE = 'hex'
@@ -14,14 +14,14 @@ const prefix = {
 
 /**
  * @class [PrivateKey]
- * @constructs [privateKey]
+ * @constructs [privKey]
  */
 export class PrivateKey {
   privKey
   constructor(privkey_str) {
     this.privKey = new bitcore.PrivateKey(privkey_str)
     this.privKey.signMsg = sigHash => {
-      const eccPrivateKey = privkey_str && getECfromPrivKey(privkey_str)
+      const eccPrivateKey = privkey_str && Ecpair.getECfromPrivKey(privkey_str)
       return eccPrivateKey.sign(sigHash).sig
     }
     this.privKey.pkh = this.getPubKeyHashByPrivKey()
@@ -30,12 +30,12 @@ export class PrivateKey {
   }
 
   /**
-   * @func get-cryptoJson-with-privateKey&password
+   * @func get-CryptoJson-by-PrivateKey&Password
    * @param [*pwd] string
    * @returns [cryptoJson]
    */
-  getCrypto = (pwd: string) => {
-    return getCryptoJSON(this.privKey, pwd)
+  getCryptoByPrivKey = (pwd: string) => {
+    return Keystore.getCryptoJSON(this.privKey, pwd)
   }
 
   /**
@@ -48,11 +48,12 @@ export class PrivateKey {
   ) => {
     let { tx, rawMsgs } = unsigned_tx.unsignedTx
     let _privKey = unsigned_tx.privKey
+    // vin handler
     for (let idx = 0; idx < tx.vin.length; idx++) {
-      const sigHashBuf = getSignHash(rawMsgs[idx])
-      const eccPrivKey = _privKey && getECfromPrivKey(_privKey)
+      const sigHashBuf = CommonUtil.getSignHash(rawMsgs[idx])
+      const eccPrivKey = _privKey && Ecpair.getECfromPrivKey(_privKey)
       const signBuf = eccPrivKey.sign(sigHashBuf).sig
-      const scriptSig = signatureScript(
+      const scriptSig = CommonUtil.signatureScript(
         signBuf,
         this.privKey.toPublicKey().toBuffer()
       )
@@ -63,14 +64,16 @@ export class PrivateKey {
 
   getAddrByPrivKey = (prefixHex: string) => {
     const sha256Content = prefixHex + this.privKey.pkh
-    const checksum = sha256(
-      sha256(Buffer.from(sha256Content, OP_CODE_TYPE))
+    const checksum = Hash.sha256(
+      Hash.sha256(Buffer.from(sha256Content, OP_CODE_TYPE))
     ).slice(0, 4)
     const content = sha256Content.concat(checksum.toString(OP_CODE_TYPE))
     return bs58.encode(Buffer.from(content, OP_CODE_TYPE))
   }
 
   getPubKeyHashByPrivKey = () => {
-    return hash160(this.privKey.toPublicKey().toBuffer()).toString(OP_CODE_TYPE)
+    return Hash.hash160(this.privKey.toPublicKey().toBuffer()).toString(
+      OP_CODE_TYPE
+    )
   }
 }

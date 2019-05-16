@@ -1,4 +1,4 @@
-import { Http } from '../util/rpc'
+import { Http } from '../util/http'
 
 /**
  * @class [Core]

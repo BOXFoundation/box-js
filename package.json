@@ -6,7 +6,7 @@
   "types": "./types/index.d.ts",
   "scripts": {
     "lock": "npm shrinkwrap--dev",
-    "test": "jest test/account.test.ts --colors",
+    "test": "jest --coverage --colors",
     "build": "npx rimraf dist && npx babel src --out-dir dist --source-maps"
   },
   "author": "",
@@ -18,7 +18,6 @@
     "@types/isomorphic-fetch": "0.0.35",
     "@types/jest": "^24.0.11",
     "@types/node": "^11.13.7",
-    "@types/secp256k1": "^3.5.0",
     "@types/should": "^13.0.0",
     "@types/tiny-secp256k1": "^1.0.0",
     "babel-cli": "^6.26.0",

@@ -2,7 +2,7 @@
  * @class [Rpc-Error]
  * @extends Error
  */
-export class RpcError extends Error {
+export class HttpError extends Error {
   json: any
   // Detailed error information
   constructor(json: {
@@ -31,7 +31,7 @@ export class RpcError extends Error {
     } else {
       super('Unknow Error!')
     }
-    Object.setPrototypeOf(this, RpcError.prototype)
+    Object.setPrototypeOf(this, HttpError.prototype)
     this.json = json
   }
 }
@@ -66,20 +66,20 @@ export class Http {
         // console.log('[fetch] Error: status >= 400')
         result.code = response.status
         result.statusText = response.statusText
-        throw new RpcError(result)
+        throw new HttpError(result)
       }
       result = await response.json()
       console.log('[fetch] Result:', result)
       if (isRemote && result.code !== 0) {
         // console.log('[fetch] Error: code !== 0')
-        throw new RpcError(result)
+        throw new HttpError(result)
       }
     } catch (e) {
       e.isFetchError = true
       throw e
     }
     if (isRemote && !response.ok) {
-      throw new RpcError(result)
+      throw new HttpError(result)
     }
     return result
   }
