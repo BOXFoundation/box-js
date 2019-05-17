@@ -1,10 +1,10 @@
 import 'jest'
 import fetch from 'isomorphic-fetch'
-import Core from '../src/boxd/core/api-http'
+import Core from '../src/boxd/core/core'
 import TokenUtil from '../src/boxd/core/token/util'
 import Data from './json/data.json'
 
-const cor = new Core(fetch, Data.endpoint_test)
+const cor = new Core(fetch, Data.endpoint_test, 'http')
 let token_hash
 
 test('Issue a Token and get the Token Balance', async done => {

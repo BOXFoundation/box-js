@@ -1,10 +1,10 @@
 import 'jest'
-import Core from '../src/boxd/core/api-http'
+import Core from '../src/boxd/core/core'
 import fetch from 'isomorphic-fetch'
 import Data from './json/data.json'
-import Response from '../src/boxd/core/response'
+import TxResponse from '../src/boxd/core/tx/response'
 
-const cor = new Core(fetch, Data.endpoint_test)
+const cor = new Core(fetch, Data.endpoint_test, 'http')
 
 test('Make a BOX Transaction', async () => {
   // test func [Core.makeUnsignedTx]
@@ -15,7 +15,7 @@ test('Make a BOX Transaction', async () => {
       amounts: Data.amounts,
       fee: Data.fee
     })
-    .then(async (res: Response.UnsignedTx) => {
+    .then(async (res: TxResponse.UnsignedTx) => {
       // console.log('unsigned_tx:', JSON.stringify(res))
       expect(res.code).toEqual(0)
       // test func [Core.signTransactionByPrivKey]

@@ -1,10 +1,10 @@
 import 'jest'
-import Core from '../src/boxd/core/api-http'
+import Core from '../src/boxd/core/core'
 import fetch from 'isomorphic-fetch'
 import Data from './json/data.json'
 // import { UnsignedSplitAddrTx } from '../src/boxd/core/response'
 
-const cor = new Core(fetch, Data.endpoint_test)
+const cor = new Core(fetch, Data.endpoint_test, 'http')
 let node_id
 
 test('Get Node Info', async () => {

@@ -1,4 +1,4 @@
-import { Http } from '../util/http'
+import { Fetch } from '../util/fetch'
 
 /**
  * @class [Feature]
@@ -6,8 +6,8 @@ import { Http } from '../util/http'
  * @constructs _fetch // user incoming
  * @constructs endpoint string // user incoming
  */
-export class Feature extends Http {
-  constructor(_fetch: any, endpoint: string) {
-    super(_fetch, endpoint)
+export class Feature extends Fetch {
+  constructor(_fetch: any, endpoint: string, fetch_type) {
+    super(_fetch, endpoint, fetch_type)
   }
 }
