@@ -53,28 +53,31 @@ test('Dump PublicKey Hash from PrivateKey(string | Buffer)', async () => {
 
 test('Dump PublicKey Hash from Address', async () => {
   // test func [dumpPubKeyHashFromAddr]
-  const pubKey_hash = acc.dumpPubKeyHashFromAddr(Data.acc_addr)
+  const pubKey_hash = await acc.dumpPubKeyHashFromAddr(Data.acc_addr)
   expect(pubKey_hash).toEqual(Data.acc_publickey_hash)
 })
 
 test('Dump PrivateKey from KeyStore', async () => {
   // test func [dumpPrivKeyFromKeyStore]
-  const privateKey = acc.dumpPrivKeyFromKeyStore(KeystoreJson, Data.acc_pwd)
+  const privateKey = await acc.dumpPrivKeyFromKeyStore(
+    KeystoreJson,
+    Data.acc_pwd
+  )
   expect(privateKey).toEqual(Data.acc_privateKey)
 })
 
 test('Dump PublicKey Hash from Address', async () => {
   // test func [dumpPubKeyHashFromAddr]
-  const pubKey_hash = acc.dumpPubKeyHashFromAddr(Data.acc_addr)
+  const pubKey_hash = await acc.dumpPubKeyHashFromAddr(Data.acc_addr)
   expect(pubKey_hash).toEqual(Data.acc_publickey_hash)
 })
 
 test('Create an account', async () => {
   // test func [getCryptoAcc]
-  const { cryptoJson, P2PKH } = feature.getCryptoAcc(Data.acc_pwd)
+  const { cryptoJson, P2PKH } = await feature.getCryptoAcc(Data.acc_pwd)
   expect(cryptoJson.address).toEqual(P2PKH)
   // test func [addToAccList]
-  feature.addToAccList(cryptoJson, {
+  await feature.addToAccList(cryptoJson, {
     name: Data.acc_name,
     P2PKH
   })
@@ -86,13 +89,13 @@ test('Import an account by KeyStore', async () => {})
 
 test('Import an account by PrivateKey', async () => {
   // test func [getCryptoAcc]
-  const { cryptoJson, P2PKH } = feature.getCryptoAcc(
+  const { cryptoJson, P2PKH } = await feature.getCryptoAcc(
     Data.acc_pwd,
     Data.acc_privateKey
   )
   expect(cryptoJson.address).toEqual(P2PKH)
   // test func [addToAccList]
-  feature.addToAccList(cryptoJson, {
+  await feature.addToAccList(cryptoJson, {
     name: Data.acc_name,
     P2PKH
   })

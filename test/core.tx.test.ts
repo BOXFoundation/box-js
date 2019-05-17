@@ -4,7 +4,7 @@ import fetch from 'isomorphic-fetch'
 import Data from './json/data.json'
 import Response from '../src/boxd/core/response'
 
-const cor = new Core(fetch, Data.endpoint_local)
+const cor = new Core(fetch, Data.endpoint_test)
 
 test('Make a BOX Transaction', async () => {
   // test func [Core.makeUnsignedTx]
@@ -71,6 +71,7 @@ test('Get the BOX Balances of the given Addresses', async () => {
     })
 })
 
+// todo
 /* test('Make a Raw Transaction', async () => {
   // test func [Core.createRawTransaction]
   await cor
@@ -86,6 +87,6 @@ test('Get the BOX Balances of the given Addresses', async () => {
     })
     .catch(err => {
       console.error('Make a Raw Transaction Error:', err)
-      expect(0).toBe(1)
+      // expect(0).toBe(1)
     })
 }) */

@@ -1,9 +1,6 @@
 {
   "endpoint_test": "http://39.97.169.1:19110",
   "endpoint_local": "http://127.0.0.1:19110",
-  "token_addr": "8b9aLjo62TiDWr3JoszMWYAQH5iEvJFKyNZJQ73ghywJC7ACVHh",
-  "token_hash": "e26dc08ca79a9a07a82e2cef5350ae74f2590385fa1d316a5c7e9500c749ab71",
-  "token_index": 0,
   "acc_list": {
     "b1nebwpTAb6GZEqtSZnSciKYMbcs6hyVCst": {
       "cryptoJSON": {
@@ -44,6 +41,13 @@
     "b1oLGVzM7znUJid2B6zPWvwbiqmRV8HDcq1": 10001,
     "b1WpdQ1odtmVEMqTTTmpT5xjbudTJg1jtvX": 30003
   },
+  "token_addr": "8b9aLjo62TiDWr3JoszMWYAQH5iEvJFKyNZJQ73ghywJC7ACVHh",
+  "token_hash": "e26dc08ca79a9a07a82e2cef5350ae74f2590385fa1d316a5c7e9500c749ab71",
+  "token_index": 0,
+  "token_name": "UFO",
+  "token_symbol": "U",
+  "token_supply": 10000,
+  "token_decimal": 3,
   "split_weights": [
     100000,
     900000
@@ -54,7 +58,6 @@
     30000
   ],
   "fee": "20000",
-  "nodeId": "todo",
   "blockHeight": 6406299,
   "block": {
     "header": {
@@ -74,41 +77,5 @@
       "signatures": "Array[]"
     }
   },
-  "blockHash": "4550b95b53dc37835c8a19c9a73df6e25f64e549be558c31656fa03bf98aed93",
-  "rawMsgs": [
-    "EkEKJAog+b1IEt4Z0ONVXWsRiEl0C/WTxNLor+G1SOpoes0CFc0QARIZdqkUPogh+hsPn+9arz4btYeb82dywliIrBofCLDqARIZdqkU1i1F9JFZ5sBgn/c+1f2syH3XrguIrBofCMC4AhIZdqkU1i1F9JFZ5sBgn/c+1f2syH3XrguIrBogCI3OkwYSGXapFD6IIfobD5/vWq8+G7WHm/NncsJYiKw="
-  ],
-  "unsignTx_tx": {
-    "version": 0,
-    "vin": [
-      {
-        "prev_out_point": {
-          "hash": "+b1IEt4Z0ONVXWsRiEl0C/WTxNLor+G1SOpoes0CFc0=",
-          "index": 1
-        },
-        "script_sig": null,
-        "sequence": 0
-      }
-    ],
-    "vout": [
-      {
-        "value": "200000",
-        "script_pub_key": "dqkU1i1F9JFZ5sBgn/c+1f2syH3XrguIrA=="
-      },
-      {
-        "value": "12774205",
-        "script_pub_key": "dqkUPogh+hsPn+9arz4btYeb82dywliIrA=="
-      }
-    ],
-    "data": null,
-    "magic": 0,
-    "lock_time": "0"
-  },
-  "unsignTx_rawMsgs": [
-    "EkEKJAog+b1IEt4Z0ONVXWsRiEl0C/WTxNLor+G1SOpoes0CFc0QARIZdqkUPogh+hsPn+9arz4btYeb82dywliIrBofCMCaDBIZdqkU1i1F9JFZ5sBgn/c+1f2syH3XrguIrBogCL3WiwYSGXapFD6IIfobD5/vWq8+G7WHm/NncsJYiKw="
-  ],
-  "token_name": "UFO",
-  "token_symbol": "U",
-  "token_supply": 10000,
-  "token_decimal": 3
+  "blockHash": "4550b95b53dc37835c8a19c9a73df6e25f64e549be558c31656fa03bf98aed93"
 }

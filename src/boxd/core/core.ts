@@ -69,7 +69,7 @@ export class Core extends Http {
   }
 
   fetchUtxos(fetch_utxos_req: CoreRequest.SetchUtxosReq) {
-    return super.httpFetch('/tx/fetchutxos', fetch_utxos_req)
+    return super.httpFetch('/tx/fetchutxos', fetch_utxos_req, false)
   }
 
   public async createRawTransaction(raw: CoreRequest.Raw) {
@@ -79,10 +79,12 @@ export class Core extends Http {
       sum += Number(to[item])
     })
     sum += Number(fee)
+    console.log('fetchUtxos:', addr, sum)
     await this.fetchUtxos({ addr, amount: sum })
       .then(async res => {
         console.log('fetchUtxos res:', res)
         if (res.code === 0) {
+          // todo 序列化 -> sign ->
           const utxos: CoreResponse.Utxo[] = res.utxos
           await super
             .httpFetch(
@@ -117,8 +119,12 @@ export class Core extends Http {
       })
   }
 
+  /**
+   * @func sendRawTransaction
+   * @param [*raw_tx] # 序列化后的 raw tx
+   */
   sendRawTransaction(raw_tx: string) {
-    return super.httpFetch('/todo', { raw_tx })
+    return super.httpFetch('/tx/sendrawtransaction', { raw_tx })
   }
 
   // block

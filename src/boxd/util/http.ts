@@ -54,13 +54,13 @@ export class Http {
     let response: any
     let result: any
     try {
-      console.log(`[fetch] ${path}:\n`, JSON.stringify(body))
+      // console.log(`[fetch] ${path}:\n`, JSON.stringify(body))
       // request
       response = await this._fetch(this.endpoint + '/v1' + path, {
         body: JSON.stringify(body),
         method: 'POST'
       })
-      console.log('[fetch] response:', response)
+      // console.log('[fetch] response:', response)
       // handle
       if (isRemote && response.status >= 400) {
         // console.log('[fetch] Error: status >= 400')
@@ -69,7 +69,7 @@ export class Http {
         throw new HttpError(result)
       }
       result = await response.json()
-      console.log('[fetch] Result:', result)
+      // console.log('[fetch] Result:', result)
       if (isRemote && result.code !== 0) {
         // console.log('[fetch] Error: code !== 0')
         throw new HttpError(result)

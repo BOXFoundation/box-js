@@ -92,7 +92,6 @@ test('Make a Token Transaction', async () => {
       // console.log('signed_Token:', JSON.stringify(signed_Token))
       // test func [Core.sendTransaction]
       const token_result = await cor.sendTransaction(signed_Token)
-      console.log('token_result:', token_result)
       expect(token_result.code).toEqual(0)
       const token_detail = await cor.viewTxDetail(token_result.hash)
       // console.log('token_detail:', token_detail)
