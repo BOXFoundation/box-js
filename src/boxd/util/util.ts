@@ -103,8 +103,6 @@ namespace Util {
   export const getSignHash = (protobuf: string) => {
     return Hash.hash256(Buffer.from(protobuf, 'base64'))
   }
-
-  // fetchTokenUtxos todo
 }
 
 export default Util

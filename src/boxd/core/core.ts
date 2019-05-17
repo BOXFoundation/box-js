@@ -10,7 +10,7 @@ import CoreResponse from './response'
  * @constructs _fetch // user incoming
  * @constructs endpoint string // user incoming
  */
-export class Core extends Http {
+export default class Core extends Http {
   constructor(_fetch: any, endpoint: string) {
     super(_fetch, endpoint)
   }
@@ -41,6 +41,10 @@ export class Core extends Http {
     )
   }
 
+  fetchTokenUtxos(fetch_utxos_req: CoreRequest.SetchUtxosReq) {
+    return super.httpFetch('todo', fetch_utxos_req)
+  }
+
   // TX
   makeUnsignedTx(tx: CoreRequest.OrgTxReq) {
     return super.httpFetch('/tx/makeunsignedtx', tx)
@@ -69,7 +73,7 @@ export class Core extends Http {
   }
 
   fetchUtxos(fetch_utxos_req: CoreRequest.SetchUtxosReq) {
-    return super.httpFetch('/tx/fetchutxos', fetch_utxos_req, false)
+    return super.httpFetch('/tx/fetchutxos', fetch_utxos_req)
   }
 
   public async createRawTransaction(raw: CoreRequest.Raw) {
@@ -128,7 +132,6 @@ export class Core extends Http {
   }
 
   // block
-  // todo
   getNodeInfo() {
     return super.httpFetch('/ctl/getnodeinfo', {}, false)
   }

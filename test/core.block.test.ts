@@ -1,5 +1,5 @@
 import 'jest'
-import { Core } from '../src/boxd/core/core'
+import Core from '../src/boxd/core/core'
 import fetch from 'isomorphic-fetch'
 import Data from './json/data.json'
 // import { UnsignedSplitAddrTx } from '../src/boxd/core/response'

@@ -1,7 +1,7 @@
 import { Http } from '../util/http'
 
 /**
- * @class [Core]
+ * @class [Feature]
  * @extends Http
  * @constructs _fetch // user incoming
  * @constructs endpoint string // user incoming

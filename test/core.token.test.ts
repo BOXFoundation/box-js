@@ -1,6 +1,6 @@
 import 'jest'
 import fetch from 'isomorphic-fetch'
-import { Core } from '../src/boxd/core/core'
+import Core from '../src/boxd/core/core'
 import TokenUtil from '../src/boxd/core/token/util'
 import Data from './json/data.json'
 
