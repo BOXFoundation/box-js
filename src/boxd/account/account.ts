@@ -1,11 +1,10 @@
 import bs58 from 'bs58'
 import secp_tiny from 'tiny-secp256k1'
 import Hash from '../util/crypto/hash'
-import { PrivateKey } from '../util/crypto/privatekey'
 import Keystore from '../util/crypto/keystore'
 import Aes from '../util/crypto/aes'
-import AccRequest from './request'
-import UtilRequest from '../util/request'
+import PrivateKey from '../util/crypto/privatekey'
+import UtilInterface from '../util/interface'
 
 const OP_CODE_TYPE = 'hex'
 
@@ -23,21 +22,7 @@ const getCheckSum = (hex: string | Buffer) => {
  * @constructs updateAccount // user incoming
  */
 export default class Account {
-  // import an account by KeyStore
-  // impAccWithKeyStore: (ksJSON: { crypto: any }, pwd: string) => any
-  acc_list: { [acc_addr: string]: AccRequest.Acc }
-  updateAccount: any
-
-  constructor(
-    acc_list: { [acc_addr: string]: AccRequest.Acc },
-    updateAccount: object = (new_acc_list: object) => {
-      return new_acc_list
-    }
-  ) {
-    this.acc_list = acc_list
-    this.updateAccount = updateAccount
-    // this.impAccWithKeyStore = unlockPrivateKeyWithPassphrase todo: export
-  }
+  constructor() {}
 
   /**
    * @func Dump-P2PKH-Address-from-PrivateKey
@@ -77,7 +62,7 @@ export default class Account {
         throw new Error('Inputed privateKey type Error!')
       } else {
         const privK = new PrivateKey(privKey)
-        const keystore: UtilRequest.CryptoJson = privK.getCryptoByPrivKey(pwd)
+        const keystore: UtilInterface.CryptoJson = privK.getCryptoByPrivKey(pwd)
         return keystore
       }
     } catch (err) {
@@ -137,7 +122,7 @@ export default class Account {
    * @memberof Account
    */
   public async dumpPrivKeyFromKeyStore(
-    keyStore: UtilRequest.CryptoJson,
+    keyStore: UtilInterface.CryptoJson,
     pwd: string
   ) {
     if (!pwd) {

@@ -1,7 +1,7 @@
 import { Http } from '../util/http'
-import { PrivateKey } from '../util/crypto/privatekey'
+import PrivateKey from '../util/crypto/privatekey'
 import CoreRequest from './request'
-import UtilRequest from '../util/request'
+import UtilRequest from '../util/interface'
 import CoreResponse from './response'
 
 /**

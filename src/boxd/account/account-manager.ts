@@ -1,22 +1,20 @@
-import { PrivateKey } from '../util/crypto/privatekey'
-import Keystore from '../util/crypto/keystore'
-import AccRequest from './request'
+import PrivateKey from '../util/crypto/privatekey'
+import UtilInterface from '../util/interface'
 
-export default class AccountFeature {
+export default class AccountManager {
   // import an account by KeyStore
-  impAccWithKeyStore: (ksJSON: { crypto: any }, pwd: string) => any
-  acc_list: { [acc_addr: string]: AccRequest.Acc }
+  // impAccWithKeyStore: (ksJSON: { crypto: any }, pwd: string) => any todo
+  acc_list: { [acc_addr: string]: UtilInterface.Keystore }
   newPrivateKey: any
   updateAccount: any
 
   constructor(
-    acc_list: { [acc_addr: string]: AccRequest.Acc },
+    acc_list: { [acc_addr: string]: UtilInterface.Keystore },
     updateAccount: object = (new_acc_list: object) => {
       return new_acc_list
     }
   ) {
     this.acc_list = acc_list
-    this.impAccWithKeyStore = Keystore.unlockPrivateKeyWithPassphrase
     this.updateAccount = updateAccount
   }
 

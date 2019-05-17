@@ -4,7 +4,7 @@ import Hash from './hash'
 import Ecpair from './ecpair'
 import CommonUtil from '../../util/util'
 import Keystore from './keystore'
-import UtilRequest from '../request'
+import UtilRequest from '../interface'
 
 const OP_CODE_TYPE = 'hex'
 const prefix = {
@@ -16,7 +16,7 @@ const prefix = {
  * @class [PrivateKey]
  * @constructs [privKey]
  */
-export class PrivateKey {
+export default class PrivateKey {
   privKey
   constructor(privkey_str) {
     this.privKey = new bitcore.PrivateKey(privkey_str)

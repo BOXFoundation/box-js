@@ -1,6 +1,6 @@
 import bitcore from 'bitcore-lib'
 
-namespace Request {
+namespace Interface {
   export interface CryptoJson {
     id: string
     address: string
@@ -35,6 +35,31 @@ namespace Request {
     }
     privKey: string
   }
+
+  export interface Keystore {
+    cryptoJSON: {
+      id: string
+      address: string
+      crypto: {
+        cipher: string
+        ciphertext: string
+        cipherparams: {
+          iv: string
+        }
+        mac: string
+        kdfparams: {
+          salt: string
+          n: number
+          r: number
+          p: number
+          dklen: number
+        }
+      }
+    }
+    update_time: number
+    P2PKH: string
+    name: string
+  }
 }
 
-export default Request
+export default Interface
