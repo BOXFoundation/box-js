@@ -13,7 +13,7 @@ namespace Request {
     privKey: string
   }
 
-  export interface OrgTxReq {
+  export interface OriginalTxReq {
     from: string
     to: string[]
     amounts: number[]

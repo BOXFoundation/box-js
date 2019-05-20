@@ -129,7 +129,7 @@ export default class Api extends Fetch {
   }
 
   // TX
-  makeUnsignedTx(tx: TxRequest.OrgTxReq): Promise<TxResponse.UnsignedTx> {
+  makeUnsignedTx(tx: TxRequest.OriginalTxReq): Promise<TxResponse.UnsignedTx> {
     return super.fetch('/tx/makeunsignedtx', tx)
   }
 

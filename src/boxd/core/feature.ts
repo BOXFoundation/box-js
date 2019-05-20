@@ -6,7 +6,7 @@ import { Fetch } from '../util/fetch'
  * @constructs _fetch // user incoming
  * @constructs endpoint string // user incoming
  */
-export class Feature extends Fetch {
+export default class Feature extends Fetch {
   constructor(_fetch: any, endpoint: string, fetch_type) {
     super(_fetch, endpoint, fetch_type)
   }
