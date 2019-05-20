@@ -1,5 +1,5 @@
 import CommonUtil from '../../util/util'
-import Request from '../request'
+import TxRequest from '../tx/request'
 
 namespace TX {
   /**
@@ -8,7 +8,7 @@ namespace TX {
    * @returns [promise]
    */
   export const signTransactionByAcc = async (
-    unSignedTx: Request.SignedTxByAccReq
+    unSignedTx: TxRequest.SignedTxByAccReq
   ) => {
     let { acc, tx, rawMsgs: protoBufs } = unSignedTx
     for (let idx = 0; idx < tx.vin.length; idx++) {

@@ -2,7 +2,7 @@ import { Fetch } from '../util/fetch'
 
 /**
  * @class [Feature]
- * @extends Http
+ * @extends Fetch
  * @constructs _fetch // user incoming
  * @constructs endpoint string // user incoming
  */

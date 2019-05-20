@@ -21,7 +21,9 @@ test('Get Node Info', async () => {
     })
 })
 
-test('Add Node', async () => {
+/*
+// undo
+ test('Add Node', async () => {
   // test func [Core.addNode]
   await cor
     .addNode(node_id)
@@ -32,7 +34,7 @@ test('Add Node', async () => {
       console.error('addNode err:', err)
       expect(0).toBe(1)
     })
-})
+}) */
 
 test('Get Block Hash by Height', async () => {
   // test func [Core.getBlockHashByHeight]

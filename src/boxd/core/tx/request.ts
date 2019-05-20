@@ -2,13 +2,13 @@ import bitcore from 'bitcore-lib'
 import Response from './response'
 
 namespace Request {
-  export interface ToMap {
+  export interface AddrsMap {
     [to_addr: string]: number
   }
 
   export interface Raw {
     addr: string
-    to: ToMap
+    to: AddrsMap
     fee: string
     privKey: string
   }

@@ -1,4 +1,9 @@
 namespace Response {
+  interface IrreversibleInfo {
+    hash: string
+    signatures: []
+  }
+
   export interface BlockHeader {
     version: number
     prev_block_hash: string
@@ -7,11 +12,6 @@ namespace Response {
     magic: number
     period_hash: string
     candidates_hash: string
-  }
-
-  export interface IrreversibleInfo {
-    hash: string
-    signatures: []
   }
 
   export interface Block {

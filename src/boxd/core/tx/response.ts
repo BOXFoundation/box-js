@@ -1,5 +1,5 @@
 namespace Response {
-  export interface Vin {
+  interface Vin {
     prev_out_point: {
       hash: string
       index?: number
@@ -8,7 +8,7 @@ namespace Response {
     sequence?: number
   }
 
-  export interface Vout {
+  interface Vout {
     script_pub_key: string
     value: string
     index?: number

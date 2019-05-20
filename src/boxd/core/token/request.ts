@@ -23,7 +23,7 @@ namespace Request {
     fee: string
   }
 
-  export interface OrgTokenTxReq {
+  export interface OriginalTokenTxReq {
     amounts: number[]
     fee: string
     from: string

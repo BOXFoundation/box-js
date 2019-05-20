@@ -12,7 +12,7 @@ import TxResponse from './tx/response'
 
 /**
  * @class [Core]
- * @extends Http
+ * @extends Fetch
  * @constructs _fetch // user incoming
  * @constructs endpoint string // user incoming
  */
@@ -42,7 +42,9 @@ export default class Core extends Fetch {
     return super.fetch('/tx/gettokenbalance', tokens)
   }
 
-  makeUnsignedTokenTransferTx(token_transfer_tx: TokenRequest.OrgTokenTxReq) {
+  makeUnsignedTokenTransferTx(
+    token_transfer_tx: TokenRequest.OriginalTokenTxReq
+  ) {
     return super.fetch('/tx/makeunsignedtx/token/transfer', token_transfer_tx)
   }
 
