@@ -1,6 +1,5 @@
 namespace Response {
   export interface UnsignedSplitAddrTx {
-    [key: string]: any
     splitAddr: string
     rawMsgs: string[]
     tx: {

@@ -42,7 +42,7 @@ test('Get Block Hash by Height', async () => {
     .getBlockHashByHeight(Data.blockHeight)
     .then(res => {
       // console.log('getBlockHashByHeight res:', res)
-      expect(res.code).toEqual(0)
+      expect(res)
     })
     .catch(err => {
       console.error('getBlockHashByHeight err:', err)
@@ -56,7 +56,7 @@ test('Get Block by Height', async () => {
     .getBlockByHeight(Data.blockHeight)
     .then(res => {
       // console.log('getBlockByHeight res:', res)
-      expect(res.code).toEqual(0)
+      expect(res)
     })
     .catch(err => {
       console.error('getBlockByHeight err:', err)
@@ -70,7 +70,7 @@ test('Get Block by Hash', async () => {
     .getBlockByHash(Data.blockHash)
     .then(res => {
       // console.log('getBlockByHash res:', res)
-      expect(res.code).toEqual(0)
+      expect(res)
     })
     .catch(err => {
       console.error('getBlockByHash err:', err)
@@ -84,7 +84,7 @@ test('Get Block Header by Hash', async () => {
     .getBlockHeaderByHash(Data.blockHash)
     .then(res => {
       // console.log('getBlockHeaderByHash res:', res)
-      expect(res.code).toEqual(0)
+      expect(res)
     })
     .catch(err => {
       console.error('getBlockHeaderByHash err:', err)
@@ -98,7 +98,7 @@ test('Get Block Header by Height', async () => {
     .getBlockHeaderByHeight(Data.blockHeight)
     .then(res => {
       // console.log('getBlockHeaderByHeight res:', res)
-      expect(res.code).toEqual(0)
+      expect(res)
     })
     .catch(err => {
       console.error('getBlockHeaderByHeight err:', err)
@@ -112,7 +112,7 @@ test('Get Block Height', async () => {
     .getBlockHeight()
     .then(res => {
       // console.log('getBlockHeight res:', res)
-      expect(res.code).toEqual(0)
+      expect(res)
     })
     .catch(err => {
       console.error('getBlockHeight err:', err)
@@ -126,7 +126,7 @@ test('View Block Detail', async () => {
     .viewBlockDetail(Data.blockHash)
     .then(res => {
       // console.log('viewBlockDetail res:', JSON.stringify(res))
-      expect(res.code).toEqual(0)
+      expect(res)
     })
     .catch(err => {
       console.error('viewBlockDetail err:', err)

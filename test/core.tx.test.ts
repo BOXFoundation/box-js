@@ -16,7 +16,6 @@ test('Make a BOX Transaction', async () => {
     })
     .then(async res => {
       // console.log('unsigned_tx:', JSON.stringify(res))
-      expect(res.code).toEqual(0)
       // test func [Api.signTransactionByPrivKey]
       const signed_tx = await cor.signTransactionByPrivKey({
         unsignedTx: {
@@ -29,11 +28,9 @@ test('Make a BOX Transaction', async () => {
       // test func [Api.sendTransaction]
       const tx_result = await cor.sendTransaction(signed_tx)
       // console.log('tx_result:', tx_result)
-      expect(tx_result.code).toEqual(0)
       // todo test func [Api.signTransactionByAcc]
       const tx_detail = await cor.viewTxDetail(tx_result.hash)
       // console.log('tx_detail:', JSON.stringify(tx_detail))
-      expect(tx_detail.code).toEqual(0)
       expect(tx_detail.detail.hash).toEqual(tx_result.hash)
     })
     .catch(err => {
@@ -48,7 +45,7 @@ test('Get the BOX Balance of the given Address', async () => {
     .getBalance(Data.acc_addr)
     .then(async res => {
       // console.log('getBalance res:', JSON.stringify(res))
-      expect(res.code).toEqual(0)
+      expect(res)
     })
     .catch(err => {
       console.log('getBalance Error:', err)
@@ -62,7 +59,7 @@ test('Get the BOX Balances of the given Addresses', async () => {
     .getBalances([Data.acc_addr, Data.acc_addr])
     .then(async res => {
       // console.log('getBalances res:', JSON.stringify(res))
-      expect(res.code).toEqual(0)
+      expect(res)
     })
     .catch(err => {
       console.log('getBalances Error:', err)

@@ -44,7 +44,6 @@ namespace Response {
   }
 
   export interface BlcokDetail {
-    [key: string]: any
     detail: {
       version: number
       height: number

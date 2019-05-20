@@ -23,28 +23,24 @@ export default class Api extends Fetch {
 
   // block
   getNodeInfo(): Promise<BlockResponse.NodeInfo> {
-    return super.fetch('/ctl/getnodeinfo', {}, false)
+    return super.fetch('/ctl/getnodeinfo')
   }
 
   /*   addNode(nodeId: string) {
-    return super.fetch('/ctl/addnode', { nodeId }, false)
+    return super.fetch('/ctl/addnode', { nodeId })
   } */
 
-  getBlockHashByHeight(
-    blockHeight: number
-  ): Promise<{ hash: string; [key: string]: any }> {
+  getBlockHashByHeight(blockHeight: number): Promise<{ hash: string }> {
     return super.fetch('/ctl/getblockhash', { blockHeight })
   }
 
-  getBlockByHash(
-    blockHash: string
-  ): Promise<{ block: BlockResponse.Block; [key: string]: any }> {
+  getBlockByHash(blockHash: string): Promise<{ block: BlockResponse.Block }> {
     return super.fetch('/ctl/getblock', { blockHash })
   }
 
   public async getBlockByHeight(
     block_height: number
-  ): Promise<{ block: BlockResponse.Block; [key: string]: any }> {
+  ): Promise<{ block: BlockResponse.Block }> {
     return await this.getBlockHashByHeight(block_height)
       .then(block_hash => {
         // console.log('getBlockHashByHeight res:', block_hash)
@@ -60,13 +56,13 @@ export default class Api extends Fetch {
 
   getBlockHeaderByHash(
     blockHash: string
-  ): Promise<{ header: BlockResponse.BlockHeader; [key: string]: any }> {
+  ): Promise<{ header: BlockResponse.BlockHeader }> {
     return super.fetch('/ctl/getblockheader', { blockHash })
   }
 
   public async getBlockHeaderByHeight(
     block_height: number
-  ): Promise<{ header: BlockResponse.BlockHeader; [key: string]: any }> {
+  ): Promise<{ header: BlockResponse.BlockHeader }> {
     return await this.getBlockHashByHeight(block_height)
       .then(block_hash => {
         // console.log('getBlockHashByHeight res:', block_hash)
@@ -82,7 +78,6 @@ export default class Api extends Fetch {
 
   getBlockHeight(): Promise<{
     height: number
-    [key: string]: any
   }> {
     return super.fetch('/ctl/getblockheight')
   }
@@ -107,14 +102,14 @@ export default class Api extends Fetch {
 
   getTokenbalance(
     token: TokenRequest.TokenBalanceReq
-  ): Promise<{ balance: string; [key: string]: any }> {
+  ): Promise<{ balance: string }> {
     token['addrs'] = [token.addr]
     return super.fetch('/tx/gettokenbalance', token)
   }
 
   getTokenbalances(
     tokens: TokenRequest.TokenBalancesReq
-  ): Promise<{ balances: string[]; [key: string]: any }> {
+  ): Promise<{ balances: string[] }> {
     return super.fetch('/tx/gettokenbalance', tokens)
   }
 
@@ -141,9 +136,7 @@ export default class Api extends Fetch {
     return privK.signTransactionByPrivKey(unsigned_tx)
   }
 
-  sendTransaction(
-    signed_tx: TxResponse.TX
-  ): Promise<{ hash: string; [key: string]: any }> {
+  sendTransaction(signed_tx: TxResponse.TX): Promise<{ hash: string }> {
     return super.fetch('/tx/sendtransaction', { tx: signed_tx })
   }
 
@@ -151,16 +144,16 @@ export default class Api extends Fetch {
     return super.fetch('/tx/detail', { hash })
   }
 
-  getBalance(
-    addr: string
-  ): Promise<{ balances: string[]; [key: string]: any }> {
+  getBalance(addr: string): Promise<{ balances: string[] }> {
     return super.fetch('/tx/getbalance', { addrs: [addr] })
   }
 
-  getBalances(
-    addrs: string[]
-  ): Promise<{ balances: string[]; [key: string]: any }> {
-    return super.fetch('/tx/getbalance', { addrs })
+  public async getBalances(addrs: string[]): Promise<{ balances: number[] }> {
+    const balances = await super.fetch('/tx/getbalance', { addrs })
+    const arr_balances = await balances.balances.map(item => {
+      return Number(item)
+    })
+    return { balances: arr_balances }
   }
 
   fetchUtxos(fetch_utxos_req: TxRequest.SetchUtxosReq) {
@@ -182,16 +175,12 @@ export default class Api extends Fetch {
           // todo 序列化 -> sign ->
           const utxos: TxResponse.Utxo[] = res.utxos
           await super
-            .fetch(
-              '/tx/getrawtransaction',
-              {
-                from: addr,
-                to,
-                fee,
-                utxos
-              },
-              false
-            )
+            .fetch('/tx/getrawtransaction', {
+              from: addr,
+              to,
+              fee,
+              utxos
+            })
             .then(res => {
               console.log('unsigned_tx:', res)
               console.log('privKey:', privKey)

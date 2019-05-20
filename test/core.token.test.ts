@@ -23,7 +23,7 @@ test('Issue a Token and get the Token Balance', async done => {
     })
     .then(async res => {
       // console.log('unsign_token:', JSON.stringify(res))
-      expect(res.code).toEqual(0)
+
       // test func [Api.signTransactionByPrivKey]
       const signed_token = await cor.signTransactionByPrivKey({
         unsignedTx: {
@@ -37,7 +37,6 @@ test('Issue a Token and get the Token Balance', async done => {
       const issue_result = await cor.sendTransaction(signed_token)
       // console.log('issue_result:', issue_result)
       token_hash = issue_result.hash
-      expect(issue_result.code).toEqual(0)
       // test func [TokenUtil.encodeTokenAddr]
       const token_addr = await TokenUtil.encodeTokenAddr({
         opHash: token_hash,
@@ -54,7 +53,6 @@ test('Issue a Token and get the Token Balance', async done => {
           tokenIndex: 0
         })
         // console.log('token_balances:', token_balances)
-        expect(token_balances.code).toEqual(0)
         expect(
           Number(token_balances.balances[1]) / Math.pow(10, Data.token_decimal)
         ).toEqual(Data.token_supply)
@@ -80,7 +78,7 @@ test('Make a Token Transaction', async () => {
     })
     .then(async res => {
       // console.log('unsigned_Token:', JSON.stringify(res))
-      expect(res.code).toEqual(0)
+
       // test func [Api.signTransactionByPrivKey]
       const signed_Token = await cor.signTransactionByPrivKey({
         unsignedTx: {
@@ -92,10 +90,8 @@ test('Make a Token Transaction', async () => {
       // console.log('signed_Token:', JSON.stringify(signed_Token))
       // test func [Api.sendTransaction]
       const token_result = await cor.sendTransaction(signed_Token)
-      expect(token_result.code).toEqual(0)
       const token_detail = await cor.viewTxDetail(token_result.hash)
       // console.log('token_detail:', token_detail)
-      expect(token_detail.code).toEqual(0)
       expect(token_detail.detail.hash).toEqual(token_result.hash)
     })
     .catch(err => {

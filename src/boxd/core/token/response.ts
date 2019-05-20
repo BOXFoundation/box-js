@@ -23,14 +23,12 @@ namespace Response {
   }
 
   export interface UnsignedTokenIssueTx {
-    [key: string]: any
     issue_out_index: number
     tx: TokenTx
     rawMsgs: string[]
   }
 
   export interface UnsignedTokenTx {
-    [key: string]: any
     tx: TokenTx
     rawMsgs: string[]
   }

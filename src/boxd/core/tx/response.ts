@@ -45,13 +45,11 @@ namespace Response {
   }
 
   export interface UnsignedTx {
-    [key: string]: any
     tx: TX
     rawMsgs: string[]
   }
 
   export interface TxDetail {
-    [key: string]: any
     version: number
     block_time: string
     block_height: number

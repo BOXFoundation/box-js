@@ -15,10 +15,11 @@ test('Make Unsigned Split Address Transaction', async () => {
       fee: Data.fee
     })
     .then(res => {
-      expect(res.code).toEqual(0)
+      // console.log('makeUnsignedSplitAddrTx:', JSON.stringify(res))
       expect(res.splitAddr).toEqual('b2MCXkq7qRzBunNGCdiqL1mZSpUSNqdWYqP')
     })
     .catch(err => {
       console.error('makeUnsignedSplitAddrTx err:', err)
+      expect(0).toBe(1)
     })
 })

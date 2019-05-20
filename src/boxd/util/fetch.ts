@@ -3,7 +3,7 @@
  * @param [*body] object  // request body
  * @returns [result]  // response => result
  */
-const httpFetch = async (path, body, isRemote, _fetch, endpoint) => {
+const httpFetch = async (path, body, _fetch, endpoint) => {
   let response
   let result
   try {
@@ -15,7 +15,7 @@ const httpFetch = async (path, body, isRemote, _fetch, endpoint) => {
     })
     // console.log('[fetch] response:', response)
     // handle
-    if (isRemote && response.status >= 400) {
+    if (response.status >= 400) {
       // console.log('[fetch] Error: status >= 400')
       result.code = response.status
       result.statusText = response.statusText
@@ -23,22 +23,30 @@ const httpFetch = async (path, body, isRemote, _fetch, endpoint) => {
     }
     result = await response.json()
     // console.log('[fetch] Result:', result)
-    if (isRemote && result.code !== 0) {
-      // console.log('[fetch] Error: code !== 0')
-      throw new HttpError(result)
+    if (result.code) {
+      if (result.code === 0) {
+        delete result.code
+        delete result.message
+      } else {
+        // console.log('[fetch] Error: code !== 0')
+        throw new HttpError(result)
+      }
+    } else {
+      delete result.code
+      delete result.message
     }
-  } catch (e) {
-    e.isFetchError = true
-    throw e
+  } catch (err) {
+    err.isFetchError = true
+    throw err
   }
-  if (isRemote && !response.ok) {
+  if (!response.ok) {
     throw new HttpError(result)
   }
   return result
 }
 
-const rpcFetch = (path, body, isRemote, _fetch, endpoint) => {
-  console.log('rpcFetch:', path, body, isRemote, _fetch, endpoint)
+const rpcFetch = (path, body, _fetch, endpoint) => {
+  console.log('rpcFetch:', path, body, _fetch, endpoint)
 }
 
 /**
@@ -102,11 +110,11 @@ export class Fetch {
     this.fetch_type = fetch_type
   }
 
-  public async fetch(path: string, body: object = {}, isRemote = true) {
+  public async fetch(path: string, body: object = {}) {
     if (this.fetch_type === 'rpc') {
-      return rpcFetch(path, body, isRemote, this._fetch, this.endpoint)
+      return rpcFetch(path, body, this._fetch, this.endpoint)
     } else {
-      return httpFetch(path, body, isRemote, this._fetch, this.endpoint)
+      return httpFetch(path, body, this._fetch, this.endpoint)
     }
   }
 }
