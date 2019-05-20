@@ -100,17 +100,25 @@ export default class Api extends Fetch {
     return super.fetch('/tx/makeunsignedtx/token/issue', token_issue_tx)
   }
 
-  getTokenbalance(
+  public async getTokenbalance(
     token: TokenRequest.TokenBalanceReq
-  ): Promise<{ balance: string }> {
+  ): Promise<{ balance: number }> {
     token['addrs'] = [token.addr]
-    return super.fetch('/tx/gettokenbalance', token)
+    const balances = await super.fetch('/tx/gettokenbalance', token)
+    const arr_balances = await balances.balances.map(item => {
+      return Number(item)
+    })
+    return { balance: arr_balances[0] }
   }
 
-  getTokenbalances(
+  public async getTokenbalances(
     tokens: TokenRequest.TokenBalancesReq
-  ): Promise<{ balances: string[] }> {
-    return super.fetch('/tx/gettokenbalance', tokens)
+  ): Promise<{ balances: number[] }> {
+    const balances = await super.fetch('/tx/gettokenbalance', tokens)
+    const arr_balances = await balances.balances.map(item => {
+      return Number(item)
+    })
+    return { balances: arr_balances }
   }
 
   makeUnsignedTokenTransferTx(
@@ -144,8 +152,12 @@ export default class Api extends Fetch {
     return super.fetch('/tx/detail', { hash })
   }
 
-  getBalance(addr: string): Promise<{ balances: string[] }> {
-    return super.fetch('/tx/getbalance', { addrs: [addr] })
+  public async getBalance(addr: string): Promise<{ balance: number }> {
+    const balances = await super.fetch('/tx/getbalance', { addrs: [addr] })
+    const arr_balances = await balances.balances.map(item => {
+      return Number(item)
+    })
+    return { balance: arr_balances[0] }
   }
 
   public async getBalances(addrs: string[]): Promise<{ balances: number[] }> {
