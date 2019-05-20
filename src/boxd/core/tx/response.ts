@@ -14,6 +14,27 @@ namespace Response {
     index?: number
   }
 
+  interface DetailVin {
+    prev_out_detail: {
+      addr: string
+      value: string
+      script_pub_key: string
+      script_disasm: string
+      type: string
+    }
+    script_sig: string
+    sequence: number
+    prev_out_point: string
+  }
+
+  interface DetailVout {
+    addr: string
+    value: string
+    script_pub_key: string
+    script_disasm: string
+    type: string
+  }
+
   export interface TX {
     data?: any
     lock_time: string
@@ -24,10 +45,22 @@ namespace Response {
   }
 
   export interface UnsignedTx {
-    code: number
-    message: string
+    [key: string]: any
     tx: TX
     rawMsgs: string[]
+  }
+
+  export interface TxDetail {
+    [key: string]: any
+    version: number
+    block_time: string
+    block_height: number
+    status: string
+    detail: {
+      hash: string
+      vin: DetailVin[]
+      vout: DetailVout[]
+    }
   }
 
   export interface Utxo {

@@ -1,8 +1,8 @@
 namespace Response {
   export interface UnsignedSplitAddrTx {
-    code: number
-    message: string
+    [key: string]: any
     splitAddr: string
+    rawMsgs: string[]
     tx: {
       version: number
       vin: object[]
@@ -11,7 +11,6 @@ namespace Response {
       magic: number
       lock_time: string
     }
-    rawMsgs: string[]
   }
 }
 

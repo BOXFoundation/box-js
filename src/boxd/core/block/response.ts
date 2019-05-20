@@ -1,4 +1,19 @@
 namespace Response {
+  interface DetailVin {
+    prev_out_detail?: any
+    script_sig: string
+    sequence: number
+    prev_out_point: string
+  }
+
+  interface DetailVout {
+    addr: string
+    value: string
+    script_pub_key: string
+    script_disasm: string
+    type: string
+  }
+
   export interface BlockHeader {
     version: number
     prev_block_hash: string
@@ -26,6 +41,28 @@ namespace Response {
       addrs: string[]
       ttl: string
     }[]
+  }
+
+  export interface BlcokDetail {
+    [key: string]: any
+    detail: {
+      version: number
+      height: number
+      time_stamp: string
+      size: number
+      hash: string
+      prev_block_hash: string
+      coin_base: string
+      confirmed: boolean
+      signature: string
+      txs: [
+        {
+          hash: string
+          vin: DetailVin[]
+          vout: DetailVout[]
+        }
+      ]
+    }
   }
 }
 

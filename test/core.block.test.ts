@@ -125,7 +125,7 @@ test('View Block Detail', async () => {
   await cor
     .viewBlockDetail(Data.blockHash)
     .then(res => {
-      console.log('viewBlockDetail res:', JSON.stringify(res))
+      // console.log('viewBlockDetail res:', JSON.stringify(res))
       expect(res.code).toEqual(0)
     })
     .catch(err => {

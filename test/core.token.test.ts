@@ -56,7 +56,7 @@ test('Issue a Token and get the Token Balance', async done => {
         // console.log('token_balances:', token_balances)
         expect(token_balances.code).toEqual(0)
         expect(
-          token_balances.balances[1] / Math.pow(10, Data.token_decimal)
+          Number(token_balances.balances[1]) / Math.pow(10, Data.token_decimal)
         ).toEqual(Data.token_supply)
         done()
       }, 3000)

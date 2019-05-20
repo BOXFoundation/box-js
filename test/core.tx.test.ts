@@ -2,7 +2,6 @@ import 'jest'
 import Api from '../src/boxd/core/api'
 import fetch from 'isomorphic-fetch'
 import Data from './json/data.json'
-import TxResponse from '../src/boxd/core/tx/response'
 
 const cor = new Api(fetch, Data.endpoint_test, 'http')
 
@@ -15,7 +14,7 @@ test('Make a BOX Transaction', async () => {
       amounts: Data.amounts,
       fee: Data.fee
     })
-    .then(async (res: TxResponse.UnsignedTx) => {
+    .then(async res => {
       // console.log('unsigned_tx:', JSON.stringify(res))
       expect(res.code).toEqual(0)
       // test func [Api.signTransactionByPrivKey]
@@ -33,7 +32,7 @@ test('Make a BOX Transaction', async () => {
       expect(tx_result.code).toEqual(0)
       // todo test func [Api.signTransactionByAcc]
       const tx_detail = await cor.viewTxDetail(tx_result.hash)
-      // console.log('tx_detail:', tx_detail)
+      // console.log('tx_detail:', JSON.stringify(tx_detail))
       expect(tx_detail.code).toEqual(0)
       expect(tx_detail.detail.hash).toEqual(tx_result.hash)
     })

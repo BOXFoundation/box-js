@@ -32,7 +32,6 @@ namespace Util {
    * @returns [{hash,index}] object
    */
   export const decodeTokenAddr = (token_address: string): any => {
-    console.log('flag1:')
     const token_addr_buf = bs58.decode(token_address)
     const opHash = token_addr_buf.slice(0, op_hash_len).toString('hex')
     const index = getUint32(token_addr_buf.slice(op_hash_len + 1))

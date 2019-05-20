@@ -7,7 +7,7 @@ import TokenRequest from './token/request'
 import TxRequest from './tx/request'
 import BlockResponse from './block/response'
 import SplitResponse from './split/response'
-// import TokenResponse from './token/response'
+import TokenResponse from './token/response'
 import TxResponse from './tx/response'
 
 /**
@@ -87,7 +87,7 @@ export default class Api extends Fetch {
     return super.fetch('/ctl/getblockheight')
   }
 
-  viewBlockDetail(hash: string) {
+  viewBlockDetail(hash: string): Promise<BlockResponse.BlcokDetail> {
     return super.fetch('/block/detail', { hash })
   }
 
@@ -99,22 +99,28 @@ export default class Api extends Fetch {
   }
 
   // token
-  makeUnsignedTokenIssueTx(token_issue_tx: TokenRequest.TokenIssueTxReq) {
+  makeUnsignedTokenIssueTx(
+    token_issue_tx: TokenRequest.TokenIssueTxReq
+  ): Promise<TokenResponse.UnsignedTokenIssueTx> {
     return super.fetch('/tx/makeunsignedtx/token/issue', token_issue_tx)
   }
 
-  getTokenbalance(token: TokenRequest.TokenBalanceReq) {
+  getTokenbalance(
+    token: TokenRequest.TokenBalanceReq
+  ): Promise<{ balance: string; [key: string]: any }> {
     token['addrs'] = [token.addr]
     return super.fetch('/tx/gettokenbalance', token)
   }
 
-  getTokenbalances(tokens: TokenRequest.TokenBalancesReq) {
+  getTokenbalances(
+    tokens: TokenRequest.TokenBalancesReq
+  ): Promise<{ balances: string[]; [key: string]: any }> {
     return super.fetch('/tx/gettokenbalance', tokens)
   }
 
   makeUnsignedTokenTransferTx(
     token_transfer_tx: TokenRequest.OriginalTokenTxReq
-  ) {
+  ): Promise<TokenResponse.UnsignedTokenTx> {
     return super.fetch('/tx/makeunsignedtx/token/transfer', token_transfer_tx)
   }
 
@@ -123,29 +129,37 @@ export default class Api extends Fetch {
   }
 
   // TX
-  makeUnsignedTx(tx: TxRequest.OrgTxReq) {
+  makeUnsignedTx(tx: TxRequest.OrgTxReq): Promise<TxResponse.UnsignedTx> {
     return super.fetch('/tx/makeunsignedtx', tx)
   }
 
-  signTransactionByPrivKey(unsigned_tx: UtilInterface.SignedTxByPrivKeyReq) {
+  signTransactionByPrivKey(
+    unsigned_tx: UtilInterface.SignedTxByPrivKeyReq
+  ): Promise<TxResponse.TX> {
     const _privKey = unsigned_tx.privKey
     const privK = new PrivateKey(_privKey)
     return privK.signTransactionByPrivKey(unsigned_tx)
   }
 
-  sendTransaction(signed_tx: TxResponse.TX) {
+  sendTransaction(
+    signed_tx: TxResponse.TX
+  ): Promise<{ hash: string; [key: string]: any }> {
     return super.fetch('/tx/sendtransaction', { tx: signed_tx })
   }
 
-  viewTxDetail(hash: string) {
+  viewTxDetail(hash: string): Promise<TxResponse.TxDetail> {
     return super.fetch('/tx/detail', { hash })
   }
 
-  getBalance(addr: string) {
+  getBalance(
+    addr: string
+  ): Promise<{ balances: string[]; [key: string]: any }> {
     return super.fetch('/tx/getbalance', { addrs: [addr] })
   }
 
-  getBalances(addrs: string[]) {
+  getBalances(
+    addrs: string[]
+  ): Promise<{ balances: string[]; [key: string]: any }> {
     return super.fetch('/tx/getbalance', { addrs })
   }
 
