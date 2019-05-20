@@ -5,20 +5,90 @@ import UtilInterface from '../util/interface'
 import SplitRequest from './split/request'
 import TokenRequest from './token/request'
 import TxRequest from './tx/request'
-// import BlockResponse from './block/response'
+import BlockResponse from './block/response'
 import SplitResponse from './split/response'
 // import TokenResponse from './token/response'
 import TxResponse from './tx/response'
 
 /**
- * @class [Core]
+ * @class [Api]
  * @extends Fetch
  * @constructs _fetch // user incoming
  * @constructs endpoint string // user incoming
  */
-export default class Core extends Fetch {
+export default class Api extends Fetch {
   constructor(_fetch: any, endpoint: string, fetch_type) {
     super(_fetch, endpoint, fetch_type)
+  }
+
+  // block
+  getNodeInfo(): Promise<BlockResponse.NodeInfo> {
+    return super.fetch('/ctl/getnodeinfo', {}, false)
+  }
+
+  /*   addNode(nodeId: string) {
+    return super.fetch('/ctl/addnode', { nodeId }, false)
+  } */
+
+  getBlockHashByHeight(
+    blockHeight: number
+  ): Promise<{ hash: string; [key: string]: any }> {
+    return super.fetch('/ctl/getblockhash', { blockHeight })
+  }
+
+  getBlockByHash(
+    blockHash: string
+  ): Promise<{ block: BlockResponse.Block; [key: string]: any }> {
+    return super.fetch('/ctl/getblock', { blockHash })
+  }
+
+  public async getBlockByHeight(
+    block_height: number
+  ): Promise<{ block: BlockResponse.Block; [key: string]: any }> {
+    return await this.getBlockHashByHeight(block_height)
+      .then(block_hash => {
+        // console.log('getBlockHashByHeight res:', block_hash)
+        return super.fetch('/ctl/getblock', {
+          blockHash: block_hash.hash
+        })
+      })
+      .catch(err => {
+        console.log('getBlockHashByHeight Error:', err)
+        throw new Error('getBlockHashByHeight Error')
+      })
+  }
+
+  getBlockHeaderByHash(
+    blockHash: string
+  ): Promise<{ header: BlockResponse.BlockHeader; [key: string]: any }> {
+    return super.fetch('/ctl/getblockheader', { blockHash })
+  }
+
+  public async getBlockHeaderByHeight(
+    block_height: number
+  ): Promise<{ header: BlockResponse.BlockHeader; [key: string]: any }> {
+    return await this.getBlockHashByHeight(block_height)
+      .then(block_hash => {
+        // console.log('getBlockHashByHeight res:', block_hash)
+        return super.fetch('/ctl/getblockheader', {
+          blockHash: block_hash.hash
+        })
+      })
+      .catch(err => {
+        console.log('getBlockHashByHeight Error:', err)
+        throw new Error('getBlockHashByHeight Error')
+      })
+  }
+
+  getBlockHeight(): Promise<{
+    height: number
+    [key: string]: any
+  }> {
+    return super.fetch('/ctl/getblockheight')
+  }
+
+  viewBlockDetail(hash: string) {
+    return super.fetch('/block/detail', { hash })
   }
 
   // split
@@ -136,62 +206,5 @@ export default class Core extends Fetch {
    */
   sendRawTransaction(raw_tx: string) {
     return super.fetch('/tx/sendrawtransaction', { raw_tx })
-  }
-
-  // block
-  getNodeInfo() {
-    return super.fetch('/ctl/getnodeinfo', {}, false)
-  }
-
-  addNode(nodeId: string) {
-    return super.fetch('/ctl/addnode', { nodeId }, false)
-  }
-
-  getBlockHashByHeight(blockHeight: number) {
-    return super.fetch('/ctl/getblockhash', { blockHeight })
-  }
-
-  getBlockByHash(blockHash: string) {
-    return super.fetch('/ctl/getblock', { blockHash })
-  }
-
-  public async getBlockByHeight(block_height: number) {
-    return await this.getBlockHashByHeight(block_height)
-      .then(block_hash => {
-        // console.log('getBlockHashByHeight res:', block_hash)
-        return super.fetch('/ctl/getblock', {
-          blockHash: block_hash.hash
-        })
-      })
-      .catch(err => {
-        console.log('getBlockHashByHeight Error:', err)
-        throw new Error('getBlockHashByHeight Error')
-      })
-  }
-
-  getBlockHeaderByHash(blockHash: string) {
-    return super.fetch('/ctl/getblockheader', { blockHash })
-  }
-
-  public async getBlockHeaderByHeight(block_height: number) {
-    return await this.getBlockHashByHeight(block_height)
-      .then(block_hash => {
-        // console.log('getBlockHashByHeight res:', block_hash)
-        return super.fetch('/ctl/getblockheader', {
-          blockHash: block_hash.hash
-        })
-      })
-      .catch(err => {
-        console.log('getBlockHashByHeight Error:', err)
-        throw new Error('getBlockHashByHeight Error')
-      })
-  }
-
-  getBlockHeight() {
-    return super.fetch('/ctl/getblockheight')
-  }
-
-  viewBlockDetail(hash: string) {
-    return super.fetch('/block/detail', { hash })
   }
 }

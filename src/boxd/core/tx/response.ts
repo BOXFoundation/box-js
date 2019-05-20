@@ -29,6 +29,7 @@ namespace Response {
     tx: TX
     rawMsgs: string[]
   }
+
   export interface Utxo {
     out_point: {
       hash: string

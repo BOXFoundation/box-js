@@ -1,10 +1,10 @@
 import Account from './account/account'
-import Core from './core/core'
+import Api from './core/api'
 import CommonUtil from './util/util'
 
 const boxd = {
   account: Account,
-  core: Core,
+  core: Api,
   util: CommonUtil
 }
 

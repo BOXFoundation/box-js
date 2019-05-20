@@ -1,14 +1,14 @@
 import 'jest'
 import fetch from 'isomorphic-fetch'
-import Core from '../src/boxd/core/core'
+import Api from '../src/boxd/core/api'
 import TokenUtil from '../src/boxd/core/token/util'
 import Data from './json/data.json'
 
-const cor = new Core(fetch, Data.endpoint_test, 'http')
+const cor = new Api(fetch, Data.endpoint_test, 'http')
 let token_hash
 
 test('Issue a Token and get the Token Balance', async done => {
-  // test func [Core.makeUnsignedTokenIssueTx]
+  // test func [Api.makeUnsignedTokenIssueTx]
   await cor
     .makeUnsignedTokenIssueTx({
       issuer: Data.acc_addr,
@@ -24,7 +24,7 @@ test('Issue a Token and get the Token Balance', async done => {
     .then(async res => {
       // console.log('unsign_token:', JSON.stringify(res))
       expect(res.code).toEqual(0)
-      // test func [Core.signTransactionByPrivKey]
+      // test func [Api.signTransactionByPrivKey]
       const signed_token = await cor.signTransactionByPrivKey({
         unsignedTx: {
           tx: res.tx,
@@ -33,7 +33,7 @@ test('Issue a Token and get the Token Balance', async done => {
         privKey: Data.acc_privateKey
       })
       // console.log('signed_token:', JSON.stringify(signed_token))
-      // test func [Core.sendTransaction]
+      // test func [Api.sendTransaction]
       const issue_result = await cor.sendTransaction(signed_token)
       // console.log('issue_result:', issue_result)
       token_hash = issue_result.hash
@@ -68,7 +68,7 @@ test('Issue a Token and get the Token Balance', async done => {
 })
 
 test('Make a Token Transaction', async () => {
-  // test func [Core.makeUnsignedTokenTransferTx]
+  // test func [Api.makeUnsignedTokenTransferTx]
   await cor
     .makeUnsignedTokenTransferTx({
       amounts: Data.amounts,
@@ -81,7 +81,7 @@ test('Make a Token Transaction', async () => {
     .then(async res => {
       // console.log('unsigned_Token:', JSON.stringify(res))
       expect(res.code).toEqual(0)
-      // test func [Core.signTransactionByPrivKey]
+      // test func [Api.signTransactionByPrivKey]
       const signed_Token = await cor.signTransactionByPrivKey({
         unsignedTx: {
           tx: res.tx,
@@ -90,7 +90,7 @@ test('Make a Token Transaction', async () => {
         privKey: Data.acc_privateKey
       })
       // console.log('signed_Token:', JSON.stringify(signed_Token))
-      // test func [Core.sendTransaction]
+      // test func [Api.sendTransaction]
       const token_result = await cor.sendTransaction(signed_Token)
       expect(token_result.code).toEqual(0)
       const token_detail = await cor.viewTxDetail(token_result.hash)

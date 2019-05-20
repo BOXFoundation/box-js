@@ -161,20 +161,16 @@ export default class Account {
    * @memberof Account
    */
   getCryptoByPwd(pwd: string, privKey?: string | Buffer) {
-    try {
-      if (privKey && privKey instanceof Buffer) {
-        privKey = privKey.toString(OP_CODE_TYPE)
-      }
-      const privK = new PrivateKey(privKey)
-      const cryptoJson = privK.getCryptoByPrivKey(pwd)
-      return {
-        P2PKH: privK.privKey.toP2PKHAddress,
-        P2SH: privK.privKey.toP2SHAddress,
-        privateKey: privK.privKey,
-        cryptoJson
-      }
-    } catch (err) {
-      console.log('getCryptoByPwd Error:', err)
+    if (privKey && privKey instanceof Buffer) {
+      privKey = privKey.toString(OP_CODE_TYPE)
+    }
+    const privK = new PrivateKey(privKey)
+    const cryptoJson = privK.getCryptoByPrivKey(pwd)
+    return {
+      P2PKH: privK.privKey.toP2PKHAddress,
+      P2SH: privK.privKey.toP2SHAddress,
+      privateKey: privK.privKey,
+      cryptoJson
     }
   }
 }

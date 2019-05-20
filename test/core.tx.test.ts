@@ -1,13 +1,13 @@
 import 'jest'
-import Core from '../src/boxd/core/core'
+import Api from '../src/boxd/core/api'
 import fetch from 'isomorphic-fetch'
 import Data from './json/data.json'
 import TxResponse from '../src/boxd/core/tx/response'
 
-const cor = new Core(fetch, Data.endpoint_test, 'http')
+const cor = new Api(fetch, Data.endpoint_test, 'http')
 
 test('Make a BOX Transaction', async () => {
-  // test func [Core.makeUnsignedTx]
+  // test func [Api.makeUnsignedTx]
   await cor
     .makeUnsignedTx({
       from: Data.acc_addr,
@@ -18,7 +18,7 @@ test('Make a BOX Transaction', async () => {
     .then(async (res: TxResponse.UnsignedTx) => {
       // console.log('unsigned_tx:', JSON.stringify(res))
       expect(res.code).toEqual(0)
-      // test func [Core.signTransactionByPrivKey]
+      // test func [Api.signTransactionByPrivKey]
       const signed_tx = await cor.signTransactionByPrivKey({
         unsignedTx: {
           tx: res.tx,
@@ -27,11 +27,11 @@ test('Make a BOX Transaction', async () => {
         privKey: Data.acc_privateKey
       })
       // console.log('signed_tx:', JSON.stringify(signed_tx))
-      // test func [Core.sendTransaction]
+      // test func [Api.sendTransaction]
       const tx_result = await cor.sendTransaction(signed_tx)
       // console.log('tx_result:', tx_result)
       expect(tx_result.code).toEqual(0)
-      // todo test func [Core.signTransactionByAcc]
+      // todo test func [Api.signTransactionByAcc]
       const tx_detail = await cor.viewTxDetail(tx_result.hash)
       // console.log('tx_detail:', tx_detail)
       expect(tx_detail.code).toEqual(0)
@@ -44,7 +44,7 @@ test('Make a BOX Transaction', async () => {
 })
 
 test('Get the BOX Balance of the given Address', async () => {
-  // test func [Core.getBalance]
+  // test func [Api.getBalance]
   await cor
     .getBalance(Data.acc_addr)
     .then(async res => {
@@ -58,7 +58,7 @@ test('Get the BOX Balance of the given Address', async () => {
 })
 
 test('Get the BOX Balances of the given Addresses', async () => {
-  // test func [Core.getBalances]
+  // test func [Api.getBalances]
   await cor
     .getBalances([Data.acc_addr, Data.acc_addr])
     .then(async res => {
@@ -73,7 +73,7 @@ test('Get the BOX Balances of the given Addresses', async () => {
 
 // todo
 /* test('Make a Raw Transaction', async () => {
-  // test func [Core.createRawTransaction]
+  // test func [Api.createRawTransaction]
   await cor
     .createRawTransaction({
       addr: Data.acc_addr,

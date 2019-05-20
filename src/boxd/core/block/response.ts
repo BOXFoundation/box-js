@@ -1,9 +1,4 @@
 namespace Response {
-  interface IrreversibleInfo {
-    hash: string
-    signatures: []
-  }
-
   export interface BlockHeader {
     version: number
     prev_block_hash: string
@@ -19,7 +14,18 @@ namespace Response {
     txs: object[]
     height: number
     signature: string
-    irreversible_info: IrreversibleInfo
+    irreversible_info: {
+      hash: string
+      signatures: []
+    }
+  }
+
+  export interface NodeInfo {
+    nodes: {
+      id: string
+      addrs: string[]
+      ttl: string
+    }[]
   }
 }
 

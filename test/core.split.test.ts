@@ -1,13 +1,13 @@
 import 'jest'
-import Core from '../src/boxd/core/core'
+import Api from '../src/boxd/core/api'
 import fetch from 'isomorphic-fetch'
 import Data from './json/data.json'
 import SplitResponse from '../src/boxd/core/split/response'
 
-const cor = new Core(fetch, Data.endpoint_test, 'http')
+const cor = new Api(fetch, Data.endpoint_test, 'http')
 
 test('Make Unsigned Split Address Transaction', async () => {
-  // test func [Core.makeUnsignedSplitAddrTx]
+  // test func [Api.makeUnsignedSplitAddrTx]
   await cor
     .makeUnsignedSplitAddrTx({
       from: Data.acc_addr,
