@@ -2,7 +2,7 @@ import bitcore from 'bitcore-lib'
 import bs58 from 'bs58'
 import Hash from './hash'
 import Ecpair from './ecpair'
-import CommonUtil from '../../util/util'
+import CommonUtil from '../util'
 import Keystore from './keystore'
 import UtilRequest from '../interface'
 

@@ -1,20 +1,10 @@
-import bs58 from 'bs58'
-import tinySecp from 'tiny-secp256k1'
-import Hash from '../util/crypto/hash'
 import Keystore from '../util/crypto/keystore'
 import Aes from '../util/crypto/aes'
 import PrivateKey from '../util/crypto/privatekey'
+import Verify from '../util/verify'
 import UtilInterface from '../util/interface'
 
 const OP_CODE_TYPE = 'hex'
-
-const getCheckSum = (hex: string | Buffer) => {
-  if (hex instanceof Buffer) {
-    return Hash.sha256(Hash.sha256(hex)).slice(0, 4)
-  } else {
-    return Hash.sha256(Hash.sha256(Buffer.from(hex, OP_CODE_TYPE))).slice(0, 4)
-  }
-}
 
 /**
  * @class [Account]
@@ -33,9 +23,7 @@ export default class Account {
       if (privKey instanceof Buffer) {
         privKey = privKey.toString(OP_CODE_TYPE)
       }
-      if (!tinySecp.isPrivate(Buffer.from(privKey, OP_CODE_TYPE))) {
-        throw new Error('The private key entered is not a valid one !')
-      } else {
+      if (Verify.isPrivate(privKey)) {
         const privK = new PrivateKey(privKey)
         return privK.privKey.toP2PKHAddress
       }
@@ -55,9 +43,7 @@ export default class Account {
       if (privKey instanceof Buffer) {
         privKey = privKey.toString(OP_CODE_TYPE)
       }
-      if (!tinySecp.isPrivate(Buffer.from(privKey, OP_CODE_TYPE))) {
-        throw new Error('The private key entered is not a valid one !')
-      } else {
+      if (Verify.isPrivate(privKey)) {
         const privK = new PrivateKey(privKey)
         return privK.privKey.toPublicKey().toString(OP_CODE_TYPE)
       }
@@ -78,12 +64,9 @@ export default class Account {
       if (privKey instanceof Buffer) {
         privKey = privKey.toString(OP_CODE_TYPE)
       }
-      if (!tinySecp.isPrivate(Buffer.from(privKey, OP_CODE_TYPE))) {
-        throw new Error('The private key entered is not a valid one !')
-      } else {
+      if (Verify.isPrivate(privKey)) {
         const privK = new PrivateKey(privKey)
-        const keystore: UtilInterface.CryptoJson = privK.getCryptoByPrivKey(pwd)
-        return keystore
+        return privK.getCryptoByPrivKey(pwd)
       }
     } catch (err) {
       console.log('dumpKeyStoreFromPrivKey Error:', err)
@@ -101,9 +84,7 @@ export default class Account {
       if (privKey instanceof Buffer) {
         privKey = privKey.toString(OP_CODE_TYPE)
       }
-      if (!tinySecp.isPrivate(Buffer.from(privKey, OP_CODE_TYPE))) {
-        throw new Error('The private key entered is not a valid one !')
-      } else {
+      if (Verify.isPrivate(privKey)) {
         const privK = new PrivateKey(privKey)
         return privK.privKey.pkh
       }
@@ -119,17 +100,14 @@ export default class Account {
    * @memberof Account
    */
   dumpPubKeyHashFromAddr(addr: string) {
-    const decoded = bs58.decode(addr)
-    if (decoded.length < 4) {
-      throw new Error(`Address length = ${decoded.length}: is too short !`)
+    try {
+      const pubKey_hash = Verify.isAddr(addr)
+      if (pubKey_hash) {
+        return pubKey_hash.slice(2).toString(OP_CODE_TYPE)
+      }
+    } catch (err) {
+      console.log('dumpPubKeyHashFromAddr Error:', err)
     }
-    const len = decoded.length
-    const pubKey_hash = decoded.slice(0, len - 4)
-    const checksum = getCheckSum(pubKey_hash)
-    if (!checksum.equals(decoded.slice(len - 4))) {
-      throw new Error(`Incorrect address format !`)
-    }
-    return pubKey_hash.slice(2).toString(OP_CODE_TYPE)
   }
 
   /**
@@ -143,32 +121,36 @@ export default class Account {
     key_store: UtilInterface.CryptoJson,
     pwd: string
   ) {
-    const cpt = key_store.crypto
-    const kdfParams = cpt.kdfparams
-    const saltBuffer = Buffer.from(kdfParams.salt, OP_CODE_TYPE)
-    const derivedKey = Keystore.getDerivedKey(
-      pwd,
-      saltBuffer,
-      kdfParams.n,
-      kdfParams.r,
-      kdfParams.p,
-      kdfParams.dklen
-    )
-    const aesKey = derivedKey.slice(0, 16).toString(OP_CODE_TYPE)
-    const sha256Key = derivedKey.slice(16, 32).toString(OP_CODE_TYPE)
-    const mac = Aes.getMac(sha256Key, cpt.ciphertext)
-    if (mac !== cpt.mac) {
-      throw new Error('Wrong passphrase !')
+    try {
+      const cpt = key_store.crypto
+      const kdfParams = cpt.kdfparams
+      const saltBuffer = Buffer.from(kdfParams.salt, OP_CODE_TYPE)
+      const derivedKey = Keystore.getDerivedKey(
+        pwd,
+        saltBuffer,
+        kdfParams.n,
+        kdfParams.r,
+        kdfParams.p,
+        kdfParams.dklen
+      )
+      const aesKey = derivedKey.slice(0, 16).toString(OP_CODE_TYPE)
+      const sha256Key = derivedKey.slice(16, 32).toString(OP_CODE_TYPE)
+      const mac = Aes.getMac(sha256Key, cpt.ciphertext)
+      if (mac !== cpt.mac) {
+        throw new Error('Wrong passphrase !')
+      }
+      const privateKeyHexStr = await Aes.getCiphertext(
+        aesKey,
+        cpt.ciphertext,
+        cpt.cipherparams.iv
+      )
+      if (!privateKeyHexStr) {
+        throw new Error('Private key not found !')
+      }
+      return privateKeyHexStr
+    } catch (err) {
+      console.log('dumpPrivKeyFromKeyStore Error:', err)
     }
-    const privateKeyHexStr = await Aes.getCiphertext(
-      aesKey,
-      cpt.ciphertext,
-      cpt.cipherparams.iv
-    )
-    if (!privateKeyHexStr) {
-      throw new Error('Private key not found !')
-    }
-    return privateKeyHexStr
   }
 
   /**
@@ -178,14 +160,21 @@ export default class Account {
    * @returns {} Crypto
    * @memberof Account
    */
-  getCryptoByPwd(pwd: string, privateKey_str?: string) {
-    const privK = new PrivateKey(privateKey_str)
-    const cryptoJson = privK.getCryptoByPrivKey(pwd)
-    return {
-      P2PKH: privK.privKey.toP2PKHAddress,
-      P2SH: privK.privKey.toP2SHAddress,
-      privateKey: privK.privKey,
-      cryptoJson
+  getCryptoByPwd(pwd: string, privKey?: string | Buffer) {
+    try {
+      if (privKey && privKey instanceof Buffer) {
+        privKey = privKey.toString(OP_CODE_TYPE)
+      }
+      const privK = new PrivateKey(privKey)
+      const cryptoJson = privK.getCryptoByPrivKey(pwd)
+      return {
+        P2PKH: privK.privKey.toP2PKHAddress,
+        P2SH: privK.privKey.toP2SHAddress,
+        privateKey: privK.privKey,
+        cryptoJson
+      }
+    } catch (err) {
+      console.log('getCryptoByPwd Error:', err)
     }
   }
 }
