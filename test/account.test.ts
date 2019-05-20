@@ -71,8 +71,8 @@ test('Dump PublicKey Hash from Address', async () => {
 })
 
 test('Create an account', async () => {
-  // test func [getCryptoAcc]
-  const { cryptoJson, P2PKH } = await accManager.getCryptoAcc(Data.acc_pwd)
+  // test func [getCryptoByPwd]
+  const { cryptoJson, P2PKH } = await acc.getCryptoByPwd(Data.acc_pwd)
   expect(cryptoJson.address).toEqual(P2PKH)
   // test func [addToAccList]
   await accManager.addToAccList(cryptoJson, {
@@ -83,14 +83,27 @@ test('Create an account', async () => {
   expect(acc_list_result[P2PKH].P2PKH).toEqual(P2PKH)
 })
 
-test('Import an account by KeyStore', async () => {})
-
 test('Import an account by PrivateKey', async () => {
-  // test func [getCryptoAcc]
-  const { cryptoJson, P2PKH } = await accManager.getCryptoAcc(
+  // test func [getCryptoByPwd]
+  const { cryptoJson, P2PKH } = await acc.getCryptoByPwd(
     Data.acc_pwd,
     Data.acc_privateKey
   )
+  expect(cryptoJson.address).toEqual(P2PKH)
+  // test func [addToAccList]
+  await accManager.addToAccList(cryptoJson, {
+    name: Data.acc_name,
+    P2PKH
+  })
+  expect(acc_list_result[P2PKH].name).toEqual(Data.acc_name)
+  expect(acc_list_result[P2PKH].P2PKH).toEqual(P2PKH)
+})
+
+test('Import an account by KeyStore', async () => {
+  // test func [dumpPrivKeyFromKeyStore]
+  const privkey = await acc.dumpPrivKeyFromKeyStore(KeystoreJson, Data.acc_pwd)
+  // test func [getCryptoByPwd]
+  const { cryptoJson, P2PKH } = await acc.getCryptoByPwd(Data.acc_pwd, privkey)
   expect(cryptoJson.address).toEqual(P2PKH)
   // test func [addToAccList]
   await accManager.addToAccList(cryptoJson, {

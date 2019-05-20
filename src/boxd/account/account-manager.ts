@@ -1,8 +1,6 @@
-import PrivateKey from '../util/crypto/privatekey'
 import UtilInterface from '../util/interface'
 
 export default class AccountManager {
-  // import an account by KeyStore
   // impAccWithKeyStore: (ksJSON: { crypto: any }, pwd: string) => any todo
   acc_list: { [acc_addr: string]: UtilInterface.Keystore }
   newPrivateKey: any
@@ -16,24 +14,6 @@ export default class AccountManager {
   ) {
     this.acc_list = acc_list
     this.updateAccount = updateAccount
-  }
-
-  /**
-   * @func get-Crypto-Account
-   * @param [*pwd] string
-   * @param [*privateKey_str] string
-   * @returns {} Crypto
-   * @memberof Account
-   */
-  getCryptoAcc(pwd: string, privateKey_str?: string) {
-    const privK = new PrivateKey(privateKey_str)
-    const cryptoJson = privK.getCryptoByPrivKey(pwd)
-    return {
-      P2PKH: privK.privKey.toP2PKHAddress,
-      P2SH: privK.privKey.toP2SHAddress,
-      privateKey: privK.privKey,
-      cryptoJson
-    }
   }
 
   /**
