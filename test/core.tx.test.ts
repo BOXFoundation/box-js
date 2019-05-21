@@ -9,6 +9,21 @@ const cor = new Api(fetch, Data.endpoint_test, 'http')
 const feature = new Feature(fetch, Data.endpoint_test, 'http')
 
 test('Make a BOX Transaction', async () => {
+  const tx_result = await feature.makeBoxTxByKeystore({
+    tx: {
+      from: Data.acc_addr,
+      to: Data.to_addrs,
+      amounts: Data.amounts,
+      fee: Data.fee
+    },
+    keystore: Keystore,
+    pwd: Data.acc_pwd
+  })
+  const tx_detail = await cor.viewTxDetail(tx_result.hash)
+  expect(tx_detail.detail.hash).toEqual(tx_result.hash)
+})
+
+/* test('Sign Transaction by PrivKey or Keystore', async () => {
   await cor
     .makeUnsignedTx({
       from: Data.acc_addr,
@@ -33,18 +48,13 @@ test('Make a BOX Transaction', async () => {
         keystore: Keystore,
         pwd: Data.acc_pwd
       })
-      // console.log('signed_tx:', JSON.stringify(signed_tx))
-      const tx_result = await cor.sendTransaction(signed_tx)
-      // console.log('tx_result:', tx_result)
-      const tx_detail = await cor.viewTxDetail(tx_result.hash)
-      // console.log('tx_detail:', JSON.stringify(tx_detail))
-      expect(tx_detail.detail.hash).toEqual(tx_result.hash)
+      expect(signed_tx).toEqual(signed_tx_acc)
     })
     .catch(err => {
-      console.error('Make a BOX Transaction Error:', err)
+      console.error('Sign Transaction by PrivKey or Keystore Error:', err)
       expect(0).toBe(1)
     })
-})
+}) */
 
 test('Get the BOX Balance of the given Address', async () => {
   await cor

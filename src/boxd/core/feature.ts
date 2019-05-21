@@ -25,21 +25,17 @@ export default class Feature extends Fetch {
   public async signTransactionByKeystore(
     unsigned_tx: TxRequest.SignedTxByKeysReq
   ) {
-    try {
-      const acc = new Account()
-      const privKey = await acc.dumpPrivKeyFromKeyStore(
-        unsigned_tx.keystore,
-        unsigned_tx.pwd
-      )
-      const unsigned_tx_p = {
-        privKey,
-        unsignedTx: unsigned_tx.unsignedTx
-      }
-      const privk = new PrivateKey(privKey)
-      return privk.signTransactionByPrivKey(unsigned_tx_p)
-    } catch (err) {
-      console.log('signTransactionByKeystore Error:', err)
+    const acc = new Account()
+    const privKey = await acc.dumpPrivKeyFromKeyStore(
+      unsigned_tx.keystore,
+      unsigned_tx.pwd
+    )
+    const unsigned_tx_p = {
+      privKey,
+      unsignedTx: unsigned_tx.unsignedTx
     }
+    const privk = new PrivateKey(privKey)
+    return privk.signTransactionByPrivKey(unsigned_tx_p)
   }
 
   /**
@@ -47,12 +43,18 @@ export default class Feature extends Fetch {
    * @param [*unsigned_tx] SignedTxByKeysReq
    * @returns [tx] TxResponse.TX
    */
-  /*     public async makeBoxTxByKeystore(
-    org_tx: TxRequest.MakeBoxTxByKeysReq,
-  ) {
-    try {
-      const cor = new Core(this._fetch, this.endpoint, this.fetch_type)
-      const unsigned_tx = await cor.makeUnsignedTx(org_tx.tx)
-    }
-  } */
+  public async makeBoxTxByKeystore(org_tx: TxRequest.MakeBoxTxByKeysReq) {
+    const cor = new Core(this._fetch, this.endpoint, this.fetch_type)
+    const unsigned_tx = await cor.makeUnsignedTx(org_tx.tx)
+    const signed_tx = await this.signTransactionByKeystore({
+      unsignedTx: {
+        tx: unsigned_tx.tx,
+        rawMsgs: unsigned_tx.rawMsgs
+      },
+      keystore: org_tx.keystore,
+      pwd: org_tx.pwd
+    })
+    const tx_result = await cor.sendTransaction(signed_tx)
+    return tx_result
+  }
 }
