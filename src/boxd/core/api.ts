@@ -21,12 +21,13 @@ export default class Api extends Fetch {
     super(_fetch, endpoint, fetch_type)
   }
 
-  // block
+  // Block
   getNodeInfo(): Promise<BlockResponse.NodeInfo> {
     return super.fetch('/ctl/getnodeinfo')
   }
 
-  /*   addNode(nodeId: string) {
+  /* UNDO
+    addNode(nodeId: string) {
     return super.fetch('/ctl/addnode', { nodeId })
   } */
 
@@ -86,14 +87,14 @@ export default class Api extends Fetch {
     return super.fetch('/block/detail', { hash })
   }
 
-  // split
+  // Split
   makeUnsignedSplitAddrTx(
     split_addr_tx: SplitRequest.SplitAddrTxReq
   ): Promise<SplitResponse.UnsignedSplitAddrTx> {
     return super.fetch('/tx/makeunsignedtx/splitaddr', split_addr_tx)
   }
 
-  // token
+  // Token
   makeUnsignedTokenIssueTx(
     token_issue_tx: TokenRequest.TokenIssueTxReq
   ): Promise<TokenResponse.UnsignedTokenIssueTx> {
@@ -170,6 +171,11 @@ export default class Api extends Fetch {
 
   fetchUtxos(fetch_utxos_req: TxRequest.SetchUtxosReq) {
     return super.fetch('/tx/fetchutxos', fetch_utxos_req)
+  }
+
+  // TODO Raw
+  makeUnsignedContractTx(tx: TxRequest.OriginalTxReq): Promise<TxResponse.UnsignedTx> {
+    return super.fetch('/todo', tx)
   }
 
   public async createRawTransaction(raw: TxRequest.Raw) {

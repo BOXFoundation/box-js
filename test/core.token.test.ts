@@ -23,7 +23,6 @@ test('Issue a Token and get the Token Balance', async done => {
     })
     .then(async res => {
       // console.log('unsign_token:', JSON.stringify(res))
-
       // test func [Api.signTransactionByPrivKey]
       const signed_token = await cor.signTransactionByPrivKey({
         unsignedTx: {

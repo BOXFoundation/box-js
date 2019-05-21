@@ -1,4 +1,4 @@
-import bitcore from 'bitcore-lib'
+import UtilInterface from '../../util/interface'
 import Response from './response'
 
 namespace Request {
@@ -20,15 +20,24 @@ namespace Request {
     fee: string
   }
 
-  export interface SignedTxByAccReq {
-    acc: bitcore.PrivateKey
-    tx: Response.TX
-    rawMsgs: string[]
+  export interface SignedTxByKeysReq {
+    unsignedTx: {
+      tx: Response.TX
+      rawMsgs: string[]
+    }
+    keystore: UtilInterface.Keystore
+    pwd: string
   }
 
   export interface SetchUtxosReq {
     addr: string
     amount: number
+  }
+
+  export interface MakeBoxTxByKeysReq {
+    tx: OriginalTxReq
+    keystore: UtilInterface.Keystore
+    pwd: string
   }
 }
 

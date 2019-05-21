@@ -118,7 +118,7 @@ export default class Account {
    * @memberof Account
    */
   public async dumpPrivKeyFromKeyStore(
-    key_store: UtilInterface.CryptoJson,
+    key_store: UtilInterface.Keystore,
     pwd: string
   ) {
     try {

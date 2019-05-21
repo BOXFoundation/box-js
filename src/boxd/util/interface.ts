@@ -1,7 +1,8 @@
 import bitcore from 'bitcore-lib'
+import TxResponse from '../core/tx/response'
 
 namespace Interface {
-  export interface CryptoJson {
+  export interface Keystore {
     id: string
     address: string
     crypto: {
@@ -20,42 +21,23 @@ namespace Interface {
       }
     }
   }
-
   export interface Crypto {
     P2PKH: string
     P2SH: string
     privateKey: bitcore.PrivateKey
-    cryptoJson: CryptoJson
+    cryptoJson: Keystore
   }
 
   export interface SignedTxByPrivKeyReq {
     unsignedTx: {
-      tx: any //Response.TX
+      tx: TxResponse.TX
       rawMsgs: string[]
     }
     privKey: string
   }
 
-  export interface Keystore {
-    cryptoJSON: {
-      id: string
-      address: string
-      crypto: {
-        cipher: string
-        ciphertext: string
-        cipherparams: {
-          iv: string
-        }
-        mac: string
-        kdfparams: {
-          salt: string
-          n: number
-          r: number
-          p: number
-          dklen: number
-        }
-      }
-    }
+  export interface CryptoJson {
+    cryptoJSON: Keystore
     update_time: number
     P2PKH: string
     name: string
