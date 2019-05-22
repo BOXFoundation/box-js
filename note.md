@@ -68,124 +68,66 @@ boxd
 ## Project Structure
 
 ```
-BoxMask-js
-  │
-  ├── config  #
-  ├── dist  #
-  ├── src  #
-  │   ├── config
-  │   ├── crypto
-  │   │     ├── aes.js #
-  │   │     ├── ecpair.js  #
-  │   │     ├── hash.js  #
-  │   │     └── keystore.js #
-  |   |
-  │   ├── script
-  │   │     ├── index.js #
-  │   │     ├── protobuf.js  #
-  │   │     ├── tx.pb.js  #
-  │   │     ├── tx.proto  #
-  │   │     ├── tx.proto.js  #
-  │   │     └── tx.proto2.js #
-  |   |
-  │   ├── index.js
-  │   ├── jsonrpc.js
-  │   ├── privatekey.js
-  │   ├── rpc-error.js
-  │   ├── token.js
-  │   ├── tx.js
-  │   └── wallet.js
-  │
-  ├── test  #
-  ├── types  #
-  ├── component  #
-  │    ├── data  #
-  │    │    └── js
-  │    │        ├── common.js #
-  │    │        ├── fetch.js  #
-  │    │        └── fitter.js #
-  │    │
-  │    ├── page #
-  │    ├── app.jsx  #
-  │    ├── index.html #
-  │    └── index.jsx #
-  │
-  ├── .editorconfig # 代码风 ├── Dockerfile # r 配置
-  ├── package.json #  └── README.md #
+.
+├── .vscode  # vscode config
+├── coverage  # test coverage
+├── dist  # builded
+│
+├── src
+│   └── boxd
+│       ├── boxd.ts  # boxd output file
+│       ├── account
+│       │   ├── account-manager.ts  # accounts manager
+│       │   └── account.ts  # account core
+│       ├── contract  # todo
+│       ├── core  # boxd:core
+│       │   ├── api.ts  # core:api function
+│       │   ├── feature.ts  # core:feature function
+│       │   ├── block
+│       │   │   ├── request.ts  # api request data structure
+│       │   │   └── response.ts  # api response data structure
+│       │   ├── split
+│       │   │   ├── request.ts
+│       │   │   └── response.ts
+│       │   ├── token
+│       │   │   ├── request.ts
+│       │   │   ├── response.ts
+│       │   │   └── util.ts  # token tools
+│       │   └── tx
+│       │       ├── request.ts
+│       │       └── response.ts
+│       └── util  # boxd tools
+│           ├── crypto   # crypto tools
+│           │   ├── aes.ts  # [crypto-js](https://www.npmjs.com/package/crypto-js) :aes
+│           │   ├── ecpair.ts  # [bitcoin-lib](https://www.npmjs.com/package/bitcoinjs-lib) :ecpair
+│           │   ├── hash.ts
+│           │   ├── keystore.ts  # account keystore
+│           │   └── privatekey.ts  # privatekey class
+│           ├── fetch.ts  # fetch class
+│           ├── interface.ts  # util data structure
+│           ├── util.ts  # util output file
+│           ├── var.ts  # variable
+│           └── verify.ts  # format verify
+│
+├── test  # jest test
+│   ├── account.test.ts
+│   ├── core.block.test.ts
+│   ├── core.split.test.ts
+│   ├── core.token.test.ts
+│   ├── core.tx.test.ts
+│   └── json  # test data json
+│       ├── data.json
+│       └── keystore.json
+│ 
+├── types  # typescript declaration
+│    └── index.d.ts
+│
+├── gulpfile.js  # [gulp](https://gulpjs.com/)
+├── note.md
+├── package.json  # npm package config
+├── README.md
+└── tsconfig.json  # typescript config
+
 ```
 
-/\*\*
-
-- @export make-Unsigned-Tx
-- @param [*tx] TX
-- @returns [promise]
-  \*/
-  makeUnsignedTx = async (endpoint: string, tx: UnsignedTxReq) => {
-  return await fetchRPC(this.\_fetch, endpoint, '/tx/makeunsignedtx', tx)
-  }
-
-/\*\*
-
-- @export send-Transaction
-- @param [*signedTx]
-- @returns [promise]
-  \*/
-  sendTransaction = async (\_fetch: any, endpoint: string, signed_tx) => {
-  return await fetchRPC(\_fetch, endpoint, '/tx/sendtransaction', signed_tx)
-  }
-
-/\*\*
-
-- @export create-Raw-Transaction
-- @param [*raw] Raw
-- @returns [promise]
-  \*/
-  createRawTransaction = async (\_fetch: any, endpoint: string, raw: Raw) => {
-  return await fetchRPC(\_fetch, endpoint, '/tx/getrawtransaction', raw)
-  }
-
-/\*\*
-
-- @export send-Raw-Transaction
-- @param [*raw_tx] string
-- @returns [promise]
-  \*/
-  sendRawTransaction = async (
-  \_fetch: any,
-  endpoint: string,
-  raw_tx: string
-  ) => {
-  return await fetchRPC(\_fetch, endpoint, '/todo', { raw_tx })
-  }
-
-/\*\*
-
-- @export get-Account-Balance
-- @param [*addr] bitcore.Address
-- @returns [balance] string
-  \*/
-  getBalance = async (\_fetch: any, endpoint: string, addr: string) => {
-  return await fetchRPC(\_fetch, endpoint, '/tx/getbalance', { addr })
-  }
-
-/\*\*
-
-- @export get-Account-Balances-Array
-- @param [*addr] bitcore.Address[]
-- @returns [balances] string[]
-  \*/
-  getBalances = async (\_fetch: any, endpoint: string, addrs: string[]) => {
-  return await fetchRPC(\_fetch, endpoint, '/tx/getbalance', { addrs })
-  }
-
-/\*\*
-
-- @export view-TX-Detail
-- @param [hash] string
-- @returns [promise]
-  \*/
-  viewTxDetail = async (\_fetch: any, endpoint: string, hash: string) => {
-  return \_fetch(\_fetch, endpoint, '/tx/detail', { hash })
-  }
-
-  ./integration_tests -scope=continue
+./integration_tests -scope=continue
