@@ -9,21 +9,21 @@ const cor = new Api(fetch, Data.endpoint_test, 'http')
 const feature = new Feature(fetch, Data.endpoint_test, 'http')
 
 test('Make a BOX Transaction', async () => {
-  const tx_result = await feature.makeBoxTxByKeystore({
+  const tx_result = await feature.makeBoxTxByCrypto({
     tx: {
       from: Data.acc_addr,
       to: Data.to_addrs,
       amounts: Data.amounts,
       fee: Data.fee
     },
-    keystore: Keystore,
+    crypto: Keystore,
     pwd: Data.acc_pwd
   })
   const tx_detail = await cor.viewTxDetail(tx_result.hash)
   expect(tx_detail.detail.hash).toEqual(tx_result.hash)
 })
 
-/* test('Sign Transaction by PrivKey or Keystore', async () => {
+/* test('Sign Transaction by PrivKey or Crypto', async () => {
   await cor
     .makeUnsignedTx({
       from: Data.acc_addr,
@@ -33,25 +33,25 @@ test('Make a BOX Transaction', async () => {
     })
     .then(async res => {
       // console.log('unsigned_tx:', JSON.stringify(res))
-      const signed_tx = await cor.signTransactionByPrivKey({
+      const signed_tx = await cor.signTransactionByCrypto({
         unsignedTx: {
           tx: res.tx,
           rawMsgs: res.rawMsgs
         },
         privKey: Data.acc_privateKey
       })
-      const signed_tx_acc = await feature.signTransactionByKeystore({
+      const signed_tx_acc = await feature.signTransactionByCrypto({
         unsignedTx: {
           tx: res.tx,
           rawMsgs: res.rawMsgs
         },
-        keystore: Keystore,
+        crypto: Keystore,
         pwd: Data.acc_pwd
       })
       expect(signed_tx).toEqual(signed_tx_acc)
     })
     .catch(err => {
-      console.error('Sign Transaction by PrivKey or Keystore Error:', err)
+      console.error('Sign Transaction by PrivKey or Crypto Error:', err)
       expect(0).toBe(1)
     })
 }) */

@@ -3,7 +3,7 @@ import bs58 from 'bs58'
 import Hash from './hash'
 import Ecpair from './ecpair'
 import CommonUtil from '../util'
-import Keystore from './keystore'
+import CryptoJson from './crypto-json'
 import UtilRequest from '../interface'
 
 const OP_CODE_TYPE = 'hex'
@@ -35,7 +35,7 @@ export default class PrivateKey {
    * @returns [cryptoJson]
    */
   getCryptoByPrivKey = (pwd: string) => {
-    return Keystore.getCryptoJSON(this.privKey, pwd)
+    return CryptoJson.getCryptoByPrivKey(this.privKey, pwd)
   }
 
   /**

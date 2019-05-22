@@ -2,12 +2,12 @@ import UtilInterface from '../util/interface'
 
 export default class AccountManager {
   // impAccWithKeyStore: (ksJSON: { crypto: any }, pwd: string) => any todo
-  acc_list: { [acc_addr: string]: UtilInterface.Keystore }
+  acc_list: { [acc_addr: string]: UtilInterface.Account }
   newPrivateKey: any
   updateAccount: any
 
   constructor(
-    acc_list: { [acc_addr: string]: UtilInterface.Keystore },
+    acc_list: { [acc_addr: string]: UtilInterface.Account },
     updateAccount: object = (new_acc_list: object) => {
       return new_acc_list
     }
@@ -21,7 +21,7 @@ export default class AccountManager {
    * @param {*cryptoJson} { address ... }
    * @memberof Account
    */
-  addToAccList(cryptoJson: { address: string }, otherInfo: any): void {
+  addToAccList(cryptoJson: UtilInterface.Crypto, otherInfo: any): void {
     const address = cryptoJson.address
     const update_time = Date.now()
     if (this.acc_list[address]) {

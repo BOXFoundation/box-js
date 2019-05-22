@@ -1,4 +1,4 @@
-import Keystore from '../util/crypto/keystore'
+import CryptoJson from '../util/crypto/crypto-json'
 import Aes from '../util/crypto/aes'
 import PrivateKey from '../util/crypto/privatekey'
 import Verify from '../util/verify'
@@ -111,21 +111,21 @@ export default class Account {
   }
 
   /**
-   * @func Dump-PrivateKey-from-KeyStore
+   * @func Dump-PrivateKey-from-Crypto
    * @param [*key_store] CryptoJson
    * @param [*pwd] string
    * @returns [PrivateKey] string
    * @memberof Account
    */
-  public async dumpPrivKeyFromKeyStore(
-    key_store: UtilInterface.Keystore,
+  public async dumpPrivKeyFromCrypto(
+    crypto_json: UtilInterface.Crypto,
     pwd: string
   ) {
     try {
-      const cpt = key_store.crypto
+      const cpt = crypto_json.crypto
       const kdfParams = cpt.kdfparams
       const saltBuffer = Buffer.from(kdfParams.salt, OP_CODE_TYPE)
-      const derivedKey = Keystore.getDerivedKey(
+      const derivedKey = CryptoJson.getDerivedKey(
         pwd,
         saltBuffer,
         kdfParams.n,

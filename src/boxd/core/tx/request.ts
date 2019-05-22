@@ -25,7 +25,7 @@ namespace Request {
       tx: Response.TX
       rawMsgs: string[]
     }
-    keystore: UtilInterface.Keystore
+    crypto: UtilInterface.Crypto
     pwd: string
   }
 
@@ -36,7 +36,7 @@ namespace Request {
 
   export interface MakeBoxTxByKeysReq {
     tx: OriginalTxReq
-    keystore: UtilInterface.Keystore
+    crypto: UtilInterface.Crypto
     pwd: string
   }
 }

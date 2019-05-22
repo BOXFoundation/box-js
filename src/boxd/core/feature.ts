@@ -18,16 +18,16 @@ export default class Feature extends Fetch {
   }
 
   /**
-   * @export Sign-Transaction-by-Keystore
+   * @export Sign-Transaction-by-CryptoJson
    * @param [*unsigned_tx] SignedTxByKeysReq
    * @returns [tx] TxResponse.TX
    */
-  public async signTransactionByKeystore(
+  public async signTransactionByCrypto(
     unsigned_tx: TxRequest.SignedTxByKeysReq
   ) {
     const acc = new Account()
-    const privKey = await acc.dumpPrivKeyFromKeyStore(
-      unsigned_tx.keystore,
+    const privKey = await acc.dumpPrivKeyFromCrypto(
+      unsigned_tx.crypto,
       unsigned_tx.pwd
     )
     const unsigned_tx_p = {
@@ -39,19 +39,19 @@ export default class Feature extends Fetch {
   }
 
   /**
-   * @export Sign-Transaction-by-Keystore
+   * @export Sign-Transaction-by-Crypto
    * @param [*unsigned_tx] SignedTxByKeysReq
    * @returns [tx] TxResponse.TX
    */
-  public async makeBoxTxByKeystore(org_tx: TxRequest.MakeBoxTxByKeysReq) {
+  public async makeBoxTxByCrypto(org_tx: TxRequest.MakeBoxTxByKeysReq) {
     const cor = new Core(this._fetch, this.endpoint, this.fetch_type)
     const unsigned_tx = await cor.makeUnsignedTx(org_tx.tx)
-    const signed_tx = await this.signTransactionByKeystore({
+    const signed_tx = await this.signTransactionByCrypto({
       unsignedTx: {
         tx: unsigned_tx.tx,
         rawMsgs: unsigned_tx.rawMsgs
       },
-      keystore: org_tx.keystore,
+      crypto: org_tx.crypto,
       pwd: org_tx.pwd
     })
     const tx_result = await cor.sendTransaction(signed_tx)

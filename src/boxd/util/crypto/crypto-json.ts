@@ -13,7 +13,7 @@ const scryptOpt = {
   dklen: 32
 }
 
-namespace Keystore {
+namespace CryptoJson {
   /**
    * @export get-DerivedKey-by-Passphrase
    * @param [passphrase] string
@@ -38,18 +38,18 @@ namespace Keystore {
   }
 
   /**
-   * @export get-CryptoJSON-by-PrivateKey&Passphrase
+   * @export get-Crypto-by-PrivateKey&Passphrase
    * @param [privateKey] privateKey
    * @param [passphrase] string
    * @returns [CryptoJson] CryptoJson
    */
-  export const getCryptoJSON = (
+  export const getCryptoByPrivKey = (
     privateKey: {
       toString: (arg0: string) => void
       toP2PKHAddress
     },
     passphrase: string
-  ): UtilInterface.CryptoJson => {
+  ): UtilInterface.Crypto => {
     if (!privateKey) {
       throw new Error('PrivateKey is require!')
     }
@@ -146,4 +146,4 @@ namespace Keystore {
   }
 }
 
-export default Keystore
+export default CryptoJson
