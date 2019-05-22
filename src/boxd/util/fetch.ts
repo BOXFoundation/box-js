@@ -31,9 +31,6 @@ const httpFetch = async (path, body, _fetch, endpoint) => {
         // console.log('[fetch] Error: code !== 0')
         throw new HttpError(result)
       }
-    } else {
-      delete result.code
-      delete result.message
     }
   } catch (err) {
     err.isFetchError = true

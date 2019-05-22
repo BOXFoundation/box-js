@@ -9,7 +9,7 @@ test('Make Unsigned Split Address Transaction', async () => {
   // test func [Api.makeUnsignedSplitAddrTx]
   await cor
     .makeUnsignedSplitAddrTx({
-      from: Data.acc_addr,
+      from: Data.acc_addr_1,
       addrs: Data.to_addrs,
       weights: Data.split_weights,
       fee: Data.fee

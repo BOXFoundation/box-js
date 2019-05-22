@@ -53,13 +53,13 @@ export default class Account {
   }
 
   /**
-   * @func Dump-KeyStore-from-PrivateKey
+   * @func Dump-Crypto-from-PrivateKey
    * @param [*privKey] string | Buffer
    * @param [*pwd] string
-   * @returns [keystore] CryptoJson
+   * @returns [CryptoJson] CryptoJson
    * @memberof Account
    */
-  dumpKeyStoreFromPrivKey(privKey: string | Buffer, pwd: string) {
+  dumpCryptoFromPrivKey(privKey: string | Buffer, pwd: string) {
     try {
       if (privKey instanceof Buffer) {
         privKey = privKey.toString(OP_CODE_TYPE)

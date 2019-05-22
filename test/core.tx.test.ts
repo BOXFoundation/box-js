@@ -8,15 +8,23 @@ import Keystore from './json/keystore.json'
 const cor = new Api(fetch, Data.endpoint_test, 'http')
 const feature = new Feature(fetch, Data.endpoint_test, 'http')
 
+/* test('faucet', async () => {
+  const faucet_res = await cor.faucet({
+    addr: Data.acc_addr_3,
+    amount: 30000000000
+  })
+  console.log('faucet res:', faucet_res)
+}) */
+
 test('Make a BOX Transaction', async () => {
   const tx_result = await feature.makeBoxTxByCrypto({
     tx: {
-      from: Data.acc_addr,
+      from: Data.acc_addr_3,
       to: Data.to_addrs,
       amounts: Data.amounts,
       fee: Data.fee
     },
-    crypto: Keystore,
+    crypto: Keystore.keystore_3,
     pwd: Data.acc_pwd
   })
   const tx_detail = await cor.viewTxDetail(tx_result.hash)
@@ -26,7 +34,7 @@ test('Make a BOX Transaction', async () => {
 /* test('Sign Transaction by PrivKey or Crypto', async () => {
   await cor
     .makeUnsignedTx({
-      from: Data.acc_addr,
+      from: Data.acc_addr_3,
       to: Data.to_addrs,
       amounts: Data.amounts,
       fee: Data.fee
@@ -38,14 +46,14 @@ test('Make a BOX Transaction', async () => {
           tx: res.tx,
           rawMsgs: res.rawMsgs
         },
-        privKey: Data.acc_privateKey
+        privKey: Data.acc_privateKey_3
       })
       const signed_tx_acc = await feature.signTransactionByCrypto({
         unsignedTx: {
           tx: res.tx,
           rawMsgs: res.rawMsgs
         },
-        crypto: Keystore,
+        crypto: Keystore.keystore_3,
         pwd: Data.acc_pwd
       })
       expect(signed_tx).toEqual(signed_tx_acc)
@@ -58,7 +66,7 @@ test('Make a BOX Transaction', async () => {
 
 test('Get the BOX Balance of the given Address', async () => {
   await cor
-    .getBalance(Data.acc_addr)
+    .getBalance(Data.acc_addr_3)
     .then(async res => {
       // console.log('getBalance res:', JSON.stringify(res))
       expect(res)
@@ -71,7 +79,7 @@ test('Get the BOX Balance of the given Address', async () => {
 
 test('Get the BOX Balances of the given Addresses', async () => {
   await cor
-    .getBalances([Data.acc_addr, Data.acc_addr])
+    .getBalances([Data.acc_addr_3, Data.acc_addr_3])
     .then(async res => {
       expect(res)
     })
@@ -85,10 +93,10 @@ test('Get the BOX Balances of the given Addresses', async () => {
 /* test('Make a Raw Transaction', async () => {
   await cor
     .createRawTransaction({
-      addr: Data.acc_addr,
+      addr: Data.acc_addr_3,
       to: Data.to_map,
       fee: Data.fee,
-      privKey: Data.acc_privateKey
+      privKey: Data.acc_privateKey_3
     })
     .then(async res => {
       console.log('createRawTransaction res:', JSON.stringify(res))

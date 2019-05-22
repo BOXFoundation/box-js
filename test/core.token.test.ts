@@ -11,8 +11,8 @@ test('Issue a Token and get the Token Balance', async done => {
   // test func [Api.makeUnsignedTokenIssueTx]
   await cor
     .makeUnsignedTokenIssueTx({
-      issuer: Data.acc_addr,
-      owner: Data.acc_addr,
+      issuer: Data.acc_addr_2,
+      owner: Data.acc_addr_2,
       fee: Data.fee,
       tag: {
         name: Data.token_name,
@@ -29,7 +29,7 @@ test('Issue a Token and get the Token Balance', async done => {
           tx: res.tx,
           rawMsgs: res.rawMsgs
         },
-        privKey: Data.acc_privateKey
+        privKey: Data.acc_privateKey_2
       })
       // console.log('signed_token:', JSON.stringify(signed_token))
       // test func [Api.sendTransaction]
@@ -47,7 +47,7 @@ test('Issue a Token and get the Token Balance', async done => {
       expect(index).toEqual(0)
       setTimeout(async () => {
         const token_balances = await cor.getTokenbalances({
-          addrs: [Data.acc_addr, Data.acc_addr],
+          addrs: [Data.acc_addr_2, Data.acc_addr_2],
           tokenHash: token_hash,
           tokenIndex: 0
         })
@@ -70,7 +70,7 @@ test('Make a Token Transaction', async () => {
     .makeUnsignedTokenTransferTx({
       amounts: Data.amounts,
       fee: Data.fee,
-      from: Data.acc_addr,
+      from: Data.acc_addr_2,
       to: Data.to_addrs,
       token_hash: token_hash,
       token_index: 0
@@ -84,7 +84,7 @@ test('Make a Token Transaction', async () => {
           tx: res.tx,
           rawMsgs: res.rawMsgs
         },
-        privKey: Data.acc_privateKey
+        privKey: Data.acc_privateKey_2
       })
       // console.log('signed_Token:', JSON.stringify(signed_Token))
       // test func [Api.sendTransaction]

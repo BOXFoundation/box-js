@@ -28,9 +28,15 @@
     }
   },
   "acc_addr": "b1ZWSdrg48g145VdcmBwMPVuDFdaxDLoktk",
+  "acc_addr_1": "b1gsjyxh4VUAJdovbWKucgAu8WjNg7bfjYK",
+  "acc_addr_2": "b1b69PiUS3KBjHdG1KpZghzo6FYnhg6SFmn",
+  "acc_addr_3": "b1qzR8uLQrxoF8dwsiud7pyci7Sbf8WZaxv",
   "acc_pwd": "1",
   "acc_name": "Little dog Huang",
   "acc_privateKey": "1b8e5830ae669496a11f00c90b12ecb8ccf1b6e2660a86ab1dbd24085b43247f",
+  "acc_privateKey_1": "e74cae16b21dee8a447a312f1f5c59db580fb56739ecc8f6a8d32a4927bfcefd",
+  "acc_privateKey_2": "9c3e8a720bce41c19d9c63ede573a7a6bb48873b68617218c558e84b70221256",
+  "acc_privateKey_3": "7d38661b0c1b5fcd3a93d15ad9973ef459ed10b8b6b9bb223d585d64477d6ae0",
   "acc_publicKey": "025ba62e6e028dd6519a48d1064bae0c371df73afebb70ad90adba52fad2ff0e25",
   "acc_publickey_hash": "3e8821fa1b0f9fef5aaf3e1bb5879bf36772c258",
   "to_addrs": [

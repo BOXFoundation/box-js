@@ -133,6 +133,10 @@ export default class Api extends Fetch {
   }
 
   // TX
+  faucet(req) {
+    return super.fetch('/faucet/claim', req)
+  }
+
   makeUnsignedTx(tx: TxRequest.OriginalTxReq): Promise<TxResponse.UnsignedTx> {
     return super.fetch('/tx/makeunsignedtx', tx)
   }
@@ -174,7 +178,9 @@ export default class Api extends Fetch {
   }
 
   // TODO Raw
-  makeUnsignedContractTx(tx: TxRequest.OriginalTxReq): Promise<TxResponse.UnsignedTx> {
+  makeUnsignedContractTx(
+    tx: TxRequest.OriginalTxReq
+  ): Promise<TxResponse.UnsignedTx> {
     return super.fetch('/todo', tx)
   }
 
