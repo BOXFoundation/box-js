@@ -5,6 +5,7 @@ import UtilInterface from '../util/interface'
 import SplitRequest from './split/request'
 import TokenRequest from './token/request'
 import TxRequest from './tx/request'
+import ContractRequest from './contract/request'
 import BlockResponse from './block/response'
 import SplitResponse from './split/response'
 import TokenResponse from './token/response'
@@ -176,11 +177,10 @@ export default class Api extends Fetch {
     return super.fetch('/tx/fetchutxos', fetch_utxos_req)
   }
 
-  // TODO Raw
   public makeUnsignedContractTx(
     tx: TxRequest.OriginalTxReq
   ): Promise<UtilInterface.UnsignedTx> {
-    return super.fetch('/todo', tx)
+    return super.fetch('/tx/makeunsignedtx/contract', tx)
   }
 
   public async createRawTx(raw: TxRequest.Raw) {
