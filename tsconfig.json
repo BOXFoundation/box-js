@@ -27,7 +27,6 @@
     "resolveJsonModule": true // 允许 import json
   },
   "exclude": [
-    "node_modules",
     "dist"
   ]
 }

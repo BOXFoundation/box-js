@@ -5,9 +5,9 @@
   "main": "dist/boxd.js",
   "types": "./types/index.d.ts",
   "scripts": {
-    "lock": "npm shrinkwrap--dev",
     "test": "jest --coverage --colors",
-    "build": "npx rimraf dist && npx babel src --out-dir dist --source-maps"
+    "build": "gulp",
+    "lock": "npm shrinkwrap--dev"
   },
   "author": "",
   "license": "MIT",
@@ -34,6 +34,7 @@
     "browserify": "^16.2.3",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-uglify": "^3.0.2",
+    "gulp-uglify-es": "^1.0.4",
     "gulp-util": "^3.0.8",
     "jest": "^24.7.1",
     "node-fetch": "^2.3.0",
@@ -41,6 +42,7 @@
     "ts-jest": "^24.0.2",
     "tsify": "^4.0.1",
     "typescript": "^3.4.5",
+    "uglify-es": "^3.3.9",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0",
     "watchify": "^3.11.1"

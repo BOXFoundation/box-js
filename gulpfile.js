@@ -1,26 +1,10 @@
-/* var paths = {
-  pages: ['src/*.html']
-}; */
-
-// const sourcemaps = require('gulp-sourcemaps');
-// const babel = require('gulp-babel');
-
-// gulp.task('default', () =>
-//   gulp
-//     .src('src/**/*.js')
-//     .pipe(sourcemaps.init())
-//     .pipe(babel())
-//     .pipe(sourcemaps.write('.'))
-//     .pipe(gulp.dest('dist'))
-// );
-
 const gulp = require("gulp");
 const browserify = require("browserify");
 const source = require('vinyl-source-stream');
 const tsify = require("tsify");
 const watchify = require("watchify");
 const gutil = require("gulp-util");
-const uglify = require('gulp-uglify');
+const uglify = require('gulp-uglify-es').default;
 const sourcemaps = require('gulp-sourcemaps');
 const buffer = require('vinyl-buffer');
 
