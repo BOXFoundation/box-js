@@ -92,14 +92,14 @@ test('Get the BOX Balances of the given Addresses', async () => {
 // todo
 /* test('Make a Raw Transaction', async () => {
   await cor
-    .createRawTransaction({
+    .createRawTx({
       addr: Data.acc_addr_3,
       to: Data.to_map,
       fee: Data.fee,
       privKey: Data.acc_privateKey_3
     })
     .then(async res => {
-      console.log('createRawTransaction res:', JSON.stringify(res))
+      console.log('createRawTx res:', JSON.stringify(res))
       // expect(res.code).toEqual(0)
     })
     .catch(err => {

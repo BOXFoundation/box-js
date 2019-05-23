@@ -51,10 +51,10 @@ boxd
         ├── makeUnsignedTx # Make unsigned common transaction on-chain
         ├── makeUnsignedSplitAddrTx # Make unsigned split address tx
         ├── makeUnsignedTokenIssueTx # Make unsigned token issue tx, if submited, this will issue a token
-        ├── makeUnsignedTokenTransferTx # Make unsigned token transfer tx
+        ├── makeUnsignedTokenTx # Make unsigned token transfer tx
         ├── createTransaction # Create unsigned transaction by UTXOs
         ├── signTransaction # Sign a unsigned transaction
-        ├── sendTransaction # Send transaction to the chain, it will come into the memory pool
+        ├── sendTx # Send transaction to the chain, it will come into the memory pool
         ├── viewTxDetail # Get transaction info by the given transaction hash
 
         ├── createSplitAddr # 构建分账合约 (整个流程)

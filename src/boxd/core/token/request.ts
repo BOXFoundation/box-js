@@ -1,5 +1,7 @@
+import UtilInterface from '../../util/interface'
+
 namespace Request {
-  export interface TokenIssueTxReq {
+  export interface IssueTokenReq {
     issuer: string
     owner: string
     tag: {
@@ -30,6 +32,18 @@ namespace Request {
     addrs: string[]
     tokenHash: string
     tokenIndex: number
+  }
+
+  export interface IssueTokenByCryptoReq {
+    tx: IssueTokenReq
+    crypto: UtilInterface.Crypto
+    pwd: string
+  }
+
+  export interface MakeTokenTxByCryptoReq {
+    tx: OriginalTokenTxReq
+    crypto: UtilInterface.Crypto
+    pwd: string
   }
 }
 

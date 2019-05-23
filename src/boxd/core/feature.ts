@@ -1,6 +1,7 @@
 import { Fetch } from '../util/fetch'
 import TxRequest from './tx/request'
 import SplitRequest from './split/request'
+import TokenRequest from './token/request'
 import Account from '../account/account'
 import PrivateKey from '../util/crypto/privatekey'
 import Core from '../core/api'
@@ -19,10 +20,10 @@ export default class Feature extends Fetch {
 
   /**
    * @export Sign-Transaction-by-CryptoJson
-   * @param [*unsigned_tx] SignedTxByKeysReq
+   * @param [*unsigned_tx] SignedTxByCryptoReq
    * @returns [tx] TxResponse.TX
    */
-  public async signTxByCrypto(unsigned_tx: TxRequest.SignedTxByKeysReq) {
+  public async signTxByCrypto(unsigned_tx: TxRequest.SignedTxByCryptoReq) {
     const acc = new Account()
     const privKey = await acc.dumpPrivKeyFromCrypto(
       unsigned_tx.crypto,
@@ -37,12 +38,12 @@ export default class Feature extends Fetch {
   }
 
   /**
-   * @export Make-Box-Tx-by-Crypto
-   * @param [*org_tx] MakeBoxTxByKeysReq
+   * @export Make-Box-Transaction-by-Crypto
+   * @param [*org_tx] MakeBoxTxByCryptoReq
    * @returns [Promise] { hash: string }
    */
   public async makeBoxTxByCrypto(
-    org_tx: TxRequest.MakeBoxTxByKeysReq
+    org_tx: TxRequest.MakeBoxTxByCryptoReq
   ): Promise<{ hash: string }> {
     const cor = new Core(this._fetch, this.endpoint, this.fetch_type)
     const unsigned_tx = await cor.makeUnsignedTx(org_tx.tx)
@@ -54,17 +55,17 @@ export default class Feature extends Fetch {
       crypto: org_tx.crypto,
       pwd: org_tx.pwd
     })
-    const tx_result = await cor.sendTransaction(signed_tx)
+    const tx_result = await cor.sendTx(signed_tx)
     return tx_result
   }
 
   /**
-   * @export Make-Split-Tx-by-Crypto
-   * @param [*org_tx] MakeSplitTxByKeysReq
+   * @export Make-Split-Transaction-by-Crypto
+   * @param [*org_tx] MakeSplitTxByCryptoReq
    * @returns [Promise] { hash: string }
    */
   public async makeSplitTxByCrypto(
-    org_tx: SplitRequest.MakeSplitTxByKeysReq
+    org_tx: SplitRequest.MakeSplitTxByCryptoReq
   ): Promise<{ hash: string }> {
     const cor = new Core(this._fetch, this.endpoint, this.fetch_type)
     const unsigned_tx = await cor.makeUnsignedSplitAddrTx(org_tx.tx)
@@ -76,7 +77,51 @@ export default class Feature extends Fetch {
       crypto: org_tx.crypto,
       pwd: org_tx.pwd
     })
-    const tx_result = await cor.sendTransaction(signed_tx)
+    const tx_result = await cor.sendTx(signed_tx)
+    return tx_result
+  }
+
+  /**
+   * @export Issue-Token-by-Crypto
+   * @param [*org_tx] IssueTokenByCryptoReq
+   * @returns [Promise] { hash: string }
+   */
+  public async issueTokenByCrypto(
+    org_tx: TokenRequest.IssueTokenByCryptoReq
+  ): Promise<{ hash: string }> {
+    const cor = new Core(this._fetch, this.endpoint, this.fetch_type)
+    const unsigned_tx = await cor.makeUnsignedTokenIssueTx(org_tx.tx)
+    const signed_tx = await this.signTxByCrypto({
+      unsignedTx: {
+        tx: unsigned_tx.tx,
+        rawMsgs: unsigned_tx.rawMsgs
+      },
+      crypto: org_tx.crypto,
+      pwd: org_tx.pwd
+    })
+    const tx_result = await cor.sendTx(signed_tx)
+    return tx_result
+  }
+
+  /**
+   * @export Make-Token-Transaction-by-Crypto
+   * @param [*org_tx] MakeTokenTxByCryptoReq
+   * @returns [Promise] { hash: string }
+   */
+  public async makeTokenTxByCrypto(
+    org_tx: TokenRequest.MakeTokenTxByCryptoReq
+  ): Promise<{ hash: string }> {
+    const cor = new Core(this._fetch, this.endpoint, this.fetch_type)
+    const unsigned_tx = await cor.makeUnsignedTokenTx(org_tx.tx)
+    const signed_tx = await this.signTxByCrypto({
+      unsignedTx: {
+        tx: unsigned_tx.tx,
+        rawMsgs: unsigned_tx.rawMsgs
+      },
+      crypto: org_tx.crypto,
+      pwd: org_tx.pwd
+    })
+    const tx_result = await cor.sendTx(signed_tx)
     return tx_result
   }
 }

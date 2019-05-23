@@ -19,7 +19,7 @@ namespace Request {
     fee: string
   }
 
-  export interface SignedTxByKeysReq {
+  export interface SignedTxByCryptoReq {
     unsignedTx: UtilInterface.UnsignedTx
     crypto: UtilInterface.Crypto
     pwd: string
@@ -30,7 +30,7 @@ namespace Request {
     amount: number
   }
 
-  export interface MakeBoxTxByKeysReq {
+  export interface MakeBoxTxByCryptoReq {
     tx: OriginalTxReq
     crypto: UtilInterface.Crypto
     pwd: string

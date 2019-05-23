@@ -8,7 +8,7 @@ namespace Request {
     fee: string
   }
 
-  export interface MakeSplitTxByKeysReq {
+  export interface MakeSplitTxByCryptoReq {
     tx: SplitAddrTxReq
     crypto: UtilInterface.Crypto
     pwd: string

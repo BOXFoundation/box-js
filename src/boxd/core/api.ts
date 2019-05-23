@@ -96,7 +96,7 @@ export default class Api extends Fetch {
 
   // Token
   makeUnsignedTokenIssueTx(
-    token_issue_tx: TokenRequest.TokenIssueTxReq
+    token_issue_tx: TokenRequest.IssueTokenReq
   ): Promise<TokenResponse.UnsignedTokenIssueTx> {
     return super.fetch('/tx/makeunsignedtx/token/issue', token_issue_tx)
   }
@@ -122,7 +122,7 @@ export default class Api extends Fetch {
     return { balances: arr_balances }
   }
 
-  makeUnsignedTokenTransferTx(
+  makeUnsignedTokenTx(
     token_transfer_tx: TokenRequest.OriginalTokenTxReq
   ): Promise<UtilInterface.UnsignedTx> {
     return super.fetch('/tx/makeunsignedtx/token/transfer', token_transfer_tx)
@@ -151,7 +151,7 @@ export default class Api extends Fetch {
     return privK.signTxByPrivKey(unsigned_tx)
   }
 
-  sendTransaction(signed_tx: UtilInterface.TX): Promise<{ hash: string }> {
+  sendTx(signed_tx: UtilInterface.TX): Promise<{ hash: string }> {
     return super.fetch('/tx/sendtransaction', { tx: signed_tx })
   }
 
@@ -186,7 +186,7 @@ export default class Api extends Fetch {
     return super.fetch('/todo', tx)
   }
 
-  public async createRawTransaction(raw: TxRequest.Raw) {
+  public async createRawTx(raw: TxRequest.Raw) {
     const { addr, to, fee, privKey } = raw
     let sum = 0
     await Object.keys(to).forEach(item => {
@@ -220,20 +220,16 @@ export default class Api extends Fetch {
               })
             })
         } else {
-          throw new Error('createRawTransaction Error')
+          throw new Error('createRawTx Error')
         }
       })
       .catch(err => {
-        console.log('createRawTransaction Error:', err)
-        throw new Error('createRawTransaction Error')
+        console.log('createRawTx Error:', err)
+        throw new Error('createRawTx Error')
       })
   }
 
-  /**
-   * @func sendRawTransaction
-   * @param [*raw_tx] # 序列化后的 raw tx
-   */
-  sendRawTransaction(raw_tx: string) {
+  sendRawTx(raw_tx: string) {
     return super.fetch('/tx/sendrawtransaction', { raw_tx })
   }
 }
