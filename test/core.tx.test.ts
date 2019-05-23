@@ -8,14 +8,6 @@ import Keystore from './json/keystore.json'
 const cor = new Api(fetch, Data.endpoint_test, 'http')
 const feature = new Feature(fetch, Data.endpoint_test, 'http')
 
-/* test('faucet', async () => {
-  const faucet_res = await cor.faucet({
-    addr: Data.acc_addr_3,
-    amount: 30000000000
-  })
-  console.log('faucet res:', faucet_res)
-}) */
-
 test('Make a BOX Transaction', async () => {
   const tx_result = await feature.makeBoxTxByCrypto({
     tx: {
@@ -41,14 +33,14 @@ test('Make a BOX Transaction', async () => {
     })
     .then(async res => {
       // console.log('unsigned_tx:', JSON.stringify(res))
-      const signed_tx = await cor.signTransactionByCrypto({
+      const signed_tx = await cor.signTxByPrivKey({
         unsignedTx: {
           tx: res.tx,
           rawMsgs: res.rawMsgs
         },
         privKey: Data.acc_privateKey_3
       })
-      const signed_tx_acc = await feature.signTransactionByCrypto({
+      const signed_tx_acc = await feature.signTxByCrypto({
         unsignedTx: {
           tx: res.tx,
           rawMsgs: res.rawMsgs
@@ -88,6 +80,14 @@ test('Get the BOX Balances of the given Addresses', async () => {
       expect(0).toBe(1)
     })
 })
+
+/* test('faucet', async () => {
+  const faucet_res = await cor.faucet({
+    addr: Data.acc_addr_3,
+    amount: 30000000000
+  })
+  console.log('faucet res:', faucet_res)
+}) */
 
 // todo
 /* test('Make a Raw Transaction', async () => {

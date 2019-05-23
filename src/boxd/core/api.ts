@@ -143,12 +143,12 @@ export default class Api extends Fetch {
     return super.fetch('/tx/makeunsignedtx', tx)
   }
 
-  signTransactionByPrivKey(
+  signTxByPrivKey(
     unsigned_tx: UtilInterface.SignedTxByPrivKeyReq
   ): Promise<UtilInterface.TX> {
     const _privKey = unsigned_tx.privKey
     const privK = new PrivateKey(_privKey)
-    return privK.signTransactionByPrivKey(unsigned_tx)
+    return privK.signTxByPrivKey(unsigned_tx)
   }
 
   sendTransaction(signed_tx: UtilInterface.TX): Promise<{ hash: string }> {
@@ -211,7 +211,7 @@ export default class Api extends Fetch {
               console.log('unsigned_tx:', res)
               console.log('privKey:', privKey)
               // todo verify
-              return this.signTransactionByPrivKey({
+              return this.signTxByPrivKey({
                 unsignedTx: {
                   tx: res.tx,
                   rawMsgs: res.rawMsgs

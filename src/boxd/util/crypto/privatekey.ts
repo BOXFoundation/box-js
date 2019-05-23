@@ -43,9 +43,7 @@ export default class PrivateKey {
    * @param [*unsigned_tx] SignedTxByPrivKeyReq
    * @returns [tx]
    */
-  signTransactionByPrivKey = async (
-    unsigned_tx: UtilInterface.SignedTxByPrivKeyReq
-  ) => {
+  signTxByPrivKey = async (unsigned_tx: UtilInterface.SignedTxByPrivKeyReq) => {
     let { tx, rawMsgs } = unsigned_tx.unsignedTx
     let _privKey = unsigned_tx.privKey
     // vin handler
