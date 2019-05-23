@@ -7,6 +7,8 @@ const gutil = require("gulp-util");
 const uglify = require('gulp-uglify-es').default;
 const sourcemaps = require('gulp-sourcemaps');
 const buffer = require('vinyl-buffer');
+const ts = require("gulp-typescript");
+const tsProject = ts.createProject("tsconfig.json");
 
 const watchedBrowserify = watchify(browserify({
   basedir: '.',
@@ -33,9 +35,9 @@ function browserifyBundle() {
     .pipe(sourcemaps.init({
       loadMaps: true
     }))
-    .pipe(uglify())
+    // .pipe(uglify())
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest("dist"))
+    .pipe(gulp.dest("dist-web"))
 }
 
 function watchedBundle() {
@@ -52,14 +54,20 @@ function watchedBundle() {
     }))
     .pipe(uglify())
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest("dist"));
+    .pipe(gulp.dest("dist-web"));
 }
 
-gulp.task("watch", function () {
+gulp.task("build", function () {
+  return tsProject.src()
+    .pipe(tsProject())
+    .js.pipe(gulp.dest("dist"));
+});
+
+gulp.task("watch:web", function () {
   return watchedBundle();
 })
 
-gulp.task("build", function () {
+gulp.task("build:web", function () {
   return browserifyBundle();
 })
 
