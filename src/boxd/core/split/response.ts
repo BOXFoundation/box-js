@@ -1,15 +1,8 @@
+import UtilInterface from '../../util/interface'
+
 namespace Response {
-  export interface UnsignedSplitAddrTx {
+  export interface UnsignedSplitAddrTx extends UtilInterface.UnsignedTx {
     splitAddr: string
-    rawMsgs: string[]
-    tx: {
-      version: number
-      vin: object[]
-      vout: object[]
-      data?: any
-      magic: number
-      lock_time: string
-    }
   }
 }
 

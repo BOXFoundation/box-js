@@ -124,7 +124,7 @@ export default class Api extends Fetch {
 
   makeUnsignedTokenTransferTx(
     token_transfer_tx: TokenRequest.OriginalTokenTxReq
-  ): Promise<TokenResponse.UnsignedTokenTx> {
+  ): Promise<UtilInterface.UnsignedTx> {
     return super.fetch('/tx/makeunsignedtx/token/transfer', token_transfer_tx)
   }
 
@@ -137,19 +137,21 @@ export default class Api extends Fetch {
     return super.fetch('/faucet/claim', req)
   }
 
-  makeUnsignedTx(tx: TxRequest.OriginalTxReq): Promise<TxResponse.UnsignedTx> {
+  makeUnsignedTx(
+    tx: TxRequest.OriginalTxReq
+  ): Promise<UtilInterface.UnsignedTx> {
     return super.fetch('/tx/makeunsignedtx', tx)
   }
 
   signTransactionByPrivKey(
     unsigned_tx: UtilInterface.SignedTxByPrivKeyReq
-  ): Promise<TxResponse.TX> {
+  ): Promise<UtilInterface.TX> {
     const _privKey = unsigned_tx.privKey
     const privK = new PrivateKey(_privKey)
     return privK.signTransactionByPrivKey(unsigned_tx)
   }
 
-  sendTransaction(signed_tx: TxResponse.TX): Promise<{ hash: string }> {
+  sendTransaction(signed_tx: UtilInterface.TX): Promise<{ hash: string }> {
     return super.fetch('/tx/sendtransaction', { tx: signed_tx })
   }
 
@@ -180,7 +182,7 @@ export default class Api extends Fetch {
   // TODO Raw
   makeUnsignedContractTx(
     tx: TxRequest.OriginalTxReq
-  ): Promise<TxResponse.UnsignedTx> {
+  ): Promise<UtilInterface.UnsignedTx> {
     return super.fetch('/todo', tx)
   }
 

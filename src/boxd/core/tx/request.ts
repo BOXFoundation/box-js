@@ -1,8 +1,7 @@
 import UtilInterface from '../../util/interface'
-import Response from './response'
 
 namespace Request {
-  export interface AddrsMap {
+  interface AddrsMap {
     [to_addr: string]: number
   }
 
@@ -21,10 +20,7 @@ namespace Request {
   }
 
   export interface SignedTxByKeysReq {
-    unsignedTx: {
-      tx: Response.TX
-      rawMsgs: string[]
-    }
+    unsignedTx: UtilInterface.UnsignedTx
     crypto: UtilInterface.Crypto
     pwd: string
   }

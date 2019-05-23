@@ -1,16 +1,4 @@
 namespace Request {
-  export interface TokenBalanceReq {
-    addr: string
-    tokenHash: string
-    tokenIndex: number
-  }
-
-  export interface TokenBalancesReq {
-    addrs: string[]
-    tokenHash: string
-    tokenIndex: number
-  }
-
   export interface TokenIssueTxReq {
     issuer: string
     owner: string
@@ -30,6 +18,18 @@ namespace Request {
     to: string[]
     token_hash: string
     token_index: number
+  }
+
+  export interface TokenBalanceReq {
+    addr: string
+    tokenHash: string
+    tokenIndex: number
+  }
+
+  export interface TokenBalancesReq {
+    addrs: string[]
+    tokenHash: string
+    tokenIndex: number
   }
 }
 

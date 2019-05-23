@@ -4,7 +4,7 @@ import Hash from './hash'
 import Ecpair from './ecpair'
 import CommonUtil from '../util'
 import CryptoJson from './crypto-json'
-import UtilRequest from '../interface'
+import UtilInterface from '../interface'
 
 const OP_CODE_TYPE = 'hex'
 const prefix = {
@@ -44,7 +44,7 @@ export default class PrivateKey {
    * @returns [tx]
    */
   signTransactionByPrivKey = async (
-    unsigned_tx: UtilRequest.SignedTxByPrivKeyReq
+    unsigned_tx: UtilInterface.SignedTxByPrivKeyReq
   ) => {
     let { tx, rawMsgs } = unsigned_tx.unsignedTx
     let _privKey = unsigned_tx.privKey

@@ -1,17 +1,12 @@
-namespace Response {
-  interface DetailVin {
-    prev_out_detail?: any
-    script_sig: string
-    sequence: number
-    prev_out_point: string
-  }
+import UtilInterface from '../../util/interface'
 
-  interface DetailVout {
-    addr: string
-    value: string
-    script_pub_key: string
-    script_disasm: string
-    type: string
+namespace Response {
+  export interface NodeInfo {
+    nodes: {
+      id: string
+      addrs: string[]
+      ttl: string
+    }[]
   }
 
   export interface BlockHeader {
@@ -35,14 +30,6 @@ namespace Response {
     }
   }
 
-  export interface NodeInfo {
-    nodes: {
-      id: string
-      addrs: string[]
-      ttl: string
-    }[]
-  }
-
   export interface BlcokDetail {
     detail: {
       version: number
@@ -57,8 +44,8 @@ namespace Response {
       txs: [
         {
           hash: string
-          vin: DetailVin[]
-          vout: DetailVout[]
+          vin: UtilInterface.DetailVin[]
+          vout: UtilInterface.DetailVout[]
         }
       ]
     }

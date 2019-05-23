@@ -23,14 +23,14 @@ export default class AccountManager {
    */
   addToAccList(cryptoJson: UtilInterface.Crypto, otherInfo: any): void {
     const address = cryptoJson.address
-    const update_time = Date.now()
+    const updateTime = Date.now()
     if (this.acc_list[address]) {
       console.warn('This Account already existed. It will be rewrited...')
     }
     this.acc_list[address] = {
       cryptoJson,
       ...{
-        update_time
+        updateTime
       },
       ...otherInfo
     }
@@ -39,7 +39,7 @@ export default class AccountManager {
 
   sortAccList() {
     return Object.values(this.acc_list).sort(
-      (a, b) => a.update_time - b.update_time
+      (a, b) => a.updateTime - b.updateTime
     )
   }
 }
