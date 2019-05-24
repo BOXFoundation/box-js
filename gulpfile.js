@@ -58,9 +58,11 @@ function watchedBundle() {
 }
 
 gulp.task("build", function () {
-  return tsProject.src()
-    .pipe(tsProject())
-    .js.pipe(gulp.dest("dist"));
+  return gulp.src('src/**/*.ts').pipe(tsProject()).js.pipe(gulp.dest('dist'))
+
+  /*   tsProject.src()
+      .pipe(tsProject())
+      .js.pipe(gulp.dest("dist")); */
 });
 
 gulp.task("watch:web", function () {
