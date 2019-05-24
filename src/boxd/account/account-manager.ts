@@ -1,9 +1,9 @@
+import PrivateKey from '../util/crypto/privatekey'
 import UtilInterface from '../util/interface'
 
 export default class AccountManager {
   // impAccWithKeyStore: (ksJSON: { crypto: any }, pwd: string) => any todo
   acc_list: { [acc_addr: string]: UtilInterface.Account }
-  newPrivateKey: any
   updateAccount: any
 
   constructor(
@@ -17,9 +17,21 @@ export default class AccountManager {
   }
 
   /**
-   * @func add-new-wallet-to-walletList
+   * @func New-PrivateKey-Object
+   * @param [*privkey] string
+   * @returns [PrivateKey] object
+   * @memberof AccountManager
+   */
+  newPrivateKey(privkey: string): object {
+    const privk = new PrivateKey(privkey)
+    return privk.privKey
+  }
+
+  /**
+   * @func Add-New-Account-to-Account-List
    * @param {*cryptoJson} { address ... }
-   * @memberof Account
+   * @returns void
+   * @memberof AccountManager
    */
   addToAccList(cryptoJson: UtilInterface.Crypto, otherInfo: any): void {
     const address = cryptoJson.address
@@ -37,7 +49,12 @@ export default class AccountManager {
     this.updateAccount && this.updateAccount(this.acc_list)
   }
 
-  sortAccList() {
+  /**
+   * @func Sort-Account-List
+   * @returns [AccountList] object
+   * @memberof AccountManager
+   */
+  sortAccList(): object {
     return Object.values(this.acc_list).sort(
       (a, b) => a.updateTime - b.updateTime
     )

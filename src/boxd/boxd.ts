@@ -5,10 +5,10 @@ import Feature from './core/feature'
 import TokenUtil from '../boxd/core/token/util'
 
 const boxd = {
-  account: Account,
-  account_manager: AccountManager,
-  core: Api,
-  feature: Feature,
+  Account,
+  AccountManager,
+  Api,
+  Feature,
   util: TokenUtil
 }
 
