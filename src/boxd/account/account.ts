@@ -165,12 +165,12 @@ export default class Account {
       privKey = privKey.toString(OP_CODE_TYPE)
     }
     const privK = new PrivateKey(privKey)
-    const cryptoJson = privK.getCryptoByPrivKey(pwd)
+    const cryptoJSON = privK.getCryptoByPrivKey(pwd)
     return {
       P2PKH: privK.privKey.toP2PKHAddress,
       P2SH: privK.privKey.toP2SHAddress,
       privateKey: privK.privKey,
-      cryptoJson
+      cryptoJSON
     }
   }
 }

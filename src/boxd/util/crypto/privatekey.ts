@@ -32,7 +32,7 @@ export default class PrivateKey {
   /**
    * @func get-CryptoJson-by-PrivateKey&Password
    * @param [*pwd] string
-   * @returns [cryptoJson]
+   * @returns [cryptoJSON]
    */
   getCryptoByPrivKey = (pwd: string) => {
     return CryptoJson.getCryptoByPrivKey(this.privKey, pwd)

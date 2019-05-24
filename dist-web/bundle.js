@@ -9758,7 +9758,7 @@ Interpreter.prototype.checkLockTime = function(nLockTime) {
  * Checks a sequence parameter with the transaction's sequence.
  * @param {BN} nSequence the sequence read from the script
  * @return {boolean} true if the transaction's sequence is less than or equal to
- *                   the transaction's sequence 
+ *                   the transaction's sequence
  */
 Interpreter.prototype.checkSequence = function(nSequence) {
 
@@ -9795,7 +9795,7 @@ Interpreter.prototype.checkSequence = function(nSequence) {
     // of nSequenceMasked being tested is the same as the nSequenceMasked in the
     // transaction.
     var SEQUENCE_LOCKTIME_TYPE_FLAG_BN = new BN(Interpreter.SEQUENCE_LOCKTIME_TYPE_FLAG);
-    
+
     if (!((txToSequenceMasked.lt(SEQUENCE_LOCKTIME_TYPE_FLAG_BN)  &&
            nSequenceMasked.lt(SEQUENCE_LOCKTIME_TYPE_FLAG_BN)) ||
           (txToSequenceMasked.gte(SEQUENCE_LOCKTIME_TYPE_FLAG_BN) &&
@@ -9811,7 +9811,7 @@ Interpreter.prototype.checkSequence = function(nSequence) {
     return true;
   }
 
-/** 
+/**
  * Based on the inner loop of bitcoind's EvalScript function
  * bitcoind commit: b5d1b1092998bc95313856d535c632ea5a8f9104
  */
@@ -63921,13 +63921,13 @@ Script.prototype.runInContext = function (context) {
     if (!(context instanceof Context)) {
         throw new TypeError("needs a 'context' argument.");
     }
-    
+
     var iframe = document.createElement('iframe');
     if (!iframe.style) iframe.style = {};
     iframe.style.display = 'none';
-    
+
     document.body.appendChild(iframe);
-    
+
     var win = iframe.contentWindow;
     var wEval = win.eval, wExecScript = win.execScript;
 
@@ -63936,7 +63936,7 @@ Script.prototype.runInContext = function (context) {
         wExecScript.call(win, 'null');
         wEval = win.eval;
     }
-    
+
     forEach(Object_keys(context), function (key) {
         win[key] = context[key];
     });
@@ -63945,11 +63945,11 @@ Script.prototype.runInContext = function (context) {
             win[key] = context[key];
         }
     });
-    
+
     var winKeys = Object_keys(win);
 
     var res = wEval.call(win, this.code);
-    
+
     forEach(Object_keys(win), function (key) {
         // Avoid copying circular objects like `top` and `window` by only
         // updating existing context properties or new properties in the `win`
@@ -63964,9 +63964,9 @@ Script.prototype.runInContext = function (context) {
             defineProp(context, key, win[key]);
         }
     });
-    
+
     document.body.removeChild(iframe);
-    
+
     return res;
 };
 
@@ -64050,17 +64050,17 @@ var AccountManager = /** @class */function () {
     };
     /**
         * @func Add-New-Account-to-Account-List
-        * @param {*cryptoJson} { address ... }
+        * @param {*cryptoJSON} { address ... }
         * @returns void
         * @memberof AccountManager
         */
-    AccountManager.prototype.addToAccList = function (cryptoJson, otherInfo) {
-        var address = cryptoJson.address;
+    AccountManager.prototype.addToAccList = function (cryptoJSON, otherInfo) {
+        var address = cryptoJSON.address;
         var updateTime = Date.now();
         if (this.acc_list[address]) {
             console.warn('This Account already existed. It will be rewrited...');
         }
-        this.acc_list[address] = __assign({ cryptoJson: cryptoJson }, {
+        this.acc_list[address] = __assign({ cryptoJSON: cryptoJSON }, {
             updateTime: updateTime },
         otherInfo);
         this.updateAccount && this.updateAccount(this.acc_list);
@@ -64280,12 +64280,12 @@ var Account = /** @class */function () {
             privKey = privKey.toString(OP_CODE_TYPE);
         }
         var privK = new privatekey_1.default(privKey);
-        var cryptoJson = privK.getCryptoByPrivKey(pwd);
+        var cryptoJSON = privK.getCryptoByPrivKey(pwd);
         return {
             P2PKH: privK.privKey.toP2PKHAddress,
             P2SH: privK.privKey.toP2SHAddress,
             privateKey: privK.privKey,
-            cryptoJson: cryptoJson };
+            cryptoJSON: cryptoJSON };
 
     };
     return Account;
@@ -65250,7 +65250,7 @@ var PrivateKey = /** @class */function () {
         /**
                            * @func get-CryptoJson-by-PrivateKey&Password
                            * @param [*pwd] string
-                           * @returns [cryptoJson]
+                           * @returns [cryptoJSON]
                            */
         this.getCryptoByPrivKey = function (pwd) {
             return crypto_json_1.default.getCryptoByPrivKey(_this.privKey, pwd);

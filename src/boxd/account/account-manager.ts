@@ -29,18 +29,18 @@ export default class AccountManager {
 
   /**
    * @func Add-New-Account-to-Account-List
-   * @param {*cryptoJson} { address ... }
+   * @param {*cryptoJSON} { address ... }
    * @returns void
    * @memberof AccountManager
    */
-  addToAccList(cryptoJson: UtilInterface.Crypto, otherInfo: any): void {
-    const address = cryptoJson.address
+  addToAccList(cryptoJSON: UtilInterface.Crypto, otherInfo: any): void {
+    const address = cryptoJSON.address
     const updateTime = Date.now()
     if (this.acc_list[address]) {
       console.warn('This Account already existed. It will be rewrited...')
     }
     this.acc_list[address] = {
-      cryptoJson,
+      cryptoJSON,
       ...{
         updateTime
       },
