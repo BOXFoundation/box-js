@@ -14,12 +14,12 @@ namespace Request {
   }
 
   export interface OriginalTokenTxReq {
-    amounts: number[]
-    fee: string
     from: string
     to: string[]
     token_hash: string
     token_index: number
+    amounts: number[]
+    fee: string
   }
 
   export interface TokenBalanceReq {

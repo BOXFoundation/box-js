@@ -57,21 +57,19 @@ function watchedBundle() {
     .pipe(gulp.dest("dist-web"));
 }
 
-gulp.task("build", function () {
-  return gulp.src('src/**/*.ts').pipe(tsProject()).js.pipe(gulp.dest('dist'))
-
-  /*   tsProject.src()
-      .pipe(tsProject())
-      .js.pipe(gulp.dest("dist")); */
-});
-
 gulp.task("watch:web", function () {
   return watchedBundle();
+})
+
+gulp.task("build:node", function () {
+  return gulp.src('src/**/*.ts').pipe(tsProject()).js.pipe(gulp.dest('dist'))
 })
 
 gulp.task("build:web", function () {
   return browserifyBundle();
 })
+
+gulp.task("build", gulp.series(['build:node', 'build:web']));
 
 gulp.task("default", gulp.series('build'));
 watchedBrowserify.on("update", browserifyBundle);

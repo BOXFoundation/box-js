@@ -7,6 +7,7 @@
   "scripts": {
     "test": "jest --coverage --colors",
     "build": "gulp",
+    "build:node": "gulp build:node",
     "build:web": "gulp build:web",
     "watch:web": "gulp watch:web",
     "lock": "npm shrinkwrap--dev"

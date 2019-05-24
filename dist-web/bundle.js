@@ -64025,7 +64025,11 @@ var __assign = undefined && undefined.__assign || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __importDefault = undefined && undefined.__importDefault || function (mod) {
+    return mod && mod.__esModule ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+var privatekey_1 = __importDefault(require("../util/crypto/privatekey"));
 var AccountManager = /** @class */function () {
     function AccountManager(acc_list, updateAccount) {
         if (updateAccount === void 0) {updateAccount = function updateAccount(new_acc_list) {
@@ -64035,10 +64039,21 @@ var AccountManager = /** @class */function () {
         this.updateAccount = updateAccount;
     }
     /**
-       * @func add-new-wallet-to-walletList
-       * @param {*cryptoJson} { address ... }
-       * @memberof Account
+       * @func New-PrivateKey-Object
+       * @param [*privkey] string
+       * @returns [PrivateKey] object
+       * @memberof AccountManager
        */
+    AccountManager.prototype.newPrivateKey = function (privkey) {
+        var privk = new privatekey_1.default(privkey);
+        return privk.privKey;
+    };
+    /**
+        * @func Add-New-Account-to-Account-List
+        * @param {*cryptoJson} { address ... }
+        * @returns void
+        * @memberof AccountManager
+        */
     AccountManager.prototype.addToAccList = function (cryptoJson, otherInfo) {
         var address = cryptoJson.address;
         var updateTime = Date.now();
@@ -64050,6 +64065,11 @@ var AccountManager = /** @class */function () {
         otherInfo);
         this.updateAccount && this.updateAccount(this.acc_list);
     };
+    /**
+        * @func Sort-Account-List
+        * @returns [AccountList] object
+        * @memberof AccountManager
+        */
     AccountManager.prototype.sortAccList = function () {
         return (0, _values2.default)(this.acc_list).sort(function (a, b) {return a.updateTime - b.updateTime;});
     };
@@ -64057,7 +64077,7 @@ var AccountManager = /** @class */function () {
 }();
 exports.default = AccountManager;
 
-},{"babel-runtime/core-js/object/assign":20,"babel-runtime/core-js/object/values":24}],365:[function(require,module,exports){
+},{"../util/crypto/privatekey":374,"babel-runtime/core-js/object/assign":20,"babel-runtime/core-js/object/values":24}],365:[function(require,module,exports){
 (function (Buffer){
 "use strict";var _iterator = require("babel-runtime/core-js/symbol/iterator");var _iterator2 = _interopRequireDefault(_iterator);var _symbol = require("babel-runtime/core-js/symbol");var _symbol2 = _interopRequireDefault(_symbol);var _promise = require("babel-runtime/core-js/promise");var _promise2 = _interopRequireDefault(_promise);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 var __awaiter = undefined && undefined.__awaiter || function (thisArg, _arguments, P, generator) {
@@ -64286,10 +64306,10 @@ var api_1 = __importDefault(require("./core/api"));
 var feature_1 = __importDefault(require("./core/feature"));
 var util_1 = __importDefault(require("../boxd/core/token/util"));
 var boxd = {
-    account: account_1.default,
-    account_manager: account_manager_1.default,
-    core: api_1.default,
-    feature: feature_1.default,
+    Account: account_1.default,
+    AccountManager: account_manager_1.default,
+    Api: api_1.default,
+    Feature: feature_1.default,
     util: util_1.default };
 
 exports.default = boxd;

@@ -10,7 +10,11 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+var privatekey_1 = __importDefault(require("../util/crypto/privatekey"));
 var AccountManager = /** @class */ (function () {
     function AccountManager(acc_list, updateAccount) {
         if (updateAccount === void 0) { updateAccount = function (new_acc_list) {
@@ -20,9 +24,20 @@ var AccountManager = /** @class */ (function () {
         this.updateAccount = updateAccount;
     }
     /**
-     * @func add-new-wallet-to-walletList
+     * @func New-PrivateKey-Object
+     * @param [*privkey] string
+     * @returns [PrivateKey] object
+     * @memberof AccountManager
+     */
+    AccountManager.prototype.newPrivateKey = function (privkey) {
+        var privk = new privatekey_1.default(privkey);
+        return privk.privKey;
+    };
+    /**
+     * @func Add-New-Account-to-Account-List
      * @param {*cryptoJson} { address ... }
-     * @memberof Account
+     * @returns void
+     * @memberof AccountManager
      */
     AccountManager.prototype.addToAccList = function (cryptoJson, otherInfo) {
         var address = cryptoJson.address;
@@ -35,6 +50,11 @@ var AccountManager = /** @class */ (function () {
         }, otherInfo);
         this.updateAccount && this.updateAccount(this.acc_list);
     };
+    /**
+     * @func Sort-Account-List
+     * @returns [AccountList] object
+     * @memberof AccountManager
+     */
     AccountManager.prototype.sortAccList = function () {
         return Object.values(this.acc_list).sort(function (a, b) { return a.updateTime - b.updateTime; });
     };
