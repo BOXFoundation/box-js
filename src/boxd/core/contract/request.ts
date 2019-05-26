@@ -1,19 +1,22 @@
-import Response from './response'
+import UtilInterface from '../../util/interface'
 
 namespace Request {
-  export interface ContractDeployReq {
+  export interface OriginalContractReq {
     from: string,
-    bytecode: string,
+    to: string,
+    amount: number,
+    gasPrice: number,
     gasLimit: number,
-    gasPrice: number
+    nonce: number,
+    isDeploy: boolean,
+    data: string
   }
 
-  export interface ContractCallReq {
-    from: string,
-    contractAddr:   string,
-    methodAbi: string,
-    gasLimit: number,
-    gasPrice: number
+  
+  export interface ContractTxByCryptoReq {
+    tx: OriginalContractReq
+    crypto: UtilInterface.Crypto
+    pwd: string
   }
 }
 

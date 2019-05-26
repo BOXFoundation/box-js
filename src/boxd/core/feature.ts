@@ -2,6 +2,7 @@ import { Fetch } from '../util/fetch'
 import TxRequest from './tx/request'
 import SplitRequest from './split/request'
 import TokenRequest from './token/request'
+import ContractRequest from './contract/request'
 import Account from '../account/account'
 import PrivateKey from '../util/crypto/privatekey'
 import Core from '../core/api'
@@ -124,4 +125,26 @@ export default class Feature extends Fetch {
     const tx_result = await cor.sendTx(signed_tx)
     return tx_result
   }
+
+  /**
+   * @export Make-Contract-Transaction-by-Crypto
+   * @param [*org_tx] ContractTxByCryptoReq
+   * @returns [Promise] { hash: string }
+   */
+  public async makeContractTxByCrypto(
+    org_tx: ContractRequest.ContractTxByCryptoReq
+  ): Promise<{ hash: string }> {
+    const cor = new Core(this._fetch, this.endpoint, this.fetch_type)
+    const unsigned_tx = await cor.makeUnsignedContractTx(org_tx.tx)
+    const signed_tx = await this.signTxByCrypto({
+      unsignedTx: {
+        tx: unsigned_tx.tx,
+        rawMsgs: unsigned_tx.rawMsgs
+      },
+      crypto: org_tx.crypto,
+      pwd: org_tx.pwd
+    })
+    const tx_result = await cor.sendTx(signed_tx)
+    return tx_result
+  }  
 }

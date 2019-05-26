@@ -6,6 +6,7 @@ import SplitRequest from './split/request'
 import TokenRequest from './token/request'
 import TxRequest from './tx/request'
 import ContractRequest from './contract/request'
+import ContractResponse from './contract/response'
 import BlockResponse from './block/response'
 import SplitResponse from './split/response'
 import TokenResponse from './token/response'
@@ -83,6 +84,10 @@ export default class Api extends Fetch {
 
   public viewBlockDetail(hash: string): Promise<BlockResponse.BlcokDetail> {
     return super.fetch('/block/detail', { hash })
+  }
+
+  public getNonce(addr: string): Promise<{ nonce: number }> {
+    return super.fetch('/account/nonce', { addr })
   }
 
   // Split
@@ -177,9 +182,9 @@ export default class Api extends Fetch {
     return super.fetch('/tx/fetchutxos', fetch_utxos_req)
   }
 
-  public makeUnsignedContractTx(
-    tx: TxRequest.OriginalTxReq
-  ): Promise<UtilInterface.UnsignedTx> {
+  // Contract
+  makeUnsignedContractTx(tx: ContractRequest.OriginalContractReq
+  ): Promise<ContractResponse.UnsignedContractTx> {
     return super.fetch('/tx/makeunsignedtx/contract', tx)
   }
 

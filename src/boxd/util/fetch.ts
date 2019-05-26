@@ -55,9 +55,13 @@ const httpFetch = async (path, body, _fetch, endpoint) => {
     // handle
     if (response) {
       if (response.status >= 400) {
-        // console.log('[fetch] Error: status >= 400')
-        result.code = response.status
-        result.statusText = response.statusText
+        console.log('[fetch] Error: status >= 400 ' + response.status + ', ' + response.statusText)
+        result = await response.json()
+        console.log(result)
+        return result
+      
+        // result.code = response.status
+        // result.statusText = response.statusText
         throw new HttpError(result)
       }
       result = await response.json()
