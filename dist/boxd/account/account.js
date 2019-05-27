@@ -66,7 +66,8 @@ var Account = /** @class */ (function () {
             }
         }
         catch (err) {
-            console.log('dumpAddrFromPrivKey Error:', err);
+            console.log('dumpAddrFromPrivKey Error !');
+            throw new Error(err);
         }
     };
     /**
@@ -86,7 +87,8 @@ var Account = /** @class */ (function () {
             }
         }
         catch (err) {
-            console.log('dumpPubKeyFromPrivKey Error:', err);
+            console.log('dumpPubKeyFromPrivKey Error !');
+            throw new Error(err);
         }
     };
     /**
@@ -107,7 +109,8 @@ var Account = /** @class */ (function () {
             }
         }
         catch (err) {
-            console.log('dumpKeyStoreFromPrivKey Error:', err);
+            console.log('dumpKeyStoreFromPrivKey Error !');
+            throw new Error(err);
         }
     };
     /**
@@ -127,7 +130,8 @@ var Account = /** @class */ (function () {
             }
         }
         catch (err) {
-            console.log('dumpPubKeyHashFromPrivKey Error:', err);
+            console.log('dumpPubKeyHashFromPrivKey Error !');
+            throw new Error(err);
         }
     };
     /**
@@ -144,7 +148,8 @@ var Account = /** @class */ (function () {
             }
         }
         catch (err) {
-            console.log('dumpPubKeyHashFromAddr Error:', err);
+            console.log('dumpPubKeyHashFromAddr Error !');
+            throw new Error(err);
         }
     };
     /**
@@ -154,14 +159,14 @@ var Account = /** @class */ (function () {
      * @returns [PrivateKey] string
      * @memberof Account
      */
-    Account.prototype.dumpPrivKeyFromCrypto = function (crypto_json, pwd) {
+    Account.prototype.dumpPrivKeyFromCrypto = function (cryptoJSON, pwd) {
         return __awaiter(this, void 0, void 0, function () {
             var cpt, kdfParams, saltBuffer, derivedKey, aesKey, sha256Key, mac, privateKeyHexStr, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        cpt = crypto_json.crypto;
+                        cpt = cryptoJSON.crypto;
                         kdfParams = cpt.kdfparams;
                         saltBuffer = Buffer.from(kdfParams.salt, OP_CODE_TYPE);
                         derivedKey = crypto_json_1.default.getDerivedKey(pwd, saltBuffer, kdfParams.n, kdfParams.r, kdfParams.p, kdfParams.dklen);
@@ -180,8 +185,8 @@ var Account = /** @class */ (function () {
                         return [2 /*return*/, privateKeyHexStr];
                     case 2:
                         err_1 = _a.sent();
-                        console.log('dumpPrivKeyFromKeyStore Error:', err_1);
-                        return [3 /*break*/, 3];
+                        console.log('dumpPrivKeyFromKeyStore Error !');
+                        throw new Error(err_1);
                     case 3: return [2 /*return*/];
                 }
             });

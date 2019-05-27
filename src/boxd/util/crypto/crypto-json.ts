@@ -94,9 +94,9 @@ namespace CryptoJson {
           }
         }
       }
-    } catch (error) {
-      error.message += '[Err:getCryptoJSON]'
-      throw error
+    } catch (err) {
+      err.message += '[Err:getCryptoJSON]'
+      throw new Error(err)
     }
   }
 

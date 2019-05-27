@@ -55,8 +55,9 @@ test('Issue a Token and get the Token Balance', async done => {
       done()
     }, 3000)
   } catch (err) {
-    console.error('Issue a Token and get the Token Balance Error:', err)
+    console.error('Issue a Token and get the Token Balance Error !')
     expect(0).toBe(1)
+    throw new Error(err)
   }
 })
 
@@ -78,7 +79,8 @@ test('Make a Token Transaction', async () => {
     // console.log('token_detail:', token_detail)
     expect(token_detail.detail.hash).toEqual(token_result.hash)
   } catch (err) {
-    console.error('Make a Token Transaction Error:', err)
+    console.error('Make a Token Transaction Error !')
     expect(0).toBe(1)
+    throw new Error(err)
   }
 })

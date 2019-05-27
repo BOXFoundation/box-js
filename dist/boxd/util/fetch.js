@@ -99,7 +99,7 @@ var httpFetch = function (path, body, _fetch, endpoint) { return __awaiter(_this
             case 3:
                 err_1 = _a.sent();
                 err_1.isFetchError = true;
-                throw err_1;
+                throw new Error(err_1);
             case 4:
                 if (!response.ok) {
                     throw new HttpError(result);

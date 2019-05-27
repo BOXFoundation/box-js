@@ -28,7 +28,8 @@ export default class Account {
         return privK.privKey.toP2PKHAddress
       }
     } catch (err) {
-      console.log('dumpAddrFromPrivKey Error:', err)
+      console.log('dumpAddrFromPrivKey Error !')
+      throw new Error(err)
     }
   }
 
@@ -48,7 +49,8 @@ export default class Account {
         return privK.privKey.toPublicKey().toString(OP_CODE_TYPE)
       }
     } catch (err) {
-      console.log('dumpPubKeyFromPrivKey Error:', err)
+      console.log('dumpPubKeyFromPrivKey Error !')
+      throw new Error(err)
     }
   }
 
@@ -69,7 +71,8 @@ export default class Account {
         return privK.getCryptoByPrivKey(pwd)
       }
     } catch (err) {
-      console.log('dumpKeyStoreFromPrivKey Error:', err)
+      console.log('dumpKeyStoreFromPrivKey Error !')
+      throw new Error(err)
     }
   }
 
@@ -89,7 +92,8 @@ export default class Account {
         return privK.privKey.pkh
       }
     } catch (err) {
-      console.log('dumpPubKeyHashFromPrivKey Error:', err)
+      console.log('dumpPubKeyHashFromPrivKey Error !')
+      throw new Error(err)
     }
   }
 
@@ -106,7 +110,8 @@ export default class Account {
         return pubKey_hash.slice(2).toString(OP_CODE_TYPE)
       }
     } catch (err) {
-      console.log('dumpPubKeyHashFromAddr Error:', err)
+      console.log('dumpPubKeyHashFromAddr Error !')
+      throw new Error(err)
     }
   }
 
@@ -118,11 +123,11 @@ export default class Account {
    * @memberof Account
    */
   public async dumpPrivKeyFromCrypto(
-    crypto_json: UtilInterface.Crypto,
+    cryptoJSON: UtilInterface.Crypto,
     pwd: string
   ) {
     try {
-      const cpt = crypto_json.crypto
+      const cpt = cryptoJSON.crypto
       const kdfParams = cpt.kdfparams
       const saltBuffer = Buffer.from(kdfParams.salt, OP_CODE_TYPE)
       const derivedKey = CryptoJson.getDerivedKey(
@@ -149,7 +154,8 @@ export default class Account {
       }
       return privateKeyHexStr
     } catch (err) {
-      console.log('dumpPrivKeyFromKeyStore Error:', err)
+      console.log('dumpPrivKeyFromKeyStore Error !')
+      throw new Error(err)
     }
   }
 

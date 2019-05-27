@@ -34,7 +34,7 @@ const httpFetch = async (path, body, _fetch, endpoint) => {
     }
   } catch (err) {
     err.isFetchError = true
-    throw err
+    throw new Error(err)
   }
   if (!response.ok) {
     throw new HttpError(result)
