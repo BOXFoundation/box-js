@@ -59,7 +59,7 @@ var PrivateKey = /** @class */ (function () {
         /**
          * @func get-CryptoJson-by-PrivateKey&Password
          * @param [*pwd] string
-         * @returns [cryptoJson]
+         * @returns [cryptoJSON]
          */
         this.getCryptoByPrivKey = function (pwd) {
             return crypto_json_1.default.getCryptoByPrivKey(_this.privKey, pwd);

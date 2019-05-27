@@ -199,12 +199,12 @@ var Account = /** @class */ (function () {
             privKey = privKey.toString(OP_CODE_TYPE);
         }
         var privK = new privatekey_1.default(privKey);
-        var cryptoJson = privK.getCryptoByPrivKey(pwd);
+        var cryptoJSON = privK.getCryptoByPrivKey(pwd);
         return {
             P2PKH: privK.privKey.toP2PKHAddress,
             P2SH: privK.privKey.toP2SHAddress,
             privateKey: privK.privKey,
-            cryptoJson: cryptoJson
+            cryptoJSON: cryptoJSON
         };
     };
     return Account;

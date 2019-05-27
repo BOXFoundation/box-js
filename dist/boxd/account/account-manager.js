@@ -35,17 +35,17 @@ var AccountManager = /** @class */ (function () {
     };
     /**
      * @func Add-New-Account-to-Account-List
-     * @param {*cryptoJson} { address ... }
+     * @param {*cryptoJSON} { address ... }
      * @returns void
      * @memberof AccountManager
      */
-    AccountManager.prototype.addToAccList = function (cryptoJson, otherInfo) {
-        var address = cryptoJson.address;
+    AccountManager.prototype.addToAccList = function (cryptoJSON, otherInfo) {
+        var address = cryptoJSON.address;
         var updateTime = Date.now();
         if (this.acc_list[address]) {
             console.warn('This Account already existed. It will be rewrited...');
         }
-        this.acc_list[address] = __assign({ cryptoJson: cryptoJson }, {
+        this.acc_list[address] = __assign({ cryptoJSON: cryptoJSON }, {
             updateTime: updateTime
         }, otherInfo);
         this.updateAccount && this.updateAccount(this.acc_list);
