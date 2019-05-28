@@ -106,7 +106,7 @@ namespace CryptoJson {
    * @param [passphrase] string
    * @returns [privateKeyHexStr]
    */
-  export const unlockPrivateKeyWithPassphrase = (
+  /*   export const unlockPrivateKeyWithPassphrase = (
     ksJSON: { crypto },
     passphrase: string
   ) => {
@@ -143,7 +143,7 @@ namespace CryptoJson {
       throw new Error("Can't find privateKey!")
     }
     return privateKeyHexStr
-  }
+  } */
 }
 
 export default CryptoJson

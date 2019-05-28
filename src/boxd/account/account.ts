@@ -150,7 +150,7 @@ export default class Account {
         cpt.cipherparams.iv
       )
       if (!privateKeyHexStr) {
-        throw new Error('Private key not found !')
+        throw new Error('Privat Key not found !')
       }
       return privateKeyHexStr
     } catch (err) {
