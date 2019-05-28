@@ -66,7 +66,7 @@ export default class Feature extends Fetch {
    */
   public async makeSplitTxByCrypto(
     org_tx: SplitRequest.MakeSplitTxByCryptoReq
-  ): Promise<{ hash: string }> {
+  ): Promise<{ splitAddr: string; hash: string }> {
     const cor = new Core(this._fetch, this.endpoint, this.fetch_type)
     const unsigned_tx = await cor.makeUnsignedSplitAddrTx(org_tx.tx)
     const signed_tx = await this.signTxByCrypto({
@@ -78,7 +78,7 @@ export default class Feature extends Fetch {
       pwd: org_tx.pwd
     })
     const tx_result = await cor.sendTx(signed_tx)
-    return tx_result
+    return Object.assign(tx_result, { splitAddr: unsigned_tx.splitAddr })
   }
 
   /**

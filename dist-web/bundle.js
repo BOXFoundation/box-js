@@ -64635,7 +64635,7 @@ var Api = /** @class */function (_super) {
 exports.default = Api;
 
 },{"../util/crypto/privatekey":374,"../util/fetch":375,"babel-runtime/core-js/object/create":21,"babel-runtime/core-js/object/keys":22,"babel-runtime/core-js/object/set-prototype-of":23,"babel-runtime/core-js/promise":25,"babel-runtime/core-js/symbol":26,"babel-runtime/core-js/symbol/iterator":27}],368:[function(require,module,exports){
-"use strict";var _iterator = require("babel-runtime/core-js/symbol/iterator");var _iterator2 = _interopRequireDefault(_iterator);var _symbol = require("babel-runtime/core-js/symbol");var _symbol2 = _interopRequireDefault(_symbol);var _promise = require("babel-runtime/core-js/promise");var _promise2 = _interopRequireDefault(_promise);var _create = require("babel-runtime/core-js/object/create");var _create2 = _interopRequireDefault(_create);var _setPrototypeOf = require("babel-runtime/core-js/object/set-prototype-of");var _setPrototypeOf2 = _interopRequireDefault(_setPrototypeOf);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+"use strict";var _assign = require("babel-runtime/core-js/object/assign");var _assign2 = _interopRequireDefault(_assign);var _iterator = require("babel-runtime/core-js/symbol/iterator");var _iterator2 = _interopRequireDefault(_iterator);var _symbol = require("babel-runtime/core-js/symbol");var _symbol2 = _interopRequireDefault(_symbol);var _promise = require("babel-runtime/core-js/promise");var _promise2 = _interopRequireDefault(_promise);var _create = require("babel-runtime/core-js/object/create");var _create2 = _interopRequireDefault(_create);var _setPrototypeOf = require("babel-runtime/core-js/object/set-prototype-of");var _setPrototypeOf2 = _interopRequireDefault(_setPrototypeOf);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 var __extends = undefined && undefined.__extends || function () {
     var _extendStatics = function extendStatics(d, b) {
         _extendStatics = _setPrototypeOf2.default ||
@@ -64790,7 +64790,7 @@ var Feature = /** @class */function (_super) {
                         return [4 /*yield*/, cor.sendTx(signed_tx)];
                     case 3:
                         tx_result = _a.sent();
-                        return [2 /*return*/, tx_result];}
+                        return [2 /*return*/, (0, _assign2.default)(tx_result, { splitAddr: unsigned_tx.splitAddr })];}
 
             });
         });
@@ -64865,7 +64865,7 @@ var Feature = /** @class */function (_super) {
 }(fetch_1.Fetch);
 exports.default = Feature;
 
-},{"../account/account":365,"../core/api":367,"../util/crypto/privatekey":374,"../util/fetch":375,"babel-runtime/core-js/object/create":21,"babel-runtime/core-js/object/set-prototype-of":23,"babel-runtime/core-js/promise":25,"babel-runtime/core-js/symbol":26,"babel-runtime/core-js/symbol/iterator":27}],369:[function(require,module,exports){
+},{"../account/account":365,"../core/api":367,"../util/crypto/privatekey":374,"../util/fetch":375,"babel-runtime/core-js/object/assign":20,"babel-runtime/core-js/object/create":21,"babel-runtime/core-js/object/set-prototype-of":23,"babel-runtime/core-js/promise":25,"babel-runtime/core-js/symbol":26,"babel-runtime/core-js/symbol/iterator":27}],369:[function(require,module,exports){
 (function (Buffer){
 "use strict";
 var __importDefault = undefined && undefined.__importDefault || function (mod) {
@@ -65367,7 +65367,7 @@ var httpFetch = function httpFetch(path, body, _fetch, endpoint) {return __await
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 3,, 4]);
+                    _a.trys.push([0, 4,, 5]);
                     return [4 /*yield*/, _fetch(endpoint + '/v1' + path, {
                         body: (0, _stringify2.default)(body),
                         method: 'POST' })
@@ -65379,8 +65379,7 @@ var httpFetch = function httpFetch(path, body, _fetch, endpoint) {return __await
                     // console.log(`[fetch] ${path}:\n`, JSON.stringify(body))
                     // request
                     response = _a.sent();
-                    // console.log('[fetch] response:', response)
-                    // handle
+                    if (!response) return [3 /*break*/, 3];
                     if (response.status >= 400) {
                         // console.log('[fetch] Error: status >= 400')
                         result.code = response.status;
@@ -65403,16 +65402,15 @@ var httpFetch = function httpFetch(path, body, _fetch, endpoint) {return __await
                             throw new HttpError(result);
                         }
                     }
-                    return [3 /*break*/, 4];
-                case 3:
-                    err_1 = _a.sent();
-                    err_1.isFetchError = true;
-                    throw new Error(err_1);
-                case 4:
                     if (!response.ok) {
                         throw new HttpError(result);
                     }
-                    return [2 /*return*/, result];}
+                    return [2 /*return*/, result];
+                case 3:return [3 /*break*/, 5];
+                case 4:
+                    err_1 = _a.sent();
+                    throw new HttpError(err_1);
+                case 5:return [2 /*return*/];}
 
         });
     });};

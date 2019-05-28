@@ -153,7 +153,7 @@ var Feature = /** @class */ (function (_super) {
                         return [4 /*yield*/, cor.sendTx(signed_tx)];
                     case 3:
                         tx_result = _a.sent();
-                        return [2 /*return*/, tx_result];
+                        return [2 /*return*/, Object.assign(tx_result, { splitAddr: unsigned_tx.splitAddr })];
                 }
             });
         });

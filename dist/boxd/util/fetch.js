@@ -59,7 +59,7 @@ var httpFetch = function (path, body, _fetch, endpoint) { return __awaiter(_this
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 3, , 4]);
+                _a.trys.push([0, 4, , 5]);
                 return [4 /*yield*/, _fetch(endpoint + '/v1' + path, {
                         body: JSON.stringify(body),
                         method: 'POST'
@@ -71,8 +71,7 @@ var httpFetch = function (path, body, _fetch, endpoint) { return __awaiter(_this
                 // console.log(`[fetch] ${path}:\n`, JSON.stringify(body))
                 // request
                 response = _a.sent();
-                // console.log('[fetch] response:', response)
-                // handle
+                if (!response) return [3 /*break*/, 3];
                 if (response.status >= 400) {
                     // console.log('[fetch] Error: status >= 400')
                     result.code = response.status;
@@ -95,16 +94,15 @@ var httpFetch = function (path, body, _fetch, endpoint) { return __awaiter(_this
                         throw new HttpError(result);
                     }
                 }
-                return [3 /*break*/, 4];
-            case 3:
-                err_1 = _a.sent();
-                err_1.isFetchError = true;
-                throw new Error(err_1);
-            case 4:
                 if (!response.ok) {
                     throw new HttpError(result);
                 }
                 return [2 /*return*/, result];
+            case 3: return [3 /*break*/, 5];
+            case 4:
+                err_1 = _a.sent();
+                throw new HttpError(err_1);
+            case 5: return [2 /*return*/];
         }
     });
 }); };

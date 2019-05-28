@@ -15,31 +15,32 @@ const httpFetch = async (path, body, _fetch, endpoint) => {
     })
     // console.log('[fetch] response:', response)
     // handle
-    if (response.status >= 400) {
-      // console.log('[fetch] Error: status >= 400')
-      result.code = response.status
-      result.statusText = response.statusText
-      throw new HttpError(result)
-    }
-    result = await response.json()
-    // console.log('[fetch] Result:', result)
-    if (result.code) {
-      if (result.code === 0) {
-        delete result.code
-        delete result.message
-      } else {
-        // console.log('[fetch] Error: code !== 0')
+    if (response) {
+      if (response.status >= 400) {
+        // console.log('[fetch] Error: status >= 400')
+        result.code = response.status
+        result.statusText = response.statusText
         throw new HttpError(result)
       }
+      result = await response.json()
+      // console.log('[fetch] Result:', result)
+      if (result.code) {
+        if (result.code === 0) {
+          delete result.code
+          delete result.message
+        } else {
+          // console.log('[fetch] Error: code !== 0')
+          throw new HttpError(result)
+        }
+      }
+      if (!response.ok) {
+        throw new HttpError(result)
+      }
+      return result
     }
   } catch (err) {
-    err.isFetchError = true
-    throw new Error(err)
+    throw new HttpError(err)
   }
-  if (!response.ok) {
-    throw new HttpError(result)
-  }
-  return result
 }
 
 const rpcFetch = (path, body, _fetch, endpoint) => {
