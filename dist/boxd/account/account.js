@@ -180,7 +180,7 @@ var Account = /** @class */ (function () {
                     case 1:
                         privateKeyHexStr = _a.sent();
                         if (!privateKeyHexStr) {
-                            throw new Error('Private key not found !');
+                            throw new Error('Privat Key not found !');
                         }
                         return [2 /*return*/, privateKeyHexStr];
                     case 2:

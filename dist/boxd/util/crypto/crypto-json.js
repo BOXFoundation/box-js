@@ -91,28 +91,43 @@ var CryptoJson;
      * @param [passphrase] string
      * @returns [privateKeyHexStr]
      */
-    CryptoJson.unlockPrivateKeyWithPassphrase = function (ksJSON, passphrase) {
-        if (!passphrase) {
-            throw new Error('Passphrase is require!');
-        }
-        if (!ksJSON) {
-            throw new Error('ksJSON is require!');
-        }
-        var cpt = ksJSON.crypto;
-        var kdfParams = cpt.kdfparams;
-        var saltBuffer = Buffer.from(kdfParams.salt, _STRING_ENC_);
-        var derivedKey = CryptoJson.getDerivedKey(passphrase, saltBuffer, kdfParams.n, kdfParams.r, kdfParams.p, kdfParams.dklen);
-        var aesKey = derivedKey.slice(0, 16).toString(_STRING_ENC_);
-        var sha256Key = derivedKey.slice(16, 32).toString(_STRING_ENC_);
-        var mac = aes_1.default.getMac(sha256Key, cpt.ciphertext);
-        if (mac !== cpt.mac) {
-            throw new Error('passphrase is error!');
-        }
-        var privateKeyHexStr = aes_1.default.getCiphertext(aesKey, cpt.ciphertext, cpt.cipherparams.iv);
-        if (!privateKeyHexStr) {
-            throw new Error("Can't find privateKey!");
-        }
-        return privateKeyHexStr;
-    };
+    /*   export const unlockPrivateKeyWithPassphrase = (
+      ksJSON: { crypto },
+      passphrase: string
+    ) => {
+      if (!passphrase) {
+        throw new Error('Passphrase is require!')
+      }
+      if (!ksJSON) {
+        throw new Error('ksJSON is require!')
+      }
+      const cpt = ksJSON.crypto
+      const kdfParams = cpt.kdfparams
+      const saltBuffer = Buffer.from(kdfParams.salt, _STRING_ENC_)
+      const derivedKey = getDerivedKey(
+        passphrase,
+        saltBuffer,
+        kdfParams.n,
+        kdfParams.r,
+        kdfParams.p,
+        kdfParams.dklen
+      )
+  
+      const aesKey = derivedKey.slice(0, 16).toString(_STRING_ENC_)
+      const sha256Key = derivedKey.slice(16, 32).toString(_STRING_ENC_)
+      const mac = Aes.getMac(sha256Key, cpt.ciphertext)
+      if (mac !== cpt.mac) {
+        throw new Error('passphrase is error!')
+      }
+      const privateKeyHexStr = Aes.getCiphertext(
+        aesKey,
+        cpt.ciphertext,
+        cpt.cipherparams.iv
+      )
+      if (!privateKeyHexStr) {
+        throw new Error("Can't find privateKey!")
+      }
+      return privateKeyHexStr
+    } */
 })(CryptoJson || (CryptoJson = {}));
 exports.default = CryptoJson;
