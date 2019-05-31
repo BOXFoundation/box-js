@@ -22,7 +22,7 @@ The official distribution package can be found at [npm](https://todo).
 
 ## Project Structure
 
-```
+```bash
 .
 ├── .vscode  # vscode config
 ├── coverage  # test coverage
@@ -78,10 +78,10 @@ The official distribution package can be found at [npm](https://todo).
 ├── types  # typescript declaration
 │    └── index.d.ts
 │
-├── .babelrc  # [babel](https://babeljs.io/)
-├── .eslintrc.json  # [eslint](https://eslint.org/)
-├── gulpfile.js  # [gulp](https://gulpjs.com/)
+├── .babelrc  # [Babel](https://babeljs.io/)
+├── .eslintrc.json  # [Eslint](https://eslint.org/)
+├── gulpfile.js  # [Gulp](https://gulpjs.com/)
 ├── package.json  # npm package config
-└── tsconfig.json  # typescript config [typescript](https://www.typescriptlang.org/)
+└── tsconfig.json  # [Typescript](https://www.typescriptlang.org/)
 
 ```
