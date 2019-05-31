@@ -4,28 +4,40 @@ A Javascript implementation of BOX Payout blockchain on NodeJS or Browser.
 
 ## NPM
 
-The official distribution package can be found at [npm](https://todo).
+The official distribution package can be found at [npm](https://www.npmjs.com/package/boxdjs).
 
-## Installation
+## Setup
 
-### NodeJS Dependency
+### NPM Instal
 
-`npm i boxd-js`
+```
+`npm i boxdjs`
+```
 
-### Build
+### CDN Install
 
+```
+<script src="https://todo"></script>
+```
+
+## Build (nodejs & browser)
+
+```
 `npm run build`
+```
 
-### Test
+## Test (jest)
 
+```
 `npm run test`
+```
 
 ## Project Structure
 
 ```bash
 .
 ├── .vscode  # vscode config
-├── coverage  # test coverage
+├── coverage  # 'jest' test coverage
 ├── dist  # builded for nodejs
 ├── dist-web  # builded for browser
 │
@@ -65,7 +77,7 @@ The official distribution package can be found at [npm](https://todo).
 │           ├── var.ts  # variable
 │           └── verify.ts  # format verify
 │
-├── test  # jest test
+├── test  # 'jest' test
 │   ├── account.test.ts
 │   ├── core.block.test.ts
 │   ├── core.split.test.ts
