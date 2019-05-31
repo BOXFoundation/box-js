@@ -55,7 +55,6 @@ test('Dump PrivateKey from Crypto Json', async () => {
     Keystore.keystore,
     Data.acc_pwd
   )
-  console.log('privateKey:', privateKey)
   expect(privateKey).toEqual(Data.acc_privateKey)
 })
 

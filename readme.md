@@ -26,7 +26,8 @@ The official distribution package can be found at [npm](https://todo).
 .
 ├── .vscode  # vscode config
 ├── coverage  # test coverage
-├── dist  # builded
+├── dist  # builded for nodejs
+├── dist-web  # builded for browser
 │
 ├── src
 │   └── boxd
@@ -70,17 +71,17 @@ The official distribution package can be found at [npm](https://todo).
 │   ├── core.split.test.ts
 │   ├── core.token.test.ts
 │   ├── core.tx.test.ts
-│   └── json  # test data json
+│   └── json  # test database
 │       ├── data.json
 │       └── keystore.json
 │ 
 ├── types  # typescript declaration
 │    └── index.d.ts
 │
+├── .babelrc  # [babel](https://babeljs.io/)
+├── .eslintrc.json  # [eslint](https://eslint.org/)
 ├── gulpfile.js  # [gulp](https://gulpjs.com/)
-├── note.md
 ├── package.json  # npm package config
-├── README.md
-└── tsconfig.json  # typescript config
+└── tsconfig.json  # typescript config [typescript](https://www.typescriptlang.org/)
 
 ```

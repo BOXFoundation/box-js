@@ -126,6 +126,7 @@ export default class Account {
     cryptoJSON: UtilInterface.Crypto,
     pwd: string
   ) {
+    // console.log('dumpPrivKeyFromCrypto param:', cryptoJSON, pwd)
     try {
       const cpt = cryptoJSON.crypto
       const kdfParams = cpt.kdfparams
@@ -154,7 +155,7 @@ export default class Account {
       }
       return privateKeyHexStr
     } catch (err) {
-      console.log('dumpPrivKeyFromKeyStore Error !')
+      console.log('dumpPrivKeyFromCrypto Error !')
       throw new Error(err)
     }
   }
