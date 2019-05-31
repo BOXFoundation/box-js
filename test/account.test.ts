@@ -4,6 +4,7 @@ import AccountManager from '../src/boxd/account/account-manager'
 import Data from './json/data.json'
 import Keystore from './json/keystore.json'
 
+let acc_list_result
 const OP_CODE_TYPE = 'hex'
 const acc_buf = Buffer.from(Data.acc_privateKey, OP_CODE_TYPE)
 const updateAccount = (new_acc_list = {}) => {
@@ -12,7 +13,6 @@ const updateAccount = (new_acc_list = {}) => {
 }
 const acc = new Account()
 const accManager = new AccountManager(Data.acc_list, updateAccount)
-let acc_list_result
 
 test('Dump PublicKey from PrivateKey(string | Buffer)', async () => {
   let addr = await acc.dumpAddrFromPrivKey(Data.acc_privateKey)

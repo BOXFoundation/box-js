@@ -14,7 +14,7 @@ import Core from '../core/api'
  * @constructs endpoint string // user incoming
  */
 export default class Feature extends Fetch {
-  constructor(_fetch: any, endpoint: string, fetch_type) {
+  public constructor(_fetch: any, endpoint: string, fetch_type) {
     super(_fetch, endpoint, fetch_type)
   }
 

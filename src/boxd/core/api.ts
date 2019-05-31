@@ -17,12 +17,12 @@ import TxResponse from './tx/response'
  * @constructs endpoint string // user incoming
  */
 export default class Api extends Fetch {
-  constructor(_fetch: any, endpoint: string, fetch_type) {
+  public constructor(_fetch: any, endpoint: string, fetch_type) {
     super(_fetch, endpoint, fetch_type)
   }
 
   // Block
-  getNodeInfo(): Promise<BlockResponse.NodeInfo> {
+  public getNodeInfo(): Promise<BlockResponse.NodeInfo> {
     return super.fetch('/ctl/getnodeinfo')
   }
 
@@ -31,11 +31,13 @@ export default class Api extends Fetch {
     return super.fetch('/ctl/addnode', { nodeId })
   } */
 
-  getBlockHashByHeight(blockHeight: number): Promise<{ hash: string }> {
+  public getBlockHashByHeight(blockHeight: number): Promise<{ hash: string }> {
     return super.fetch('/ctl/getblockhash', { blockHeight })
   }
 
-  getBlockByHash(blockHash: string): Promise<{ block: BlockResponse.Block }> {
+  public getBlockByHash(
+    blockHash: string
+  ): Promise<{ block: BlockResponse.Block }> {
     return super.fetch('/ctl/getblock', { blockHash })
   }
 
@@ -55,7 +57,7 @@ export default class Api extends Fetch {
       })
   }
 
-  getBlockHeaderByHash(
+  public getBlockHeaderByHash(
     blockHash: string
   ): Promise<{ header: BlockResponse.BlockHeader }> {
     return super.fetch('/ctl/getblockheader', { blockHash })
@@ -77,25 +79,25 @@ export default class Api extends Fetch {
       })
   }
 
-  getBlockHeight(): Promise<{
-        height: number;
-    }> {
+  public getBlockHeight(): Promise<{
+  height: number;
+  }> {
     return super.fetch('/ctl/getblockheight')
   }
 
-  viewBlockDetail(hash: string): Promise<BlockResponse.BlcokDetail> {
+  public viewBlockDetail(hash: string): Promise<BlockResponse.BlcokDetail> {
     return super.fetch('/block/detail', { hash })
   }
 
   // Split
-  makeUnsignedSplitAddrTx(
+  public makeUnsignedSplitAddrTx(
     split_addr_tx: SplitRequest.SplitAddrTxReq
   ): Promise<SplitResponse.UnsignedSplitAddrTx> {
     return super.fetch('/tx/makeunsignedtx/splitaddr', split_addr_tx)
   }
 
   // Token
-  makeUnsignedTokenIssueTx(
+  public makeUnsignedTokenIssueTx(
     token_issue_tx: TokenRequest.IssueTokenReq
   ): Promise<TokenResponse.UnsignedTokenIssueTx> {
     return super.fetch('/tx/makeunsignedtx/token/issue', token_issue_tx)
@@ -122,28 +124,28 @@ export default class Api extends Fetch {
     return { balances: arr_balances }
   }
 
-  makeUnsignedTokenTx(
+  public makeUnsignedTokenTx(
     token_transfer_tx: TokenRequest.OriginalTokenTxReq
   ): Promise<UtilInterface.UnsignedTx> {
     return super.fetch('/tx/makeunsignedtx/token/transfer', token_transfer_tx)
   }
 
-  fetchTokenUtxos(fetch_utxos_req: TxRequest.SetchUtxosReq) {
+  public fetchTokenUtxos(fetch_utxos_req: TxRequest.SetchUtxosReq) {
     return super.fetch('/todo', fetch_utxos_req)
   }
 
   // TX
-  faucet(req) {
+  public faucet(req) {
     return super.fetch('/faucet/claim', req)
   }
 
-  makeUnsignedTx(
+  public makeUnsignedTx(
     tx: TxRequest.OriginalTxReq
   ): Promise<UtilInterface.UnsignedTx> {
     return super.fetch('/tx/makeunsignedtx', tx)
   }
 
-  signTxByPrivKey(
+  public signTxByPrivKey(
     unsigned_tx: UtilInterface.SignedTxByPrivKeyReq
   ): Promise<UtilInterface.TX> {
     const _privKey = unsigned_tx.privKey
@@ -151,11 +153,11 @@ export default class Api extends Fetch {
     return privK.signTxByPrivKey(unsigned_tx)
   }
 
-  sendTx(signed_tx: UtilInterface.TX): Promise<{ hash: string }> {
+  public sendTx(signed_tx: UtilInterface.TX): Promise<{ hash: string }> {
     return super.fetch('/tx/sendtransaction', { tx: signed_tx })
   }
 
-  viewTxDetail(hash: string): Promise<TxResponse.TxDetail> {
+  public viewTxDetail(hash: string): Promise<TxResponse.TxDetail> {
     return super.fetch('/tx/detail', { hash })
   }
 
@@ -175,12 +177,12 @@ export default class Api extends Fetch {
     return { balances: arr_balances }
   }
 
-  fetchUtxos(fetch_utxos_req: TxRequest.SetchUtxosReq) {
+  public fetchUtxos(fetch_utxos_req: TxRequest.SetchUtxosReq) {
     return super.fetch('/tx/fetchutxos', fetch_utxos_req)
   }
 
   // TODO Raw
-  makeUnsignedContractTx(
+  public makeUnsignedContractTx(
     tx: TxRequest.OriginalTxReq
   ): Promise<UtilInterface.UnsignedTx> {
     return super.fetch('/todo', tx)
@@ -229,7 +231,7 @@ export default class Api extends Fetch {
       })
   }
 
-  sendRawTx(raw_tx: string) {
+  public sendRawTx(raw_tx: string) {
     return super.fetch('/tx/sendrawtransaction', { raw_tx })
   }
 }

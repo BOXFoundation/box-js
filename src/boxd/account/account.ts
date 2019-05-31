@@ -10,15 +10,13 @@ const OP_CODE_TYPE = 'hex'
  * @class [Account]
  */
 export default class Account {
-  constructor() {}
-
   /**
    * @func Dump-P2PKH-Address-from-PrivateKey
    * @param [*privKey] string | Buffer
    * @returns [P2PKH_Address] string
    * @memberof Account
    */
-  dumpAddrFromPrivKey(privKey: string | Buffer) {
+  public dumpAddrFromPrivKey(privKey: string | Buffer) {
     try {
       if (privKey instanceof Buffer) {
         privKey = privKey.toString(OP_CODE_TYPE)
@@ -39,7 +37,7 @@ export default class Account {
    * @returns [PublicKey] string
    * @memberof Account
    */
-  dumpPubKeyFromPrivKey(privKey: string | Buffer) {
+  public dumpPubKeyFromPrivKey(privKey: string | Buffer) {
     try {
       if (privKey instanceof Buffer) {
         privKey = privKey.toString(OP_CODE_TYPE)
@@ -61,7 +59,7 @@ export default class Account {
    * @returns [CryptoJson] CryptoJson
    * @memberof Account
    */
-  dumpCryptoFromPrivKey(privKey: string | Buffer, pwd: string) {
+  public dumpCryptoFromPrivKey(privKey: string | Buffer, pwd: string) {
     try {
       if (privKey instanceof Buffer) {
         privKey = privKey.toString(OP_CODE_TYPE)
@@ -82,7 +80,7 @@ export default class Account {
    * @returns [PublicKey_hash] string
    * @memberof Account
    */
-  dumpPubKeyHashFromPrivKey(privKey: string | Buffer) {
+  public dumpPubKeyHashFromPrivKey(privKey: string | Buffer) {
     try {
       if (privKey instanceof Buffer) {
         privKey = privKey.toString(OP_CODE_TYPE)
@@ -103,7 +101,7 @@ export default class Account {
    * @returns [PublicKey] string
    * @memberof Account
    */
-  dumpPubKeyHashFromAddr(addr: string) {
+  public dumpPubKeyHashFromAddr(addr: string) {
     try {
       const pubKey_hash = Verify.isAddr(addr)
       if (pubKey_hash) {
@@ -167,7 +165,7 @@ export default class Account {
    * @returns {} Crypto
    * @memberof Account
    */
-  getCryptoByPwd(pwd: string, privKey?: string | Buffer) {
+  public getCryptoByPwd(pwd: string, privKey?: string | Buffer) {
     if (privKey && privKey instanceof Buffer) {
       privKey = privKey.toString(OP_CODE_TYPE)
     }
