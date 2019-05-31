@@ -179,7 +179,7 @@ var Api = /** @class */ (function (_super) {
         return _super.prototype.fetch.call(this, '/tx/makeunsignedtx/token/transfer', token_transfer_tx);
     };
     Api.prototype.fetchTokenUtxos = function (fetch_utxos_req) {
-        return _super.prototype.fetch.call(this, 'todo', fetch_utxos_req);
+        return _super.prototype.fetch.call(this, '/todo', fetch_utxos_req);
     };
     // TX
     Api.prototype.faucet = function (req) {
@@ -277,7 +277,7 @@ var Api = /** @class */ (function (_super) {
                                                     .then(function (res) {
                                                     console.log('unsigned_tx:', res);
                                                     console.log('privKey:', privKey);
-                                                    // todo verify
+                                                    // TODO verify
                                                     return _this.signTxByPrivKey({
                                                         unsignedTx: {
                                                             tx: res.tx,

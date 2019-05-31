@@ -2,7 +2,6 @@ import PrivateKey from '../util/crypto/privatekey'
 import UtilInterface from '../util/interface'
 
 export default class AccountManager {
-  // impAccWithKeyStore: (ksJSON: { crypto: any }, pwd: string) => any todo
   acc_list: { [acc_addr: string]: UtilInterface.Account }
   updateAccount: any
 

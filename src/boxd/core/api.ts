@@ -129,7 +129,7 @@ export default class Api extends Fetch {
   }
 
   fetchTokenUtxos(fetch_utxos_req: TxRequest.SetchUtxosReq) {
-    return super.fetch('todo', fetch_utxos_req)
+    return super.fetch('/todo', fetch_utxos_req)
   }
 
   // TX
@@ -198,7 +198,7 @@ export default class Api extends Fetch {
       .then(async res => {
         console.log('fetchUtxos res:', res)
         if (res.code === 0) {
-          // todo 序列化 -> sign ->
+          // TODO 序列化 -> sign ->
           const utxos: TxResponse.Utxo[] = res.utxos
           await super
             .fetch('/tx/getrawtransaction', {
@@ -210,7 +210,7 @@ export default class Api extends Fetch {
             .then(res => {
               console.log('unsigned_tx:', res)
               console.log('privKey:', privKey)
-              // todo verify
+              // TODO verify
               return this.signTxByPrivKey({
                 unsignedTx: {
                   tx: res.tx,

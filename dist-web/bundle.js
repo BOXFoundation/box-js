@@ -64246,10 +64246,7 @@ var Account = /** @class */function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log('dumpPrivKeyFromCrypto param:', cryptoJSON, pwd);
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3,, 4]);
+                        _a.trys.push([0, 2,, 3]);
                         cpt = cryptoJSON.crypto;
                         kdfParams = cpt.kdfparams;
                         saltBuffer = Buffer.from(kdfParams.salt, OP_CODE_TYPE);
@@ -64261,17 +64258,17 @@ var Account = /** @class */function () {
                             throw new Error('Wrong passphrase !');
                         }
                         return [4 /*yield*/, aes_1.default.getCiphertext(aesKey, cpt.ciphertext, cpt.cipherparams.iv)];
-                    case 2:
+                    case 1:
                         privateKeyHexStr = _a.sent();
                         if (!privateKeyHexStr) {
                             throw new Error('Privat Key not found !');
                         }
                         return [2 /*return*/, privateKeyHexStr];
-                    case 3:
+                    case 2:
                         err_1 = _a.sent();
                         console.log('dumpPrivKeyFromCrypto Error !');
                         throw new Error(err_1);
-                    case 4:return [2 /*return*/];}
+                    case 3:return [2 /*return*/];}
 
             });
         });
@@ -64504,7 +64501,7 @@ var Api = /** @class */function (_super) {
         return _super.prototype.fetch.call(this, '/tx/makeunsignedtx/token/transfer', token_transfer_tx);
     };
     Api.prototype.fetchTokenUtxos = function (fetch_utxos_req) {
-        return _super.prototype.fetch.call(this, 'todo', fetch_utxos_req);
+        return _super.prototype.fetch.call(this, '/todo', fetch_utxos_req);
     };
     // TX
     Api.prototype.faucet = function (req) {
@@ -64602,7 +64599,7 @@ var Api = /** @class */function (_super) {
                                             then(function (res) {
                                                 console.log('unsigned_tx:', res);
                                                 console.log('privKey:', privKey);
-                                                // todo verify
+                                                // TODO verify
                                                 return _this.signTxByPrivKey({
                                                     unsignedTx: {
                                                         tx: res.tx,

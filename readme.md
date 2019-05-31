@@ -35,7 +35,7 @@ The official distribution package can be found at [npm](https://todo).
 │       ├── account
 │       │   ├── account-manager.ts  # accounts manager
 │       │   └── account.ts  # account core
-│       ├── contract  # todo
+│       ├── contract  # TODO
 │       ├── core  # boxd:core
 │       │   ├── api.ts  # core:api function
 │       │   ├── feature.ts  # core:feature function

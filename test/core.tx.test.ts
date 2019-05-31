@@ -89,7 +89,7 @@ test('Get the BOX Balances of the given Addresses', async () => {
     })
 }) */
 
-// todo
+// TODO
 /* test('Make a Raw Transaction', async () => {
   await cor
     .createRawTx({
