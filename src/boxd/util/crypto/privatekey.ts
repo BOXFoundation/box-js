@@ -17,61 +17,61 @@ const prefix = {
  * @constructs [privKey]
  */
 export default class PrivateKey {
-  privKey
-  constructor(privkey_str) {
-    this.privKey = new bitcore.PrivateKey(privkey_str)
-    this.privKey.signMsg = sigHash => {
-      const eccPrivateKey = privkey_str && Ecpair.getECfromPrivKey(privkey_str)
-      return eccPrivateKey.sign(sigHash).sig
+    privKey
+    constructor(privkey_str) {
+      this.privKey = new bitcore.PrivateKey(privkey_str)
+      this.privKey.signMsg = sigHash => {
+        const eccPrivateKey = privkey_str && Ecpair.getECfromPrivKey(privkey_str)
+        return eccPrivateKey.sign(sigHash).sig
+      }
+      this.privKey.pkh = this.getPubKeyHashByPrivKey()
+      this.privKey.toP2PKHAddress = this.getAddrByPrivKey(prefix.P2PKH)
+      this.privKey.toP2SHAddress = this.getAddrByPrivKey(prefix.P2SH)
     }
-    this.privKey.pkh = this.getPubKeyHashByPrivKey()
-    this.privKey.toP2PKHAddress = this.getAddrByPrivKey(prefix.P2PKH)
-    this.privKey.toP2SHAddress = this.getAddrByPrivKey(prefix.P2SH)
-  }
 
-  /**
+    /**
    * @func get-CryptoJson-by-PrivateKey&Password
    * @param [*pwd] string
    * @returns [cryptoJSON]
    */
-  getCryptoByPrivKey = (pwd: string) => {
-    return CryptoJson.getCryptoByPrivKey(this.privKey, pwd)
-  }
+    getCryptoByPrivKey = (pwd: string) => {
+      return CryptoJson.getCryptoByPrivKey(this.privKey, pwd)
+    }
 
-  /**
+    /**
    * @export sign-Transaction-by-PrivKey
    * @param [*unsigned_tx] SignedTxByPrivKeyReq
    * @returns [tx]
    */
-  signTxByPrivKey = async (unsigned_tx: UtilInterface.SignedTxByPrivKeyReq) => {
-    let { tx, rawMsgs } = unsigned_tx.unsignedTx
-    let _privKey = unsigned_tx.privKey
-    // vin handler
-    for (let idx = 0; idx < tx.vin.length; idx++) {
-      const sigHashBuf = CommonUtil.getSignHash(rawMsgs[idx])
-      const eccPrivKey = _privKey && Ecpair.getECfromPrivKey(_privKey)
-      const signBuf = eccPrivKey.sign(sigHashBuf).sig
-      const scriptSig = CommonUtil.signatureScript(
-        signBuf,
-        this.privKey.toPublicKey().toBuffer()
-      )
-      tx.vin[idx].script_sig = scriptSig.toString('base64')
+    signTxByPrivKey = async (unsigned_tx: UtilInterface.SignedTxByPrivKeyReq) => {
+      let { tx, rawMsgs } = unsigned_tx.unsignedTx
+      let _privKey = unsigned_tx.privKey
+      // vin handler
+      for (let idx = 0; idx < tx.vin.length; idx++) {
+        const sigHashBuf = CommonUtil.getSignHash(rawMsgs[idx])
+        const eccPrivKey = _privKey && Ecpair.getECfromPrivKey(_privKey)
+        const signBuf = eccPrivKey.sign(sigHashBuf).sig
+        const scriptSig = CommonUtil.signatureScript(
+          signBuf,
+          this.privKey.toPublicKey().toBuffer()
+        )
+        tx.vin[idx].script_sig = scriptSig.toString('base64')
+      }
+      return tx
     }
-    return tx
-  }
 
-  getAddrByPrivKey = (prefixHex: string) => {
-    const sha256Content = prefixHex + this.privKey.pkh
-    const checksum = Hash.sha256(
-      Hash.sha256(Buffer.from(sha256Content, OP_CODE_TYPE))
-    ).slice(0, 4)
-    const content = sha256Content.concat(checksum.toString(OP_CODE_TYPE))
-    return bs58.encode(Buffer.from(content, OP_CODE_TYPE))
-  }
+    getAddrByPrivKey = (prefixHex: string) => {
+      const sha256Content = prefixHex + this.privKey.pkh
+      const checksum = Hash.sha256(
+        Hash.sha256(Buffer.from(sha256Content, OP_CODE_TYPE))
+      ).slice(0, 4)
+      const content = sha256Content.concat(checksum.toString(OP_CODE_TYPE))
+      return bs58.encode(Buffer.from(content, OP_CODE_TYPE))
+    }
 
-  getPubKeyHashByPrivKey = () => {
-    return Hash.hash160(this.privKey.toPublicKey().toBuffer()).toString(
-      OP_CODE_TYPE
-    )
-  }
+    getPubKeyHashByPrivKey = () => {
+      return Hash.hash160(this.privKey.toPublicKey().toBuffer()).toString(
+        OP_CODE_TYPE
+      )
+    }
 }

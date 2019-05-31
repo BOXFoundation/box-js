@@ -78,8 +78,8 @@ export default class Api extends Fetch {
   }
 
   getBlockHeight(): Promise<{
-    height: number
-  }> {
+        height: number;
+    }> {
     return super.fetch('/ctl/getblockheight')
   }
 
