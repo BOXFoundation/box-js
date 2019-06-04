@@ -48,13 +48,13 @@ test('Get the BOX Balances of the given Addresses', async () => {
     })
 })
 
-/* test('faucet', async () => {
+test('faucet', async () => {
   const faucet_res = await cor.faucet({
-    addr: Data.acc_addr_3,
+    addr: Data.acc_addr_2,
     amount: 30000000000
   })
   console.log('faucet res:', faucet_res)
-}) */
+})
 
 /* test('Sign Transaction by PrivKey or Crypto', async () => {
   await cor

@@ -57,8 +57,8 @@
   "token_supply": 10000,
   "token_decimal": 3,
   "split_weights": [
-    200000,
-    800000
+    600000,
+    400000
   ],
   "amount": 10000,
   "amounts": [
