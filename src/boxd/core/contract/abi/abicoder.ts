@@ -2,18 +2,6 @@ import ethAbi from 'ethereumjs-abi'
 import * as web3Utils from 'web3-utils'
 
 export default class AbiCoder {
-  public utils
-
-  /**
-   * @param {Utils} utils
-   * @param {EthersAbiCoder} ethersAbiCoder
-   *
-   * @constructor
-   */
-  public constructor() {
-    this.utils = web3Utils
-  }
-
   /**
    * Encodes the function name to its ABI representation, which are the first 4 bytes of the keccak256 of the function name including  types.
    *
@@ -25,9 +13,9 @@ export default class AbiCoder {
    */
   public encodeFunctionSignature(functionName) {
     // if (isObject(functionName)) {
-    functionName = this.utils.jsonInterfaceMethodToString(functionName)
+    functionName = web3Utils.jsonInterfaceMethodToString(functionName)
     // }
-    return this.utils.keccak256(functionName).slice(0, 10)
+    return web3Utils.keccak256(functionName).slice(0, 10)
   }
 
   /**
@@ -41,10 +29,10 @@ export default class AbiCoder {
    */
   public encodeEventSignature(functionName) {
     // if (isObject(functionName)) {
-    functionName = this.utils.jsonInterfaceMethodToString(functionName)
+    functionName = web3Utils.jsonInterfaceMethodToString(functionName)
     // }
 
-    return this.utils.keccak256(functionName)
+    return web3Utils.keccak256(functionName)
   }
 
   /**
@@ -72,7 +60,7 @@ export default class AbiCoder {
    * @returns {String} encoded list of params
    */
   public async encodeParameters(types, params) {
-    const result = await ethAbi.simpleEncode(types, params)
+    const result = await ethAbi.rawEncode(types, params)
     console.log('encodeParameters result:', result)
     return result
   }
