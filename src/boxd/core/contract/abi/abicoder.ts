@@ -60,8 +60,7 @@ export default class AbiCoder {
    * @returns {String} encoded list of params
    */
   public async encodeParameters(types, params) {
-    const result = await ethAbi.rawEncode(types, params)
-    console.log('encodeParameters result:', result)
+    const result = await ethAbi.rawEncode(types, params).toString('hex')
     return result
   }
 
@@ -115,7 +114,7 @@ export default class AbiCoder {
       throw new Error(`Invalid bytes string given: ${bytes}`)
     }
 
-    const result = ethAbi.simpleDecode(outputs, bytes)
+    const result = ethAbi.rawDecode(outputs, bytes)
     let returnValues = {}
     let decodedValue
 
