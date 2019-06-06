@@ -25,7 +25,8 @@
     "lodash": "^4.17.11",
     "randombytes": "^2.0.6",
     "scrypt.js": "^0.2.0",
-    "tiny-secp256k1": "^1.0.1"
+    "tiny-secp256k1": "^1.0.1",
+    "web3": "^1.0.0-beta.55"
   },
   "devDependencies": {
     "eslint": "^5.16.0",

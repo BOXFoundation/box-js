@@ -183,7 +183,7 @@ export default class Api extends Fetch {
   }
 
   // Contract
-  makeUnsignedContractTx(tx: ContractRequest.OriginalContractReq
+  public makeUnsignedContractTx(tx: ContractRequest.OriginalContractReq
   ): Promise<ContractResponse.UnsignedContractTx> {
     return super.fetch('/tx/makeunsignedtx/contract', tx)
   }
