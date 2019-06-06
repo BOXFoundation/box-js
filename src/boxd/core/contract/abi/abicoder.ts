@@ -1,5 +1,7 @@
 import ethAbi from 'ethereumjs-abi'
 import * as web3Utils from 'web3-utils'
+// import isArray from 'lodash/isArray'
+import isObject from 'lodash/isObject'
 
 export default class AbiCoder {
   /**
@@ -12,9 +14,9 @@ export default class AbiCoder {
    * @returns {String} encoded function name
    */
   public encodeFunctionSignature(functionName) {
-    // if (isObject(functionName)) {
-    functionName = web3Utils.jsonInterfaceMethodToString(functionName)
-    // }
+    if (isObject(functionName)) {
+      functionName = web3Utils.jsonInterfaceMethodToString(functionName)
+    }
     return web3Utils.keccak256(functionName).slice(0, 10)
   }
 
@@ -60,8 +62,7 @@ export default class AbiCoder {
    * @returns {String} encoded list of params
    */
   public async encodeParameters(types, params) {
-    const result = await ethAbi.rawEncode(types, params).toString('hex')
-    return result
+    return await ethAbi.rawEncode(types, params).toString('hex')
   }
 
   /**
@@ -74,11 +75,20 @@ export default class AbiCoder {
    *
    * @returns {String} The encoded ABI for this function call
    */
-  public encodeFunctionCall(jsonInterface, params) {
-    return (
-      this.encodeFunctionSignature(jsonInterface) +
-      this.encodeParameters(jsonInterface.inputs, params) //.replace('0x', '')
-    )
+  public async encodeFunctionCall(jsonInterface, params) {
+    const signature = await this.encodeFunctionSignature(jsonInterface)
+    console.log('signature===:', signature)
+    let type_arr: string[] = []
+    console.log('flag:', jsonInterface.inputs)
+    await jsonInterface.inputs.forEach(item => {
+      console.log('item.type:', item.type)
+      type_arr.push(item.type)
+    })
+    const inputs = await this.encodeParameters(type_arr, params)
+    console.log('inputs===:', inputs)
+    const result = `${signature}${inputs}`
+    console.log('result===:', result)
+    return result // .replace('0x', '')
   }
 
   /**
