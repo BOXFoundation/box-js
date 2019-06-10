@@ -1,18 +1,16 @@
 import CommonUtil from '../../../util/util'
 import AbiUtil from './util'
 import isObject from 'lodash/isObject'
+import isArray from 'lodash/isArray'
 
 export default class AbiCoder {
   /**
-   * Encodes the function name to its ABI representation, which are the first 4 bytes of the keccak256 of the function name including  types.
+   * Encodes the function name to its ABI representation, which are the first 4 bytes of the keccak256 of the function name including types.
    *
-   * @method encodeFunctionSignature
-   *
-   * @param {String|Object} functionName
-   *
-   * @returns {String} encoded function name
+   * @param [functionName] string|object
+   * @returns {encoded function name} string
    */
-  public async encodeFunctionSignature(functionName) {
+  public async encodeFunctionSignature(functionName: string | object) {
     if (isObject(functionName)) {
       functionName = CommonUtil.jsonInterfaceMethodToString(functionName)
     }
@@ -28,16 +26,13 @@ export default class AbiCoder {
   /**
    * Encodes the function name to its ABI representation, which are the first 4 bytes of the keccak256 of the function name including  types.
    *
-   * @method encodeEventSignature
-   *
-   * @param {String|Object} functionName
-   *
-   * @returns {String} encoded function name
+   * @param [functionName] string|object
+   * @returns {encoded function name} string
    */
-  public encodeEventSignature(functionName) {
-    // if (isObject(functionName)) {
-    functionName = CommonUtil.jsonInterfaceMethodToString(functionName)
-    // }
+  public encodeEventSignature(functionName: string | object) {
+    if (isObject(functionName)) {
+      functionName = CommonUtil.jsonInterfaceMethodToString(functionName)
+    }
 
     return CommonUtil.keccak256(functionName)
   }
@@ -45,47 +40,41 @@ export default class AbiCoder {
   /**
    * Should be used to encode plain param
    *
-   * @method encodeParameter
-   *
-   * @param {String} type
-   * @param {Object} param
-   *
-   * @returns {String} encoded plain param
+   * @param [type] string
+   * @param [param] string
+   * @returns {encoded plain param} string
    */
-  public encodeParameter(type, param) {
+  public encodeParameter(type: string, param: string) {
     return this.encodeParameters([type], [param])
   }
 
   /**
    * Should be used to encode list of params
    *
-   * @method encodeParameters
-   *
-   * @param {Array} types
-   * @param {Array} params
-   *
-   * @returns {String} encoded list of params
+   * @param [types] array
+   * @param [params] array
+   * @returns {encoded list of params} string
    */
-  public async encodeParameters(types, params) {
+  public async encodeParameters(types: string[], params: (string | object)[]) {
     return await AbiUtil.rawEncode(types, params).toString('hex')
   }
 
   /**
    * Encodes a function call from its json interface and parameters.
    *
-   * @method encodeFunctionCall
-   *
-   * @param {Object} jsonInterface
-   * @param {Array} params
-   *
-   * @returns {String} The encoded ABI for this function call
+   * @param [jsonInterface] object
+   * @param [params] array
+   * @returns {the encoded ABI for this function call} string
    */
-  public async encodeFunctionCall(jsonInterface, params) {
+  public async encodeFunctionCall(
+    jsonInterface: object,
+    params: (string | object)[]
+  ) {
     const signature = await this.encodeFunctionSignature(jsonInterface)
     console.log('signature===:', signature)
     let type_arr: string[] = []
-    console.log('flag:', jsonInterface.inputs)
-    await jsonInterface.inputs.forEach(item => {
+    console.log('flag:', jsonInterface['inputs'])
+    await jsonInterface['inputs'].forEach(item => {
       console.log('item.type:', item.type)
       type_arr.push(item.type)
     })
@@ -93,37 +82,31 @@ export default class AbiCoder {
     console.log('inputs===:', inputs)
     const result = `${signature}${inputs}`
     console.log('result===:', result)
-    return result // .replace('0x', '')
+    return result
   }
 
   /**
    * Should be used to decode bytes to plain param
    *
-   * @method decodeParameter
-   *
-   * @param {String} type
-   * @param {String} bytes
-   *
-   * @returns {Object} plain param
+   * @param [type] string
+   * @param [bytes] string
+   * @returns {plain param} object
    */
-  public decodeParameter(type, bytes) {
+  public decodeParameter(type: string, bytes: string) {
     return this.decodeParameters([type], bytes)[0]
   }
 
   /**
    * Should be used to decode list of params
    *
-   * @method decodeParameter
-   *
-   * @param {Array<String|Object>|Object} outputs
-   * @param {String} bytes
-   *
-   * @returns {Object} Object with named and indexed properties of the returnValues
+   * @param [outputs] {array<string|object>|object}
+   * @param [bytes] string
+   * @returns {Object with named and indexed properties of the returnValues} object
    */
-  public decodeParameters(outputs, bytes) {
-    /*     if (isArray(outputs) && outputs.length === 0) {
+  public decodeParameters(outputs, bytes: string) {
+    if (isArray(outputs) && outputs.length === 0) {
       throw new Error('Empty outputs array given!')
-    } */
+    }
 
     if (!bytes || bytes === '0x' || bytes === '0X') {
       throw new Error(`Invalid bytes string given: ${bytes}`)
@@ -134,7 +117,6 @@ export default class AbiCoder {
     let decodedValue
 
     if (result) {
-      // isArray(
       if (outputs.length > 1) {
         outputs.forEach((output, i) => {
           decodedValue = result[i]
@@ -145,9 +127,9 @@ export default class AbiCoder {
 
           returnValues[i] = decodedValue
 
-          // if (isObject(output) && output.name) {
-          returnValues[output.name] = decodedValue
-          // }
+          if (isObject(output) && output.name) {
+            returnValues[output.name] = decodedValue
+          }
         })
 
         return returnValues
@@ -156,9 +138,9 @@ export default class AbiCoder {
       return result
     }
 
-    // if (isObject(outputs[0]) && outputs[0].name) {
-    returnValues[outputs[0].name] = result
-    // }
+    if (isObject(outputs[0]) && outputs[0].name) {
+      returnValues[outputs[0].name] = result
+    }
 
     returnValues[0] = result
 
@@ -166,87 +148,72 @@ export default class AbiCoder {
   }
 
   /**
+   * @TODO
    * Decodes events non- and indexed parameters.
    *
-   * @method decodeLog
-   *
-   * @param {Array} inputs
-   * @param {String} data
-   * @param {Array} topics
-   *
-   * @returns {Object} Object with named and indexed properties of the returnValues
+   * @param [inputs] array
+   * @param [data] string
+   * @param [topics] array
+   * @returns {Object with named and indexed properties of the returnValues} object
    */
-  public decodeLog(inputs, data = '', topics) {
+  /*   public decodeLog(inputs, data = '', topics) {
     const returnValues = {}
     let topicCount = 0
     let value
     let nonIndexedInputKeys
     let nonIndexedInputItems
 
-    /*     if (!isArray(topics)) {
+    if (!isArray(topics)) {
       topics = [topics]
-    } */
-
+    }
     inputs.forEach((input, i) => {
       if (input.indexed) {
         if (input.type === 'string') {
           return
         }
-
         value = topics[topicCount]
-
         if (this.isStaticType(input.type)) {
           value = this.decodeParameter(input.type, topics[topicCount])
         }
-
         returnValues[i] = value
         returnValues[input.name] = value
         topicCount++
-
         return
       }
-
       nonIndexedInputKeys.push(i)
       nonIndexedInputItems.push(input)
     })
-
     if (data) {
       let values = this.decodeParameters(nonIndexedInputItems, data)
-
       let decodedValue
       nonIndexedInputKeys.forEach((itemKey, index) => {
         decodedValue = values[index]
-
         returnValues[itemKey] = decodedValue
         returnValues[nonIndexedInputItems[index].name] = decodedValue
       })
     }
 
     return returnValues
-  }
+  } */
 
   /**
+   * @TODO
    * Checks if a given type string is a static solidity type
    *
-   * @method isStaticType
-   *
-   * @param {String} type
-   *
-   * @returns {Boolean}
+   * @param [type] string
+   * @returns {is static type ?} boolean
    */
-  public isStaticType(type) {
+  /*   public isStaticType(type) {
     if (type === 'bytes') {
       return false
     }
-
     if (type === 'string') {
       return false
     }
-
     if (type.indexOf('[') && type.slice(type.indexOf('[')).length === 2) {
       return false
     }
 
     return true
-  }
+  } */
 }

@@ -1,34 +1,36 @@
 import 'jest'
-// import * as Utils from 'web3-utils'
 import AbiCoder from '../src/boxd/core/contract/abi/abicoder'
-// import Data from './json/data.json'
 
 const abi = new AbiCoder()
 
-/* it('constructor check', () => {
-  expect(abiCoder.utils).toEqual(Utils);
-
-  expect(abiCoder.ethersAbiCoder).toEqual(ethersAbiCoderMock);
-}); */
-
-it('Calls encodeFunctionSignature with a string as parameter', () => {
-  expect(abi.encodeFunctionSignature('test')).toEqual('0x9c22ff5f')
+test('Calls encodeFunctionSignature with a string as parameter', async () => {
+  try {
+    expect(await abi.encodeFunctionSignature('test')).toEqual('0x9c22ff5f')
+  } catch (err) {
+    console.log('Calls encodeFunctionSignature Error:', err)
+    expect(0).toBe(1)
+  }
 })
 
-it('Calls encodeFunctionSignature with a object as parameter', () => {
-  expect(
-    abi.encodeFunctionSignature({
-      name: 'test',
-      inputs: [
-        {
-          type: 'uint256'
-        }
-      ]
-    })
-  ).toEqual('0x29e99f07')
+test('Calls encodeFunctionSignature with a object as parameter', async () => {
+  try {
+    expect(
+      await abi.encodeFunctionSignature({
+        name: 'test',
+        inputs: [
+          {
+            type: 'uint256'
+          }
+        ]
+      })
+    ).toEqual('0x29e99f07')
+  } catch (err) {
+    console.log('Calls encodeFunctionSignature Error:', err)
+    expect(0).toBe(1)
+  }
 })
 
-it('Calls encodeParameter', async () => {
+test('Calls encodeParameter', async () => {
   try {
     const encoded = await abi.encodeParameter('uint256', '99')
     console.log('encoded:', encoded)
