@@ -26,6 +26,7 @@ const hexToBytes = hex => {
   for (var c = 0; c < hex.length; c += 2) {
     bytes.push(parseInt(hex.substr(c, 2), 16))
   }
+
   return bytes
 }
 /* keccak = END = */
@@ -55,6 +56,7 @@ const _flattenTypes = function _flattenTypes(includeTuple, puts) {
       types.push(param.type)
     }
   })
+
   return types
 }
 
@@ -73,6 +75,7 @@ namespace Util {
     }
     bytes[0] = getNumberByte(uint16)
     bytes[1] = uint16 >> 8
+
     return bytes
   }
 
@@ -113,6 +116,7 @@ namespace Util {
         buf
       ])
     }
+
     // Append the actual operand
     return Buffer.concat([strBuf, operand])
   }
@@ -132,6 +136,7 @@ namespace Util {
     bytes[1] = uint32 >> 8
     bytes[2] = uint32 >> 16
     bytes[3] = uint32 >> 24
+
     return bytes
   }
 
@@ -144,6 +149,7 @@ namespace Util {
   export const signatureScript = (sigBuf: Buffer, pubKeyBuf: Buffer) => {
     const before = addOperand(Buffer.from([]), sigBuf)
     const end = addOperand(before, pubKeyBuf)
+
     return end
   }
 
@@ -175,6 +181,37 @@ namespace Util {
     } else {
       return returnValue
     }
+  }
+
+  /**
+   * Returns a `Boolean` on whether or not the a `String` starts with '0x'
+   * @param {String} str the string input value
+   * @return {Boolean} a boolean if it is or is not hex prefixed
+   * @throws if the str input is not a string
+   */
+  export const isHexPrefixed = str => {
+    if (typeof str !== 'string') {
+      throw new Error(
+        '[is-hex-prefixed] value must be type \'string\', is currently type ' +
+          typeof str +
+          ', while checking isHexPrefixed.'
+      )
+    }
+
+    return str.slice(0, 2) === '0x'
+  }
+
+  /**
+   * Removes '0x' from a given `String` is present
+   * @param {String} str the string value
+   * @return {String|Optional} a string by pass if necessary
+   */
+  export const stripHexPrefix = str => {
+    if (typeof str !== 'string') {
+      return str
+    }
+
+    return isHexPrefixed(str) ? str.slice(2) : str
   }
 }
 

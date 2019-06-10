@@ -1,6 +1,7 @@
 import ethAbi from 'ethereumjs-abi'
 import * as web3Utils from 'web3-utils'
-import Util from '../../../util/util'
+import CommonUtil from '../../../util/util'
+import AbiUtil from './util'
 import isObject from 'lodash/isObject'
 
 export default class AbiCoder {
@@ -15,9 +16,9 @@ export default class AbiCoder {
    */
   public async encodeFunctionSignature(functionName) {
     if (isObject(functionName)) {
-      functionName = Util.jsonInterfaceMethodToString(functionName)
+      functionName = CommonUtil.jsonInterfaceMethodToString(functionName)
     }
-    const keccaked = await Util.keccak256(functionName)
+    const keccaked = await CommonUtil.keccak256(functionName)
     console.log('keccaked:', keccaked)
     if (keccaked) {
       return keccaked.slice(0, 10)
@@ -68,7 +69,7 @@ export default class AbiCoder {
    * @returns {String} encoded list of params
    */
   public async encodeParameters(types, params) {
-    return await ethAbi.rawEncode(types, params).toString('hex')
+    return await AbiUtil.rawEncode(types, params).toString('hex')
   }
 
   /**
