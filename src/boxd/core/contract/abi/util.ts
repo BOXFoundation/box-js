@@ -216,6 +216,155 @@ const elementaryName = name => {
   return name
 }
 
+// Parse the given type
+// @returns: {} containing the type itself, memory usage and (including size and subArray if applicable)
+const parseType = type => {
+  var size
+  var ret
+  if (abiIsArray(type)) {
+    size = parseTypeArray(type)
+    console.log('type_2:', type)
+    var subArray = type.slice(0, type.lastIndexOf('['))
+    subArray = parseType(subArray)
+    ret = {
+      isArray: true,
+      name: type,
+      size: size,
+      memoryUsage: size === 'dynamic' ? 32 : subArray.memoryUsage * size,
+      subArray: subArray
+    }
+    return ret
+  } else {
+    var rawType
+    switch (type) {
+    case 'address':
+      rawType = 'uint160'
+      break
+    case 'bool':
+      rawType = 'uint8'
+      break
+    case 'string':
+      rawType = 'bytes'
+      break
+    }
+    ret = {
+      rawType: rawType,
+      name: type,
+      memoryUsage: 32
+    }
+
+    if (
+      (type.startsWith('bytes') && type !== 'bytes') ||
+      type.startsWith('uint') ||
+      type.startsWith('int')
+    ) {
+      ret.size = parseTypeN(type)
+    } else if (type.startsWith('ufixed') || type.startsWith('fixed')) {
+      ret.size = parseTypeNxM(type)
+    }
+
+    if (
+      type.startsWith('bytes') &&
+      type !== 'bytes' &&
+      (ret.size < 1 || ret.size > 32)
+    ) {
+      throw new Error('Invalid bytes<N> width: ' + ret.size)
+    }
+    if (
+      (type.startsWith('uint') || type.startsWith('int')) &&
+      (ret.size % 8 || ret.size < 8 || ret.size > 256)
+    ) {
+      throw new Error('Invalid int/uint<N> width: ' + ret.size)
+    }
+    return ret
+  }
+}
+
+// Decodes a single item (can be dynamic array)
+// @returns: array
+// FIXME: this method will need a lot of attention at checking limits and validation
+const decodeSingle = (parsedType, data, offset) => {
+  if (typeof parsedType === 'string') {
+    parsedType = parseType(parsedType)
+  }
+  var size, num, ret, i
+
+  if (parsedType.name === 'address') {
+    return decodeSingle(parsedType.rawType, data, offset)
+      .toArrayLike(Buffer, 'be', 20)
+      .toString('hex')
+  } else if (parsedType.name === 'bool') {
+    return (
+      decodeSingle(parsedType.rawType, data, offset).toString() ===
+      new BN(1).toString()
+    )
+  } else if (parsedType.name === 'string') {
+    var bytes = decodeSingle(parsedType.rawType, data, offset)
+    return Buffer.from(bytes, 'utf8').toString()
+  } else if (parsedType.isArray) {
+    // this part handles fixed-length arrays ([2]) and variable length ([]) arrays
+    // NOTE: we catch here all calls to arrays, that simplifies the rest
+    ret = []
+    size = parsedType.size
+
+    if (parsedType.size === 'dynamic') {
+      offset = decodeSingle('uint256', data, offset).toNumber()
+      size = decodeSingle('uint256', data, offset).toNumber()
+      offset = offset + 32
+    }
+    for (i = 0; i < size; i++) {
+      var decoded = decodeSingle(parsedType.subArray, data, offset)
+      ret.push(decoded)
+      offset += parsedType.subArray.memoryUsage
+    }
+    return ret
+  } else if (parsedType.name === 'bytes') {
+    offset = decodeSingle('uint256', data, offset).toNumber()
+    size = decodeSingle('uint256', data, offset).toNumber()
+    return data.slice(offset + 32, offset + 32 + size)
+  } else if (parsedType.name.startsWith('bytes')) {
+    return data.slice(offset, offset + parsedType.size)
+  } else if (parsedType.name.startsWith('uint')) {
+    num = new BN(data.slice(offset, offset + 32), 16, 'be')
+    if (num.bitLength() > parsedType.size) {
+      throw new Error(
+        'Decoded int exceeds width: ' +
+          parsedType.size +
+          ' vs ' +
+          num.bitLength()
+      )
+    }
+    return num
+  } else if (parsedType.name.startsWith('int')) {
+    num = new BN(data.slice(offset, offset + 32), 16, 'be').fromTwos(256)
+    if (num.bitLength() > parsedType.size) {
+      throw new Error(
+        'Decoded uint exceeds width: ' +
+          parsedType.size +
+          ' vs ' +
+          num.bitLength()
+      )
+    }
+
+    return num
+  } else if (parsedType.name.startsWith('ufixed')) {
+    size = new BN(2).pow(new BN(parsedType.size[1]))
+    num = decodeSingle('uint256', data, offset)
+    if (!num.mod(size).isZero()) {
+      throw new Error('Decimals not supported yet')
+    }
+    return num.div(size)
+  } else if (parsedType.name.startsWith('fixed')) {
+    size = new BN(2).pow(new BN(parsedType.size[1]))
+    num = decodeSingle('int256', data, offset)
+    if (!num.mod(size).isZero()) {
+      throw new Error('Decimals not supported yet')
+    }
+    return num.div(size)
+  }
+  throw new Error('Unsupported or invalid type: ' + parsedType.name)
+}
+
 namespace Util {
   export const rawEncode = (types, values) => {
     var output: any = []
@@ -252,6 +401,20 @@ namespace Util {
     }
 
     return Buffer.concat(output.concat(data))
+  }
+
+  export const rawDecode = function(types, data) {
+    var ret: any = []
+    data = Buffer.from(data)
+    var offset = 0
+    for (var i = 0; i < types.length; i++) {
+      var type = elementaryName(types[i])
+      var parsed = parseType(type)
+      var decoded = decodeSingle(parsed, data, offset)
+      offset += parsed.memoryUsage
+      ret.push(decoded)
+    }
+    return ret
   }
 }
 

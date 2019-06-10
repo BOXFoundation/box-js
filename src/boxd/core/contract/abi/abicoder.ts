@@ -1,5 +1,3 @@
-import ethAbi from 'ethereumjs-abi'
-import * as web3Utils from 'web3-utils'
 import CommonUtil from '../../../util/util'
 import AbiUtil from './util'
 import isObject from 'lodash/isObject'
@@ -38,10 +36,10 @@ export default class AbiCoder {
    */
   public encodeEventSignature(functionName) {
     // if (isObject(functionName)) {
-    functionName = web3Utils.jsonInterfaceMethodToString(functionName)
+    functionName = CommonUtil.jsonInterfaceMethodToString(functionName)
     // }
 
-    return web3Utils.keccak256(functionName)
+    return CommonUtil.keccak256(functionName)
   }
 
   /**
@@ -131,7 +129,7 @@ export default class AbiCoder {
       throw new Error(`Invalid bytes string given: ${bytes}`)
     }
 
-    const result = ethAbi.rawDecode(outputs, bytes)
+    const result = AbiUtil.rawDecode(outputs, bytes)
     let returnValues = {}
     let decodedValue
 
