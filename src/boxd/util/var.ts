@@ -1,4 +1,4 @@
-export const opcode = {
+export default {
   // push value
   OP_PUSH_DATA1: 0x4c, // 76
   OP_PUSH_DATA2: 0x4d, // 77

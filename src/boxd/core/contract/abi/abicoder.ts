@@ -1,6 +1,6 @@
 import ethAbi from 'ethereumjs-abi'
 import * as web3Utils from 'web3-utils'
-// import isArray from 'lodash/isArray'
+import Util from '../../../util/util'
 import isObject from 'lodash/isObject'
 
 export default class AbiCoder {
@@ -15,7 +15,7 @@ export default class AbiCoder {
    */
   public encodeFunctionSignature(functionName) {
     if (isObject(functionName)) {
-      functionName = web3Utils.jsonInterfaceMethodToString(functionName)
+      functionName = Util.jsonInterfaceMethodToString(functionName)
     }
     return web3Utils.keccak256(functionName).slice(0, 10)
   }
