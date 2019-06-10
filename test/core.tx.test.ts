@@ -2,22 +2,22 @@ import 'jest'
 import Api from '../src/boxd/core/api'
 import Feature from '../src/boxd/core/feature'
 import fetch from 'isomorphic-fetch'
-import Data from './json/data.json'
+import Mock from './json/mock.json'
 import Keystore from './json/keystore.json'
 
-const cor = new Api(fetch, Data.endpoint_test, 'http')
-const feature = new Feature(fetch, Data.endpoint_test, 'http')
+const cor = new Api(fetch, Mock.endpoint_test, 'http')
+const feature = new Feature(fetch, Mock.endpoint_test, 'http')
 
 test('Make a BOX Transaction', async () => {
   const tx_result = await feature.makeBoxTxByCrypto({
     tx: {
-      from: Data.acc_addr_3,
-      to: Data.to_addrs,
-      amounts: Data.amounts,
-      fee: Data.fee
+      from: Mock.acc_addr_3,
+      to: Mock.to_addrs,
+      amounts: Mock.amounts,
+      fee: Mock.fee
     },
     crypto: Keystore.keystore_3,
-    pwd: Data.acc_pwd
+    pwd: Mock.acc_pwd
   })
   const tx_detail = await cor.viewTxDetail(tx_result.hash)
   expect(tx_detail.detail.hash).toEqual(tx_result.hash)
@@ -25,7 +25,7 @@ test('Make a BOX Transaction', async () => {
 
 test('Get the BOX Balance of the given Address', async () => {
   await cor
-    .getBalance(Data.acc_addr_3)
+    .getBalance(Mock.acc_addr_3)
     .then(async res => {
       // console.log('getBalance res:', JSON.stringify(res))
       expect(res)
@@ -38,7 +38,7 @@ test('Get the BOX Balance of the given Address', async () => {
 
 test('Get the BOX Balances of the given Addresses', async () => {
   await cor
-    .getBalances([Data.acc_addr_3, Data.acc_addr_3])
+    .getBalances([Mock.acc_addr_3, Mock.acc_addr_3])
     .then(async res => {
       expect(res)
     })
@@ -48,21 +48,21 @@ test('Get the BOX Balances of the given Addresses', async () => {
     })
 })
 
-test('faucet', async () => {
+/* test('faucet', async () => {
   const faucet_res = await cor.faucet({
-    addr: Data.acc_addr_2,
+    addr: Mock.acc_addr_2,
     amount: 30000000000
   })
   console.log('faucet res:', faucet_res)
-})
+}) */
 
 /* test('Sign Transaction by PrivKey or Crypto', async () => {
   await cor
     .makeUnsignedTx({
-      from: Data.acc_addr_3,
-      to: Data.to_addrs,
-      amounts: Data.amounts,
-      fee: Data.fee
+      from: Mock.acc_addr_3,
+      to: Mock.to_addrs,
+      amounts: Mock.amounts,
+      fee: Mock.fee
     })
     .then(async res => {
       // console.log('unsigned_tx:', JSON.stringify(res))
@@ -71,7 +71,7 @@ test('faucet', async () => {
           tx: res.tx,
           rawMsgs: res.rawMsgs
         },
-        privKey: Data.acc_privateKey_3
+        privKey: Mock.acc_privateKey_3
       })
       const signed_tx_acc = await feature.signTxByCrypto({
         unsignedTx: {
@@ -79,7 +79,7 @@ test('faucet', async () => {
           rawMsgs: res.rawMsgs
         },
         crypto: Keystore.keystore_3,
-        pwd: Data.acc_pwd
+        pwd: Mock.acc_pwd
       })
       expect(signed_tx).toEqual(signed_tx_acc)
     })
@@ -93,10 +93,10 @@ test('faucet', async () => {
 /* test('Make a Raw Transaction', async () => {
   await cor
     .createRawTx({
-      addr: Data.acc_addr_3,
-      to: Data.to_map,
-      fee: Data.fee,
-      privKey: Data.acc_privateKey_3
+      addr: Mock.acc_addr_3,
+      to: Mock.to_map,
+      fee: Mock.fee,
+      privKey: Mock.acc_privateKey_3
     })
     .then(async res => {
       console.log('createRawTx res:', JSON.stringify(res))

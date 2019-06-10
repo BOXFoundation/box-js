@@ -1,5 +1,6 @@
 import 'jest'
 import AbiCoder from '../src/boxd/core/contract/abi/abicoder'
+import Mock from './json/mock.json'
 
 const abi = new AbiCoder()
 
@@ -19,11 +20,11 @@ test('Calls encodeFunctionSignature with a object as parameter', async () => {
         name: 'test',
         inputs: [
           {
-            type: 'uint256'
+            type: Mock.contract_abi_encode_param_type
           }
         ]
       })
-    ).toEqual('0x29e99f07')
+    ).toEqual(Mock.contract_abi_signed_func)
   } catch (err) {
     console.log('Calls encodeFunctionSignature Error:', err)
     expect(0).toBe(1)
@@ -32,11 +33,12 @@ test('Calls encodeFunctionSignature with a object as parameter', async () => {
 
 test('Calls encodeParameter', async () => {
   try {
-    const encoded = await abi.encodeParameter('uint256', '99')
-    console.log('encoded:', encoded)
-    expect(encoded).toEqual(
-      '0000000000000000000000000000000000000000000000000000000000000063'
-    )
+    expect(
+      await abi.encodeParameter(
+        Mock.contract_abi_encode_param_type,
+        Mock.contract_abi_encode_param_val
+      )
+    ).toEqual(Mock.contract_abi_encoded_param)
   } catch (err) {
     console.log('calls encodeParameter Error:', err)
     expect(0).toBe(1)
@@ -45,11 +47,12 @@ test('Calls encodeParameter', async () => {
 
 test('Calls encodeParameters', async () => {
   try {
-    const encoded = await abi.encodeParameters(['uint256'], ['99'])
-    console.log('encoded:', encoded)
-    expect(encoded).toEqual(
-      '0000000000000000000000000000000000000000000000000000000000000063'
-    )
+    expect(
+      await abi.encodeParameters(
+        [Mock.contract_abi_encode_param_type],
+        [Mock.contract_abi_encode_param_val]
+      )
+    ).toEqual(Mock.contract_abi_encoded_param)
   } catch (err) {
     console.log('calls encodeParameters Error:', err)
     expect(0).toBe(1)
@@ -63,13 +66,11 @@ test('calls encodeFunctionCall and returns the expected string', async () => {
         name: 'test',
         inputs: [
           {
-            type: 'uint256'
+            type: Mock.contract_abi_encode_param_type
           }
         ]
       },
-      ['99']
+      [Mock.contract_abi_encode_param_val]
     )
-  ).toEqual(
-    '0x29e99f070000000000000000000000000000000000000000000000000000000000000063'
-  )
+  ).toEqual(Mock.contract_abi_encode_functioncall)
 })

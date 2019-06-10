@@ -3,7 +3,6 @@ import CommonUtil from '../../../util/util'
 
 // Is a type an array?
 const abiIsArray = type => {
-  console.log('type_3:', type)
   return type.lastIndexOf(']') === type.length - 1
 }
 
@@ -17,7 +16,6 @@ const parseTypeArray = type => {
 }
 
 const parseNumber = arg => {
-  console.log('arg:', arg)
   var type = typeof arg
   if (type === 'string') {
     if (CommonUtil.isHexPrefixed(arg)) {
@@ -87,7 +85,6 @@ const isDynamic = type => {
 // Encodes a single item (can be dynamic array)
 // @returns: Buffer
 const encodeSingle = (type, arg) => {
-  console.log('encodeSingle===')
   var size, num, ret, i
 
   if (type === 'address') {
@@ -138,7 +135,6 @@ const encodeSingle = (type, arg) => {
 
     return setLengthLeft(arg, 32, true)
   } else if (type.startsWith('uint')) {
-    console.log('startsWith(\'uint\')===')
     size = parseTypeN(type)
     if (size % 8 || size < 8 || size > 256) {
       throw new Error('Invalid uint<N> width: ' + size)
@@ -195,7 +191,6 @@ const encodeSingle = (type, arg) => {
 // Convert from short to canonical names
 // FIXME: optimise or make this nicer?
 const elementaryName = name => {
-  console.log('name:', name)
   if (name.startsWith('int[')) {
     return 'int256' + name.slice(3)
   } else if (name === 'int') {
@@ -389,7 +384,6 @@ namespace Util {
       var type = elementaryName(types[i])
       var value = values[i]
       var cur = encodeSingle(type, value)
-      console.log('next===')
       // Use the head/tail method for storing dynamic data
       if (isDynamic(type)) {
         output.push(encodeSingle('uint256', headLength))

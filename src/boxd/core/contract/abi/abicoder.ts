@@ -15,7 +15,6 @@ export default class AbiCoder {
       functionName = CommonUtil.jsonInterfaceMethodToString(functionName)
     }
     const keccaked = await CommonUtil.keccak256(functionName)
-    console.log('keccaked:', keccaked)
     if (keccaked) {
       return keccaked.slice(0, 10)
     } else {
@@ -71,18 +70,12 @@ export default class AbiCoder {
     params: (string | object)[]
   ) {
     const signature = await this.encodeFunctionSignature(jsonInterface)
-    console.log('signature===:', signature)
     let type_arr: string[] = []
-    console.log('flag:', jsonInterface['inputs'])
     await jsonInterface['inputs'].forEach(item => {
-      console.log('item.type:', item.type)
       type_arr.push(item.type)
     })
     const inputs = await this.encodeParameters(type_arr, params)
-    console.log('inputs===:', inputs)
-    const result = `${signature}${inputs}`
-    console.log('result===:', result)
-    return result
+    return signature + inputs
   }
 
   /**

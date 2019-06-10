@@ -1,9 +1,9 @@
 import 'jest'
 import Api from '../src/boxd/core/api'
 import fetch from 'isomorphic-fetch'
-import Data from './json/data.json'
+import Mock from './json/mock.json'
 
-const cor = new Api(fetch, Data.endpoint_test, 'http')
+const cor = new Api(fetch, Mock.endpoint_test, 'http')
 let node_id
 
 test('Get Node Info', async () => {
@@ -21,25 +21,10 @@ test('Get Node Info', async () => {
     })
 })
 
-/*
-// undo
- test('Add Node', async () => {
-  // test func [Api.addNode]
-  await cor
-    .addNode(node_id)
-    .then(res => {
-      console.log('addNode res:', res)
-    })
-    .catch(err => {
-      console.error('addNode err:', err)
-      expect(0).toBe(1)
-    })
-}) */
-
 test('Get Block Hash by Height', async () => {
   // test func [Api.getBlockHashByHeight]
   await cor
-    .getBlockHashByHeight(Data.blockHeight)
+    .getBlockHashByHeight(Mock.blockHeight)
     .then(res => {
       // console.log('getBlockHashByHeight res:', res)
       expect(res)
@@ -53,7 +38,7 @@ test('Get Block Hash by Height', async () => {
 test('Get Block by Height', async () => {
   // test func [Api.getBlockByHeight]
   await cor
-    .getBlockByHeight(Data.blockHeight)
+    .getBlockByHeight(Mock.blockHeight)
     .then(res => {
       // console.log('getBlockByHeight res:', res)
       expect(res)
@@ -67,7 +52,7 @@ test('Get Block by Height', async () => {
 test('Get Block by Hash', async () => {
   // test func [Api.getBlockByHash]
   await cor
-    .getBlockByHash(Data.blockHash)
+    .getBlockByHash(Mock.blockHash)
     .then(res => {
       // console.log('getBlockByHash res:', res)
       expect(res)
@@ -81,7 +66,7 @@ test('Get Block by Hash', async () => {
 test('Get Block Header by Hash', async () => {
   // test func [Api.getBlockHeaderByHash]
   await cor
-    .getBlockHeaderByHash(Data.blockHash)
+    .getBlockHeaderByHash(Mock.blockHash)
     .then(res => {
       // console.log('getBlockHeaderByHash res:', res)
       expect(res)
@@ -95,7 +80,7 @@ test('Get Block Header by Hash', async () => {
 test('Get Block Header by Height', async () => {
   // test func [Api.getBlockHeaderByHeight]
   await cor
-    .getBlockHeaderByHeight(Data.blockHeight)
+    .getBlockHeaderByHeight(Mock.blockHeight)
     .then(res => {
       // console.log('getBlockHeaderByHeight res:', res)
       expect(res)
@@ -123,7 +108,7 @@ test('Get Block Height', async () => {
 test('View Block Detail', async () => {
   // test func [Api.viewBlockDetail]
   await cor
-    .viewBlockDetail(Data.blockHash)
+    .viewBlockDetail(Mock.blockHash)
     .then(res => {
       // console.log('viewBlockDetail res:', JSON.stringify(res))
       expect(res)

@@ -85,5 +85,10 @@
       "signatures": "Array[]"
     }
   },
-  "blockHash": "4550b95b53dc37835c8a19c9a73df6e25f64e549be558c31656fa03bf98aed93"
+  "blockHash": "4550b95b53dc37835c8a19c9a73df6e25f64e549be558c31656fa03bf98aed93",
+  "contract_abi_encode_param_type": "uint256",
+  "contract_abi_encode_param_val": "99",
+  "contract_abi_signed_func": "0x29e99f07",
+  "contract_abi_encoded_param": "0000000000000000000000000000000000000000000000000000000000000063",
+  "contract_abi_encode_functioncall": "0x29e99f070000000000000000000000000000000000000000000000000000000000000063"
 }

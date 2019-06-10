@@ -3,11 +3,11 @@ import fetch from 'isomorphic-fetch'
 import Api from '../src/boxd/core/api'
 import Feature from '../src/boxd/core/feature'
 import TokenUtil from '../src/boxd/core/token/util'
-import Data from './json/data.json'
+import Mock from './json/mock.json'
 import Keystore from './json/keystore.json'
 
-const cor = new Api(fetch, Data.endpoint_test, 'http')
-const feature = new Feature(fetch, Data.endpoint_test, 'http')
+const cor = new Api(fetch, Mock.endpoint_test, 'http')
+const feature = new Feature(fetch, Mock.endpoint_test, 'http')
 let token_hash
 
 describe('Token', () => {
@@ -17,18 +17,18 @@ describe('Token', () => {
     try {
       const issue_result = await feature.issueTokenByCrypto({
         tx: {
-          issuer: Data.acc_addr_2,
-          owner: Data.acc_addr_2,
-          fee: Data.fee,
+          issuer: Mock.acc_addr_2,
+          owner: Mock.acc_addr_2,
+          fee: Mock.fee,
           tag: {
-            name: Data.token_name,
-            symbol: Data.token_symbol,
-            supply: Data.token_supply,
-            decimal: Data.token_decimal
+            name: Mock.token_name,
+            symbol: Mock.token_symbol,
+            supply: Mock.token_supply,
+            decimal: Mock.token_decimal
           }
         },
         crypto: Keystore.keystore_2,
-        pwd: Data.acc_pwd
+        pwd: Mock.acc_pwd
       })
       // console.log('tx_result:', issue_result)
       const tx_detail = await cor.viewTxDetail(issue_result.hash)
@@ -47,14 +47,14 @@ describe('Token', () => {
       // test func [Core.getTokenbalances]
       setTimeout(async () => {
         const token_balances = await cor.getTokenbalances({
-          addrs: [Data.acc_addr_2, Data.acc_addr_2],
+          addrs: [Mock.acc_addr_2, Mock.acc_addr_2],
           tokenHash: token_hash,
           tokenIndex: 0
         })
         // console.log('token_balances:', token_balances)
         expect(
-          Number(token_balances.balances[1]) / Math.pow(10, Data.token_decimal)
-        ).toEqual(Data.token_supply)
+          Number(token_balances.balances[1]) / Math.pow(10, Mock.token_decimal)
+        ).toEqual(Mock.token_supply)
         done()
       }, 2000)
     } catch (err) {
@@ -68,15 +68,15 @@ describe('Token', () => {
     try {
       const token_result = await feature.makeTokenTxByCrypto({
         tx: {
-          amounts: Data.amounts,
-          fee: Data.fee,
-          from: Data.acc_addr_2,
-          to: Data.to_addrs,
+          amounts: Mock.amounts,
+          fee: Mock.fee,
+          from: Mock.acc_addr_2,
+          to: Mock.to_addrs,
           token_hash: token_hash,
           token_index: 0
         },
         crypto: Keystore.keystore_2,
-        pwd: Data.acc_pwd
+        pwd: Mock.acc_pwd
       })
       const token_detail = await cor.viewTxDetail(token_result.hash)
       // console.log('token_detail:', token_detail)

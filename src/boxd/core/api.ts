@@ -26,11 +26,6 @@ export default class Api extends Fetch {
     return super.fetch('/ctl/getnodeinfo')
   }
 
-  /* UNDO
-    addNode(nodeId: string) {
-    return super.fetch('/ctl/addnode', { nodeId })
-  } */
-
   public getBlockHashByHeight(blockHeight: number): Promise<{ hash: string }> {
     return super.fetch('/ctl/getblockhash', { blockHeight })
   }
