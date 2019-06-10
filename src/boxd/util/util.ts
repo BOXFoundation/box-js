@@ -3,6 +3,8 @@ import Verify from './verify'
 import Hash from './crypto/hash'
 import isObject from 'lodash/isObject'
 import isArray from 'lodash/isArray'
+import isString from 'lodash/isString'
+import isNumber from 'lodash/isNumber'
 
 const { OP_PUSH_DATA1, OP_PUSH_DATA2, OP_PUSH_DATA4 } = Opcode
 const OP_CODE_TYPE = 'hex'
@@ -10,56 +12,21 @@ const gethexByteWithNumber = (num: number) => (num & 255).toString(16)
 /* keccak = BEGIN = */
 const KECCAK256_NULL_S =
   '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470'
-const Keccak = bits => ({
-  blocks: [],
-  reset: true,
-  block: 0,
-  start: 0,
-  blockCount: (1600 - (bits << 1)) >> 5,
-  outputBlocks: bits >> 5,
-  s: ((s: any) => [].concat(s, s, s, s, s))([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-})
-
-const keccak = (bits, str) => {
-  var msg
-  if (str.slice(0, 2) === '0x') {
-    msg = []
-    for (var i = 2, l = str.length; i < l; i += 2)
-      msg.push(parseInt(str.slice(i, i + 2), 16))
-  } else {
-    msg = str
-  }
-  return update(Keccak(bits, bits), msg)
+const isHexStrict = hex => {
+  return (isString(hex) || isNumber(hex)) && /^(-)?0x[0-9a-f]*$/i.test(hex)
 }
-
-var hexToBytes = function hexToBytes(hex) {
+const hexToBytes = hex => {
   hex = hex.toString(16)
   if (!isHexStrict(hex)) {
     throw new Error('Given value "'.concat(hex, '" is not a valid hex string.'))
   }
   hex = hex.replace(/^0x/i, '')
   hex = hex.length % 2 ? '0' + hex : hex
-  var bytes = []
+  var bytes: any = []
   for (var c = 0; c < hex.length; c += 2) {
     bytes.push(parseInt(hex.substr(c, 2), 16))
   }
   return bytes
-}
-
-var isHexStrict = function isHexStrict(hex) {
-  return (isString(hex) || isNumber(hex)) && /^(-)?0x[0-9a-f]*$/i.test(hex)
-}
-
-var keccak256 = function keccak256(value) {
-  if (isHexStrict(value) && /^0x/i.test(value.toString())) {
-    value = hexToBytes(value)
-  }
-  var returnValue = keccak(256, value)
-  if (returnValue === KECCAK256_NULL_S) {
-    return null
-  } else {
-    return returnValue
-  }
 }
 /* keccak = END = */
 const _flattenTypes = function _flattenTypes(includeTuple, puts) {
@@ -196,6 +163,18 @@ namespace Util {
     return ''
       .concat(json.name, '(')
       .concat(_flattenTypes(false, json.inputs).join(','), ')')
+  }
+
+  export const keccak256 = value => {
+    if (isHexStrict(value) && /^0x/i.test(value.toString())) {
+      value = hexToBytes(value)
+    }
+    var returnValue = Hash.keccak256(value)
+    if (returnValue === KECCAK256_NULL_S) {
+      return null
+    } else {
+      return returnValue
+    }
   }
 }
 

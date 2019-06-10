@@ -13,11 +13,17 @@ export default class AbiCoder {
    *
    * @returns {String} encoded function name
    */
-  public encodeFunctionSignature(functionName) {
+  public async encodeFunctionSignature(functionName) {
     if (isObject(functionName)) {
       functionName = Util.jsonInterfaceMethodToString(functionName)
     }
-    return web3Utils.keccak256(functionName).slice(0, 10)
+    const keccaked = await Util.keccak256(functionName)
+    console.log('keccaked:', keccaked)
+    if (keccaked) {
+      return keccaked.slice(0, 10)
+    } else {
+      throw new Error('keccak return Null !')
+    }
   }
 
   /**
