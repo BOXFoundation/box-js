@@ -35,6 +35,8 @@ export default class AccountManager {
   public addToAccList(cryptoJSON: UtilInterface.Crypto, otherInfo: any): void {
     const address = cryptoJSON.address
     const updateTime = Date.now()
+    console.log('acc_list:', this.acc_list)
+    console.log('address:', address)
     if (this.acc_list[address]) {
       console.warn('This Account already existed. It will be rewrited...')
     }
