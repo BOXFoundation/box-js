@@ -74,3 +74,59 @@ test('calls encodeFunctionCall and returns the expected string', async () => {
     )
   ).toEqual(Mock.contract_abi_encode_functioncall)
 })
+
+test('Calls decodeParameter and returns the expected object', async () => {
+  try {
+    const a = await abi.decodeParameter('address', '0x0')
+    console.log('a:', JSON.stringify(a))
+  } catch (err) {
+    console.log(
+      'Calls decodeParameter and returns the expected object Error:',
+      err
+    )
+    expect(0).toBe(1)
+  }
+})
+
+test('Calls decodeParameter and returns the expected object', async () => {
+  try {
+    const a = await abi.decodeParameter({ name: 'address' }, '0x0')
+    console.log('b:', JSON.stringify(a))
+  } catch (err) {
+    console.log(
+      'Calls decodeParameter and returns the expected object Error:',
+      err
+    )
+    expect(0).toBe(1)
+  }
+})
+
+test('Calls decodeParameters and returns the expected object', async () => {
+  try {
+    const a = await abi.decodeParameters(
+      [{ name: 'address' }, { name: 'string' }],
+      '0x0'
+    )
+    console.log('b:', JSON.stringify(a))
+  } catch (err) {
+    console.log(
+      'Calls decodeParameter and returns the expected object Error:',
+      err
+    )
+    expect(0).toBe(1)
+  }
+})
+
+test('Calls decodeParameters and throws an error', () => {
+  expect(() => {
+    abi.decodeParameters(['0'], '0x')
+  }).toThrow('Invalid bytes string given: 0x')
+
+  expect(() => {
+    abi.decodeParameters(['0'], '0X')
+  }).toThrow('Invalid bytes string given: 0X')
+
+  expect(() => {
+    abi.decodeParameters([], '0X')
+  }).toThrow('Empty outputs array given!')
+})

@@ -1,5 +1,6 @@
 import BN from 'bn.js'
 import CommonUtil from '../../../util/util'
+import isObject from 'lodash/isObject'
 
 // Is a type an array?
 const abiIsArray = type => {
@@ -191,6 +192,7 @@ const encodeSingle = (type, arg) => {
 // Convert from short to canonical names
 // FIXME: optimise or make this nicer?
 const elementaryName = name => {
+  console.log('elementaryName name:', name)
   if (name.startsWith('int[')) {
     return 'int256' + name.slice(3)
   } else if (name === 'int') {
@@ -402,7 +404,12 @@ namespace Util {
     data = Buffer.from(data)
     var offset = 0
     for (var i = 0; i < types.length; i++) {
-      var type = elementaryName(types[i])
+      var type
+      if (isObject(types[i])) {
+        type = elementaryName(types[i].name)
+      } else {
+        type = elementaryName(types[i])
+      }
       var parsed = parseType(type)
       var decoded = decodeSingle(parsed, data, offset)
       offset += parsed.memoryUsage

@@ -85,8 +85,8 @@ export default class AbiCoder {
    * @param [bytes] string
    * @returns {plain param} object
    */
-  public decodeParameter(type: string, bytes: string) {
-    return this.decodeParameters([type], bytes)[0]
+  public decodeParameter(output: string | object, bytes: string) {
+    return this.decodeParameters([output], bytes)[0]
   }
 
   /**
@@ -96,7 +96,7 @@ export default class AbiCoder {
    * @param [bytes] string
    * @returns {Object with named and indexed properties of the returnValues} object
    */
-  public decodeParameters(outputs, bytes: string) {
+  public decodeParameters(outputs: (string | object)[], bytes: string) {
     if (isArray(outputs) && outputs.length === 0) {
       throw new Error('Empty outputs array given!')
     }
@@ -120,8 +120,8 @@ export default class AbiCoder {
 
           returnValues[i] = decodedValue
 
-          if (isObject(output) && output.name) {
-            returnValues[output.name] = decodedValue
+          if (isObject(output) && output['name']) {
+            returnValues[output['name']] = decodedValue
           }
         })
 
@@ -131,8 +131,8 @@ export default class AbiCoder {
       return result
     }
 
-    if (isObject(outputs[0]) && outputs[0].name) {
-      returnValues[outputs[0].name] = result
+    if (isObject(outputs[0]) && outputs[0]['name']) {
+      returnValues[outputs[0]['name']] = result
     }
 
     returnValues[0] = result
