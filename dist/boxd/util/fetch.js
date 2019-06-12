@@ -50,6 +50,41 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
+ * @class [Http-Error]
+ * @extends Error
+ */
+var HttpError = /** @class */ (function (_super) {
+    __extends(HttpError, _super);
+    // Detailed error information
+    function HttpError(json) {
+        var _this = this;
+        if (json.error &&
+            json.error.details &&
+            json.error.details.length &&
+            json.error.details[0].message) {
+            _this = _super.call(this, json.error.details[0].message) || this;
+        }
+        else if (json.processed &&
+            json.processed.except &&
+            json.processed.except.message) {
+            _this = _super.call(this, json.processed.except.message) || this;
+        }
+        else if (json.message) {
+            _this = _super.call(this, json.message) || this;
+        }
+        else if (json.statusText) {
+            _this = _super.call(this, json.statusText) || this;
+        }
+        else {
+            _this = _super.call(this, 'Unknow Error!') || this;
+        }
+        Object.setPrototypeOf(_this, HttpError.prototype);
+        _this.json = json;
+        return _this;
+    }
+    return HttpError;
+}(Error));
+/**
  * @func http-Fetch-function
  * @param [*body] object  // request body
  * @returns [result]  // response => result
@@ -109,41 +144,6 @@ var httpFetch = function (path, body, _fetch, endpoint) { return __awaiter(_this
 var rpcFetch = function (path, body, _fetch, endpoint) {
     console.log('rpcFetch:', path, body, _fetch, endpoint);
 };
-/**
- * @class [Http-Error]
- * @extends Error
- */
-var HttpError = /** @class */ (function (_super) {
-    __extends(HttpError, _super);
-    // Detailed error information
-    function HttpError(json) {
-        var _this = this;
-        if (json.error &&
-            json.error.details &&
-            json.error.details.length &&
-            json.error.details[0].message) {
-            _this = _super.call(this, json.error.details[0].message) || this;
-        }
-        else if (json.processed &&
-            json.processed.except &&
-            json.processed.except.message) {
-            _this = _super.call(this, json.processed.except.message) || this;
-        }
-        else if (json.message) {
-            _this = _super.call(this, json.message) || this;
-        }
-        else if (json.statusText) {
-            _this = _super.call(this, json.statusText) || this;
-        }
-        else {
-            _this = _super.call(this, 'Unknow Error!') || this;
-        }
-        Object.setPrototypeOf(_this, HttpError.prototype);
-        _this.json = json;
-        return _this;
-    }
-    return HttpError;
-}(Error));
 /**
  * @class [Http]
  * @constructs _fetch  // user incoming

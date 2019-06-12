@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.opcode = {
+exports.default = {
     // push value
     OP_PUSH_DATA1: 0x4c,
     OP_PUSH_DATA2: 0x4d,

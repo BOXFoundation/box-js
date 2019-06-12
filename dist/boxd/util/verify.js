@@ -15,6 +15,24 @@ var getCheckSum = function (hex) {
         return hash_1.default.sha256(hash_1.default.sha256(Buffer.from(hex, OP_CODE_TYPE))).slice(0, 4);
     }
 };
+var _typeof2 = function (obj) {
+    if (typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol') {
+        _typeof2 = function _typeof2(obj) {
+            return typeof obj;
+        };
+    }
+    else {
+        _typeof2 = function _typeof2(obj) {
+            return obj &&
+                typeof Symbol === 'function' &&
+                obj.constructor === Symbol &&
+                obj !== Symbol.prototype
+                ? 'symbol'
+                : typeof obj;
+        };
+    }
+    return _typeof2(obj);
+};
 var Verify;
 (function (Verify) {
     Verify.isPrivate = function (privKey) {
@@ -27,7 +45,7 @@ var Verify;
     };
     Verify.isAddr = function (addr) {
         if (addr.substring(0, 2) !== ('b1' || 'b2' || 'b3')) {
-            throw new Error("Incorrect address format !");
+            throw new Error('Incorrect address format !');
         }
         var decoded = bs58_1.default.decode(addr);
         if (decoded.length < 4) {
@@ -37,7 +55,7 @@ var Verify;
         var pubkey_hash = decoded.slice(0, len - 4);
         var checksum = getCheckSum(pubkey_hash);
         if (!checksum.equals(decoded.slice(len - 4))) {
-            throw new Error("Incorrect address format !");
+            throw new Error('Incorrect address format !');
         }
         return pubkey_hash;
     };
@@ -46,6 +64,25 @@ var Verify;
     };
     Verify.isPublicHash = function (pubkey_hash) {
         console.log('pubkey_hash:', pubkey_hash);
+    };
+    Verify._typeof = function (obj) {
+        if (typeof Symbol === 'function' &&
+            _typeof2(Symbol.iterator) === 'symbol') {
+            module.exports = Verify._typeof = function _typeof(obj) {
+                return _typeof2(obj);
+            };
+        }
+        else {
+            Verify._typeof = function _typeof(obj) {
+                return obj &&
+                    typeof Symbol === 'function' &&
+                    obj.constructor === Symbol &&
+                    obj !== Symbol.prototype
+                    ? 'symbol'
+                    : _typeof2(obj);
+            };
+        }
+        return Verify._typeof(obj);
     };
 })(Verify || (Verify = {}));
 exports.default = Verify;

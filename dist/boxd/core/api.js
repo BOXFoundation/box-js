@@ -68,10 +68,6 @@ var Api = /** @class */ (function (_super) {
     Api.prototype.getNodeInfo = function () {
         return _super.prototype.fetch.call(this, '/ctl/getnodeinfo');
     };
-    /* UNDO
-      addNode(nodeId: string) {
-      return super.fetch('/ctl/addnode', { nodeId })
-    } */
     Api.prototype.getBlockHashByHeight = function (blockHeight) {
         return _super.prototype.fetch.call(this, '/ctl/getblockhash', { blockHeight: blockHeight });
     };

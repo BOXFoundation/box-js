@@ -9,18 +9,18 @@ var Util;
 (function (Util) {
     var op_hash_len = 32;
     /**
-     * @func getUint32
-     * @param [*buf] Buffer
-     */
+   * @func getUint32
+   * @param [*buf] Buffer
+   */
     var getUint32 = function (buf) {
         return buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
     };
     /**
-     * @export hash+index=>token_address
-     * @param [*opHash] string
-     * @param [*index] number
-     * @returns [token_address] string
-     */
+   * @export hash+index=>token_address
+   * @param [*opHash] string
+   * @param [*index] number
+   * @returns [token_address] string
+   */
     Util.encodeTokenAddr = function (token_addr) {
         var opHash = token_addr.opHash, index = token_addr.index;
         var before = Buffer.from(opHash, 'hex');
@@ -28,10 +28,10 @@ var Util;
         return bs58_1.default.encode(Buffer.concat([before, Buffer.from(':'), end]));
     };
     /**
-     * @func token_address=>hash+index
-     * @param [*token_address] string
-     * @returns [{hash,index}] object
-     */
+   * @func token_address=>hash+index
+   * @param [*token_address] string
+   * @returns [{hash,index}] object
+   */
     Util.decodeTokenAddr = function (token_address) {
         var token_addr_buf = bs58_1.default.decode(token_address);
         var opHash = token_addr_buf.slice(0, op_hash_len).toString('hex');
