@@ -136,6 +136,12 @@ export default class Feature extends Fetch {
   ): Promise<{ hash: string }> {
     const cor = new Core(this._fetch, this.endpoint, this.fetch_type)
     const unsigned_tx = await cor.makeUnsignedContractTx(org_tx.tx)
+    
+    // contract method call
+    if (org_tx.tx.from.length == 0) {
+      return {hash: unsigned_tx.callResult};
+    }
+
     const signed_tx = await this.signTxByCrypto({
       unsignedTx: {
         tx: unsigned_tx.tx,

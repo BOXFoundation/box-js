@@ -54,7 +54,7 @@ test('Deploy a contract', async () => {
 })
 
 // This must be run after deploy
-test('Call a contract', async () => {
+test('Send a contract method', async () => {
   let addrNonce = await getNonce()
 
   const contract = new web3.eth.Contract(metaCoinContractAbi, contractAddr)
@@ -76,4 +76,27 @@ test('Call a contract', async () => {
   })
   const tx_detail = await cor.viewTxDetail(tx_result.hash)
   expect(tx_detail.detail.hash).toEqual(tx_result.hash)
+})
+
+// This must be run after deploy
+test('Call a contract method', async () => {
+  const contract = new web3.eth.Contract(metaCoinContractAbi, contractAddr)
+  const data = contract.methods.getBalance(Data.acc_addr).encodeABI()
+
+  const tx_result = await feature.makeContractTxByCrypto({
+    tx: {
+      from: "",
+      to: contractAddr,
+      amount: 0,
+      gasPrice: Data.gasPrice,
+      gasLimit: Data.gasLimit,
+      nonce: 0,
+      isDeploy: false,
+      data: data
+    },
+    crypto: Keystore.keystore_4,
+    pwd: Data.acc_pwd
+  })
+  // TODO
+  expect(0).toEqual(tx_result.hash)
 })
