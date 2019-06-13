@@ -280,7 +280,7 @@ const parseType = type => {
 // Decodes a single item (can be dynamic array)
 // @returns: array
 // FIXME: this method will need a lot of attention at checking limits and validation
-const decodeSingle = (parsedType, data, offset) => {
+function decodeSingle(parsedType, data, offset) {
   if (typeof parsedType === 'string') {
     parsedType = parseType(parsedType)
   }
@@ -413,6 +413,7 @@ namespace Util {
       var parsed = parseType(type)
       var decoded = decodeSingle(parsed, data, offset)
       offset += parsed.memoryUsage
+      console.log('rawDecode decode_flag:', decoded)
       ret.push(decoded)
     }
     return ret

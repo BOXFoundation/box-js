@@ -85,7 +85,7 @@ export default class AbiCoder {
    * @param [bytes] string
    * @returns {plain param} object
    */
-  public decodeParameter(output: string | object, bytes: string) {
+  public decodeParameter(output: string | object, bytes) {
     return this.decodeParameters([output], bytes)[0]
   }
 
@@ -96,7 +96,7 @@ export default class AbiCoder {
    * @param [bytes] string
    * @returns {Object with named and indexed properties of the returnValues} object
    */
-  public decodeParameters(outputs: (string | object)[], bytes: string) {
+  public decodeParameters(outputs: (string | object)[], bytes) {
     if (isArray(outputs) && outputs.length === 0) {
       throw new Error('Empty outputs array given!')
     }

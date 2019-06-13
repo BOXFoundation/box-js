@@ -1,0 +1,836 @@
+INFO [06-13|10:43:01.287] Maximum peer count                       ETH=25 LES=0 total=25
+INFO [06-13|10:43:01.301] Starting peer-to-peer node               instance=Geth/v1.8.27-stable/darwin-amd64/go1.12.4
+INFO [06-13|10:43:01.304] Allocated cache and file handles         database=/Users/air/Library/Ethereum/geth/chaindata cache=512 handles=5120
+INFO [06-13|10:43:01.363] Writing default main-net genesis block 
+INFO [06-13|10:43:01.678] Persisted trie from memory database      nodes=12356 size=1.88mB time=61.606254ms gcnodes=0 gcsize=0.00B gctime=0s livenodes=1 livesize=0.00B
+INFO [06-13|10:43:01.680] Initialised chain configuration          config="{ChainID: 1 Homestead: 1150000 DAO: 1920000 DAOSupport: true EIP150: 2463000 EIP155: 2675000 EIP158: 2675000 Byzantium: 4370000 Constantinople: 7280000  ConstantinopleFix: 7280000 Engine: ethash}"
+INFO [06-13|10:43:01.680] Disk storage enabled for ethash caches   dir=/Users/air/Library/Ethereum/geth/ethash count=3
+INFO [06-13|10:43:01.680] Disk storage enabled for ethash DAGs     dir=/Users/air/.ethash                      count=2
+INFO [06-13|10:43:01.680] Initialising Ethereum protocol           versions="[63 62]" network=1
+INFO [06-13|10:43:01.694] Loaded most recent local header          number=0 hash=d4e567…cb8fa3 td=17179869184 age=50y2mo2h
+INFO [06-13|10:43:01.694] Loaded most recent local full block      number=0 hash=d4e567…cb8fa3 td=17179869184 age=50y2mo2h
+INFO [06-13|10:43:01.694] Loaded most recent local fast block      number=0 hash=d4e567…cb8fa3 td=17179869184 age=50y2mo2h
+INFO [06-13|10:43:01.695] Regenerated local transaction journal    transactions=0 accounts=0
+INFO [06-13|10:43:01.752] New local node record                    seq=1 id=685ec61fa32bb294 ip=127.0.0.1 udp=30303 tcp=30303
+INFO [06-13|10:43:01.755] Started P2P networking                   self=enode://7d6af7d743f2a4326f5cdbc677bac457db4a4cc7c0780c921b60d39151dbec798a883e0a0a9ecb2cd6bd30d6dece899e20ca48cf2d4c5857f9ad4809ede41197@127.0.0.1:30303
+INFO [06-13|10:43:01.763] Mapped network port                      proto=tcp extport=30303 intport=30303 interface=NAT-PMP(192.168.32.1)
+INFO [06-13|10:43:01.764] IPC endpoint opened                      url=/Users/air/Library/Ethereum/geth.ipc
+INFO [06-13|10:43:01.766] Mapped network port                      proto=udp extport=30303 intport=30303 interface=NAT-PMP(192.168.32.1)
+INFO [06-13|10:43:05.758] New local node record                    seq=2 id=685ec61fa32bb294 ip=192.168.31.206 udp=30303 tcp=30303
+INFO [06-13|10:48:10.074] Updated mining threads                   threads=8
+INFO [06-13|10:48:10.074] Transaction pool price threshold updated price=1000000000
+ERROR[06-13|10:48:10.074] Cannot start mining without etherbase    err="etherbase must be explicitly specified"
+INFO [06-13|10:48:12.282] Updated mining threads                   threads=1
+INFO [06-13|10:48:12.282] Transaction pool price threshold updated price=1000000000
+ERROR[06-13|10:48:12.282] Cannot start mining without etherbase    err="etherbase must be explicitly specified"
+INFO [06-13|10:48:43.055] Updated mining threads                   threads=1
+INFO [06-13|10:48:43.055] Transaction pool price threshold updated price=1000000000
+INFO [06-13|10:48:43.055] Etherbase automatically configured       address=0x4C308666e7A8f88Bc99be6A78a2E46D9764Ffd8c
+INFO [06-13|10:48:43.055] Commit new mining work                   number=1 sealhash=6b4c17…8e176e uncles=0 txs=0 gas=0 fees=0 elapsed=234.769µs
+INFO [06-13|10:48:44.100] Generating DAG in progress               epoch=0 percentage=0 elapsed=425.098ms
+INFO [06-13|10:48:44.520] Generating DAG in progress               epoch=0 percentage=1 elapsed=845.992ms
+INFO [06-13|10:48:44.932] Generating DAG in progress               epoch=0 percentage=2 elapsed=1.257s
+INFO [06-13|10:48:45.343] Generating DAG in progress               epoch=0 percentage=3 elapsed=1.668s
+INFO [06-13|10:48:45.777] Generating DAG in progress               epoch=0 percentage=4 elapsed=2.102s
+INFO [06-13|10:48:46.192] Generating DAG in progress               epoch=0 percentage=5 elapsed=2.517s
+INFO [06-13|10:48:46.612] Generating DAG in progress               epoch=0 percentage=6 elapsed=2.937s
+INFO [06-13|10:48:47.026] Generating DAG in progress               epoch=0 percentage=7 elapsed=3.351s
+INFO [06-13|10:48:47.445] Generating DAG in progress               epoch=0 percentage=8 elapsed=3.770s
+INFO [06-13|10:48:47.859] Generating DAG in progress               epoch=0 percentage=9 elapsed=4.184s
+INFO [06-13|10:48:48.289] Generating DAG in progress               epoch=0 percentage=10 elapsed=4.614s
+INFO [06-13|10:48:48.698] Generating DAG in progress               epoch=0 percentage=11 elapsed=5.024s
+INFO [06-13|10:48:49.114] Generating DAG in progress               epoch=0 percentage=12 elapsed=5.439s
+INFO [06-13|10:48:49.528] Generating DAG in progress               epoch=0 percentage=13 elapsed=5.854s
+INFO [06-13|10:48:49.959] Generating DAG in progress               epoch=0 percentage=14 elapsed=6.284s
+INFO [06-13|10:48:50.390] Generating DAG in progress               epoch=0 percentage=15 elapsed=6.716s
+INFO [06-13|10:48:50.807] Generating DAG in progress               epoch=0 percentage=16 elapsed=7.133s
+INFO [06-13|10:48:51.218] Generating DAG in progress               epoch=0 percentage=17 elapsed=7.543s
+INFO [06-13|10:48:51.634] Generating DAG in progress               epoch=0 percentage=18 elapsed=7.959s
+INFO [06-13|10:48:52.044] Generating DAG in progress               epoch=0 percentage=19 elapsed=8.369s
+INFO [06-13|10:48:52.454] Generating DAG in progress               epoch=0 percentage=20 elapsed=8.779s
+INFO [06-13|10:48:52.864] Generating DAG in progress               epoch=0 percentage=21 elapsed=9.189s
+INFO [06-13|10:48:53.279] Generating DAG in progress               epoch=0 percentage=22 elapsed=9.605s
+INFO [06-13|10:48:53.690] Generating DAG in progress               epoch=0 percentage=23 elapsed=10.015s
+INFO [06-13|10:48:54.103] Generating DAG in progress               epoch=0 percentage=24 elapsed=10.428s
+INFO [06-13|10:48:54.589] Generating DAG in progress               epoch=0 percentage=25 elapsed=10.915s
+INFO [06-13|10:48:55.231] Generating DAG in progress               epoch=0 percentage=26 elapsed=11.556s
+INFO [06-13|10:48:55.698] Generating DAG in progress               epoch=0 percentage=27 elapsed=12.024s
+INFO [06-13|10:48:56.216] Generating DAG in progress               epoch=0 percentage=28 elapsed=12.541s
+INFO [06-13|10:48:56.860] Generating DAG in progress               epoch=0 percentage=29 elapsed=13.186s
+INFO [06-13|10:48:57.375] Generating DAG in progress               epoch=0 percentage=30 elapsed=13.701s
+INFO [06-13|10:48:57.950] Generating DAG in progress               epoch=0 percentage=31 elapsed=14.276s
+INFO [06-13|10:48:58.481] Generating DAG in progress               epoch=0 percentage=32 elapsed=14.807s
+INFO [06-13|10:48:58.976] Generating DAG in progress               epoch=0 percentage=33 elapsed=15.302s
+INFO [06-13|10:48:59.445] Generating DAG in progress               epoch=0 percentage=34 elapsed=15.771s
+INFO [06-13|10:49:00.027] Generating DAG in progress               epoch=0 percentage=35 elapsed=16.352s
+INFO [06-13|10:49:00.515] Generating DAG in progress               epoch=0 percentage=36 elapsed=16.842s
+INFO [06-13|10:49:01.027] Generating DAG in progress               epoch=0 percentage=37 elapsed=17.353s
+INFO [06-13|10:49:01.512] Generating DAG in progress               epoch=0 percentage=38 elapsed=17.838s
+INFO [06-13|10:49:02.036] Generating DAG in progress               epoch=0 percentage=39 elapsed=18.362s
+INFO [06-13|10:49:02.587] Generating DAG in progress               epoch=0 percentage=40 elapsed=18.914s
+INFO [06-13|10:49:03.137] Generating DAG in progress               epoch=0 percentage=41 elapsed=19.463s
+INFO [06-13|10:49:03.640] Generating DAG in progress               epoch=0 percentage=42 elapsed=19.967s
+INFO [06-13|10:49:04.312] Generating DAG in progress               epoch=0 percentage=43 elapsed=20.638s
+INFO [06-13|10:49:04.896] Generating DAG in progress               epoch=0 percentage=44 elapsed=21.222s
+INFO [06-13|10:49:05.480] Generating DAG in progress               epoch=0 percentage=45 elapsed=21.807s
+INFO [06-13|10:49:06.019] Generating DAG in progress               epoch=0 percentage=46 elapsed=22.345s
+INFO [06-13|10:49:06.492] Generating DAG in progress               epoch=0 percentage=47 elapsed=22.819s
+INFO [06-13|10:49:06.984] Generating DAG in progress               epoch=0 percentage=48 elapsed=23.311s
+INFO [06-13|10:49:07.491] Generating DAG in progress               epoch=0 percentage=49 elapsed=23.817s
+INFO [06-13|10:49:07.994] Generating DAG in progress               epoch=0 percentage=50 elapsed=24.321s
+INFO [06-13|10:49:08.517] Generating DAG in progress               epoch=0 percentage=51 elapsed=24.844s
+INFO [06-13|10:49:09.017] Generating DAG in progress               epoch=0 percentage=52 elapsed=25.344s
+INFO [06-13|10:49:09.516] Generating DAG in progress               epoch=0 percentage=53 elapsed=25.843s
+INFO [06-13|10:49:10.023] Generating DAG in progress               epoch=0 percentage=54 elapsed=26.350s
+INFO [06-13|10:49:10.511] Generating DAG in progress               epoch=0 percentage=55 elapsed=26.838s
+INFO [06-13|10:49:11.003] Generating DAG in progress               epoch=0 percentage=56 elapsed=27.329s
+INFO [06-13|10:49:11.563] Generating DAG in progress               epoch=0 percentage=57 elapsed=27.890s
+INFO [06-13|10:49:12.063] Generating DAG in progress               epoch=0 percentage=58 elapsed=28.390s
+INFO [06-13|10:49:12.554] Generating DAG in progress               epoch=0 percentage=59 elapsed=28.881s
+INFO [06-13|10:49:13.047] Generating DAG in progress               epoch=0 percentage=60 elapsed=29.374s
+INFO [06-13|10:49:13.547] Generating DAG in progress               epoch=0 percentage=61 elapsed=29.874s
+INFO [06-13|10:49:14.104] Generating DAG in progress               epoch=0 percentage=62 elapsed=30.431s
+INFO [06-13|10:49:14.750] Generating DAG in progress               epoch=0 percentage=63 elapsed=31.077s
+INFO [06-13|10:49:15.350] Generating DAG in progress               epoch=0 percentage=64 elapsed=31.677s
+INFO [06-13|10:49:15.954] Generating DAG in progress               epoch=0 percentage=65 elapsed=32.280s
+INFO [06-13|10:49:16.532] Generating DAG in progress               epoch=0 percentage=66 elapsed=32.859s
+INFO [06-13|10:49:17.129] Generating DAG in progress               epoch=0 percentage=67 elapsed=33.456s
+INFO [06-13|10:49:17.800] Generating DAG in progress               epoch=0 percentage=68 elapsed=34.127s
+INFO [06-13|10:49:18.470] Generating DAG in progress               epoch=0 percentage=69 elapsed=34.797s
+INFO [06-13|10:49:19.077] Generating DAG in progress               epoch=0 percentage=70 elapsed=35.404s
+INFO [06-13|10:49:19.739] Generating DAG in progress               epoch=0 percentage=71 elapsed=36.066s
+INFO [06-13|10:49:20.386] Generating DAG in progress               epoch=0 percentage=72 elapsed=36.713s
+INFO [06-13|10:49:20.962] Generating DAG in progress               epoch=0 percentage=73 elapsed=37.289s
+INFO [06-13|10:49:21.590] Generating DAG in progress               epoch=0 percentage=74 elapsed=37.917s
+INFO [06-13|10:49:22.170] Generating DAG in progress               epoch=0 percentage=75 elapsed=38.497s
+INFO [06-13|10:49:22.725] Generating DAG in progress               epoch=0 percentage=76 elapsed=39.053s
+INFO [06-13|10:49:23.314] Generating DAG in progress               epoch=0 percentage=77 elapsed=39.641s
+INFO [06-13|10:49:23.892] Generating DAG in progress               epoch=0 percentage=78 elapsed=40.219s
+INFO [06-13|10:49:24.463] Generating DAG in progress               epoch=0 percentage=79 elapsed=40.790s
+INFO [06-13|10:49:24.979] Generating DAG in progress               epoch=0 percentage=80 elapsed=41.306s
+INFO [06-13|10:49:25.525] Generating DAG in progress               epoch=0 percentage=81 elapsed=41.853s
+INFO [06-13|10:49:26.102] Generating DAG in progress               epoch=0 percentage=82 elapsed=42.430s
+INFO [06-13|10:49:26.653] Generating DAG in progress               epoch=0 percentage=83 elapsed=42.980s
+INFO [06-13|10:49:27.221] Generating DAG in progress               epoch=0 percentage=84 elapsed=43.548s
+INFO [06-13|10:49:27.808] Generating DAG in progress               epoch=0 percentage=85 elapsed=44.135s
+INFO [06-13|10:49:28.422] Generating DAG in progress               epoch=0 percentage=86 elapsed=44.749s
+INFO [06-13|10:49:29.063] Generating DAG in progress               epoch=0 percentage=87 elapsed=45.391s
+INFO [06-13|10:49:29.850] Generating DAG in progress               epoch=0 percentage=88 elapsed=46.178s
+INFO [06-13|10:49:30.502] Generating DAG in progress               epoch=0 percentage=89 elapsed=46.830s
+INFO [06-13|10:49:31.162] Generating DAG in progress               epoch=0 percentage=90 elapsed=47.490s
+INFO [06-13|10:49:31.744] Generating DAG in progress               epoch=0 percentage=91 elapsed=48.072s
+INFO [06-13|10:49:32.288] Generating DAG in progress               epoch=0 percentage=92 elapsed=48.616s
+INFO [06-13|10:49:32.975] Generating DAG in progress               epoch=0 percentage=93 elapsed=49.303s
+INFO [06-13|10:49:33.641] Generating DAG in progress               epoch=0 percentage=94 elapsed=49.969s
+INFO [06-13|10:49:34.155] Generating DAG in progress               epoch=0 percentage=95 elapsed=50.483s
+INFO [06-13|10:49:34.677] Generating DAG in progress               epoch=0 percentage=96 elapsed=51.005s
+INFO [06-13|10:49:35.182] Generating DAG in progress               epoch=0 percentage=97 elapsed=51.510s
+INFO [06-13|10:49:35.735] Generating DAG in progress               epoch=0 percentage=98 elapsed=52.063s
+INFO [06-13|10:49:36.507] Generating DAG in progress               epoch=0 percentage=99 elapsed=52.835s
+INFO [06-13|10:49:36.509] Generated ethash verification cache      epoch=0 elapsed=52.837s
+INFO [06-13|10:49:38.803] Generating DAG in progress               epoch=1 percentage=0  elapsed=567.317ms
+INFO [06-13|10:49:39.378] Generating DAG in progress               epoch=1 percentage=1  elapsed=1.141s
+INFO [06-13|10:49:40.020] Generating DAG in progress               epoch=1 percentage=2  elapsed=1.783s
+INFO [06-13|10:49:40.647] Generating DAG in progress               epoch=1 percentage=3  elapsed=2.411s
+INFO [06-13|10:49:41.295] Generating DAG in progress               epoch=1 percentage=4  elapsed=3.059s
+INFO [06-13|10:49:41.905] Generating DAG in progress               epoch=1 percentage=5  elapsed=3.669s
+INFO [06-13|10:49:42.513] Generating DAG in progress               epoch=1 percentage=6  elapsed=4.277s
+INFO [06-13|10:49:43.066] Generating DAG in progress               epoch=1 percentage=7  elapsed=4.830s
+INFO [06-13|10:49:43.610] Generating DAG in progress               epoch=1 percentage=8  elapsed=5.374s
+INFO [06-13|10:49:44.158] Generating DAG in progress               epoch=1 percentage=9  elapsed=5.923s
+INFO [06-13|10:49:44.710] Generating DAG in progress               epoch=1 percentage=10 elapsed=6.474s
+INFO [06-13|10:49:45.263] Generating DAG in progress               epoch=1 percentage=11 elapsed=7.027s
+INFO [06-13|10:49:45.851] Generating DAG in progress               epoch=1 percentage=12 elapsed=7.615s
+INFO [06-13|10:49:46.415] Generating DAG in progress               epoch=1 percentage=13 elapsed=8.179s
+INFO [06-13|10:49:46.965] Generating DAG in progress               epoch=1 percentage=14 elapsed=8.729s
+INFO [06-13|10:49:47.525] Generating DAG in progress               epoch=1 percentage=15 elapsed=9.290s
+INFO [06-13|10:49:48.062] Generating DAG in progress               epoch=1 percentage=16 elapsed=9.826s
+INFO [06-13|10:49:48.600] Generating DAG in progress               epoch=1 percentage=17 elapsed=10.365s
+INFO [06-13|10:49:49.132] Generating DAG in progress               epoch=1 percentage=18 elapsed=10.896s
+INFO [06-13|10:49:49.655] Generating DAG in progress               epoch=1 percentage=19 elapsed=11.419s
+INFO [06-13|10:49:50.209] Generating DAG in progress               epoch=1 percentage=20 elapsed=11.973s
+INFO [06-13|10:49:50.810] Generating DAG in progress               epoch=1 percentage=21 elapsed=12.575s
+INFO [06-13|10:49:51.416] Generating DAG in progress               epoch=1 percentage=22 elapsed=13.180s
+INFO [06-13|10:49:51.997] Generating DAG in progress               epoch=1 percentage=23 elapsed=13.761s
+INFO [06-13|10:49:52.536] Generating DAG in progress               epoch=1 percentage=24 elapsed=14.300s
+INFO [06-13|10:49:53.091] Generating DAG in progress               epoch=1 percentage=25 elapsed=14.855s
+INFO [06-13|10:49:53.648] Generating DAG in progress               epoch=1 percentage=26 elapsed=15.412s
+INFO [06-13|10:49:54.191] Generating DAG in progress               epoch=1 percentage=27 elapsed=15.956s
+INFO [06-13|10:49:54.732] Generating DAG in progress               epoch=1 percentage=28 elapsed=16.497s
+INFO [06-13|10:49:55.276] Generating DAG in progress               epoch=1 percentage=29 elapsed=17.040s
+INFO [06-13|10:49:55.819] Generating DAG in progress               epoch=1 percentage=30 elapsed=17.583s
+INFO [06-13|10:49:56.366] Generating DAG in progress               epoch=1 percentage=31 elapsed=18.131s
+INFO [06-13|10:49:56.908] Generating DAG in progress               epoch=1 percentage=32 elapsed=18.673s
+INFO [06-13|10:49:57.457] Generating DAG in progress               epoch=1 percentage=33 elapsed=19.222s
+INFO [06-13|10:49:58.016] Generating DAG in progress               epoch=1 percentage=34 elapsed=19.781s
+INFO [06-13|10:49:58.581] Generating DAG in progress               epoch=1 percentage=35 elapsed=20.346s
+INFO [06-13|10:49:59.160] Generating DAG in progress               epoch=1 percentage=36 elapsed=20.925s
+INFO [06-13|10:49:59.734] Generating DAG in progress               epoch=1 percentage=37 elapsed=21.499s
+INFO [06-13|10:50:00.307] Generating DAG in progress               epoch=1 percentage=38 elapsed=22.072s
+INFO [06-13|10:50:00.853] Generating DAG in progress               epoch=1 percentage=39 elapsed=22.618s
+INFO [06-13|10:50:01.416] Generating DAG in progress               epoch=1 percentage=40 elapsed=23.181s
+INFO [06-13|10:50:01.978] Generating DAG in progress               epoch=1 percentage=41 elapsed=23.743s
+INFO [06-13|10:50:02.560] Generating DAG in progress               epoch=1 percentage=42 elapsed=24.325s
+INFO [06-13|10:50:03.147] Generating DAG in progress               epoch=1 percentage=43 elapsed=24.912s
+INFO [06-13|10:50:03.724] Generating DAG in progress               epoch=1 percentage=44 elapsed=25.489s
+INFO [06-13|10:50:04.333] Generating DAG in progress               epoch=1 percentage=45 elapsed=26.098s
+INFO [06-13|10:50:04.914] Generating DAG in progress               epoch=1 percentage=46 elapsed=26.679s
+INFO [06-13|10:50:05.490] Generating DAG in progress               epoch=1 percentage=47 elapsed=27.256s
+INFO [06-13|10:50:06.080] Generating DAG in progress               epoch=1 percentage=48 elapsed=27.845s
+INFO [06-13|10:50:06.675] Generating DAG in progress               epoch=1 percentage=49 elapsed=28.440s
+INFO [06-13|10:50:07.267] Generating DAG in progress               epoch=1 percentage=50 elapsed=29.032s
+INFO [06-13|10:50:07.853] Generating DAG in progress               epoch=1 percentage=51 elapsed=29.619s
+INFO [06-13|10:50:08.452] Generating DAG in progress               epoch=1 percentage=52 elapsed=30.217s
+INFO [06-13|10:50:09.146] Generating DAG in progress               epoch=1 percentage=53 elapsed=30.912s
+INFO [06-13|10:50:09.747] Generating DAG in progress               epoch=1 percentage=54 elapsed=31.512s
+INFO [06-13|10:50:10.331] Generating DAG in progress               epoch=1 percentage=55 elapsed=32.096s
+INFO [06-13|10:50:10.910] Generating DAG in progress               epoch=1 percentage=56 elapsed=32.676s
+INFO [06-13|10:50:11.472] Generating DAG in progress               epoch=1 percentage=57 elapsed=33.238s
+INFO [06-13|10:50:12.058] Generating DAG in progress               epoch=1 percentage=58 elapsed=33.824s
+INFO [06-13|10:50:12.644] Generating DAG in progress               epoch=1 percentage=59 elapsed=34.410s
+INFO [06-13|10:50:13.212] Generating DAG in progress               epoch=1 percentage=60 elapsed=34.978s
+INFO [06-13|10:50:13.792] Generating DAG in progress               epoch=1 percentage=61 elapsed=35.558s
+INFO [06-13|10:50:14.366] Generating DAG in progress               epoch=1 percentage=62 elapsed=36.132s
+INFO [06-13|10:50:14.941] Generating DAG in progress               epoch=1 percentage=63 elapsed=36.707s
+INFO [06-13|10:50:15.506] Generating DAG in progress               epoch=1 percentage=64 elapsed=37.272s
+INFO [06-13|10:50:16.073] Generating DAG in progress               epoch=1 percentage=65 elapsed=37.839s
+INFO [06-13|10:50:16.636] Generating DAG in progress               epoch=1 percentage=66 elapsed=38.402s
+INFO [06-13|10:50:17.203] Generating DAG in progress               epoch=1 percentage=67 elapsed=38.969s
+INFO [06-13|10:50:17.794] Generating DAG in progress               epoch=1 percentage=68 elapsed=39.560s
+INFO [06-13|10:50:18.379] Generating DAG in progress               epoch=1 percentage=69 elapsed=40.145s
+INFO [06-13|10:50:18.976] Generating DAG in progress               epoch=1 percentage=70 elapsed=40.742s
+INFO [06-13|10:50:19.559] Generating DAG in progress               epoch=1 percentage=71 elapsed=41.325s
+INFO [06-13|10:50:20.141] Generating DAG in progress               epoch=1 percentage=72 elapsed=41.907s
+INFO [06-13|10:50:20.710] Generating DAG in progress               epoch=1 percentage=73 elapsed=42.476s
+INFO [06-13|10:50:21.280] Generating DAG in progress               epoch=1 percentage=74 elapsed=43.046s
+INFO [06-13|10:50:21.836] Generating DAG in progress               epoch=1 percentage=75 elapsed=43.602s
+INFO [06-13|10:50:22.395] Generating DAG in progress               epoch=1 percentage=76 elapsed=44.161s
+INFO [06-13|10:50:22.960] Generating DAG in progress               epoch=1 percentage=77 elapsed=44.726s
+INFO [06-13|10:50:23.535] Generating DAG in progress               epoch=1 percentage=78 elapsed=45.301s
+INFO [06-13|10:50:24.090] Generating DAG in progress               epoch=1 percentage=79 elapsed=45.856s
+INFO [06-13|10:50:24.659] Generating DAG in progress               epoch=1 percentage=80 elapsed=46.426s
+INFO [06-13|10:50:25.219] Generating DAG in progress               epoch=1 percentage=81 elapsed=46.986s
+INFO [06-13|10:50:25.786] Generating DAG in progress               epoch=1 percentage=82 elapsed=47.552s
+INFO [06-13|10:50:26.357] Generating DAG in progress               epoch=1 percentage=83 elapsed=48.124s
+INFO [06-13|10:50:26.917] Generating DAG in progress               epoch=1 percentage=84 elapsed=48.684s
+INFO [06-13|10:50:27.513] Generating DAG in progress               epoch=1 percentage=85 elapsed=49.280s
+INFO [06-13|10:50:28.090] Generating DAG in progress               epoch=1 percentage=86 elapsed=49.857s
+INFO [06-13|10:50:28.641] Generating DAG in progress               epoch=1 percentage=87 elapsed=50.408s
+INFO [06-13|10:50:29.195] Generating DAG in progress               epoch=1 percentage=88 elapsed=50.962s
+INFO [06-13|10:50:29.747] Generating DAG in progress               epoch=1 percentage=89 elapsed=51.514s
+INFO [06-13|10:50:30.290] Generating DAG in progress               epoch=1 percentage=90 elapsed=52.057s
+INFO [06-13|10:50:30.917] Generating DAG in progress               epoch=1 percentage=91 elapsed=52.684s
+INFO [06-13|10:50:31.559] Generating DAG in progress               epoch=1 percentage=92 elapsed=53.326s
+INFO [06-13|10:50:32.140] Generating DAG in progress               epoch=1 percentage=93 elapsed=53.907s
+INFO [06-13|10:50:32.686] Generating DAG in progress               epoch=1 percentage=94 elapsed=54.453s
+INFO [06-13|10:50:33.289] Generating DAG in progress               epoch=1 percentage=95 elapsed=55.056s
+INFO [06-13|10:50:33.913] Generating DAG in progress               epoch=1 percentage=96 elapsed=55.680s
+INFO [06-13|10:50:34.473] Generating DAG in progress               epoch=1 percentage=97 elapsed=56.240s
+INFO [06-13|10:50:35.042] Generating DAG in progress               epoch=1 percentage=98 elapsed=56.809s
+INFO [06-13|10:50:35.949] Generating DAG in progress               epoch=1 percentage=99 elapsed=57.716s
+INFO [06-13|10:50:35.951] Generated ethash verification cache      epoch=1 elapsed=57.719s
+INFO [06-13|10:51:21.728] Block synchronisation started 
+INFO [06-13|10:51:21.729] Mining aborted due to sync 
+INFO [06-13|10:51:34.227] Imported new block headers               count=192 elapsed=689.799ms number=192 hash=723899…123390 age=3y11mo3d
+INFO [06-13|10:51:34.229] Imported new block receipts              count=2   elapsed=96.855µs  number=2   hash=b495a1…4698c9 age=3y11mo3d size=8.00B
+INFO [06-13|10:51:34.558] Imported new block headers               count=192 elapsed=13.897ms  number=384 hash=d3d5d5…c79cf3 age=3y11mo3d
+INFO [06-13|10:51:34.602] Imported new block receipts              count=2   elapsed=173.166µs number=4   hash=23adf5…3cd3a2 age=3y11mo3d size=1.09kB
+INFO [06-13|10:51:34.602] Imported new block receipts              count=2   elapsed=50.571µs  number=6   hash=1f1aed…6b326e age=3y11mo3d size=8.00B
+INFO [06-13|10:51:34.799] Imported new block receipts              count=69  elapsed=486.283µs number=75  hash=6bf173…b5f799 age=3y11mo3d size=5.66kB
+INFO [06-13|10:51:35.463] Imported new block headers               count=192 elapsed=13.644ms  number=576 hash=41a746…6a8b38 age=3y11mo3d
+INFO [06-13|10:51:37.520] Imported new block receipts              count=313 elapsed=2.177ms   number=388 hash=0ace72…86e2f2 age=3y11mo3d size=51.48kB
+INFO [06-13|10:51:37.755] Imported new block headers               count=192 elapsed=13.713ms  number=768 hash=5cfe57…c19c3a age=3y11mo3d
+INFO [06-13|10:51:39.134] Imported new block receipts              count=189 elapsed=1.972ms   number=577 hash=c4cee3…93da3f age=3y11mo3d size=32.19kB
+INFO [06-13|10:51:39.633] Imported new block headers               count=192 elapsed=14.209ms  number=960 hash=916910…1d0e2a age=3y11mo3d
+INFO [06-13|10:51:40.709] Imported new state entries               count=1002 elapsed=108.965µs processed=1002 pending=10956 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:51:40.767] Imported new block receipts              count=204  elapsed=1.389ms   number=781 hash=2fd664…00b8af age=3y11mo3d size=36.02kB
+INFO [06-13|10:51:40.928] Imported new block headers               count=192  elapsed=14.211ms  number=1152 hash=495b33…0fc327 age=3y11mo3d
+INFO [06-13|10:51:42.166] Imported new block receipts              count=181  elapsed=1.262ms   number=962  hash=a0f7c0…e27ca7 age=3y11mo3d size=31.05kB
+INFO [06-13|10:51:42.242] Imported new block headers               count=192  elapsed=13.364ms  number=1344 hash=84b787…0e2783 age=3y11mo3d
+INFO [06-13|10:51:42.766] Imported new block receipts              count=193  elapsed=1.317ms   number=1155 hash=312614…5a9507 age=3y11mo3d size=26.72kB
+INFO [06-13|10:51:43.312] Imported new block headers               count=192  elapsed=13.711ms  number=1536 hash=b787b8…7d0da3 age=3y11mo3d
+INFO [06-13|10:51:43.872] Imported new state entries               count=768  elapsed=3.256ms   processed=1770 pending=10435 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:51:43.873] Imported new block receipts              count=189  elapsed=2.385ms   number=1344 hash=84b787…0e2783 age=3y11mo3d size=31.04kB
+INFO [06-13|10:51:44.004] Imported new block headers               count=192  elapsed=15.441ms  number=1728 hash=d8c37e…b4f264 age=3y11mo3d
+INFO [06-13|10:51:44.473] Imported new block receipts              count=197  elapsed=1.580ms   number=1541 hash=90afd6…ca6647 age=3y11mo3d size=26.79kB
+INFO [06-13|10:51:45.059] Imported new block headers               count=192  elapsed=14.628ms  number=1920 hash=80013e…3549c2 age=3y11mo3d
+INFO [06-13|10:51:45.160] Imported new block receipts              count=189  elapsed=1.241ms   number=1730 hash=f0afa5…cd6bc5 age=3y11mo3d size=22.39kB
+INFO [06-13|10:51:45.437] Imported new block headers               count=192  elapsed=13.962ms  number=2112 hash=88983b…9a2ec8 age=3y11mo3d
+INFO [06-13|10:51:46.001] Imported new state entries               count=768  elapsed=1.805ms   processed=2538 pending=10167 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:51:46.002] Imported new block receipts              count=191  elapsed=1.198ms   number=1921 hash=4997d3…55e63d age=3y11mo3d size=26.75kB
+INFO [06-13|10:51:46.407] Imported new block headers               count=192  elapsed=15.483ms  number=2304 hash=a5c676…c08e43 age=3y11mo3d
+INFO [06-13|10:51:46.450] Imported new block receipts              count=198  elapsed=1.355ms   number=2119 hash=5b91aa…00fdf8 age=3y11mo3d size=17.59kB
+INFO [06-13|10:51:47.168] Imported new block headers               count=192  elapsed=21.414ms  number=2496 hash=2f3bf5…246460 age=3y11mo3d
+INFO [06-13|10:51:47.353] Imported new block receipts              count=185  elapsed=1.262ms   number=2304 hash=a5c676…c08e43 age=3y11mo3d size=24.58kB
+INFO [06-13|10:51:47.353] Imported new block receipts              count=1    elapsed=28.099µs  number=2305 hash=044b63…54b40d age=3y11mo3d size=4.00B
+INFO [06-13|10:51:48.474] Imported new block headers               count=192  elapsed=14.417ms  number=2688 hash=eb8084…532ef6 age=3y11mo3d
+INFO [06-13|10:51:48.581] Imported new block receipts              count=194  elapsed=1.295ms   number=2499 hash=9c2bf4…204168 age=3y11mo3d size=23.50kB
+INFO [06-13|10:51:49.553] Imported new block receipts              count=189  elapsed=1.420ms   number=2688 hash=eb8084…532ef6 age=3y11mo3d size=18.64kB
+INFO [06-13|10:51:49.565] Imported new block headers               count=192  elapsed=15.079ms  number=2880 hash=04b8e6…e4ed9f age=3y11mo3d
+INFO [06-13|10:51:49.568] Imported new block receipts              count=20   elapsed=196.424µs number=2708 hash=59dbff…3cd47e age=3y11mo3d size=80.00B
+INFO [06-13|10:51:49.767] Imported new state entries               count=1152 elapsed=2.449ms   processed=3690 pending=10632 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:51:50.501] Imported new block receipts              count=172  elapsed=1.433ms   number=2880 hash=04b8e6…e4ed9f age=3y11mo3d size=16.90kB
+INFO [06-13|10:51:50.514] Imported new block headers               count=192  elapsed=14.644ms  number=3072 hash=e13042…2ac21b age=3y11mo3d
+INFO [06-13|10:51:50.516] Imported new block receipts              count=1    elapsed=49.155µs  number=2881 hash=f53953…f944c9 age=3y11mo3d size=4.00B
+INFO [06-13|10:51:50.943] Imported new block headers               count=192  elapsed=15.625ms  number=3264 hash=c9ccf0…cfbc3f age=3y11mo3d
+INFO [06-13|10:51:51.441] Imported new block receipts              count=195  elapsed=1.246ms   number=3076 hash=464fe9…af5a51 age=3y11mo3d size=19.68kB
+INFO [06-13|10:51:52.612] Imported new block headers               count=192  elapsed=14.939ms  number=3456 hash=1ac895…9ccc3b age=3y11mo3d
+INFO [06-13|10:51:52.656] Imported new block receipts              count=190  elapsed=1.210ms   number=3266 hash=669de4…fb2b2f age=3y11mo3d size=25.08kB
+INFO [06-13|10:51:53.474] Imported new block receipts              count=190  elapsed=1.214ms   number=3456 hash=1ac895…9ccc3b age=3y11mo3d size=18.53kB
+INFO [06-13|10:51:53.484] Imported new block headers               count=192  elapsed=13.471ms  number=3648 hash=381213…f1b99b age=3y11mo3d
+INFO [06-13|10:51:53.486] Imported new block receipts              count=3    elapsed=64.984µs  number=3459 hash=4ae2da…3af480 age=3y11mo3d size=12.00B
+INFO [06-13|10:51:54.536] Imported new state entries               count=1536 elapsed=3.631ms   processed=5226 pending=9744  retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:51:54.827] Imported new block headers               count=192  elapsed=14.721ms  number=3840 hash=2df82b…679ca3 age=3y11mo3d
+INFO [06-13|10:51:54.870] Imported new block receipts              count=198  elapsed=1.291ms   number=3657 hash=62c5e2…d220b9 age=3y11mo3d size=20.76kB
+INFO [06-13|10:51:56.457] Imported new block receipts              count=183  elapsed=1.777ms   number=3840 hash=2df82b…679ca3 age=3y11mo3d size=16.42kB
+INFO [06-13|10:51:56.468] Imported new block headers               count=192  elapsed=13.995ms  number=4032 hash=45d773…da63f7 age=3y11mo3d
+INFO [06-13|10:51:56.471] Imported new block receipts              count=2    elapsed=60.978µs  number=3842 hash=8b9232…dfd1f6 age=3y11mo3d size=8.00B
+INFO [06-13|10:51:57.676] Imported new block headers               count=192  elapsed=13.723ms  number=4224 hash=c5e623…a07ee8 age=3y11mo3d
+INFO [06-13|10:51:57.686] Imported new block receipts              count=191  elapsed=1.379ms   number=4033 hash=b2d368…2414f9 age=3y11mo3d size=25.06kB
+INFO [06-13|10:51:59.140] Imported new state entries               count=1152 elapsed=2.839ms   processed=6378 pending=9875  retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:51:59.269] Imported new block receipts              count=191  elapsed=1.468ms   number=4224 hash=c5e623…a07ee8 age=3y11mo3d size=20.74kB
+INFO [06-13|10:51:59.281] Imported new block headers               count=192  elapsed=14.647ms  number=4416 hash=25a7e2…a7d61a age=3y11mo3d
+INFO [06-13|10:51:59.283] Imported new block receipts              count=4    elapsed=73.779µs  number=4228 hash=474c48…382aef age=3y11mo3d size=16.00B
+INFO [06-13|10:52:00.726] Imported new block headers               count=192  elapsed=14.202ms  number=4608 hash=368d89…1cd7d7 age=3y11mo3d
+INFO [06-13|10:52:01.373] Imported new block receipts              count=191  elapsed=1.197ms   number=4419 hash=ab6c5e…16fe17 age=3y11mo3d size=11.58kB
+INFO [06-13|10:52:03.870] Imported new block receipts              count=189  elapsed=1.637ms   number=4608 hash=368d89…1cd7d7 age=3y11mo3d size=18.04kB
+INFO [06-13|10:52:03.882] Imported new block headers               count=192  elapsed=15.111ms  number=4800 hash=e26684…e91df7 age=3y11mo3d
+INFO [06-13|10:52:03.885] Imported new block receipts              count=13   elapsed=146.307µs number=4621 hash=cafddb…b79141 age=3y11mo3d size=52.00B
+INFO [06-13|10:52:06.549] Imported new block headers               count=192  elapsed=14.083ms  number=4992 hash=c6c053…2f14d4 age=3y11mo3d
+INFO [06-13|10:52:06.645] Imported new block receipts              count=179  elapsed=1.250ms   number=4800 hash=e26684…e91df7 age=3y11mo3d size=19.08kB
+INFO [06-13|10:52:06.645] Imported new block receipts              count=1    elapsed=28.476µs  number=4801 hash=6065a9…7d8165 age=3y11mo3d size=4.00B
+INFO [06-13|10:52:06.722] Imported new state entries               count=1152 elapsed=2.576ms   processed=7530 pending=9764  retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:52:09.340] Imported new block headers               count=192  elapsed=14.481ms  number=5184 hash=70524c…34c5b6 age=3y11mo3d
+INFO [06-13|10:52:09.620] Imported new block receipts              count=195  elapsed=1.142ms   number=4996 hash=08b003…216eda age=3y11mo3d size=18.63kB
+INFO [06-13|10:52:10.855] Imported new block headers               count=192  elapsed=15.033ms  number=5376 hash=c58491…d26f08 age=3y11mo3d
+INFO [06-13|10:52:11.055] Imported new block receipts              count=191  elapsed=1.139ms   number=5187 hash=c6b265…95438f age=3y11mo3d size=14.27kB
+INFO [06-13|10:52:12.543] Imported new block headers               count=192  elapsed=14.120ms  number=5568 hash=85f492…fbab88 age=3y11mo3d
+INFO [06-13|10:52:12.759] Imported new block receipts              count=191  elapsed=1.225ms   number=5378 hash=00128d…367afb age=3y11mo3d size=12.69kB
+INFO [06-13|10:52:13.930] Imported new state entries               count=1152 elapsed=2.632ms   processed=8682 pending=9194  retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:52:14.107] Imported new block receipts              count=190  elapsed=1.494ms   number=5568 hash=85f492…fbab88 age=3y11mo3d size=11.05kB
+INFO [06-13|10:52:14.119] Imported new block headers               count=192  elapsed=14.151ms  number=5760 hash=82b72f…cceca3 age=3y11mo3d
+INFO [06-13|10:52:14.122] Imported new block receipts              count=1    elapsed=59.323µs  number=5569 hash=e669a0…aecd2a age=3y11mo3d size=4.00B
+INFO [06-13|10:52:15.694] Imported new block headers               count=192  elapsed=15.855ms  number=5952 hash=874879…98a366 age=3y11mo3d
+INFO [06-13|10:52:15.905] Imported new block receipts              count=191  elapsed=1.224ms   number=5760 hash=82b72f…cceca3 age=3y11mo3d size=12.65kB
+INFO [06-13|10:52:15.906] Imported new block receipts              count=5    elapsed=48.927µs  number=5765 hash=931c55…08d4f8 age=3y11mo3d size=20.00B
+INFO [06-13|10:52:16.632] Imported new block headers               count=192  elapsed=14.231ms  number=6144 hash=f5fce8…201e51 age=3y11mo3d
+INFO [06-13|10:52:16.666] Imported new block receipts              count=244  elapsed=1.427ms   number=6009 hash=8c90b1…523965 age=3y11mo3d size=14.99kB
+INFO [06-13|10:52:17.470] Imported new state entries               count=1152 elapsed=2.770ms   processed=9834 pending=9372  retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:52:17.680] Imported new block receipts              count=135  elapsed=1.855ms   number=6144 hash=f5fce8…201e51 age=3y11mo3d size=7.56kB
+INFO [06-13|10:52:17.692] Imported new block headers               count=192  elapsed=14.229ms  number=6336 hash=b80c9a…10ee26 age=3y11mo3d
+INFO [06-13|10:52:18.832] Imported new block headers               count=192  elapsed=15.328ms  number=6528 hash=f2ffec…e609e0 age=3y11mo3d
+INFO [06-13|10:52:19.089] Imported new block receipts              count=201  elapsed=1.488ms   number=6345 hash=6dac91…75be88 age=3y11mo3d size=14.84kB
+INFO [06-13|10:52:20.507] Imported new block headers               count=192  elapsed=14.085ms  number=6720 hash=56ab75…5786fa age=3y11mo3d
+INFO [06-13|10:52:20.578] Imported new block receipts              count=185  elapsed=1.218ms   number=6530 hash=bd6692…e7dd0b age=3y11mo3d size=11.54kB
+INFO [06-13|10:52:21.375] Imported new block headers               count=192  elapsed=13.942ms  number=6912 hash=ab79f8…80175b age=3y11mo3d
+INFO [06-13|10:52:22.303] Imported new block receipts              count=196  elapsed=1.284ms   number=6726 hash=6765ab…ae2316 age=3y11mo3d size=15.90kB
+INFO [06-13|10:52:22.667] Imported new state entries               count=1536 elapsed=3.386ms   processed=11370 pending=9009  retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:52:23.295] Imported new block headers               count=192  elapsed=14.211ms  number=7104 hash=057a6d…99e28b age=3y11mo3d
+INFO [06-13|10:52:23.346] Imported new block receipts              count=188  elapsed=1.481ms   number=6914 hash=0c002d…dfa61d age=3y11mo3d size=8.33kB
+INFO [06-13|10:52:24.834] Imported new block receipts              count=190  elapsed=1.857ms   number=7104 hash=057a6d…99e28b age=3y11mo3d size=8.87kB
+INFO [06-13|10:52:24.846] Imported new block headers               count=192  elapsed=14.480ms  number=7296 hash=b23696…fab2b2 age=3y11mo3d
+INFO [06-13|10:52:24.849] Imported new block receipts              count=4    elapsed=80.236µs  number=7108 hash=65983c…28b60c age=3y11mo3d size=16.00B
+INFO [06-13|10:52:25.739] Imported new block receipts              count=188  elapsed=1.738ms   number=7296 hash=b23696…fab2b2 age=3y11mo3d size=10.48kB
+INFO [06-13|10:52:25.751] Imported new block headers               count=192  elapsed=14.382ms  number=7488 hash=0abcdd…8c25df age=3y11mo3d
+INFO [06-13|10:52:25.754] Imported new block receipts              count=1    elapsed=54.046µs  number=7297 hash=1efbb7…e44fe6 age=3y11mo3d size=4.00B
+INFO [06-13|10:52:26.485] Imported new state entries               count=1152 elapsed=2.514ms   processed=12522 pending=8959  retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:52:26.567] Imported new block receipts              count=191  elapsed=1.462ms   number=7488 hash=0abcdd…8c25df age=3y11mo3d size=8.32kB
+INFO [06-13|10:52:26.579] Imported new block headers               count=192  elapsed=14.286ms  number=7680 hash=ecdfee…86ba22 age=3y11mo3d
+INFO [06-13|10:52:26.582] Imported new block receipts              count=26   elapsed=198.023µs number=7514 hash=4afbc2…23bff7 age=3y11mo3d size=104.00B
+INFO [06-13|10:52:27.923] Imported new block receipts              count=166  elapsed=1.586ms   number=7680 hash=ecdfee…86ba22 age=3y11mo3d size=9.29kB
+INFO [06-13|10:52:27.936] Imported new block headers               count=192  elapsed=14.831ms  number=7872 hash=852131…d6e649 age=3y11mo3d
+INFO [06-13|10:52:27.939] Imported new block receipts              count=17   elapsed=161.765µs number=7697 hash=f3eac8…2ff6d6 age=3y11mo3d size=68.00B
+INFO [06-13|10:52:28.563] Imported new block headers               count=192  elapsed=14.559ms  number=8064 hash=0eb9b4…e63109 age=3y11mo2d
+INFO [06-13|10:52:28.674] Imported new block receipts              count=189  elapsed=1.357ms   number=7886 hash=d02fd1…24c916 age=3y11mo3d size=10.47kB
+INFO [06-13|10:52:29.966] Imported new block receipts              count=178  elapsed=1.715ms   number=8064 hash=0eb9b4…e63109 age=3y11mo2d size=8.27kB
+INFO [06-13|10:52:29.978] Imported new block headers               count=192  elapsed=14.465ms  number=8256 hash=41c51c…f26b87 age=3y11mo2d
+INFO [06-13|10:52:29.980] Imported new block receipts              count=4    elapsed=72.296µs  number=8068 hash=e0e3eb…d1e584 age=3y11mo2d size=16.00B
+INFO [06-13|10:52:30.028] Imported new state entries               count=1152 elapsed=3.115ms   processed=13674 pending=8349  retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:52:30.650] Imported new block receipts              count=188  elapsed=1.528ms   number=8256 hash=41c51c…f26b87 age=3y11mo2d size=12.65kB
+INFO [06-13|10:52:30.663] Imported new block headers               count=192  elapsed=14.458ms  number=8448 hash=0c2ef1…9e3313 age=3y11mo2d
+INFO [06-13|10:52:30.665] Imported new block receipts              count=1    elapsed=68.922µs  number=8257 hash=11784c…c6a888 age=3y11mo2d size=4.00B
+INFO [06-13|10:52:31.672] Imported new block receipts              count=191  elapsed=1.547ms   number=8448 hash=0c2ef1…9e3313 age=3y11mo2d size=11.03kB
+INFO [06-13|10:52:31.685] Imported new block headers               count=192  elapsed=15.150ms  number=8640 hash=f96a8b…33d2f1 age=3y11mo2d
+INFO [06-13|10:52:31.688] Imported new block receipts              count=2    elapsed=75.359µs  number=8450 hash=2f8c84…883e98 age=3y11mo2d size=8.00B
+INFO [06-13|10:52:32.917] Imported new block headers               count=192  elapsed=14.868ms  number=8832 hash=7a5c8f…c98b39 age=3y11mo2d
+INFO [06-13|10:52:33.174] Imported new block receipts              count=216  elapsed=1.467ms   number=8666 hash=01aab6…3ac884 age=3y11mo2d size=13.81kB
+INFO [06-13|10:52:33.513] Imported new state entries               count=1152 elapsed=2.644ms   processed=14826 pending=8191  retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:52:33.568] Imported new block receipts              count=166  elapsed=1.221ms   number=8832 hash=7a5c8f…c98b39 age=3y11mo2d size=6.61kB
+INFO [06-13|10:52:33.868] Imported new block headers               count=192  elapsed=14.670ms  number=9024 hash=8fa319…166de2 age=3y11mo2d
+INFO [06-13|10:52:33.870] Imported new block receipts              count=7    elapsed=117.267µs number=8839 hash=66dd09…2eb869 age=3y11mo2d size=28.00B
+INFO [06-13|10:52:34.857] Imported new block headers               count=192  elapsed=14.134ms  number=9216 hash=81c1b8…56e7ad age=3y11mo2d
+INFO [06-13|10:52:34.906] Imported new block receipts              count=192  elapsed=1.251ms   number=9031 hash=d94bc6…f42867 age=3y11mo2d size=11.02kB
+INFO [06-13|10:52:35.058] Imported new state entries               count=768  elapsed=1.926ms   processed=15594 pending=8175  retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:52:35.390] Imported new block headers               count=192  elapsed=14.879ms  number=9408 hash=ac33be…a595b5 age=3y11mo2d
+INFO [06-13|10:52:35.434] Imported new block receipts              count=203  elapsed=1.213ms   number=9234 hash=02f3db…3668e2 age=3y11mo2d size=8.91kB
+INFO [06-13|10:52:36.032] Imported new block headers               count=192  elapsed=14.333ms  number=9600 hash=d911aa…a4a6c7 age=3y11mo2d
+INFO [06-13|10:52:36.170] Imported new block receipts              count=189  elapsed=1.255ms   number=9423 hash=bca1e5…5330ba age=3y11mo2d size=6.70kB
+INFO [06-13|10:52:37.124] Imported new state entries               count=768  elapsed=1.797ms   processed=16362 pending=8416  retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:52:37.192] Imported new block headers               count=192  elapsed=14.653ms  number=9792 hash=e5e55f…9bb849 age=3y11mo2d
+INFO [06-13|10:52:37.407] Imported new block receipts              count=205  elapsed=3.116ms   number=9628 hash=c5e3d2…d2158a age=3y11mo2d size=8.92kB
+INFO [06-13|10:52:39.216] Imported new state entries               count=384  elapsed=487.392µs processed=16746 pending=11894 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:52:39.216] Imported new block headers               count=192  elapsed=25.383ms  number=9984 hash=20c28f…125322 age=3y11mo2d
+INFO [06-13|10:52:39.448] Imported new block receipts              count=172  elapsed=1.233ms   number=9800 hash=ae1c65…9f0ddd age=3y11mo2d size=4.46kB
+INFO [06-13|10:52:39.684] Imported new block receipts              count=184  elapsed=1.209ms   number=9984 hash=20c28f…125322 age=3y11mo2d size=7.21kB
+INFO [06-13|10:52:40.118] Imported new block headers               count=192  elapsed=15.432ms  number=10176 hash=b268d7…355397 age=3y11mo2d
+INFO [06-13|10:52:40.120] Imported new block receipts              count=3    elapsed=81.4µs    number=9987  hash=ec4a45…5812d9 age=3y11mo2d size=12.00B
+INFO [06-13|10:52:40.856] Imported new block receipts              count=189  elapsed=1.171ms   number=10176 hash=b268d7…355397 age=3y11mo2d size=8.31kB
+INFO [06-13|10:52:41.212] Imported new block headers               count=192  elapsed=15.303ms  number=10368 hash=5e0d2b…79dc53 age=3y11mo2d
+INFO [06-13|10:52:41.214] Imported new block receipts              count=5    elapsed=83.682µs  number=10181 hash=94f7e7…9ccbb0 age=3y11mo2d size=20.00B
+INFO [06-13|10:52:42.302] Imported new block headers               count=192  elapsed=14.610ms  number=10560 hash=85049c…19ce95 age=3y11mo2d
+INFO [06-13|10:52:42.356] Imported new block receipts              count=196  elapsed=1.211ms   number=10377 hash=944350…40db02 age=3y11mo2d size=8.34kB
+INFO [06-13|10:52:43.466] Imported new block receipts              count=183  elapsed=1.515ms   number=10560 hash=85049c…19ce95 age=3y11mo2d size=6.14kB
+INFO [06-13|10:52:43.478] Imported new block headers               count=192  elapsed=14.453ms  number=10752 hash=7a1006…a7dd48 age=3y11mo2d
+INFO [06-13|10:52:43.481] Imported new block receipts              count=19   elapsed=179.033µs number=10579 hash=ff934b…c48b1a age=3y11mo2d size=76.00B
+INFO [06-13|10:52:43.698] Imported new state entries               count=1536 elapsed=3.685ms   processed=18282 pending=12073 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:52:43.941] Imported new block headers               count=192  elapsed=13.971ms  number=10944 hash=3f73b7…2ac7df age=3y11mo2d
+INFO [06-13|10:52:43.989] Imported new block receipts              count=184  elapsed=1.533ms   number=10763 hash=a2b2a0…197f4b age=3y11mo2d size=11.53kB
+INFO [06-13|10:52:44.322] Imported new block headers               count=192  elapsed=14.350ms  number=11136 hash=4c4eee…4ab4c8 age=3y11mo2d
+INFO [06-13|10:52:44.675] Imported new block receipts              count=202  elapsed=1.293ms   number=10965 hash=83227d…dafbe8 age=3y11mo2d size=6.23kB
+INFO [06-13|10:52:44.855] Imported new block headers               count=192  elapsed=15.308ms  number=11328 hash=45049d…0e2ab3 age=3y11mo2d
+INFO [06-13|10:52:44.961] Imported new block receipts              count=209  elapsed=1.181ms   number=11174 hash=4354d5…323651 age=3y11mo2d size=8.96kB
+INFO [06-13|10:52:45.391] Imported new block receipts              count=154  elapsed=1.816ms   number=11328 hash=45049d…0e2ab3 age=3y11mo2d size=4.39kB
+INFO [06-13|10:52:45.404] Imported new block headers               count=192  elapsed=15.111ms  number=11520 hash=12395e…1376ed age=3y11mo2d
+INFO [06-13|10:52:46.484] Imported new block receipts              count=192  elapsed=1.446ms   number=11520 hash=12395e…1376ed age=3y11mo2d size=8.33kB
+INFO [06-13|10:52:46.495] Imported new block headers               count=192  elapsed=13.968ms  number=11712 hash=0f6a93…ea66c9 age=3y11mo2d
+INFO [06-13|10:52:46.498] Imported new block receipts              count=2    elapsed=54.306µs  number=11522 hash=4bc609…3db3c1 age=3y11mo2d size=8.00B
+INFO [06-13|10:52:47.563] Imported new block headers               count=192  elapsed=14.437ms  number=11904 hash=562fa4…d6465e age=3y11mo2d
+INFO [06-13|10:52:47.607] Imported new block receipts              count=206  elapsed=1.359ms   number=11728 hash=0c7171…7070f2 age=3y11mo2d size=6.75kB
+INFO [06-13|10:52:48.684] Imported new block receipts              count=176  elapsed=1.493ms   number=11904 hash=562fa4…d6465e age=3y11mo2d size=8.81kB
+INFO [06-13|10:52:48.696] Imported new block headers               count=192  elapsed=14.387ms  number=12096 hash=2f09b7…d71a2f age=3y11mo2d
+INFO [06-13|10:52:48.699] Imported new block receipts              count=31   elapsed=240.913µs number=11935 hash=83c1e8…4aa568 age=3y11mo2d size=124.00B
+INFO [06-13|10:52:48.873] Imported new state entries               count=1920 elapsed=4.354ms   processed=20202 pending=11446 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:52:49.590] Imported new block receipts              count=161  elapsed=1.535ms   number=12096 hash=2f09b7…d71a2f age=3y11mo2d size=6.04kB
+INFO [06-13|10:52:49.602] Imported new block headers               count=192  elapsed=14.192ms  number=12288 hash=583a8c…be886a age=3y11mo2d
+INFO [06-13|10:52:49.605] Imported new block receipts              count=9    elapsed=113.256µs number=12105 hash=e5a65b…f7f152 age=3y11mo2d size=36.00B
+INFO [06-13|10:52:50.708] Imported new block receipts              count=183  elapsed=1.772ms   number=12288 hash=583a8c…be886a age=3y11mo2d size=8.29kB
+INFO [06-13|10:52:50.722] Imported new block headers               count=192  elapsed=16.254ms  number=12480 hash=584da3…bed31b age=3y11mo2d
+INFO [06-13|10:52:50.725] Imported new block receipts              count=16   elapsed=162.858µs number=12304 hash=db91dd…acad4d age=3y11mo2d size=64.00B
+INFO [06-13|10:52:51.903] Imported new block receipts              count=176  elapsed=1.660ms   number=12480 hash=584da3…bed31b age=3y11mo2d size=8.27kB
+INFO [06-13|10:52:51.916] Imported new block headers               count=192  elapsed=15.189ms  number=12672 hash=ff3ece…662c40 age=3y11mo2d
+INFO [06-13|10:52:51.919] Imported new block receipts              count=22   elapsed=185.732µs number=12502 hash=d16cd4…a8357a age=3y11mo2d size=88.00B
+INFO [06-13|10:52:54.626] Imported new block receipts              count=170  elapsed=1.588ms   number=12672 hash=ff3ece…662c40 age=3y11mo2d size=8.23kB
+INFO [06-13|10:52:54.640] Imported new block headers               count=192  elapsed=15.310ms  number=12864 hash=3c1d00…2f62e2 age=3y11mo2d
+INFO [06-13|10:52:55.694] Imported new block receipts              count=192  elapsed=1.476ms   number=12864 hash=3c1d00…2f62e2 age=3y11mo2d size=12.65kB
+INFO [06-13|10:52:55.706] Imported new block headers               count=192  elapsed=13.998ms  number=13056 hash=94837e…831089 age=3y11mo2d
+INFO [06-13|10:52:56.200] Imported new state entries               count=1920 elapsed=4.430ms   processed=22122 pending=10777 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:52:56.768] Imported new block receipts              count=192  elapsed=1.804ms   number=13056 hash=94837e…831089 age=3y11mo2d size=8.84kB
+INFO [06-13|10:52:56.779] Imported new block headers               count=192  elapsed=14.602ms  number=13248 hash=6ef561…881183 age=3y11mo2d
+INFO [06-13|10:52:56.782] Imported new block receipts              count=6    elapsed=98.847µs  number=13062 hash=eca0f8…fbd00e age=3y11mo2d size=24.00B
+INFO [06-13|10:52:57.776] Imported new block headers               count=192  elapsed=14.037ms  number=13440 hash=63d935…f8c942 age=3y11mo2d
+INFO [06-13|10:52:57.832] Imported new block receipts              count=229  elapsed=1.532ms   number=13291 hash=78da8b…4799d6 age=3y11mo2d size=7.38kB
+INFO [06-13|10:52:58.099] Imported new block receipts              count=149  elapsed=2.082ms   number=13440 hash=63d935…f8c942 age=3y11mo2d size=3.83kB
+INFO [06-13|10:53:00.308] Imported new block headers               count=192  elapsed=16.260ms  number=13632 hash=0d8106…2d873f age=3y11mo2d
+INFO [06-13|10:53:00.310] Imported new block receipts              count=4    elapsed=78.763µs  number=13444 hash=64fe4f…70eaa5 age=3y11mo2d size=16.00B
+INFO [06-13|10:53:01.649] Imported new block receipts              count=188  elapsed=1.577ms   number=13632 hash=0d8106…2d873f age=3y11mo2d size=9.96kB
+INFO [06-13|10:53:01.661] Imported new block headers               count=192  elapsed=15.144ms  number=13824 hash=aba881…276fe7 age=3y11mo2d
+INFO [06-13|10:53:01.665] Imported new block receipts              count=39   elapsed=325.922µs number=13671 hash=dce601…7eceed age=3y11mo2d size=156.00B
+INFO [06-13|10:53:02.568] Imported new block headers               count=192  elapsed=15.556ms  number=14016 hash=95a01d…090328 age=3y11mo2d
+INFO [06-13|10:53:03.027] Imported new block receipts              count=166  elapsed=1.315ms   number=13837 hash=d6e3e1…8bed4f age=3y11mo2d size=5.52kB
+INFO [06-13|10:53:03.082] Imported new state entries               count=1920 elapsed=4.899ms   processed=24042 pending=9948  retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:53:03.193] Imported new block headers               count=192  elapsed=14.344ms  number=14208 hash=286aea…451971 age=3y11mo2d
+INFO [06-13|10:53:04.575] Imported new block receipts              count=179  elapsed=1.123ms   number=14016 hash=95a01d…090328 age=3y11mo2d size=7.71kB
+INFO [06-13|10:53:04.575] Imported new block receipts              count=4    elapsed=46.935µs  number=14020 hash=034995…9f2c5d age=3y11mo2d size=16.00B
+INFO [06-13|10:53:05.129] Imported new block headers               count=192  elapsed=14.807ms  number=14400 hash=b68fa2…fdd0f2 age=3y11mo2d
+INFO [06-13|10:53:05.534] Imported new block receipts              count=188  elapsed=1.200ms   number=14208 hash=286aea…451971 age=3y11mo2d size=6.69kB
+INFO [06-13|10:53:05.535] Imported new block receipts              count=40   elapsed=258.283µs number=14248 hash=81142f…a4f9f6 age=3y11mo2d size=160.00B
+INFO [06-13|10:53:05.754] Imported new block headers               count=192  elapsed=15.308ms  number=14592 hash=2b88bf…36a37b age=3y11mo1d
+INFO [06-13|10:53:05.803] Imported new block receipts              count=155  elapsed=1.136ms   number=14403 hash=b327e6…43a2e9 age=3y11mo2d size=11.95kB
+INFO [06-13|10:53:06.358] Imported new block headers               count=192  elapsed=14.286ms  number=14784 hash=2c67f6…f22737 age=3y11mo1d
+INFO [06-13|10:53:06.651] Imported new block receipts              count=242  elapsed=1.453ms   number=14645 hash=5be12b…7c0b48 age=3y11mo1d size=9.61kB
+INFO [06-13|10:53:07.235] Imported new block receipts              count=139  elapsed=1.131ms   number=14784 hash=2c67f6…f22737 age=3y11mo1d size=5.94kB
+INFO [06-13|10:53:07.374] Imported new state entries               count=1536 elapsed=3.297ms   processed=25578 pending=9705  retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:53:07.625] Imported new block headers               count=192  elapsed=15.032ms  number=14976 hash=10d2e1…4cde34 age=3y11mo1d
+INFO [06-13|10:53:07.628] Imported new block receipts              count=2    elapsed=83.893µs  number=14786 hash=13f342…3e782e age=3y11mo1d size=8.00B
+INFO [06-13|10:53:08.404] Imported new block receipts              count=190  elapsed=1.508ms   number=14976 hash=10d2e1…4cde34 age=3y11mo1d size=7.24kB
+INFO [06-13|10:53:08.417] Imported new block headers               count=192  elapsed=14.592ms  number=15168 hash=7028e9…25b379 age=3y11mo1d
+INFO [06-13|10:53:08.419] Imported new block receipts              count=21   elapsed=188.634µs number=14997 hash=ac22cc…feef2e age=3y11mo1d size=84.00B
+INFO [06-13|10:53:10.697] Imported new block receipts              count=171  elapsed=1.105ms   number=15168 hash=7028e9…25b379 age=3y11mo1d size=11.52kB
+INFO [06-13|10:53:10.708] Imported new block headers               count=192  elapsed=14.503ms  number=15360 hash=7e6271…3d9e35 age=3y11mo1d
+INFO [06-13|10:53:10.711] Imported new block receipts              count=35   elapsed=235.461µs number=15203 hash=76828a…e9731b age=3y11mo1d size=140.00B
+INFO [06-13|10:53:12.225] Imported new block receipts              count=157  elapsed=1.708ms   number=15360 hash=7e6271…3d9e35 age=3y11mo1d size=3.87kB
+INFO [06-13|10:53:12.238] Imported new block headers               count=192  elapsed=15.441ms  number=15552 hash=2ae036…8cc71e age=3y11mo1d
+INFO [06-13|10:53:12.241] Imported new block receipts              count=11   elapsed=131.687µs number=15371 hash=89bcb1…6343b6 age=3y11mo1d size=44.00B
+INFO [06-13|10:53:14.198] Imported new block headers               count=192  elapsed=16.208ms  number=15744 hash=2a07cd…6f31e8 age=3y11mo1d
+INFO [06-13|10:53:14.241] Imported new block receipts              count=211  elapsed=1.336ms   number=15582 hash=ee7e28…7cd162 age=3y11mo1d size=5.18kB
+INFO [06-13|10:53:14.968] Imported new block receipts              count=162  elapsed=1.537ms   number=15744 hash=2a07cd…6f31e8 age=3y11mo1d size=9.28kB
+INFO [06-13|10:53:14.981] Imported new block headers               count=192  elapsed=15.449ms  number=15936 hash=40ebf9…73b696 age=3y11mo1d
+INFO [06-13|10:53:14.984] Imported new block receipts              count=5    elapsed=99.27µs   number=15749 hash=e28ce1…ffe453 age=3y11mo1d size=20.00B
+INFO [06-13|10:53:15.031] Imported new state entries               count=1920 elapsed=5.885ms   processed=27498 pending=8692  retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:53:15.770] Imported new block receipts              count=187  elapsed=1.749ms   number=15936 hash=40ebf9…73b696 age=3y11mo1d size=4.00kB
+INFO [06-13|10:53:15.785] Imported new block headers               count=192  elapsed=17.114ms  number=16128 hash=831985…90b837 age=3y11mo1d
+INFO [06-13|10:53:15.788] Imported new block receipts              count=3    elapsed=251.761µs number=15939 hash=2ffd85…01a26a age=3y11mo1d size=12.00B
+INFO [06-13|10:53:16.737] Imported new block receipts              count=189  elapsed=1.503ms   number=16128 hash=831985…90b837 age=3y11mo1d size=5.60kB
+INFO [06-13|10:53:16.749] Imported new block headers               count=192  elapsed=14.178ms  number=16320 hash=194f3e…0fc950 age=3y11mo1d
+INFO [06-13|10:53:16.752] Imported new block receipts              count=26   elapsed=248.59µs  number=16154 hash=994c37…1cc37d age=3y11mo1d size=104.00B
+INFO [06-13|10:53:17.387] Imported new block headers               count=192  elapsed=15.073ms  number=16512 hash=bd259f…b656e5 age=3y11mo1d
+INFO [06-13|10:53:17.459] Imported new block receipts              count=187  elapsed=1.152ms   number=16341 hash=86502e…8d700c age=3y11mo1d size=5.02kB
+INFO [06-13|10:53:18.728] Imported new block receipts              count=171  elapsed=1.619ms   number=16512 hash=bd259f…b656e5 age=3y11mo1d size=5.53kB
+INFO [06-13|10:53:18.740] Imported new block headers               count=192  elapsed=14.719ms  number=16704 hash=395188…ca88c0 age=3y11mo1d
+INFO [06-13|10:53:18.743] Imported new block receipts              count=11   elapsed=139.583µs number=16523 hash=bd1c68…503510 age=3y11mo1d size=44.00B
+INFO [06-13|10:53:19.986] Imported new state entries               count=1536 elapsed=4.559ms   processed=29034 pending=7929  retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:53:20.378] Imported new block receipts              count=181  elapsed=1.442ms   number=16704 hash=395188…ca88c0 age=3y11mo1d size=6.68kB
+INFO [06-13|10:53:20.390] Imported new block headers               count=192  elapsed=14.385ms  number=16896 hash=d26010…0e6877 age=3y11mo1d
+INFO [06-13|10:53:20.393] Imported new block receipts              count=21   elapsed=167.707µs number=16725 hash=5b3679…0fa6ff age=3y11mo1d size=84.00B
+INFO [06-13|10:53:21.434] Imported new block receipts              count=171  elapsed=2.449ms   number=16896 hash=d26010…0e6877 age=3y11mo1d size=4.98kB
+INFO [06-13|10:53:21.437] Imported new block headers               count=192  elapsed=16.343ms  number=17088 hash=bc9fd0…542dd2 age=3y11mo1d
+INFO [06-13|10:53:21.440] Imported new block receipts              count=4    elapsed=66.352µs  number=16900 hash=ef67c1…7de4d5 age=3y11mo1d size=16.00B
+INFO [06-13|10:53:22.581] Imported new block headers               count=192  elapsed=14.172ms  number=17280 hash=130a01…0359a8 age=3y11mo1d
+INFO [06-13|10:53:22.627] Imported new block receipts              count=195  elapsed=1.222ms   number=17095 hash=42a16a…face16 age=3y11mo1d size=4.55kB
+INFO [06-13|10:53:22.886] Imported new block receipts              count=185  elapsed=2.612ms   number=17280 hash=130a01…0359a8 age=3y11mo1d size=7.78kB
+INFO [06-13|10:53:23.247] Imported new state entries               count=1152 elapsed=2.845ms   processed=30186 pending=8372  retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:53:23.391] Imported new block headers               count=192  elapsed=15.365ms  number=17472 hash=c31ac9…7aba1e age=3y11mo1d
+INFO [06-13|10:53:23.394] Imported new block receipts              count=4    elapsed=90.487µs  number=17284 hash=9087e5…d643bd age=3y11mo1d size=16.00B
+INFO [06-13|10:53:24.668] Imported new block receipts              count=188  elapsed=1.619ms   number=17472 hash=c31ac9…7aba1e age=3y11mo1d size=10.48kB
+INFO [06-13|10:53:24.681] Imported new block headers               count=192  elapsed=15.115ms  number=17664 hash=edbbbd…a50911 age=3y11mo1d
+INFO [06-13|10:53:24.684] Imported new block receipts              count=28   elapsed=233.214µs number=17500 hash=73c059…9f2dd0 age=3y11mo1d size=112.00B
+INFO [06-13|10:53:25.664] Imported new block headers               count=192  elapsed=14.837ms  number=17856 hash=74ee2c…ebe4c1 age=3y11mo1d
+INFO [06-13|10:53:25.671] Imported new block receipts              count=182  elapsed=1.159ms   number=17682 hash=4b7e41…fd0b50 age=3y11mo1d size=8.81kB
+INFO [06-13|10:53:26.940] Imported new block receipts              count=174  elapsed=1.440ms   number=17856 hash=74ee2c…ebe4c1 age=3y11mo1d size=6.63kB
+INFO [06-13|10:53:26.953] Imported new block headers               count=192  elapsed=14.859ms  number=18048 hash=a57baa…6c2b4d age=3y11mo1d
+INFO [06-13|10:53:26.956] Imported new block receipts              count=6    elapsed=95.374µs  number=17862 hash=641237…2e5f0b age=3y11mo1d size=24.00B
+INFO [06-13|10:53:27.292] Imported new state entries               count=1152 elapsed=3.632ms   processed=31338 pending=7438  retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:53:28.069] Imported new block headers               count=192  elapsed=14.228ms  number=18240 hash=4e413a…ff764c age=3y11mo1d
+INFO [06-13|10:53:28.373] Imported new block receipts              count=187  elapsed=1.315ms   number=18049 hash=e1a490…e3e08a age=3y11mo1d size=9.92kB
+INFO [06-13|10:53:28.947] Imported new block receipts              count=191  elapsed=2.027ms   number=18240 hash=4e413a…ff764c age=3y11mo1d size=9.94kB
+INFO [06-13|10:53:28.961] Imported new block headers               count=192  elapsed=16.366ms  number=18432 hash=f526ca…61d007 age=3y11mo1d
+INFO [06-13|10:53:28.963] Imported new block receipts              count=1    elapsed=74.875µs  number=18241 hash=5278ea…d648fa age=3y11mo1d size=4.00B
+INFO [06-13|10:53:29.509] Imported new block headers               count=192  elapsed=14.052ms  number=18624 hash=b44ac7…fb2c45 age=3y11mo1d
+INFO [06-13|10:53:29.557] Imported new block receipts              count=201  elapsed=1.418ms   number=18442 hash=87956b…69fdb0 age=3y11mo1d size=11.06kB
+INFO [06-13|10:53:29.761] Imported new block receipts              count=182  elapsed=1.300ms   number=18624 hash=b44ac7…fb2c45 age=3y11mo1d size=6.68kB
+INFO [06-13|10:53:29.833] Imported new block headers               count=192  elapsed=15.876ms  number=18816 hash=528b81…f12df6 age=3y11mo1d
+INFO [06-13|10:53:29.836] Imported new block receipts              count=29   elapsed=233.669µs number=18653 hash=811cf4…9f3b16 age=3y11mo1d size=116.00B
+INFO [06-13|10:53:29.844] Imported new state entries               count=1152 elapsed=3.000ms   processed=32490 pending=7857  retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:53:30.525] Imported new block headers               count=192  elapsed=14.415ms  number=19008 hash=e9bcec…ed5edf age=3y11mo1d
+INFO [06-13|10:53:31.201] Imported new block receipts              count=182  elapsed=1.353ms   number=18835 hash=6ebd31…f67edb age=3y11mo1d size=5.05kB
+INFO [06-13|10:53:31.992] Imported new block receipts              count=173  elapsed=1.526ms   number=19008 hash=e9bcec…ed5edf age=3y11mo1d size=5.01kB
+INFO [06-13|10:53:32.004] Imported new block headers               count=192  elapsed=14.439ms  number=19200 hash=e407a5…809192 age=3y11mo1d
+INFO [06-13|10:53:32.007] Imported new block receipts              count=9    elapsed=113.595µs number=19017 hash=4ba47c…475218 age=3y11mo1d size=36.00B
+INFO [06-13|10:53:32.553] Imported new block headers               count=192  elapsed=14.274ms  number=19392 hash=45bf7c…bb2088 age=3y11mo1d
+INFO [06-13|10:53:32.898] Imported new block receipts              count=186  elapsed=1.431ms   number=19203 hash=6dcb93…88f727 age=3y11mo1d size=11.00kB
+INFO [06-13|10:53:33.029] Imported new block headers               count=192  elapsed=14.187ms  number=19584 hash=fb822c…d81842 age=3y11mo1d
+INFO [06-13|10:53:33.077] Imported new state entries               count=1152 elapsed=3.541ms   processed=33642 pending=7590  retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:53:33.256] Imported new block receipts              count=197  elapsed=1.507ms   number=19400 hash=4b76be…3b1f38 age=3y11mo1d size=5.65kB
+INFO [06-13|10:53:33.937] Imported new block headers               count=192  elapsed=15.234ms  number=19776 hash=d93556…02f75e age=3y11mo23h
+INFO [06-13|10:53:33.976] Imported new block receipts              count=206  elapsed=2.230ms   number=19606 hash=87d5d0…2fdaa0 age=3y11mo1d  size=11.61kB
+INFO [06-13|10:53:34.284] Imported new block headers               count=192  elapsed=14.253ms  number=19968 hash=585f7b…d4dfb7 age=3y11mo22h
+INFO [06-13|10:53:34.800] Imported new block receipts              count=177  elapsed=1.188ms   number=19783 hash=dbe083…0764b7 age=3y11mo23h size=8.26kB
+INFO [06-13|10:53:35.330] Imported new block headers               count=192  elapsed=14.787ms  number=20160 hash=ca8195…7d1f5b age=3y11mo21h
+INFO [06-13|10:53:35.701] Imported new block receipts              count=187  elapsed=1.373ms   number=19970 hash=36dfad…a8db8d age=3y11mo22h size=9.94kB
+INFO [06-13|10:53:35.842] Imported new block headers               count=192  elapsed=14.574ms  number=20352 hash=9894bf…d6f3c8 age=3y11mo21h
+INFO [06-13|10:53:36.290] Imported new state entries               count=1152 elapsed=3.049ms   processed=34794 pending=7676  retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:53:36.512] Imported new block receipts              count=197  elapsed=1.563ms   number=20167 hash=5160a0…366764 age=3y11mo21h size=9.98kB
+INFO [06-13|10:53:36.775] Imported new block headers               count=192  elapsed=14.718ms  number=20544 hash=7e16cf…2d8cb0 age=3y11mo20h
+INFO [06-13|10:53:36.827] Imported new block receipts              count=198  elapsed=1.402ms   number=20365 hash=bc16ec…f74b2b age=3y11mo21h size=7.80kB
+INFO [06-13|10:53:37.423] Imported new block headers               count=192  elapsed=14.739ms  number=20736 hash=b65720…960eeb age=3y11mo19h
+INFO [06-13|10:53:37.638] Imported new block receipts              count=181  elapsed=1.172ms   number=20546 hash=bf8849…454596 age=3y11mo20h size=8.27kB
+INFO [06-13|10:53:38.245] Imported new block receipts              count=190  elapsed=1.560ms   number=20736 hash=b65720…960eeb age=3y11mo19h size=6.15kB
+INFO [06-13|10:53:38.325] Imported new block headers               count=192  elapsed=15.011ms  number=20928 hash=ec830d…cf0426 age=3y11mo18h
+INFO [06-13|10:53:38.328] Imported new block receipts              count=6    elapsed=104.591µs number=20742 hash=6c4294…40ef51 age=3y11mo19h size=24.00B
+INFO [06-13|10:53:39.127] Imported new state entries               count=1152 elapsed=4.854ms   processed=35946 pending=6710  retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:53:40.156] Imported new block receipts              count=186  elapsed=1.642ms   number=20928 hash=ec830d…cf0426 age=3y11mo18h size=9.37kB
+INFO [06-13|10:53:40.168] Imported new block headers               count=192  elapsed=14.341ms  number=21120 hash=754f65…7782c4 age=3y11mo17h
+INFO [06-13|10:53:40.171] Imported new block receipts              count=7    elapsed=109.245µs number=20935 hash=f2cca5…f4d29b age=3y11mo18h size=28.00B
+INFO [06-13|10:53:41.027] Imported new block receipts              count=185  elapsed=1.606ms   number=21120 hash=754f65…7782c4 age=3y11mo17h size=9.38kB
+INFO [06-13|10:53:41.040] Imported new block headers               count=192  elapsed=14.758ms  number=21312 hash=0dc2e0…7f6162 age=3y11mo16h
+INFO [06-13|10:53:41.043] Imported new block receipts              count=12   elapsed=152.282µs number=21132 hash=cfa97e…64be39 age=3y11mo17h size=48.00B
+INFO [06-13|10:53:42.030] Imported new state entries               count=768  elapsed=1.006ms   processed=36714 pending=11621 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:53:42.098] Imported new block headers               count=192  elapsed=14.933ms  number=21504 hash=b3827e…ca0764 age=3y11mo15h
+INFO [06-13|10:53:42.368] Imported new block receipts              count=187  elapsed=1.219ms   number=21319 hash=3b264f…0da6d0 age=3y11mo16h size=9.92kB
+INFO [06-13|10:53:42.549] Imported new block receipts              count=185  elapsed=1.421ms   number=21504 hash=b3827e…ca0764 age=3y11mo15h size=8.28kB
+INFO [06-13|10:53:43.587] Imported new block headers               count=192  elapsed=15.693ms  number=21696 hash=0086ce…d89609 age=3y11mo14h
+INFO [06-13|10:53:43.590] Imported new block receipts              count=47   elapsed=384.841µs number=21551 hash=cda108…0ffd6f age=3y11mo15h size=188.00B
+INFO [06-13|10:53:44.564] Imported new block receipts              count=145  elapsed=1.848ms   number=21696 hash=0086ce…d89609 age=3y11mo14h size=7.05kB
+INFO [06-13|10:53:44.577] Imported new block headers               count=192  elapsed=14.828ms  number=21888 hash=f47950…869c42 age=3y11mo14h
+INFO [06-13|10:53:44.580] Imported new block receipts              count=67   elapsed=465.963µs number=21763 hash=b67667…ea1233 age=3y11mo14h size=268.00B
+INFO [06-13|10:53:45.318] Imported new state entries               count=1152 elapsed=940.793µs processed=37866 pending=20538 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:53:45.678] Imported new block headers               count=192  elapsed=16.053ms  number=22080 hash=d41c68…9961c9 age=3y11mo13h
+INFO [06-13|10:53:45.728] Imported new block receipts              count=127  elapsed=1.101ms   number=21890 hash=c01fd1…1cbe53 age=3y11mo14h size=4.28kB
+INFO [06-13|10:53:46.214] Imported new block receipts              count=190  elapsed=1.168ms   number=22080 hash=d41c68…9961c9 age=3y11mo13h size=8.86kB
+INFO [06-13|10:53:46.224] Imported new block headers               count=192  elapsed=14.994ms  number=22272 hash=8f7c8f…c1898c age=3y11mo12h
+INFO [06-13|10:53:46.227] Imported new block receipts              count=5    elapsed=85.701µs  number=22085 hash=51a18e…ac7d68 age=3y11mo13h size=20.00B
+INFO [06-13|10:53:47.231] Imported new block headers               count=192  elapsed=17.815ms  number=22464 hash=4ee28c…8b266d age=3y11mo11h
+INFO [06-13|10:53:47.488] Imported new block receipts              count=187  elapsed=1.412ms   number=22272 hash=8f7c8f…c1898c age=3y11mo12h size=13.71kB
+INFO [06-13|10:53:47.787] Imported new block receipts              count=192  elapsed=1.819ms   number=22464 hash=4ee28c…8b266d age=3y11mo11h size=6.18kB
+INFO [06-13|10:53:47.800] Imported new block headers               count=192  elapsed=14.944ms  number=22656 hash=df68ac…3d4b7c age=3y11mo10h
+INFO [06-13|10:53:47.802] Imported new block receipts              count=13   elapsed=144.86µs  number=22477 hash=753b54…36a751 age=3y11mo11h size=52.00B
+INFO [06-13|10:53:48.590] Imported new block receipts              count=179  elapsed=1.721ms   number=22656 hash=df68ac…3d4b7c age=3y11mo10h size=7.72kB
+INFO [06-13|10:53:48.602] Imported new block headers               count=192  elapsed=14.467ms  number=22848 hash=5e8332…677637 age=3y11mo9h
+INFO [06-13|10:53:48.605] Imported new block receipts              count=4    elapsed=93.859µs  number=22660 hash=2bfa30…ef53af age=3y11mo10h size=16.00B
+INFO [06-13|10:53:49.792] Imported new block receipts              count=188  elapsed=4.481ms   number=22848 hash=5e8332…677637 age=3y11mo9h  size=10.44kB
+INFO [06-13|10:53:49.809] Imported new block headers               count=192  elapsed=21.547ms  number=23040 hash=7cbf69…bffdfb age=3y11mo8h
+INFO [06-13|10:53:49.811] Imported new block receipts              count=3    elapsed=79.023µs  number=22851 hash=80b621…ebfec0 age=3y11mo9h  size=12.00B
+INFO [06-13|10:53:50.387] Imported new block receipts              count=189  elapsed=1.517ms   number=23040 hash=7cbf69…bffdfb age=3y11mo8h  size=6.68kB
+INFO [06-13|10:53:50.400] Imported new block headers               count=192  elapsed=15.654ms  number=23232 hash=50db47…7cd1aa age=3y11mo8h
+INFO [06-13|10:53:50.403] Imported new block receipts              count=10   elapsed=133.386µs number=23050 hash=f6afce…bd02d4 age=3y11mo8h  size=40.00B
+INFO [06-13|10:53:51.111] Imported new state entries               count=2304 elapsed=6.845ms   processed=40170 pending=18894 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:53:51.190] Imported new block headers               count=192  elapsed=15.272ms  number=23424 hash=64a1b3…84a354 age=3y11mo7h
+INFO [06-13|10:53:51.333] Imported new block receipts              count=189  elapsed=1.132ms   number=23239 hash=5458ab…8a1069 age=3y11mo8h  size=9.40kB
+INFO [06-13|10:53:52.098] Imported new block headers               count=192  elapsed=14.869ms  number=23616 hash=19b3cf…9fb38a age=3y11mo6h
+INFO [06-13|10:53:52.145] Imported new block receipts              count=191  elapsed=1.181ms   number=23430 hash=8d1528…3dbae1 age=3y11mo7h  size=7.24kB
+INFO [06-13|10:53:54.059] Imported new block receipts              count=186  elapsed=1.493ms   number=23616 hash=19b3cf…9fb38a age=3y11mo6h  size=6.68kB
+INFO [06-13|10:53:54.072] Imported new block headers               count=192  elapsed=15.063ms  number=23808 hash=dd677f…bd11dd age=3y11mo5h
+INFO [06-13|10:53:54.075] Imported new block receipts              count=20   elapsed=287.392µs number=23636 hash=b136bc…21c77a age=3y11mo6h  size=80.00B
+INFO [06-13|10:53:54.688] Imported new block headers               count=192  elapsed=15.327ms  number=24000 hash=abb762…6e2f10 age=3y11mo4h
+INFO [06-13|10:53:55.157] Imported new block receipts              count=193  elapsed=1.235ms   number=23829 hash=35d2f6…3502d4 age=3y11mo5h  size=6.17kB
+INFO [06-13|10:53:55.295] Imported new block headers               count=192  elapsed=16.094ms  number=24192 hash=df064f…2e735a age=3y11mo3h
+INFO [06-13|10:53:55.347] Imported new block receipts              count=173  elapsed=1.220ms   number=24002 hash=0a9611…82b221 age=3y11mo4h  size=7.16kB
+INFO [06-13|10:53:56.132] Imported new block headers               count=192  elapsed=14.735ms  number=24384 hash=8db479…137c27 age=3y11mo3h
+INFO [06-13|10:53:56.610] Imported new state entries               count=1920 elapsed=5.835ms   processed=42090 pending=18091 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:53:56.797] Imported new block receipts              count=196  elapsed=1.215ms   number=24198 hash=b5cd94…f2ef2b age=3y11mo3h  size=8.89kB
+INFO [06-13|10:53:57.053] Imported new block headers               count=192  elapsed=15.131ms  number=24576 hash=32aa83…ca3c79 age=3y11mo2h
+INFO [06-13|10:53:57.127] Imported new block receipts              count=194  elapsed=1.183ms   number=24392 hash=32d027…9bd7d7 age=3y11mo3h  size=7.26kB
+INFO [06-13|10:53:57.592] Imported new block receipts              count=184  elapsed=1.191ms   number=24576 hash=32aa83…ca3c79 age=3y11mo2h  size=7.76kB
+INFO [06-13|10:54:02.520] Imported new state entries               count=1536 elapsed=3.936ms   processed=43626 pending=18654 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:54:04.449] Imported new block headers               count=192  elapsed=14.997ms  number=24768 hash=38e6be…9a5fbe age=3y11mo1h
+INFO [06-13|10:54:04.452] Imported new block receipts              count=14   elapsed=164.286µs number=24590 hash=f24d7d…70e905 age=3y11mo2h  size=56.00B
+INFO [06-13|10:54:05.704] Imported new block headers               count=192  elapsed=15.371ms  number=24960 hash=685eb7…05d468 age=3y11mo25m
+INFO [06-13|10:54:05.960] Imported new block receipts              count=217  elapsed=1.453ms   number=24807 hash=2c603d…9e4cd6 age=3y11mo1h  size=11.12kB
+INFO [06-13|10:54:06.735] Imported new block headers               count=192  elapsed=14.763ms  number=25152 hash=f952ce…d2428e age=3y10mo4w
+INFO [06-13|10:54:06.881] Imported new block receipts              count=159  elapsed=1.068ms   number=24966 hash=768265…25302a age=3y11mo24m size=12.50kB
+INFO [06-13|10:54:07.603] Imported new block receipts              count=186  elapsed=1.765ms   number=25152 hash=f952ce…d2428e age=3y10mo4w  size=10.46kB
+INFO [06-13|10:54:07.615] Imported new block headers               count=192  elapsed=14.730ms  number=25344 hash=be208b…430c21 age=3y10mo4w
+INFO [06-13|10:54:07.618] Imported new block receipts              count=17   elapsed=160.219µs number=25169 hash=f6cec8…eea4f0 age=3y10mo4w  size=68.00B
+INFO [06-13|10:54:08.539] Imported new block receipts              count=175  elapsed=1.967ms   number=25344 hash=be208b…430c21 age=3y10mo4w  size=9.33kB
+INFO [06-13|10:54:08.551] Imported new block headers               count=192  elapsed=15.011ms  number=25536 hash=709d7f…076c2e age=3y10mo4w
+INFO [06-13|10:54:08.613] Imported new state entries               count=1920 elapsed=7.519ms   processed=45546 pending=17650 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:54:09.075] Imported new block headers               count=192  elapsed=16.001ms  number=25728 hash=7c5f74…36d02f age=3y10mo4w
+INFO [06-13|10:54:09.115] Imported new block receipts              count=198  elapsed=1.590ms   number=25542 hash=cf7026…c2e23a age=3y10mo4w  size=11.57kB
+INFO [06-13|10:54:09.783] Imported new block receipts              count=186  elapsed=1.908ms   number=25728 hash=7c5f74…36d02f age=3y10mo4w  size=10.48kB
+INFO [06-13|10:54:09.796] Imported new block headers               count=192  elapsed=15.622ms  number=25920 hash=36b439…558b98 age=3y10mo4w
+INFO [06-13|10:54:09.798] Imported new block receipts              count=7    elapsed=88.449µs  number=25735 hash=a692a3…c09ec1 age=3y10mo4w  size=28.00B
+INFO [06-13|10:54:10.873] Imported new block receipts              count=185  elapsed=1.352ms   number=25920 hash=36b439…558b98 age=3y10mo4w  size=9.41kB
+INFO [06-13|10:54:10.886] Imported new block headers               count=192  elapsed=14.775ms  number=26112 hash=3b482b…7817dc age=3y10mo4w
+INFO [06-13|10:54:10.888] Imported new block receipts              count=6    elapsed=102.867µs number=25926 hash=17148d…99380e age=3y10mo4w  size=24.00B
+INFO [06-13|10:54:11.501] Imported new block headers               count=192  elapsed=19.205ms  number=26304 hash=99fbbf…75ab96 age=3y10mo4w
+INFO [06-13|10:54:11.543] Imported new block receipts              count=206  elapsed=1.325ms   number=26132 hash=7d3ad2…6a6b7a age=3y10mo4w  size=6.77kB
+INFO [06-13|10:54:11.884] Imported new block headers               count=192  elapsed=17.124ms  number=26496 hash=8e66bf…4a388e age=3y10mo4w
+INFO [06-13|10:54:11.933] Imported new block receipts              count=174  elapsed=1.135ms   number=26306 hash=0f2359…588848 age=3y10mo4w  size=10.96kB
+INFO [06-13|10:54:13.171] Imported new block headers               count=192  elapsed=14.486ms  number=26688 hash=486883…9f02bd age=3y10mo4w
+INFO [06-13|10:54:13.470] Imported new state entries               count=1536 elapsed=4.262ms   processed=47082 pending=17819 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:54:13.530] Imported new block receipts              count=202  elapsed=1.306ms   number=26508 hash=3a9a5d…37f164 age=3y10mo4w  size=8.91kB
+INFO [06-13|10:54:14.235] Imported new block headers               count=192  elapsed=14.222ms  number=26880 hash=ee37c0…c99af5 age=3y10mo4w
+INFO [06-13|10:54:14.523] Imported new block receipts              count=194  elapsed=1.465ms   number=26702 hash=54950b…7e063b age=3y10mo4w  size=9.99kB
+INFO [06-13|10:54:14.895] Imported new block headers               count=192  elapsed=13.943ms  number=27072 hash=429ed5…5ec1c5 age=3y10mo4w
+INFO [06-13|10:54:15.506] Imported new block receipts              count=201  elapsed=1.629ms   number=26903 hash=9caf64…daa6b2 age=3y10mo4w  size=7.30kB
+INFO [06-13|10:54:15.688] Imported new block headers               count=192  elapsed=14.813ms  number=27264 hash=1c9e41…7ee285 age=3y10mo4w
+INFO [06-13|10:54:15.966] Imported new block receipts              count=181  elapsed=1.326ms   number=27084 hash=31027b…8444d5 age=3y10mo4w  size=8.82kB
+INFO [06-13|10:54:16.428] Imported new block headers               count=192  elapsed=13.917ms  number=27456 hash=b68ce2…6319e3 age=3y10mo4w
+INFO [06-13|10:54:16.688] Imported new block receipts              count=191  elapsed=1.203ms   number=27275 hash=ce05e9…6ade88 age=3y10mo4w  size=11.56kB
+INFO [06-13|10:54:16.754] Imported new state entries               count=1536 elapsed=3.900ms   processed=48618 pending=17787 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:54:16.833] Imported new block headers               count=192  elapsed=15.087ms  number=27648 hash=e3446d…019e62 age=3y10mo4w
+INFO [06-13|10:54:16.881] Imported new block receipts              count=183  elapsed=1.304ms   number=27458 hash=bf7395…235cd5 age=3y10mo4w  size=9.39kB
+INFO [06-13|10:54:17.576] Imported new block headers               count=192  elapsed=14.332ms  number=27840 hash=64693f…69249f age=3y10mo4w
+INFO [06-13|10:54:17.806] Imported new block receipts              count=198  elapsed=1.873ms   number=27656 hash=559074…8ebe71 age=3y10mo4w  size=8.36kB
+INFO [06-13|10:54:18.331] Imported new block receipts              count=184  elapsed=1.750ms   number=27840 hash=64693f…69249f age=3y10mo4w  size=4.52kB
+INFO [06-13|10:54:18.343] Imported new block headers               count=192  elapsed=14.241ms  number=28032 hash=150d75…2bf1f3 age=3y10mo4w
+INFO [06-13|10:54:19.178] Imported new block receipts              count=192  elapsed=1.551ms   number=28032 hash=150d75…2bf1f3 age=3y10mo4w  size=9.43kB
+INFO [06-13|10:54:19.190] Imported new block headers               count=192  elapsed=14.024ms  number=28224 hash=9fe901…acf0c9 age=3y10mo4w
+INFO [06-13|10:54:19.192] Imported new block receipts              count=4    elapsed=67.57µs   number=28036 hash=018673…37ee43 age=3y10mo4w  size=16.00B
+INFO [06-13|10:54:20.138] Imported new block headers               count=192  elapsed=17.358ms  number=28416 hash=24f772…7727e8 age=3y10mo4w
+INFO [06-13|10:54:20.149] Imported new block receipts              count=208  elapsed=1.267ms   number=28244 hash=7430ca…010af0 age=3y10mo4w  size=7.86kB
+INFO [06-13|10:54:21.330] Imported new state entries               count=1920 elapsed=5.688ms   processed=50538 pending=16993 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:54:21.388] Imported new block receipts              count=172  elapsed=1.419ms   number=28416 hash=24f772…7727e8 age=3y10mo4w  size=7.17kB
+INFO [06-13|10:54:21.401] Imported new block headers               count=192  elapsed=14.498ms  number=28608 hash=92cd88…61439e age=3y10mo4w
+INFO [06-13|10:54:21.403] Imported new block receipts              count=1    elapsed=55.646µs  number=28417 hash=59c420…98bf71 age=3y10mo4w  size=4.00B
+INFO [06-13|10:54:22.240] Imported new block headers               count=192  elapsed=14.031ms  number=28800 hash=348714…6e32f0 age=3y10mo4w
+INFO [06-13|10:54:22.288] Imported new block receipts              count=202  elapsed=1.814ms   number=28619 hash=81c791…9fd5e2 age=3y10mo4w  size=9.99kB
+INFO [06-13|10:54:22.586] Imported new block receipts              count=181  elapsed=1.393ms   number=28800 hash=348714…6e32f0 age=3y10mo4w  size=10.99kB
+INFO [06-13|10:54:22.662] Imported new block headers               count=192  elapsed=14.832ms  number=28992 hash=d2689c…52a3fb age=3y10mo4w
+INFO [06-13|10:54:22.664] Imported new block receipts              count=2    elapsed=73.604µs  number=28802 hash=7ab3fe…376c0f age=3y10mo4w  size=8.00B
+INFO [06-13|10:54:23.260] Imported new block headers               count=192  elapsed=15.075ms  number=29184 hash=5c1dbc…f66ba3 age=3y10mo4w
+INFO [06-13|10:54:23.307] Imported new block receipts              count=190  elapsed=1.552ms   number=28992 hash=d2689c…52a3fb age=3y10mo4w  size=12.08kB
+INFO [06-13|10:54:23.536] Imported new block receipts              count=192  elapsed=1.296ms   number=29184 hash=5c1dbc…f66ba3 age=3y10mo4w  size=8.88kB
+INFO [06-13|10:54:23.612] Imported new block headers               count=192  elapsed=15.303ms  number=29376 hash=fd844c…a57051 age=3y10mo4w
+INFO [06-13|10:54:23.614] Imported new block receipts              count=4    elapsed=82.716µs  number=29188 hash=c36ca4…e29b4c age=3y10mo4w  size=16.00B
+INFO [06-13|10:54:24.160] Imported new block headers               count=192  elapsed=14.319ms  number=29568 hash=f2d7e4…7a40d6 age=3y10mo4w
+INFO [06-13|10:54:24.373] Imported new block receipts              count=188  elapsed=1.308ms   number=29376 hash=fd844c…a57051 age=3y10mo4w  size=8.83kB
+INFO [06-13|10:54:24.631] Imported new state entries               count=1536 elapsed=4.027ms   processed=52074 pending=17494 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:54:24.722] Imported new block headers               count=192  elapsed=15.244ms  number=29760 hash=f9601c…fcc63a age=3y10mo4w
+INFO [06-13|10:54:24.767] Imported new block receipts              count=207  elapsed=1.458ms   number=29583 hash=12881b…a48b68 age=3y10mo4w  size=9.48kB
+INFO [06-13|10:54:25.290] Imported new block receipts              count=177  elapsed=1.213ms   number=29760 hash=f9601c…fcc63a age=3y10mo4w  size=10.42kB
+INFO [06-13|10:54:25.362] Imported new block headers               count=192  elapsed=14.350ms  number=29952 hash=8414d3…523544 age=3y10mo4w
+INFO [06-13|10:54:25.365] Imported new block receipts              count=18   elapsed=178.416µs number=29778 hash=0704a4…b43d9b age=3y10mo4w  size=72.00B
+INFO [06-13|10:54:26.245] Imported new block receipts              count=174  elapsed=13.406ms  number=29952 hash=8414d3…523544 age=3y10mo4w  size=7.74kB
+INFO [06-13|10:54:26.280] Imported new block headers               count=192  elapsed=48.105ms  number=30144 hash=b85f0b…8d590c age=3y10mo4w
+INFO [06-13|10:54:26.282] Imported new block receipts              count=1    elapsed=78.479µs  number=29953 hash=4bff1f…44c00b age=3y10mo4w  size=4.00B
+INFO [06-13|10:54:27.064] Imported new block receipts              count=191  elapsed=1.962ms   number=30144 hash=b85f0b…8d590c age=3y10mo4w  size=11.04kB
+INFO [06-13|10:54:27.076] Imported new block headers               count=192  elapsed=15.247ms  number=30336 hash=dced73…52f43f age=3y10mo4w
+INFO [06-13|10:54:27.079] Imported new block receipts              count=6    elapsed=98.144µs  number=30150 hash=d4483b…1ad33f age=3y10mo4w  size=24.00B
+INFO [06-13|10:54:27.818] Imported new block receipts              count=186  elapsed=1.590ms   number=30336 hash=dced73…52f43f age=3y10mo4w  size=11.56kB
+INFO [06-13|10:54:27.829] Imported new block headers               count=192  elapsed=13.919ms  number=30528 hash=072b8c…036e0d age=3y10mo4w
+INFO [06-13|10:54:27.832] Imported new block receipts              count=8    elapsed=112.973µs number=30344 hash=d0f084…4e4917 age=3y10mo4w  size=32.00B
+INFO [06-13|10:54:28.025] Imported new block receipts              count=184  elapsed=1.581ms   number=30528 hash=072b8c…036e0d age=3y10mo4w  size=9.93kB
+INFO [06-13|10:54:28.649] Imported new block headers               count=192  elapsed=13.902ms  number=30720 hash=d6c33f…93a6a0 age=3y10mo4w
+INFO [06-13|10:54:28.651] Imported new block receipts              count=5    elapsed=106.298µs number=30533 hash=c650f9…1f317d age=3y10mo4w  size=20.00B
+INFO [06-13|10:54:28.698] Imported new state entries               count=1920 elapsed=6.098ms   processed=53994 pending=16697 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:54:29.116] Imported new block receipts              count=187  elapsed=1.777ms   number=30720 hash=d6c33f…93a6a0 age=3y10mo4w  size=3.99kB
+INFO [06-13|10:54:29.131] Imported new block headers               count=192  elapsed=18.355ms  number=30912 hash=aadfe1…4170ad age=3y10mo4w
+INFO [06-13|10:54:29.134] Imported new block receipts              count=8    elapsed=111.943µs number=30728 hash=9642a6…214b6c age=3y10mo4w  size=32.00B
+INFO [06-13|10:54:30.159] Imported new block headers               count=192  elapsed=15.618ms  number=31104 hash=a44b59…72f5ba age=3y10mo4w
+INFO [06-13|10:54:30.197] Imported new block receipts              count=187  elapsed=1.242ms   number=30915 hash=f3909c…9d571b age=3y10mo4w  size=9.91kB
+INFO [06-13|10:54:30.859] Imported new block headers               count=192  elapsed=15.535ms  number=31296 hash=c6b1f6…c2d28f age=3y10mo4w
+INFO [06-13|10:54:31.357] Imported new block receipts              count=189  elapsed=1.472ms   number=31104 hash=a44b59…72f5ba age=3y10mo4w  size=11.55kB
+INFO [06-13|10:54:31.358] Imported new block receipts              count=26   elapsed=193.065µs number=31130 hash=9d4a38…9711ec age=3y10mo4w  size=104.00B
+INFO [06-13|10:54:31.699] Imported new block receipts              count=166  elapsed=1.510ms   number=31296 hash=c6b1f6…c2d28f age=3y10mo4w  size=5.52kB
+INFO [06-13|10:54:31.712] Imported new block headers               count=192  elapsed=14.769ms  number=31488 hash=d4efb0…adc52f age=3y10mo4w
+INFO [06-13|10:54:31.715] Imported new block receipts              count=12   elapsed=146.1µs   number=31308 hash=4d7038…592e6f age=3y10mo4w  size=48.00B
+INFO [06-13|10:54:32.126] Imported new state entries               count=1152 elapsed=3.852ms   processed=55146 pending=17638 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:54:32.606] Imported new block headers               count=192  elapsed=18.039ms  number=31680 hash=f4f1b8…1b9d77 age=3y10mo4w
+INFO [06-13|10:54:32.674] Imported new block receipts              count=181  elapsed=1.334ms   number=31489 hash=d8e8cf…90e3f2 age=3y10mo4w  size=7.75kB
+INFO [06-13|10:54:33.011] Imported new block receipts              count=191  elapsed=1.282ms   number=31680 hash=f4f1b8…1b9d77 age=3y10mo4w  size=9.43kB
+INFO [06-13|10:54:33.104] Imported new block headers               count=192  elapsed=14.906ms  number=31872 hash=dc8c75…4c5ca1 age=3y10mo4w
+INFO [06-13|10:54:33.110] Imported new block receipts              count=31   elapsed=631.265µs number=31711 hash=088f7d…2477a9 age=3y10mo4w  size=124.00B
+INFO [06-13|10:54:33.680] Imported new block headers               count=192  elapsed=14.640ms  number=32064 hash=768649…c6c413 age=3y10mo4w
+INFO [06-13|10:54:34.051] Imported new block receipts              count=169  elapsed=1.351ms   number=31880 hash=fe5d85…b3c658 age=3y10mo4w  size=11.99kB
+INFO [06-13|10:54:34.755] Imported new block headers               count=192  elapsed=14.176ms  number=32256 hash=de80b8…0e701a age=3y10mo4w
+INFO [06-13|10:54:34.833] Imported new block receipts              count=185  elapsed=1.359ms   number=32065 hash=fa9384…c54596 age=3y10mo4w  size=15.86kB
+INFO [06-13|10:54:35.678] Imported new block receipts              count=191  elapsed=1.741ms   number=32256 hash=de80b8…0e701a age=3y10mo4w  size=11.03kB
+INFO [06-13|10:54:35.690] Imported new block headers               count=192  elapsed=14.839ms  number=32448 hash=86882a…5a59b7 age=3y10mo4w
+INFO [06-13|10:54:35.693] Imported new block receipts              count=16   elapsed=190.184µs number=32272 hash=6259d4…4a523c age=3y10mo4w  size=64.00B
+INFO [06-13|10:54:36.445] Imported new block receipts              count=176  elapsed=1.251ms   number=32448 hash=86882a…5a59b7 age=3y10mo4w  size=8.28kB
+INFO [06-13|10:54:36.785] Imported new block headers               count=192  elapsed=16.384ms  number=32640 hash=5ffc36…c284fb age=3y10mo4w
+INFO [06-13|10:54:36.788] Imported new block receipts              count=3    elapsed=78.761µs  number=32451 hash=c8c7a2…2d7910 age=3y10mo4w  size=12.00B
+INFO [06-13|10:54:36.891] Imported new state entries               count=1920 elapsed=6.696ms   processed=57066 pending=16845 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:54:37.646] Imported new block headers               count=192  elapsed=15.429ms  number=32832 hash=0c6d8f…a0d75f age=3y10mo4w
+INFO [06-13|10:54:37.758] Imported new block receipts              count=190  elapsed=2.335ms   number=32641 hash=122df8…636b19 age=3y10mo4w  size=8.86kB
+INFO [06-13|10:54:39.542] Imported new block headers               count=192  elapsed=15.469ms  number=33024 hash=bf1b31…207962 age=3y10mo4w
+INFO [06-13|10:54:39.731] Imported new block receipts              count=212  elapsed=1.393ms   number=32853 hash=278ee0…1d2d90 age=3y10mo4w  size=7.86kB
+INFO [06-13|10:54:41.293] Imported new block receipts              count=171  elapsed=1.204ms   number=33024 hash=bf1b31…207962 age=3y10mo4w  size=10.95kB
+INFO [06-13|10:54:41.429] Imported new block headers               count=192  elapsed=14.303ms  number=33216 hash=738611…2289b8 age=3y10mo4w
+INFO [06-13|10:54:41.432] Imported new block receipts              count=13   elapsed=142.643µs number=33037 hash=91bf4a…7d200f age=3y10mo4w  size=52.00B
+INFO [06-13|10:54:42.290] Imported new block receipts              count=179  elapsed=1.896ms   number=33216 hash=738611…2289b8 age=3y10mo4w  size=8.78kB
+INFO [06-13|10:54:42.301] Imported new block headers               count=192  elapsed=14.232ms  number=33408 hash=d307e0…ac6043 age=3y10mo4w
+INFO [06-13|10:54:42.304] Imported new block receipts              count=13   elapsed=146.448µs number=33229 hash=685426…5955d6 age=3y10mo4w  size=52.00B
+INFO [06-13|10:54:43.173] Imported new block receipts              count=179  elapsed=1.515ms   number=33408 hash=d307e0…ac6043 age=3y10mo4w  size=10.97kB
+INFO [06-13|10:54:43.185] Imported new block headers               count=192  elapsed=14.543ms  number=33600 hash=45b38c…e311ed age=3y10mo4w
+INFO [06-13|10:54:43.189] Imported new block receipts              count=34   elapsed=363.168µs number=33442 hash=1e904e…43ffee age=3y10mo4w  size=136.00B
+INFO [06-13|10:54:44.201] Imported new state entries               count=1920 elapsed=6.956ms   processed=58986 pending=16429 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:54:44.258] Imported new block receipts              count=158  elapsed=1.603ms   number=33600 hash=45b38c…e311ed age=3y10mo4w  size=7.13kB
+INFO [06-13|10:54:44.270] Imported new block headers               count=192  elapsed=14.865ms  number=33792 hash=ec1f23…53b7ed age=3y10mo4w
+INFO [06-13|10:54:44.274] Imported new block receipts              count=29   elapsed=261.747µs number=33629 hash=8dc916…7d99fc age=3y10mo4w  size=116.00B
+INFO [06-13|10:54:45.522] Imported new block receipts              count=163  elapsed=1.783ms   number=33792 hash=ec1f23…53b7ed age=3y10mo4w  size=6.02kB
+INFO [06-13|10:54:45.534] Imported new block headers               count=192  elapsed=14.312ms  number=33984 hash=2b7365…bd4aac age=3y10mo4w
+INFO [06-13|10:54:45.537] Imported new block receipts              count=4    elapsed=88.987µs  number=33796 hash=f7df63…801acf age=3y10mo4w  size=16.00B
+WARN [06-13|10:54:47.521] Dropping unsynced node during fast sync  id=d41a8d3bf1b74810 conn=dyndial addr=47.91.250.160:30303 type=Geth/v1.8.27-stable-4bcc0a37/linux-amd64/go1.11.9
+INFO [06-13|10:54:47.989] Imported new block receipts              count=188  elapsed=1.791ms   number=33984 hash=2b7365…bd4aac age=3y10mo4w  size=11.02kB
+INFO [06-13|10:54:48.001] Imported new block headers               count=192  elapsed=14.416ms  number=34176 hash=1a29ea…2d389e age=3y10mo4w
+INFO [06-13|10:54:48.003] Imported new block receipts              count=3    elapsed=72.48µs   number=33987 hash=2b4c24…211969 age=3y10mo4w  size=12.00B
+INFO [06-13|10:54:49.710] Imported new block receipts              count=189  elapsed=1.553ms   number=34176 hash=1a29ea…2d389e age=3y10mo4w  size=11.58kB
+INFO [06-13|10:54:51.375] Imported new state entries               count=1536 elapsed=4.547ms   processed=60522 pending=16476 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:54:55.587] Imported new state entries               count=1536 elapsed=3.759ms   processed=62058 pending=17322 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:54:56.116] Imported new state entries               count=768  elapsed=4.253ms   processed=62826 pending=20084 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:54:56.231] Imported new block headers               count=1728 elapsed=107.654ms number=35904 hash=94e325…44cfdc age=3y10mo3w
+INFO [06-13|10:54:56.248] Imported new block receipts              count=3    elapsed=97.235µs  number=34179 hash=385610…364640 age=3y10mo4w  size=12.00B
+INFO [06-13|10:54:57.427] Imported new block receipts              count=434  elapsed=2.918ms   number=34613 hash=80f460…16202e age=3y10mo4w  size=20.58kB
+INFO [06-13|10:54:59.458] Imported new block headers               count=768  elapsed=55.976ms  number=36672 hash=4146a1…df2e49 age=3y10mo3w
+INFO [06-13|10:54:59.541] Imported new block receipts              count=832  elapsed=5.749ms   number=35445 hash=d83b57…71d024 age=3y10mo4w  size=40.99kB
+INFO [06-13|10:54:59.888] Imported new block receipts              count=433  elapsed=3.593ms   number=35878 hash=bb0f5b…dcad16 age=3y10mo3w  size=21.14kB
+INFO [06-13|10:55:00.471] Imported new block headers               count=192  elapsed=16.114ms  number=36864 hash=5451d5…00570b age=3y10mo3w
+INFO [06-13|10:55:02.336] Imported new state entries               count=2304 elapsed=8.667ms   processed=65130 pending=18662 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:55:02.865] Imported new block receipts              count=986  elapsed=16.711ms  number=36864 hash=5451d5…00570b age=3y10mo3w  size=43.36kB
+INFO [06-13|10:55:02.876] Imported new block headers               count=384  elapsed=36.241ms  number=37248 hash=1eefef…02ddd8 age=3y10mo3w
+INFO [06-13|10:55:02.882] Imported new block receipts              count=15   elapsed=246.291µs number=36879 hash=284874…38301e age=3y10mo3w  size=60.00B
+INFO [06-13|10:55:02.893] Imported new block headers               count=192  elapsed=14.832ms  number=37440 hash=3ad36f…d22846 age=3y10mo3w
+INFO [06-13|10:55:03.656] Imported new block receipts              count=382  elapsed=3.153ms   number=37261 hash=cb1efb…cbfbb2 age=3y10mo3w  size=15.02kB
+INFO [06-13|10:55:05.398] Imported new block receipts              count=179  elapsed=2.488ms   number=37440 hash=3ad36f…d22846 age=3y10mo3w  size=8.80kB
+INFO [06-13|10:55:05.436] Imported new block headers               count=576  elapsed=38.467ms  number=38016 hash=d360be…b240af age=3y10mo3w
+INFO [06-13|10:55:05.445] Imported new block receipts              count=20   elapsed=250.326µs number=37460 hash=762c7f…7b4376 age=3y10mo3w  size=80.00B
+INFO [06-13|10:55:05.811] Imported new block headers               count=192  elapsed=15.560ms  number=38208 hash=5e0828…79bd08 age=3y10mo3w
+INFO [06-13|10:55:06.697] Imported new block receipts              count=557  elapsed=3.805ms   number=38017 hash=c8af96…e059c1 age=3y10mo3w  size=29.71kB
+INFO [06-13|10:55:07.091] Imported new state entries               count=2304 elapsed=7.059ms   processed=67434 pending=17070 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:55:08.086] Imported new block receipts              count=191  elapsed=2.407ms   number=38208 hash=5e0828…79bd08 age=3y10mo3w  size=8.36kB
+INFO [06-13|10:55:08.123] Imported new block headers               count=576  elapsed=37.510ms  number=38784 hash=709cc8…c4779c age=3y10mo3w
+INFO [06-13|10:55:08.131] Imported new block receipts              count=2    elapsed=68.627µs  number=38210 hash=207804…399986 age=3y10mo3w  size=8.00B
+INFO [06-13|10:55:08.169] Imported new block headers               count=192  elapsed=20.804ms  number=38976 hash=780ff9…0e0db4 age=3y10mo3w
+INFO [06-13|10:55:09.397] Imported new block receipts              count=575  elapsed=4.487ms   number=38785 hash=8c429b…a3ce50 age=3y10mo3w  size=23.93kB
+INFO [06-13|10:55:10.536] Imported new state entries               count=1920 elapsed=7.135ms   processed=69354 pending=16297 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:55:10.591] Imported new block receipts              count=191  elapsed=1.210ms   number=38976 hash=780ff9…0e0db4 age=3y10mo3w  size=8.32kB
+INFO [06-13|10:55:10.627] Imported new block headers               count=576  elapsed=36.804ms  number=39552 hash=7a9a44…77e35b age=3y10mo3w
+INFO [06-13|10:55:10.635] Imported new block receipts              count=5    elapsed=81.914µs  number=38981 hash=bff85b…347971 age=3y10mo3w  size=20.00B
+INFO [06-13|10:55:11.461] Imported new block receipts              count=571  elapsed=3.609ms   number=39552 hash=7a9a44…77e35b age=3y10mo3w  size=19.54kB
+INFO [06-13|10:55:12.140] Imported new block headers               count=192  elapsed=15.222ms  number=39744 hash=2d6843…12aa93 age=3y10mo3w
+INFO [06-13|10:55:12.142] Imported new block receipts              count=1    elapsed=60.828µs  number=39553 hash=ea6a98…47e1c5 age=3y10mo3w  size=4.00B
+INFO [06-13|10:55:13.101] Imported new block headers               count=192  elapsed=16.140ms  number=39936 hash=29d166…b8ee87 age=3y10mo3w
+INFO [06-13|10:55:13.321] Imported new block headers               count=192  elapsed=14.318ms  number=40128 hash=a58208…36e043 age=3y10mo3w
+INFO [06-13|10:55:13.365] Imported new block receipts              count=217  elapsed=1.541ms   number=39770 hash=fab379…f739b8 age=3y10mo3w  size=8.35kB
+INFO [06-13|10:55:14.740] Imported new state entries               count=1536 elapsed=4.010ms   processed=70890 pending=17458 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:55:14.876] Imported new block receipts              count=358  elapsed=2.269ms   number=40128 hash=a58208…36e043 age=3y10mo3w  size=14.41kB
+INFO [06-13|10:55:14.913] Imported new block headers               count=576  elapsed=38.552ms  number=40704 hash=592a8b…5e0d05 age=3y10mo3w
+INFO [06-13|10:55:14.921] Imported new block receipts              count=4    elapsed=148.401µs number=40132 hash=ff2cb7…0aabb7 age=3y10mo3w  size=16.00B
+INFO [06-13|10:55:15.922] Imported new block headers               count=192  elapsed=15.211ms  number=40896 hash=cdc715…5d9e4a age=3y10mo3w
+INFO [06-13|10:55:16.196] Imported new block receipts              count=579  elapsed=3.482ms   number=40711 hash=f6e630…b398e3 age=3y10mo3w  size=21.76kB
+INFO [06-13|10:55:17.182] Imported new block receipts              count=185  elapsed=2.086ms   number=40896 hash=cdc715…5d9e4a age=3y10mo3w  size=8.82kB
+INFO [06-13|10:55:17.220] Imported new block headers               count=576  elapsed=38.870ms  number=41472 hash=f83aeb…315655 age=3y10mo3w
+INFO [06-13|10:55:18.463] Imported new block headers               count=192  elapsed=14.255ms  number=41664 hash=aa312c…fffca7 age=3y10mo3w
+INFO [06-13|10:55:19.092] Imported new block receipts              count=590  elapsed=3.466ms   number=41486 hash=f5ce01…14c35d age=3y10mo3w  size=21.82kB
+INFO [06-13|10:55:19.152] Imported new state entries               count=2304 elapsed=8.418ms   processed=73194 pending=16210 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:55:20.087] Imported new block receipts              count=178  elapsed=3.590ms   number=41664 hash=aa312c…fffca7 age=3y10mo3w  size=9.89kB
+INFO [06-13|10:55:20.112] Imported new block headers               count=384  elapsed=27.363ms  number=42048 hash=4708c4…3b02a7 age=3y10mo3w
+INFO [06-13|10:55:20.117] Imported new block receipts              count=5    elapsed=78.496µs  number=41669 hash=c3e994…e33a9d age=3y10mo3w  size=20.00B
+INFO [06-13|10:55:20.823] Imported new block headers               count=192  elapsed=15.214ms  number=42240 hash=055c11…d6fd0f age=3y10mo3w
+INFO [06-13|10:55:22.120] Imported new block receipts              count=394  elapsed=2.756ms   number=42063 hash=956327…02a226 age=3y10mo3w  size=20.52kB
+INFO [06-13|10:55:22.613] Imported new state entries               count=1536 elapsed=4.663ms   processed=74730 pending=16746 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:55:22.716] Imported new block receipts              count=177  elapsed=1.290ms   number=42240 hash=055c11…d6fd0f age=3y10mo3w  size=8.29kB
+INFO [06-13|10:55:22.742] Imported new block headers               count=384  elapsed=26.520ms  number=42624 hash=89ef08…9042a2 age=3y10mo3w
+INFO [06-13|10:55:22.747] Imported new block receipts              count=5    elapsed=97.063µs  number=42245 hash=2e38f0…4ca22e age=3y10mo3w  size=20.00B
+INFO [06-13|10:55:24.721] Imported new block receipts              count=379  elapsed=3.903ms   number=42624 hash=89ef08…9042a2 age=3y10mo3w  size=21.44kB
+INFO [06-13|10:55:24.730] Imported new block headers               count=192  elapsed=16.516ms  number=42816 hash=ae3f13…2c0359 age=3y10mo3w
+INFO [06-13|10:55:24.733] Imported new block receipts              count=7    elapsed=89.595µs  number=42631 hash=4d9671…21587d age=3y10mo3w  size=28.00B
+INFO [06-13|10:55:25.216] Imported new block headers               count=192  elapsed=14.823ms  number=43008 hash=683279…6747c9 age=3y10mo3w
+INFO [06-13|10:55:27.518] Imported new block headers               count=192  elapsed=15.758ms  number=43200 hash=b451df…3507ae age=3y10mo3w
+INFO [06-13|10:55:27.907] Imported new block receipts              count=189  elapsed=2.363ms   number=42820 hash=21e23d…da998c age=3y10mo3w  size=12.09kB
+INFO [06-13|10:55:27.949] Imported new block receipts              count=194  elapsed=1.762ms   number=43014 hash=9d7bb4…b38e50 age=3y10mo3w  size=6.71kB
+INFO [06-13|10:55:27.964] Imported new block headers               count=192  elapsed=17.152ms  number=43392 hash=548f4b…f31127 age=3y10mo3w
+INFO [06-13|10:55:29.541] Imported new block receipts              count=188  elapsed=1.809ms   number=43202 hash=23df2b…9c2c36 age=3y10mo3w  size=8.85kB
+INFO [06-13|10:55:29.556] Imported new block headers               count=192  elapsed=17.357ms  number=43584 hash=644c47…94cea2 age=3y10mo3w
+INFO [06-13|10:55:29.644] Imported new state entries               count=2304 elapsed=6.802ms   processed=77034 pending=15651 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:55:30.716] Imported new block headers               count=384  elapsed=27.577ms  number=43968 hash=8570f7…a0ff88 age=3y10mo3w
+INFO [06-13|10:55:30.811] Imported new block receipts              count=417  elapsed=2.596ms   number=43619 hash=6bcf7d…be9e81 age=3y10mo3w  size=18.92kB
+INFO [06-13|10:55:31.561] Imported new block headers               count=192  elapsed=14.875ms  number=44160 hash=d87d01…e82d27 age=3y10mo3w
+INFO [06-13|10:55:32.191] Imported new block receipts              count=351  elapsed=2.617ms   number=43970 hash=00c768…cc40d9 age=3y10mo3w  size=19.75kB
+INFO [06-13|10:55:32.881] Imported new state entries               count=1152 elapsed=3.060ms   processed=78186 pending=16640 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:55:33.536] Imported new block receipts              count=190  elapsed=1.340ms   number=44160 hash=d87d01…e82d27 age=3y10mo3w  size=8.30kB
+INFO [06-13|10:55:33.569] Imported new block headers               count=384  elapsed=33.967ms  number=44544 hash=146e5b…ca1ae7 age=3y10mo3w
+INFO [06-13|10:55:33.574] Imported new block receipts              count=13   elapsed=193.474µs number=44173 hash=832003…72f4e0 age=3y10mo3w  size=52.00B
+INFO [06-13|10:55:34.077] Imported new block headers               count=192  elapsed=14.928ms  number=44736 hash=b55145…4efbb9 age=3y10mo3w
+INFO [06-13|10:55:34.514] Imported new block receipts              count=374  elapsed=2.694ms   number=44547 hash=93a2b8…8f3104 age=3y10mo3w  size=16.05kB
+INFO [06-13|10:55:35.712] Imported new state entries               count=1536 elapsed=4.221ms   processed=79722 pending=17296 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:55:35.882] Imported new block receipts              count=189  elapsed=1.157ms   number=44736 hash=b55145…4efbb9 age=3y10mo3w  size=12.11kB
+INFO [06-13|10:55:35.910] Imported new block headers               count=384  elapsed=28.411ms  number=45120 hash=0a4b99…ea06b3 age=3y10mo3w
+INFO [06-13|10:55:35.915] Imported new block receipts              count=7    elapsed=122.444µs number=44743 hash=f3a0ab…e719d2 age=3y10mo3w  size=28.00B
+INFO [06-13|10:55:37.359] Imported new block headers               count=192  elapsed=15.695ms  number=45312 hash=a9e990…85a14e age=3y10mo3w
+INFO [06-13|10:55:37.779] Imported new block receipts              count=377  elapsed=2.304ms   number=45120 hash=0a4b99…ea06b3 age=3y10mo3w  size=19.29kB
+INFO [06-13|10:55:38.365] Imported new block receipts              count=192  elapsed=6.429ms   number=45312 hash=a9e990…85a14e age=3y10mo3w  size=10.49kB
+INFO [06-13|10:55:38.388] Imported new block headers               count=384  elapsed=29.092ms  number=45696 hash=a2d67d…5df89e age=3y10mo3w
+INFO [06-13|10:55:38.393] Imported new block receipts              count=4    elapsed=80.929µs  number=45316 hash=0f8de8…f99135 age=3y10mo3w  size=16.00B
+INFO [06-13|10:55:39.453] Imported new block receipts              count=380  elapsed=3.312ms   number=45696 hash=a2d67d…5df89e age=3y10mo3w  size=15.01kB
+INFO [06-13|10:55:39.475] Imported new block headers               count=192  elapsed=15.449ms  number=45888 hash=c9508a…465e76 age=3y10mo3w
+INFO [06-13|10:55:39.478] Imported new block receipts              count=19   elapsed=177.885µs number=45715 hash=706c6e…f07251 age=3y10mo3w  size=76.00B
+INFO [06-13|10:55:40.711] Imported new block receipts              count=173  elapsed=1.159ms   number=45888 hash=c9508a…465e76 age=3y10mo3w  size=8.27kB
+INFO [06-13|10:55:41.312] Imported new state entries               count=2304 elapsed=7.238ms   processed=82026 pending=15693 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:55:42.612] Imported new block headers               count=576  elapsed=40.910ms  number=46464 hash=607b8e…dffecb age=3y10mo3w
+INFO [06-13|10:55:42.618] Imported new block receipts              count=4    elapsed=76.689µs  number=45892 hash=49a187…aca708 age=3y10mo3w  size=16.00B
+INFO [06-13|10:55:43.297] Imported new block receipts              count=277  elapsed=1.839ms   number=46169 hash=5793f9…6f7998 age=3y10mo3w  size=10.76kB
+INFO [06-13|10:55:43.308] Imported new block headers               count=192  elapsed=16.015ms  number=46656 hash=73d900…b76f9c age=3y10mo3w
+INFO [06-13|10:55:45.628] Imported new block headers               count=192  elapsed=16.104ms  number=46848 hash=b9fac5…f36fd1 age=3y10mo3w
+INFO [06-13|10:55:45.652] Imported new block receipts              count=47   elapsed=540.106µs number=46216 hash=0b68f7…c6f1fb age=3y10mo3w  size=2.77kB
+INFO [06-13|10:55:46.094] Imported new block headers               count=192  elapsed=15.287ms  number=47040 hash=5c3648…15f4f3 age=3y10mo3w
+INFO [06-13|10:55:46.563] Imported new block receipts              count=3    elapsed=142.099µs number=46219 hash=f5674f…00e1f2 age=3y10mo3w  size=1.03kB
+INFO [06-13|10:55:47.513] Imported new state entries               count=1903 elapsed=5.260ms   processed=83929 pending=16038 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:55:48.246] Imported new block receipts              count=25   elapsed=867.591µs number=46244 hash=006ea3…ddc49e age=3y10mo3w  size=3.66kB
+INFO [06-13|10:55:48.273] Imported new block headers               count=384  elapsed=25.813ms  number=47424 hash=740cf9…7f1dea age=3y10mo3w
+INFO [06-13|10:55:48.301] Imported new block receipts              count=6    elapsed=420.458µs number=46250 hash=3c93a7…ae604a age=3y10mo3w  size=2.06kB
+INFO [06-13|10:55:48.832] Imported new block headers               count=192  elapsed=14.805ms  number=47616 hash=6de8ca…905024 age=3y10mo3w
+INFO [06-13|10:55:50.453] Imported new state entries               count=1508 elapsed=4.338ms   processed=85437 pending=16530 retry=0 duplicate=0 unexpected=0
+INFO [06-13|10:55:50.609] Imported new block receipts              count=137  elapsed=1.491ms   number=46387 hash=582b3e…bcc016 age=3y10mo3w  size=31.34kB
+INFO [06-13|10:55:50.634] Imported new block headers               count=384  elapsed=25.510ms  number=48000 hash=e28721…f39b14 age=3y10mo3w
+INFO [06-13|10:55:51.353] Imported new block headers               count=192  elapsed=14.673ms  number=48192 hash=de7ad5…6ea5cb age=3y10mo3w
+INFO [06-13|10:55:51.510] Imported new block receipts              count=93   elapsed=1.715ms   number=46480 hash=0e3aea…ef9bbd age=3y10mo3w  size=25.54kB
+INFO [06-13|10:55:52.174] IPC endpoint closed                      url=/Users/air/Library/Ethereum/geth.ipc
+INFO [06-13|10:55:52.174] Blockchain manager stopped 
+INFO [06-13|10:55:52.174] Stopping Ethereum protocol 
+INFO [06-13|10:55:52.175] Ethereum protocol stopped 
+INFO [06-13|10:55:52.175] Transaction pool stopped 
+INFO [06-13|10:55:52.177] Database closed                          database=/Users/air/Library/Ethereum/geth/chaindata
+CRIT [06-13|10:55:52.184] Failed to store last header's hash       err="leveldb: closed"
