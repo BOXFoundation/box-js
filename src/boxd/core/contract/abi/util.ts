@@ -192,7 +192,6 @@ const encodeSingle = (type, arg) => {
 // Convert from short to canonical names
 // FIXME: optimise or make this nicer?
 const elementaryName = name => {
-  console.log('elementaryName name:', name)
   if (name.startsWith('int[')) {
     return 'int256' + name.slice(3)
   } else if (name === 'int') {
@@ -412,8 +411,10 @@ namespace Util {
       }
       var parsed = parseType(type)
       var decoded = decodeSingle(parsed, data, offset)
+      if (parsed.name.startsWith('uint') || parsed.name.startsWith('int')) {
+        decoded = parseInt(decoded.toString(10), 10)
+      }
       offset += parsed.memoryUsage
-      console.log('rawDecode decode_flag:', decoded)
       ret.push(decoded)
     }
     return ret
