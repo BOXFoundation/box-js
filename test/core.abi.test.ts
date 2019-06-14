@@ -1,10 +1,10 @@
 import 'jest'
 import AbiCoder from '../src/boxd/core/contract/abi/abicoder'
-import Mock from './json/mock.json'
 
 const abi = new AbiCoder()
+const contract_type_uint = 'uint256'
 
-test('Calls encodeFunctionSignature with a string as parameter', async () => {
+test('Calls encodeFunctionSignature with a parameters(string)', async () => {
   try {
     expect(await abi.encodeFunctionSignature('test')).toEqual('0x9c22ff5f')
   } catch (err) {
@@ -13,18 +13,18 @@ test('Calls encodeFunctionSignature with a string as parameter', async () => {
   }
 })
 
-test('Calls encodeFunctionSignature with a object as parameter', async () => {
+test('Calls encodeFunctionSignature with parameters(object)', async () => {
   try {
     expect(
       await abi.encodeFunctionSignature({
         name: 'test',
         inputs: [
           {
-            type: Mock.contract_abi_encode_param_type
+            type: contract_type_uint
           }
         ]
       })
-    ).toEqual(Mock.contract_abi_signed_func)
+    ).toEqual('0x29e99f07')
   } catch (err) {
     console.log('Calls encodeFunctionSignature Error:', err)
     expect(0).toBe(1)
@@ -33,52 +33,53 @@ test('Calls encodeFunctionSignature with a object as parameter', async () => {
 
 test('Calls encodeParameter', async () => {
   try {
-    expect(
-      await abi.encodeParameter(
-        Mock.contract_abi_encode_param_type,
-        Mock.contract_abi_encode_param_val
-      )
-    ).toEqual(Mock.contract_abi_encoded_param)
+    expect(await abi.encodeParameter(contract_type_uint, '99')).toEqual(
+      '0000000000000000000000000000000000000000000000000000000000000063'
+    )
   } catch (err) {
-    console.log('calls encodeParameter Error:', err)
+    console.log('Calls encodeParameter Error:', err)
     expect(0).toBe(1)
   }
 })
 
 test('Calls encodeParameters', async () => {
   try {
-    expect(
-      await abi.encodeParameters(
-        [Mock.contract_abi_encode_param_type],
-        [Mock.contract_abi_encode_param_val]
-      )
-    ).toEqual(Mock.contract_abi_encoded_param)
+    expect(await abi.encodeParameters([contract_type_uint], ['99'])).toEqual(
+      '0000000000000000000000000000000000000000000000000000000000000063'
+    )
   } catch (err) {
-    console.log('calls encodeParameters Error:', err)
+    console.log('Calls encodeParameters Error:', err)
     expect(0).toBe(1)
   }
 })
 
-test('calls encodeFunctionCall and returns the expected string', async () => {
-  expect(
-    await abi.encodeFunctionCall(
-      {
-        name: 'test',
-        inputs: [
-          {
-            type: Mock.contract_abi_encode_param_type
-          }
-        ]
-      },
-      [Mock.contract_abi_encode_param_val]
+test('Calls encodeFunctionCall and returns the expected string', async () => {
+  try {
+    expect(
+      await abi.encodeFunctionCall(
+        {
+          name: 'test',
+          inputs: [
+            {
+              type: contract_type_uint
+            }
+          ]
+        },
+        ['99']
+      )
+    ).toEqual(
+      '0x29e99f070000000000000000000000000000000000000000000000000000000000000063'
     )
-  ).toEqual(Mock.contract_abi_encode_functioncall)
+  } catch (err) {
+    console.log('Calls encodeFunctionCall Error:', err)
+    expect(0).toBe(1)
+  }
 })
 
-test('Calls decodeParameter(uint256) and returns the expected object', async () => {
+test('Calls decodeParameter(uint256) and returns the expected number', async () => {
   try {
     const decoded = await abi.decodeParameter(
-      'uint256',
+      contract_type_uint,
       Buffer.from(
         '0000000000000000000000000000000000000000000000000000000000000037',
         'hex'
@@ -86,15 +87,12 @@ test('Calls decodeParameter(uint256) and returns the expected object', async () 
     )
     expect(decoded).toEqual(55)
   } catch (err) {
-    console.log(
-      'Calls decodeParameter(uint256) and returns the expected object Error:',
-      err
-    )
+    console.log('Calls decodeParameter(uint256) Error:', err)
     expect(0).toBe(1)
   }
 })
 
-test('Calls decodeParameter(string) and returns the expected object', async () => {
+test('Calls decodeParameter(string) and returns the expected string', async () => {
   try {
     const decoded = await abi.decodeParameter(
       'string',
@@ -107,15 +105,12 @@ test('Calls decodeParameter(string) and returns the expected object', async () =
     )
     expect(decoded).toEqual('one more time')
   } catch (err) {
-    console.log(
-      'Calls decodeParameter(string) and returns the expected object Error:',
-      err
-    )
+    console.log('Calls decodeParameter(string) Error:', err)
     expect(0).toBe(1)
   }
 })
 
-test('Calls decodeParameter(string) and returns the expected object', async () => {
+test('Calls decodeParameter(string) and returns the expected string', async () => {
   try {
     const decoded = await abi.decodeParameter(
       'string',
@@ -127,10 +122,7 @@ test('Calls decodeParameter(string) and returns the expected object', async () =
     )
     expect(decoded).toEqual('')
   } catch (err) {
-    console.log(
-      'Calls decodeParameter(string) and returns the expected object Error:',
-      err
-    )
+    console.log('Calls decodeParameter(string) Error:', err)
     expect(0).toBe(1)
   }
 })
@@ -138,7 +130,7 @@ test('Calls decodeParameter(string) and returns the expected object', async () =
 test('Calls decodeParameters(uint256[]) and returns the expected object', async () => {
   try {
     const decoded = await abi.decodeParameters(
-      ['uint256', 'uint256'],
+      [contract_type_uint, contract_type_uint],
       Buffer.from(
         '0000000000000000000000000000000000000000000000000000000000000037' +
           '0000000000000000000000000000000000000000000000000000000000000007',
@@ -147,10 +139,7 @@ test('Calls decodeParameters(uint256[]) and returns the expected object', async 
     )
     expect(decoded).toEqual({ 0: 55, 1: 7 })
   } catch (err) {
-    console.log(
-      'Calls decodeParameters(uint256[]) and returns the expected object Error:',
-      err
-    )
+    console.log('Calls decodeParameters(uint256[]) Error:', err)
     expect(0).toBe(1)
   }
 })
@@ -182,39 +171,7 @@ test('Calls decodeParameters(string[]) and returns the expected object', async (
       3: 'mno2'
     })
   } catch (err) {
-    console.log(
-      'Calls decodeParameters(string[]) and returns the expected object Error:',
-      err
-    )
-    expect(0).toBe(1)
-  }
-})
-
-test('Calls decodeParameter("") and returns the "Empty List"', async () => {
-  try {
-    await abi.decodeParameter('', '')
-  } catch (err) {
-    console.log(
-      'Calls decodeParameters(uint256[]) and returns the "Empty List":'
-    )
-  }
-})
-
-test('Calls decodeParameter and returns the expected object', async () => {
-  try {
-    const decoded = await abi.decodeParameter(
-      { name: 'uint256' },
-      Buffer.from(
-        '0000000000000000000000000000000000000000000000000000000000000037',
-        'hex'
-      )
-    )
-    console.log('decoded:', JSON.stringify(decoded))
-  } catch (err) {
-    console.log(
-      'Calls decodeParameter and returns the expected object Error:',
-      err
-    )
+    console.log('Calls decodeParameters(string[]) Error:', err)
     expect(0).toBe(1)
   }
 })
