@@ -219,7 +219,6 @@ const parseType = type => {
   var ret
   if (abiIsArray(type)) {
     size = parseTypeArray(type)
-    console.log('type_2:', type)
     var subArray = type.slice(0, type.lastIndexOf('['))
     subArray = parseType(subArray)
     ret = {

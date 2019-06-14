@@ -16,7 +16,7 @@ export default class AbiCoder {
     }
     const keccaked = await CommonUtil.keccak256(functionName)
     if (keccaked) {
-      return keccaked.slice(0, 10)
+      return keccaked.slice(2, 10)
     } else {
       throw new Error('keccak return Null !')
     }
