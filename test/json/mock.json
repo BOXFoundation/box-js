@@ -67,23 +67,5 @@
   ],
   "fee": "20000",
   "blockHeight": 6406299,
-  "block": {
-    "header": {
-      "version": 0,
-      "prev_block_hash": "zzzRVQgOnO2Guav9kfqY2K82KhHbJFKI7PR61ZdGrmw=",
-      "txs_root": "rkbRA7+/iHBm88x45zVxq0p6XIM4R3/G0odICT+6bVQ=",
-      "time_stamp": "1557371271",
-      "magic": 0,
-      "period_hash": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
-      "candidates_hash": "Xfbg4nYTWdMKgnUFjimfzAOBU0VF9Vz0PkGYP11MlFY="
-    },
-    "txs": "object[]",
-    "height": 5964046,
-    "signature": "IE8u6BKYhRJ7V7HpaQzw3SUjbHzeSnHpS9ktVrrk9Md6QX7NRpcm3AbWlZK8LWR3tHcEsjht4hoC92bAUd7nMR8=",
-    "irreversible_info": {
-      "hash": "zzzRVQgOnO2Guav9kfqY2K82KhHbJFKI7PR61ZdGrmw=",
-      "signatures": "Array[]"
-    }
-  },
   "blockHash": "4550b95b53dc37835c8a19c9a73df6e25f64e549be558c31656fa03bf98aed93"
 }

@@ -43,7 +43,7 @@ export default class AbiCoder {
    * @param [param] string
    * @returns {encoded plain param} string
    */
-  public encodeParameter(type: string, param: string) {
+  public encodeParameter(type: string, param) {
     return this.encodeParameters([type], [param])
   }
 
@@ -54,7 +54,7 @@ export default class AbiCoder {
    * @param [params] array
    * @returns {encoded list of params} string
    */
-  public async encodeParameters(types: string[], params: (string | object)[]) {
+  public async encodeParameters(types: string[], params: any[]) {
     return await AbiUtil.rawEncode(types, params).toString('hex')
   }
 
@@ -65,10 +65,7 @@ export default class AbiCoder {
    * @param [params] array
    * @returns {the encoded ABI for this function call} string
    */
-  public async encodeFunctionCall(
-    jsonInterface: object,
-    params: (string | object)[]
-  ) {
+  public async encodeFunctionCall(jsonInterface: object, params: any[]) {
     const signature = await this.encodeFunctionSignature(jsonInterface)
     let type_arr: string[] = []
     await jsonInterface['inputs'].forEach(item => {

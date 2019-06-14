@@ -33,7 +33,7 @@ test('Calls encodeFunctionSignature with parameters(object)', async () => {
 
 test('Calls encodeParameter', async () => {
   try {
-    expect(await abi.encodeParameter(contract_type_uint, '99')).toEqual(
+    expect(await abi.encodeParameter(contract_type_uint, 99)).toEqual(
       '0000000000000000000000000000000000000000000000000000000000000063'
     )
   } catch (err) {
@@ -44,7 +44,7 @@ test('Calls encodeParameter', async () => {
 
 test('Calls encodeParameters', async () => {
   try {
-    expect(await abi.encodeParameters([contract_type_uint], ['99'])).toEqual(
+    expect(await abi.encodeParameters([contract_type_uint], [99])).toEqual(
       '0000000000000000000000000000000000000000000000000000000000000063'
     )
   } catch (err) {
@@ -65,7 +65,7 @@ test('Calls encodeFunctionCall and returns the expected string', async () => {
             }
           ]
         },
-        ['99']
+        [99]
       )
     ).toEqual(
       '0x29e99f070000000000000000000000000000000000000000000000000000000000000063'
