@@ -382,6 +382,9 @@ namespace Util {
 
     for (var i = 0; i < types.length; i++) {
       var type = elementaryName(types[i])
+      if (type === 'address') {
+        values[i] = `0x${values[i]}`
+      }
       var value = values[i]
       var cur = encodeSingle(type, value)
       // Use the head/tail method for storing dynamic data

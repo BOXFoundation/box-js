@@ -57,6 +57,22 @@ test('Calls encodeParameter(bytes)', async () => {
   }
 })
 
+test('Calls encodeParameter(address)', async () => {
+  try {
+    expect(
+      await abi.encodeParameter(
+        'address',
+        '0005b7d915458ef540ade6068dfe2f44e8fa733c'
+      )
+    ).toEqual(
+      '0000000000000000000000000005b7d915458ef540ade6068dfe2f44e8fa733c'
+    )
+  } catch (err) {
+    console.log('Calls encodeParameter(address) Error:', err)
+    expect(0).toBe(1)
+  }
+})
+
 /* == encode parameters == */
 
 test('Calls encodeParameters([bool, uint256])', async () => {
@@ -210,23 +226,6 @@ test('Calls decodeParameter(int32) and returns the expected number', async () =>
     expect(decoded.toString()).toEqual(int32.toString())
   } catch (err) {
     console.log('Calls decodeParameter(int32) Error:', err)
-    expect(0).toBe(1)
-  }
-})
-
-test('Calls decodeParameter(fixed-array) and returns the expected number', async () => {
-  try {
-    const decoded = await abi.decodeParameter(
-      'uint[3]',
-      Buffer.from(
-        '000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003',
-        'hex'
-      )
-    )
-    console.log('decoded:', JSON.stringify(decoded))
-    // expect(decoded.toString()).toEqual(int32.toString())
-  } catch (err) {
-    console.log('Calls decodeParameter(fixed-array) Error:', err)
     expect(0).toBe(1)
   }
 })
