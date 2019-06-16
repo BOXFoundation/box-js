@@ -12,6 +12,13 @@ namespace Request {
     data: string
   }
 
+  export interface CallContractReq {
+    from: string,
+    to: string,
+    data: string,
+    height: number,
+    timeout: number
+  }
   
   export interface ContractTxByCryptoReq {
     tx: OriginalContractReq

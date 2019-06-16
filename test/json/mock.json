@@ -1,5 +1,5 @@
 {
-  "endpoint_test": "http://39.97.170.105:19140",
+  "endpoint_test": "http://39.97.168.26:19110",
   "endpoint_local": "http://127.0.0.1:19110",
   "acc_list": {
     "b1nebwpTAb6GZEqtSZnSciKYMbcs6hyVCst": {

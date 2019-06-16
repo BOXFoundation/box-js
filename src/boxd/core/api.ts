@@ -188,6 +188,11 @@ export default class Api extends Fetch {
     return super.fetch('/tx/makeunsignedtx/contract', tx)
   }
 
+  public callContract(tx: ContractRequest.CallContractReq
+  ): Promise<ContractResponse.CallContractResp> {
+      return super.fetch('/contract/call', tx)
+  }
+
   public async createRawTx(raw: TxRequest.Raw) {
     const { addr, to, fee, privKey } = raw
     let sum = 0
