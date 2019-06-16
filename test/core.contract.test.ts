@@ -2,7 +2,7 @@ import 'jest'
 import Api from '../src/boxd/core/api'
 import Feature from '../src/boxd/core/feature'
 import fetch from 'isomorphic-fetch'
-import Data from './json/data.json'
+import Data from './json/mock.json'
 import Keystore from './json/keystore.json'
 const Web3 = require("web3")
 
@@ -49,7 +49,7 @@ test('Deploy a contract', async () => {
     crypto: Keystore.keystore_4,
     pwd: Data.acc_pwd
   })
-  console.log("contract deployed at: " + contractAddr)
+  console.log("contract deployed at: " + tx_result.contractAddr)
   const tx_detail = await cor.viewTxDetail(tx_result.hash)
   expect(tx_detail.detail.hash).toEqual(tx_result.hash)
   contractAddr = tx_result.contractAddr
