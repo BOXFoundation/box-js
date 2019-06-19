@@ -62,8 +62,6 @@ test('Send a contract method', async () => {
   let addrNonce = +(await getNonce())
   // return
   console.log("sending contract at: " + contractAddr)
-  // const contract = new web3.eth.Contract(metaCoinContractAbi, contractAddr)
-  // const data = contract.methods.sendCoin(hexAddr, 100).encodeABI()
   const data = await abi.encodeFunctionCall(
     {
       name: 'sendCoin',
@@ -100,8 +98,6 @@ test('Send a contract method', async () => {
 
 // This must be run after deploy
 test('Call a contract method', async () => {
-  // const contract = new web3.eth.Contract(metaCoinContractAbi, contractAddr)
-  // const data = contract.methods.getBalance(hexAddr).encodeABI()
   const data = await abi.encodeFunctionCall(
     {
       name: 'getBalance',
