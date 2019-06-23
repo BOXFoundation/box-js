@@ -41,7 +41,7 @@ test('Deploy a contract', async () => {
     tx: {
       from: src,
       to: "",
-      amount: Data.amount,
+      amount: 0,
       gasPrice: Data.gasPrice,
       gasLimit: Data.gasLimit,
       nonce: addrNonce + 1,
