@@ -9,13 +9,29 @@ import Keystore from './json/keystore.json'
 const abi = new AbiCoder()
 
 let src = Data.acc_addr_4
-let contractAddr = 'b5VhoKwo3fo4qnXefZiZgUpa4yEqLwxTtaf'
+let contractAddr
 
 const cor = new Api(fetch, Data.endpoint_test, 'http')
 const feature = new Feature(fetch, Data.endpoint_test, 'http')
-const metaCoinContract = "608060405234801561001057600080fd5b506127106000803273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020819055506102e3806100656000396000f3fe608060405234801561001057600080fd5b5060043610610053576000357c01000000000000000000000000000000000000000000000000000000009004806390b98a1114610058578063f8b2cb4f146100be575b600080fd5b6100a46004803603604081101561006e57600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff16906020019092919080359060200190929190505050610116565b604051808215151515815260200191505060405180910390f35b610100600480360360208110156100d457600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff16906020019092919050505061026f565b6040518082815260200191505060405180910390f35b6000816000803373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000205410156101675760009050610269565b816000803373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060008282540392505081905550816000808573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600082825401925050819055508273ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff167fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef846040518082815260200191505060405180910390a3600190505b92915050565b60008060008373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002054905091905056fea165627a7a7230582061e7bbea31d160d05e39cf0a63fec1d576afe9a47b8487b15389aa9a720be5a20029"
-// const metaCoinContractAbi = [{"constant":false,"inputs":[{"name":"receiver","type":"address"},{"name":"amount","type":"uint256"}],"name":"sendCoin","outputs":[{"name":"sufficient","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"addr","type":"address"}],"name":"getBalance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_from","type":"address"},{"indexed":true,"name":"_to","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Transfer","type":"event"}]
-const hexAddr = 'fD37553e3A6aF45b4106C29ccd2bBd045E5c428C'
+
+// const contract = `pragma solidity >=0.4.0 <0.6.0;
+
+// contract SimpleStorage {
+//     uint256 balance;
+
+//     constructor() public {
+//         balance = 100;
+//     }
+    
+//     function incrementBalance(uint256 x) public {
+//         balance += x;
+//     }
+
+//     function getBalance() public view returns (uint256) {
+//         return balance;
+//     }
+// }`
+const contractByteCode = "608060405234801561001057600080fd5b50606460008190555060ee806100276000396000f3fe6080604052600436106043576000357c01000000000000000000000000000000000000000000000000000000009004806312065fe0146048578063b32fe94f146070575b600080fd5b348015605357600080fd5b50605a60a7565b6040518082815260200191505060405180910390f35b348015607b57600080fd5b5060a560048036036020811015609057600080fd5b810190808035906020019092919050505060b0565b005b60008054905090565b8060008082825401925050819055505056fea165627a7a7230582047166aca4d4049ee228c6e923b8a0ea99001339217422f3f0ca2fac781d5b07f0029"
 
 async function getNonce() : Promise<number> {
   let addrNonce = 0
@@ -35,7 +51,6 @@ async function getNonce() : Promise<number> {
 
 test('Deploy a contract', async () => {
   let addrNonce = +(await getNonce())
-  // return
 
   const tx_result = await feature.makeContractTxByCrypto({
     tx: {
@@ -46,7 +61,7 @@ test('Deploy a contract', async () => {
       gasLimit: Data.gasLimit,
       nonce: addrNonce + 1,
       isDeploy: true,
-      data: metaCoinContract
+      data: contractByteCode
     },
     crypto: Keystore.keystore_4,
     pwd: Data.acc_pwd
@@ -55,28 +70,27 @@ test('Deploy a contract', async () => {
   const tx_detail = await cor.viewTxDetail(tx_result.hash)
   expect(tx_detail.detail.hash).toEqual(tx_result.hash)
   contractAddr = tx_result.contractAddr
+  expect(await getBalance()).toEqual(100)
 })
 
 // This must be run after deploy
 test('Send a contract method', async () => {
   let addrNonce = +(await getNonce())
-  // return
-  console.log("sending contract at: " + contractAddr)
+  let initBalance = await getBalance()
+  let depositAmount = 137
+
+  console.log("sending contract @ " + contractAddr + " with balance: " + initBalance)
   const data = await abi.encodeFunctionCall(
     {
-      name: 'sendCoin',
+      name: 'incrementBalance',
       inputs: [
         {
-          type: 'address'
-        },
-        {
-          type: 'uint'
+          type: 'uint256'
         }
       ]
     },
-    [hexAddr, 100]
+    [depositAmount]
   )
-  // console.log(data)
 
   const tx_result = await feature.makeContractTxByCrypto({
     tx: {
@@ -87,27 +101,23 @@ test('Send a contract method', async () => {
       gasLimit: Data.gasLimit,
       nonce: addrNonce + 1,
       isDeploy: false,
-      data: data.substring(2)   // remove '0x' prefix
+      data: data,
     },
     crypto: Keystore.keystore_4,
     pwd: Data.acc_pwd
   })
   const tx_detail = await cor.viewTxDetail(tx_result.hash)
   expect(tx_detail.detail.hash).toEqual(tx_result.hash)
+  expect(await getBalance()).toEqual(initBalance + depositAmount)
 })
 
-// This must be run after deploy
-test('Call a contract method', async () => {
+async function getBalance() : Promise<number> {
   const data = await abi.encodeFunctionCall(
     {
       name: 'getBalance',
-      inputs: [
-        {
-          type: 'address'
-        }
-      ]
+      inputs: []
     },
-    [hexAddr]
+    []
   )
 
   console.log("calling contract at: " + contractAddr)
@@ -121,8 +131,11 @@ test('Call a contract method', async () => {
   const result = ret.result
   console.log(result)
   const decoded = await abi.decodeParameter(
-    'uint',
-    result
+    'uint256',
+    Buffer.from(
+      result,
+      'hex'
+    )
   )
-  expect(decoded).toEqual(100)
-})
+  return decoded
+}
