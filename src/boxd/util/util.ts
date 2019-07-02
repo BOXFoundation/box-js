@@ -1,3 +1,4 @@
+import bs58 from 'bs58'
 import Opcode from './var'
 import Verify from './verify'
 import Hash from './crypto/hash'
@@ -8,6 +9,11 @@ import isNumber from 'lodash/isNumber'
 
 const { OP_PUSH_DATA1, OP_PUSH_DATA2, OP_PUSH_DATA4 } = Opcode
 const OP_CODE_TYPE = 'hex'
+const PREFIXSTR2BYTES = {
+  'b1': Buffer.from([0x13, 0x26]),
+  'b2': Buffer.from([0x13, 0x28]),
+  'b3': Buffer.from([0x13, 0x2a]),
+}
 const gethexByteWithNumber = (num: number) => (num & 255).toString(16)
 /* keccak = BEGIN = */
 const KECCAK256_NULL_S =
@@ -212,6 +218,42 @@ namespace Util {
     }
 
     return isHexPrefixed(str) ? str.slice(2) : str
+  }
+
+  /**
+   * Convert hex address to box address format
+   * @param {String} prefix: the box address prefix
+   * @param {hexAddr} hexAddr: hex address without '0x' prefix
+   * @return {String} box address, starting with "b"
+   * @throws when prefix is not expected
+   */
+  export const hex2BoxAddr = (prefix: string, hexAddr: string) => {
+    if (prefix !== ('b1' || 'b2' || 'b3')) {
+        throw new Error('Incorrect address prefix !')
+    }
+    const prefixBuf = PREFIXSTR2BYTES[prefix]
+    const prefixPKH = Buffer.concat([prefixBuf, Buffer.from(hexAddr, 'hex')])
+    return bs58.encode(Buffer.concat([prefixPKH, Verify.getCheckSum(prefixPKH)]))
+  }
+
+  /**
+   * Convert box address to hex address format
+   * @param {boxAddr} boxAddr: address in box format, starting with 'b'
+   * @return {String} hex address
+   * @throws if convertion fails
+   */
+  export const box2HexAddr = (boxAddr: string) => {
+    try {
+      const pubKey_hash = Verify.isAddr(boxAddr)
+      if (pubKey_hash) {
+        return pubKey_hash.slice(2).toString(OP_CODE_TYPE)
+      }
+      console.log('dumpPubKeyHashFromAddr Error !')
+      throw new Error("dumpPubKeyHashFromAddr Error")
+    } catch (err) {
+      console.log('dumpPubKeyHashFromAddr Error !')
+      throw new Error(err)
+    }
   }
 }
 

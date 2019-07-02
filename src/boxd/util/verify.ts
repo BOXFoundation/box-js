@@ -3,13 +3,6 @@ import bs58 from 'bs58'
 import Hash from '../util/crypto/hash'
 
 const OP_CODE_TYPE = 'hex'
-const getCheckSum = (hex: string | Buffer) => {
-  if (hex instanceof Buffer) {
-    return Hash.sha256(Hash.sha256(hex)).slice(0, 4)
-  } else {
-    return Hash.sha256(Hash.sha256(Buffer.from(hex, OP_CODE_TYPE))).slice(0, 4)
-  }
-}
 let _typeof2 = obj => {
   if (typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol') {
     _typeof2 = function _typeof2(obj) {
@@ -36,7 +29,15 @@ namespace Verify {
       throw new Error('The private key entered is not a valid one !')
     }
   }
-
+  
+  export const getCheckSum = (hex: string | Buffer) => {
+    if (hex instanceof Buffer) {
+      return Hash.sha256(Hash.sha256(hex)).slice(0, 4)
+    } else {
+      return Hash.sha256(Hash.sha256(Buffer.from(hex, OP_CODE_TYPE))).slice(0, 4)
+    }
+  }
+  
   export const isAddr = (addr: string) => {
     if (addr.substring(0, 2) !== ('b1' || 'b2' || 'b3')) {
       throw new Error('Incorrect address format !')

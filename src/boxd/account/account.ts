@@ -3,6 +3,7 @@ import Aes from '../util/crypto/aes'
 import PrivateKey from '../util/crypto/privatekey'
 import Verify from '../util/verify'
 import UtilInterface from '../util/interface'
+import Util from '../util/util';
 
 const OP_CODE_TYPE = 'hex'
 
@@ -102,15 +103,7 @@ export default class Account {
    * @memberof Account
    */
   public dumpPubKeyHashFromAddr(addr: string) {
-    try {
-      const pubKey_hash = Verify.isAddr(addr)
-      if (pubKey_hash) {
-        return pubKey_hash.slice(2).toString(OP_CODE_TYPE)
-      }
-    } catch (err) {
-      console.log('dumpPubKeyHashFromAddr Error !')
-      throw new Error(err)
-    }
+    return Util.box2HexAddr(addr)
   }
 
   /**

@@ -1,20 +1,19 @@
 import 'jest'
 import AbiCoder from '../src/boxd/core/contract/abi/abicoder'
-import Account from '../src/boxd/account/account'
 import Api from '../src/boxd/core/api'
 import Feature from '../src/boxd/core/feature'
 import fetch from 'isomorphic-fetch'
 import Data from './json/mock.json'
 import Keystore from './json/keystore.json'
+import Util from '../src/boxd/util/util'
 
 const abi = new AbiCoder()
-const account = new Account()
 
 // base58 format
 let src = Data.acc_addr_4
 // hex format
-const srcHexAddr = account.dumpPubKeyHashFromAddr(src)
-const anotherHexAddr = account.dumpPubKeyHashFromAddr(Data.acc_addr_1)
+const srcHexAddr = Util.box2HexAddr(src)
+const anotherHexAddr = Util.box2HexAddr(Data.acc_addr_1)
 let contractAddr
 
 const cor = new Api(fetch, Data.endpoint_test, 'http')
