@@ -185,7 +185,8 @@ test('Call a contract method', async () => {
   expect(await isMinter(anotherHexAddr)).toBe(false)
 })
 
-test('Get logs', async () => {
+// TODO
+/* test('Get logs', async () => {
   const logs = await cor.getLogs(Mock.constract_logs_req)
   console.log('logs :', logs)
-})
+}) */
