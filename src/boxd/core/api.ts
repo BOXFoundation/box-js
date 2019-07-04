@@ -23,7 +23,7 @@ export default class Api extends Fetch {
     super(_fetch, endpoint, fetch_type)
   }
 
-  // Block
+  /* Block */
   public getNodeInfo(): Promise<BlockResponse.NodeInfo> {
     return super.fetch('/ctl/getnodeinfo')
   }
@@ -90,14 +90,14 @@ export default class Api extends Fetch {
     return super.fetch('/account/nonce', { addr })
   }
 
-  // Split
+  /* Split */
   public makeUnsignedSplitAddrTx(
     split_addr_tx: SplitRequest.SplitAddrTxReq
   ): Promise<SplitResponse.UnsignedSplitAddrTx> {
     return super.fetch('/tx/makeunsignedtx/splitaddr', split_addr_tx)
   }
 
-  // Token
+  /* Token */
   public makeUnsignedTokenIssueTx(
     token_issue_tx: TokenRequest.IssueTokenReq
   ): Promise<TokenResponse.UnsignedTokenIssueTx> {
@@ -135,7 +135,7 @@ export default class Api extends Fetch {
     return super.fetch('/todo', fetch_utxos_req)
   }
 
-  // TX
+  /* Transaction */
   public faucet(req) {
     return super.fetch('/faucet/claim', req)
   }
@@ -178,19 +178,9 @@ export default class Api extends Fetch {
     return { balances: arr_balances }
   }
 
+  // TODO
   public fetchUtxos(fetch_utxos_req: TxRequest.SetchUtxosReq) {
     return super.fetch('/tx/fetchutxos', fetch_utxos_req)
-  }
-
-  // Contract
-  public makeUnsignedContractTx(tx: ContractRequest.OriginalContractReq
-  ): Promise<ContractResponse.UnsignedContractTx> {
-    return super.fetch('/tx/makeunsignedtx/contract', tx)
-  }
-
-  public callContract(tx: ContractRequest.CallContractReq
-  ): Promise<ContractResponse.CallContractResp> {
-      return super.fetch('/contract/call', tx)
   }
 
   public async createRawTx(raw: TxRequest.Raw) {
@@ -238,5 +228,24 @@ export default class Api extends Fetch {
 
   public sendRawTx(raw_tx: string) {
     return super.fetch('/tx/sendrawtransaction', { raw_tx })
+  }
+
+  /* Contract */
+  public makeUnsignedContractTx(
+    tx: ContractRequest.OriginalContractReq
+  ): Promise<ContractResponse.UnsignedContractTx> {
+    return super.fetch('/tx/makeunsignedtx/contract', tx)
+  }
+
+  public callContract(
+    tx: ContractRequest.CallContractReq
+  ): Promise<ContractResponse.CallContractResp> {
+    return super.fetch('/contract/call', tx)
+  }
+
+  public getLogs(
+    logs_req: ContractRequest.GetLogsReq
+  ): Promise<ContractResponse.LogDetail[]> {
+    return super.fetch('/contract/getLogs', logs_req)
   }
 }

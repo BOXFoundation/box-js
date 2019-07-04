@@ -69,5 +69,24 @@
   "gasPrice": 2,
   "gasLimit": 2000000,
   "blockHeight": 6406299,
-  "blockHash": "4550b95b53dc37835c8a19c9a73df6e25f64e549be558c31656fa03bf98aed93"
+  "blockHash": "4550b95b53dc37835c8a19c9a73df6e25f64e549be558c31656fa03bf98aed93",
+  "constract_logs_req": {
+    "hash": "",
+    "from": 1,
+    "to": 2,
+    "addresses": [
+      "",
+      ""
+    ],
+    "topics": [
+      [
+        "",
+        ""
+      ]
+      [
+        "",
+        ""
+      ]
+    ]
+  }
 }
