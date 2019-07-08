@@ -1,5 +1,6 @@
 {
-  "endpoint_test": "http://39.97.168.26:19110",
+  "endpoint_test": "http://39.97.169.1:19110",
+  "endpoint_dev": "http://39.97.168.26:19110",
   "endpoint_local": "http://127.0.0.1:19110",
   "acc_list": {
     "b1nebwpTAb6GZEqtSZnSciKYMbcs6hyVCst": {
@@ -69,7 +70,7 @@
   "gasPrice": 2,
   "gasLimit": 2000000,
   "blockHeight": 6406299,
-  "blockHash": "4550b95b53dc37835c8a19c9a73df6e25f64e549be558c31656fa03bf98aed93",
+  "blockHash": "cb698a0ab691a25b67a434f4b73867773c6aebaf1c39d6b3d22238796ec50867",
   "constract_logs_req": {
     "hash": "",
     "from": 1,

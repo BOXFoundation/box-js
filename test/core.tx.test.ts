@@ -23,7 +23,7 @@ test('Make a BOX transaction', async () => {
     const tx_detail = await cor.viewTxDetail(tx_result.hash)
     expect(tx_detail.detail.hash).toEqual(tx_result.hash)
   } catch (err) {
-    console.error('Make a BOX transaction: Error !', err)
+    console.error('Make a BOX transaction Error :', err)
     expect(0).toBe(1)
   }
 })
@@ -33,7 +33,7 @@ test('Get the BOX balance of the given address', async () => {
     const box_balance = await cor.getBalance(Mock.acc_addr_3)
     expect(box_balance)
   } catch (err) {
-    console.error('Get the BOX balance of the given address: Error !', err)
+    console.error('Get the BOX balance of the given address Error :', err)
     expect(0).toBe(1)
   }
 })
@@ -46,7 +46,7 @@ test('Get the BOX balances of the given addresses', async () => {
     ])
     expect(box_balance)
   } catch (err) {
-    console.error('Dump cryptoJson from privateKey: Error !', err)
+    console.error('Dump cryptoJson from privateKey Error :', err)
     expect(0).toBe(1)
   }
 })

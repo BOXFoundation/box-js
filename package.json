@@ -5,7 +5,7 @@
   "main": "dist/boxd/boxd.js",
   "types": "./types/index.d.ts",
   "scripts": {
-    "test": "jest --coverage --colors",
+    "test": "jest --colors",
     "lint": "eslint --ext .js --ext .ts src",
     "lint:fix": "eslint --fix --ext .js --fix --ext .ts src",
     "build": "gulp",
@@ -24,7 +24,6 @@
     "google-protobuf": "^3.9.0-rc.1",
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.11",
-    "protobufjs": "^6.8.8",
     "randombytes": "^2.0.6",
     "scrypt.js": "^0.2.0",
     "tiny-secp256k1": "^1.0.1"

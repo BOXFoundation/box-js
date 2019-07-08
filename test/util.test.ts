@@ -7,7 +7,7 @@ test('Convert between box and hex address', async () => {
     const hexAddr = Util.box2HexAddr(boxAddr)
     expect(Util.hex2BoxAddr(boxAddr.slice(0, 2), hexAddr)).toEqual(boxAddr)
   } catch (err) {
-    console.error('Convert between box and hex address: Error !', err)
+    console.error('Convert between box and hex address Error :', err)
     expect(0).toBe(1)
   }
 })

@@ -3,7 +3,7 @@ import Aes from '../util/crypto/aes'
 import PrivateKey from '../util/crypto/privatekey'
 import Verify from '../util/verify'
 import UtilInterface from '../util/interface'
-import Util from '../util/util';
+import Util from '../util/util'
 
 const OP_CODE_TYPE = 'hex'
 
@@ -12,7 +12,7 @@ const OP_CODE_TYPE = 'hex'
  */
 export default class Account {
   /**
-   * @func Dump-P2PKH-Address-from-PrivateKey
+   * @func Dump-P2PKH-address-from-privateKey
    * @param [*privKey] string | Buffer
    * @returns [P2PKH_Address] string
    * @memberof Account
