@@ -25,7 +25,7 @@ namespace Request {
         pwd: string;
     }
 
-    export interface SetchUtxosReq {
+    export interface FetchUtxosReq {
         addr: string;
         amount: number;
     }

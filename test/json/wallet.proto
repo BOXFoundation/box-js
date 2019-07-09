@@ -1,0 +1,43 @@
+wallet_plugin_test.go:63: unsigned tx: {
+          "vin": [
+            {
+              "prev_out_point": {
+                "hash": "IGApUTN35F/tXPhIa3ZmSGSoE40cxSSMhCAuqyyAO1Q="
+              }
+            }
+          ],
+          "vout": [
+            {
+              "value": 100,
+              "script_pub_key": "dqkUcIrRpe06i0lmWH1Zu8vOapPSXW2IrA=="
+            },
+            {
+              "value": 200,
+              "script_pub_key": "dqkUfi1diQKIZj/mw0R8490mX06i8jmIrA=="
+            },
+            {
+              "value": 300,
+              "script_pub_key": "dqkUfuTsdGlaQr9uO7iNomQcyzhPAh2IrA=="
+            },
+            {
+              "value": 400,
+              "script_pub_key": "dqkUyEHUDt7aGspXa4FdCNpbNUWryEKIrA=="
+            },
+            {
+              "value": 32999999999998950,
+              "script_pub_key": "dqkUgWZmsxg0lGj4FG525ON1HZN8FMuIrA=="
+            }
+          ]
+        }
+    wallet_plugin_test.go:65: vin outpoint hash: 206029513377e45fed5cf8486b76664864a8138d1cc5248c84202eab2c803b54
+    wallet_plugin_test.go:68: scriptPubkey: 76a914708ad1a5ed3a8b4966587d59bbcbce6a93d25d6d88ac
+    wallet_plugin_test.go:68: scriptPubkey: 76a9147e2d5d890288663fe6c3447ce3dd265f4ea2f23988ac
+    wallet_plugin_test.go:68: scriptPubkey: 76a9147ee4ec74695a42bf6e3bb88da2641ccb384f021d88ac
+    wallet_plugin_test.go:68: scriptPubkey: 76a914c841d40ededa1aca576b815d08da5b3545abc84288ac
+    wallet_plugin_test.go:68: scriptPubkey: 76a914816666b318349468f8146e76e4e3751d937c14cb88ac
+    wallet_plugin_test.go:73: raw msg: 123f0a220a20206029513377e45fed5cf8486b76664864a8138d1cc5248c84202eab2c803b54121976a914816666b318349468f8146e76e4e3751d937c14cb88ac1a1d0864121976a914708ad1a5ed3a8b4966587d59bbcbce6a93d25d6d88ac1a1e08c801121976a9147e2d5d890288663fe6c3447ce3dd265f4ea2f23988ac1a1e08ac02121976a9147ee4ec74695a42bf6e3bb88da2641ccb384f021d88ac1a1e089003121976a914c841d40ededa1aca576b815d08da5b3545abc84288ac1a2408e6f7d9ecb3aacf3a121976a914816666b318349468f8146e76e4e3751d937c14cb88ac
+    wallet_plugin_test.go:74: sig hash: 46f7f67f515e7d053525459991c7a6b3e673950809af776324f46d91df9e600d
+    wallet_plugin_test.go:82: account: b1fc1Vzz73WvBtzNQNbBSrxNCUC1Zrbnq4m, private key: 29fbf01166fc31c941cadc1659a5f684f81c22c1113e5aa5b0af28b7dd453269
+    wallet_plugin_test.go:91: sig: 30440220216fdf577fc913641453f5460a7cc5dfe36adb974134e64fd3db04d3aaaab49502200c4d7a280aa0b491ffee5323d1dd9aeeeaf8f2fb3917c156d6c91426ca3e2851
+    wallet_plugin_test.go:92: script sig: 4630440220216fdf577fc913641453f5460a7cc5dfe36adb974134e64fd3db04d3aaaab49502200c4d7a280aa0b491ffee5323d1dd9aeeeaf8f2fb3917c156d6c91426ca3e28512103ac5906f34b6f12150d49942dcd3df4b30716cb78abc9e3f6e488e2c1f28ab8bd
+    wallet_plugin_test.go:110: send tx succeed, return hash: message:"success" hash:"c97037359bb976a6e45e1060b54c96c98c929fa86ac8a17a5dbbcbb027a00571"

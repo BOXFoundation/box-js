@@ -131,7 +131,7 @@ export default class Api extends Fetch {
     return super.fetch('/tx/makeunsignedtx/token/transfer', token_transfer_tx)
   }
 
-  public fetchTokenUtxos(fetch_utxos_req: TxRequest.SetchUtxosReq) {
+  public fetchTokenUtxos(fetch_utxos_req: TxRequest.FetchUtxosReq) {
     return super.fetch('/todo', fetch_utxos_req)
   }
 
@@ -178,9 +178,11 @@ export default class Api extends Fetch {
     return { balances: arr_balances }
   }
 
-  // TODO
-  public fetchUtxos(fetch_utxos_req: TxRequest.SetchUtxosReq) {
-    return super.fetch('/tx/fetchutxos', fetch_utxos_req)
+  // NOW
+  public fetchUtxos(
+    utxos_req: TxRequest.FetchUtxosReq
+  ): Promise<{ utxos: TxResponse.Utxo[] }> {
+    return super.fetch('/tx/fetchutxos', utxos_req)
   }
 
   public async createRawTx(raw: TxRequest.Raw) {
@@ -190,11 +192,11 @@ export default class Api extends Fetch {
       sum += Number(to[item])
     })
     sum += Number(fee)
-    console.log('fetchUtxos:', addr, sum)
+    console.log('fetchUtxos param :', addr, sum)
     await this.fetchUtxos({ addr, amount: sum })
       .then(async res => {
-        console.log('fetchUtxos res:', res)
-        if (res.code === 0) {
+        console.log('fetchUtxos res :', res)
+        if (res['code'] === 0) {
           // TODO 序列化 -> sign ->
           const utxos: TxResponse.Utxo[] = res.utxos
           await super
@@ -207,7 +209,6 @@ export default class Api extends Fetch {
             .then(res => {
               console.log('unsigned_tx:', res)
               console.log('privKey:', privKey)
-              // TODO verify
               return this.signTxByPrivKey({
                 unsignedTx: {
                   tx: res.tx,
