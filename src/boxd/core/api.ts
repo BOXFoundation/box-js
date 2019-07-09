@@ -11,6 +11,7 @@ import BlockResponse from './block/response'
 import SplitResponse from './split/response'
 import TokenResponse from './token/response'
 import TxResponse from './tx/response'
+import TxUtil from './tx/util'
 
 /**
  * @class [Api]
@@ -186,7 +187,7 @@ export default class Api extends Fetch {
   }
 
   public async createRawTx(raw: TxRequest.Raw) {
-    const { addr, to, fee, privKey } = raw
+    const { addr, to, fee } = raw
     let sum = 0
     await Object.keys(to).forEach(item => {
       sum += Number(to[item])
@@ -198,25 +199,21 @@ export default class Api extends Fetch {
         console.log('fetchUtxos res :', res)
         if (res['code'] === 0) {
           // TODO 序列化 -> sign ->
-          const utxos: TxResponse.Utxo[] = res.utxos
-          await super
-            .fetch('/tx/getrawtransaction', {
-              from: addr,
-              to,
-              fee,
-              utxos
-            })
-            .then(res => {
-              console.log('unsigned_tx:', res)
-              console.log('privKey:', privKey)
-              return this.signTxByPrivKey({
+          const utxo_list = res.utxos
+          const unsigned_tx = await TxUtil.makeUnsignTx({
+            from: addr,
+            to_map: to,
+            fee,
+            utxo_list
+          })
+          console.log('unsigned_tx :', unsigned_tx)
+          /* return this.signTxByPrivKey({
                 unsignedTx: {
-                  tx: res.tx,
-                  rawMsgs: res.rawMsgs
+                  tx: unsigned_tx.tx,
+                  rawMsgs: unsigned_tx.rawMsgs
                 },
                 privKey
-              })
-            })
+              }) */
         } else {
           throw new Error('createRawTx Error')
         }
