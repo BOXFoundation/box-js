@@ -133,7 +133,7 @@ export default class Feature extends Fetch {
    */
   public async makeContractTxByCrypto(
     org_tx: ContractRequest.ContractTxByCryptoReq
-  ): Promise<{ hash: string, contractAddr: string }> {
+  ): Promise<{ hash: string; contractAddr: string }> {
     const cor = new Core(this._fetch, this.endpoint, this.fetch_type)
     const unsigned_tx = await cor.makeUnsignedContractTx(org_tx.tx)
 
@@ -154,11 +154,11 @@ export default class Feature extends Fetch {
    * @param [*org_tx] ContractTxByCryptoReq
    * @returns [Promise] { hash: string }
    */
-  public async callContract (
+  public async callContract(
     callParams: ContractRequest.CallContractReq
   ): Promise<{ result: string }> {
     const cor = new Core(this._fetch, this.endpoint, this.fetch_type)
     const result = await cor.callContract(callParams)
-    return { result : result.output }
+    return { result: result.output }
   }
 }
