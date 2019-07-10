@@ -8,24 +8,32 @@ const OPCODE_TYPE = 'hex'
 namespace Util {
   export const makeUnsignTx = (param: TxRequest.MakeUnsignTxReq) => {
     console.log('makeUnsignTx param :', JSON.stringify(param))
-    const { to_map, fee, utxo_list } = param
+    const { from, to_map, fee, utxo_list } = param
     let total_to = 0 // total tx count
+    let total_utxo = 0
     let vin_list: any = []
     let vout_list: any = []
 
+    /* tx count sum */
     Object.keys(to_map).forEach(key => {
       total_to += Number(to_map[key])
     })
     total_to += Number(fee)
     console.log('total_to :', total_to)
 
+    // utxo sum
+    utxo_list.forEach(utxo => {
+      total_utxo += Number(utxo.tx_out.value)
+    })
+    console.log('total_utxo :', total_utxo)
+
     // TODO check
 
-    // const tx_builder = new block_pb.Transaction()
+    const tx_builder = new block_pb.Transaction()
 
     /* vin */
     utxo_list.forEach(utxo => {
-      // prev_out_point
+      // + prev_out_point
       const out_point = new block_pb.OutPoint()
       console.log('out_point org :', out_point)
       out_point.setHash(utxo.out_point.hash)
@@ -43,11 +51,11 @@ namespace Util {
 
     /* vout */
     const acc = new Account()
+    const op = new CommonUtil.Opcoder('')
     Object.keys(to_map).forEach(key => {
       const pub_hash = acc.dumpPubKeyHashFromAddr(key)
-      // script_pub_key
-      console.log('pub_hash :', pub_hash)
-      const op = new CommonUtil.Opcoder('')
+      console.log('pub_hash_1 :', pub_hash)
+      // + script_pub_key
       const script = op
         .add(op.OP_DUP)
         .add(op.OP_HASH_160)
@@ -64,6 +72,30 @@ namespace Util {
     console.log('vout_list :', vout_list)
 
     /* charge */
+    if (total_utxo > total_to) {
+      const charge = Number(total_utxo) - Number(total_to)
+      const pub_hash = acc.dumpPubKeyHashFromAddr(from)
+      console.log('pub_hash_2 :', pub_hash)
+      // + script_pub_key
+      op.reset('')
+      const script = op
+        .add(op.OP_DUP)
+        .add(op.OP_HASH_160)
+        .add(pub_hash)
+        .add(op.OP_EQUAL_VERIFY)
+        .add(op.OP_CHECK_SIG)
+        .getCode()
+      // + value
+      const vout = new block_pb.TxOut()
+        .setScriptPubKey(script.toString(OPCODE_TYPE))
+        .setValue(charge)
+      vout_list.push(vout)
+    }
+
+    tx_builder.addAllVin(vin_list)
+    tx_builder.addAllVout(vout_list)
+
+    return tx_builder
   }
 }
 
