@@ -7,12 +7,21 @@ import isArray from 'lodash/isArray'
 import isString from 'lodash/isString'
 import isNumber from 'lodash/isNumber'
 
-const { OP_PUSH_DATA1, OP_PUSH_DATA2, OP_PUSH_DATA4 } = Opcode
-const OP_CODE_TYPE = 'hex'
+const {
+  OP_0,
+  OP_PUSH_DATA_1,
+  OP_PUSH_DATA_2,
+  OP_PUSH_DATA_4,
+  OP_DUP,
+  OP_HASH_160,
+  OP_EQUAL_VERIFY,
+  OP_CHECK_SIG
+} = Opcode
+const OPCODE_TYPE = 'hex'
 const PREFIXSTR2BYTES = {
-  'b1': Buffer.from([0x13, 0x26]),
-  'b2': Buffer.from([0x13, 0x28]),
-  'b3': Buffer.from([0x13, 0x2a]),
+  b1: Buffer.from([0x13, 0x26]),
+  b2: Buffer.from([0x13, 0x28]),
+  b3: Buffer.from([0x13, 0x2a])
 }
 const gethexByteWithNumber = (num: number) => (num & 255).toString(16)
 /* keccak = BEGIN = */
@@ -85,46 +94,72 @@ namespace Util {
     return bytes
   }
 
-  /**
-   * @export add-Operand
-   * @param [*strBuf] Buffer | Uint8Array
-   * @param [*operand] Buffer
-   * @returns Buffer
-   */
-  const addOperand = (strBuf: Buffer | Uint8Array, operand: Buffer) => {
-    const dataLen = operand.length
-    const dataLen_str = gethexByteWithNumber(dataLen)
-    if (dataLen < OP_PUSH_DATA1) {
-      strBuf = Buffer.from(
-        strBuf.toString(OP_CODE_TYPE) + dataLen_str,
-        OP_CODE_TYPE
-      )
-    } else if (dataLen <= 0xff) {
-      strBuf = Buffer.concat([
-        strBuf,
-        Buffer.from(gethexByteWithNumber(OP_PUSH_DATA1), OP_CODE_TYPE),
-        Buffer.from(dataLen_str, OP_CODE_TYPE)
-      ])
-    } else if (dataLen <= 0xffff) {
-      let buf = Buffer.alloc(2)
-      buf = putUint16(buf, dataLen)
-      strBuf = Buffer.concat([
-        strBuf,
-        Buffer.from(gethexByteWithNumber(OP_PUSH_DATA2), OP_CODE_TYPE),
-        buf
-      ])
-    } else {
-      let buf = Buffer.alloc(4)
-      buf = putUint16(buf, dataLen)
-      strBuf = Buffer.concat([
-        strBuf,
-        Buffer.from(gethexByteWithNumber(OP_PUSH_DATA4), OP_CODE_TYPE),
-        buf
-      ])
+  export class Opcoder {
+    public OP_0 = OP_0
+    public OP_PUSH_DATA_1 = OP_PUSH_DATA_1
+    public OP_PUSH_DATA_2 = OP_PUSH_DATA_2
+    public OP_PUSH_DATA_4 = OP_PUSH_DATA_4
+    public OP_DUP = OP_DUP
+    public OP_HASH_160 = OP_HASH_160
+    public OP_EQUAL_VERIFY = OP_EQUAL_VERIFY
+    public OP_CHECK_SIG = OP_CHECK_SIG
+    public opcode
+
+    constructor(org_code) {
+      this.opcode = Buffer.from(org_code, OPCODE_TYPE)
     }
 
-    // Append the actual operand
-    return Buffer.concat([strBuf, operand])
+    public reset(org_code) {
+      this.opcode = Buffer.from(org_code, OPCODE_TYPE)
+    }
+
+    public getCode() {
+      return this.opcode
+    }
+
+    /**
+     * @export add-opcode
+     * @param [*pre_buf] Buffer
+     * @param [*and_buf] Buffer
+     * @returns [opcode] Buffer
+     */
+    public add(and_buf: Buffer) {
+      const and_len = and_buf.length
+      const and_len_str = gethexByteWithNumber(and_len)
+      if (and_len < OP_PUSH_DATA_1) {
+        this.opcode = Buffer.from(
+          this.opcode.toString(OPCODE_TYPE) + and_len_str,
+          OPCODE_TYPE
+        )
+      } else if (and_len <= 0xff) {
+        this.opcode = Buffer.concat([
+          this.opcode,
+          Buffer.from(gethexByteWithNumber(OP_PUSH_DATA_1), OPCODE_TYPE),
+          Buffer.from(and_len_str, OPCODE_TYPE)
+        ])
+      } else if (and_len <= 0xffff) {
+        let buf = Buffer.alloc(2)
+        buf = putUint16(buf, and_len)
+        this.opcode = Buffer.concat([
+          this.opcode,
+          Buffer.from(gethexByteWithNumber(OP_PUSH_DATA_2), OPCODE_TYPE),
+          buf
+        ])
+      } else {
+        let buf = Buffer.alloc(4)
+        buf = putUint16(buf, and_len)
+        this.opcode = Buffer.concat([
+          this.opcode,
+          Buffer.from(gethexByteWithNumber(OP_PUSH_DATA_4), OPCODE_TYPE),
+          buf
+        ])
+      }
+
+      // opcode concat the and_buf
+      this.opcode = Buffer.concat([this.opcode, and_buf])
+
+      return this
+    }
   }
 
   /**
@@ -152,11 +187,12 @@ namespace Util {
    * @param [*Buffer] Buffer
    * @returns [end] Buffer
    */
-  export const signatureScript = (sigBuf: Buffer, pubKeyBuf: Buffer) => {
-    const before = addOperand(Buffer.from([]), sigBuf)
-    const end = addOperand(before, pubKeyBuf)
-
-    return end
+  export const signatureScript = async (sigBuf: Buffer, pubKeyBuf: Buffer) => {
+    const op = new Opcoder([])
+    return await op
+      .add(sigBuf)
+      .add(pubKeyBuf)
+      .getCode()
   }
 
   /**
@@ -229,11 +265,13 @@ namespace Util {
    */
   export const hex2BoxAddr = (prefix: string, hexAddr: string) => {
     if (prefix !== ('b1' || 'b2' || 'b3')) {
-        throw new Error('Incorrect address prefix !')
+      throw new Error('Incorrect address prefix !')
     }
     const prefixBuf = PREFIXSTR2BYTES[prefix]
     const prefixPKH = Buffer.concat([prefixBuf, Buffer.from(hexAddr, 'hex')])
-    return bs58.encode(Buffer.concat([prefixPKH, Verify.getCheckSum(prefixPKH)]))
+    return bs58.encode(
+      Buffer.concat([prefixPKH, Verify.getCheckSum(prefixPKH)])
+    )
   }
 
   /**
@@ -246,10 +284,10 @@ namespace Util {
     try {
       const pubKey_hash = Verify.isAddr(boxAddr)
       if (pubKey_hash) {
-        return pubKey_hash.slice(2).toString(OP_CODE_TYPE)
+        return pubKey_hash.slice(2).toString(OPCODE_TYPE)
       }
       console.log('dumpPubKeyHashFromAddr Error !')
-      throw new Error("dumpPubKeyHashFromAddr Error")
+      throw new Error('dumpPubKeyHashFromAddr Error')
     } catch (err) {
       console.log('dumpPubKeyHashFromAddr Error !')
       throw new Error(err)

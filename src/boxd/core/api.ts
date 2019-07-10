@@ -196,7 +196,7 @@ export default class Api extends Fetch {
     console.log('fetchUtxos param :', addr, sum)
     await this.fetchUtxos({ addr, amount: sum })
       .then(async res => {
-        console.log('fetchUtxos res :', res)
+        console.log('fetchUtxos res :', JSON.stringify(res))
         if (res['code'] === 0) {
           // TODO 序列化 -> sign ->
           const utxo_list = res.utxos

@@ -5,8 +5,8 @@ import Mock from './json/mock.json'
 import Keystore from './json/keystore.json'
 
 let acc_list_result
-const OP_CODE_TYPE = 'hex'
-const acc_buf = Buffer.from(Mock.acc_privateKey, OP_CODE_TYPE) // private key (buffer ed)
+const OPCODE_TYPE = 'hex'
+const acc_buf = Buffer.from(Mock.acc_privateKey, OPCODE_TYPE) // private key (buffer ed)
 const updateAccount = (new_acc_list = {}) => {
   // console.log('new_acc_list :', new_acc_list)
   acc_list_result = new_acc_list

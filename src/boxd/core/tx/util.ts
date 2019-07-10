@@ -1,5 +1,7 @@
 import TxRequest from './request'
 import block_pb from '../../../protobuf/block_pb.js'
+import Account from '../../account/account'
+import CommonUtil from '../../util/util'
 
 namespace Util {
   export const makeUnsignTx = (param: TxRequest.MakeUnsignTxReq) => {
@@ -18,14 +20,27 @@ namespace Util {
     // prev_out_point
     utxo_list.forEach(utxo => {
       const out_point = new block_pb.OutPoint()
+      console.log('out_point org :', out_point)
       out_point.setHash(utxo.out_point.hash)
       out_point.setIndex(utxo.out_point.index)
+      console.log('out_point :', out_point)
       // script_sig
-      const tx = new block_pb.TxIn()
-        .setPrevOutPoint(out_point)
-        .setScriptSig(utxo.tx_out.script_pub_key)
-      vins_list.push(tx)
+      const vin = new block_pb.TxIn()
+      console.log('vin org :', vin)
+      vin.setPrevOutPoint(out_point)
+      vin.setScriptSig(utxo.tx_out.script_pub_key)
+      console.log('vin :', vin)
+      vins_list.push(vin)
     })
+    console.log('vins_list :', vins_list)
+
+    /* vout */
+    const acc = new Account()
+    Object.keys(to_map).forEach(key => {
+      const pub_hash = acc.dumpPubKeyHashFromAddr(key)
+      // script
+
+    }
   }
 }
 

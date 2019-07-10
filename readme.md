@@ -97,3 +97,9 @@ The official distribution package can be found at [npm](https://www.npmjs.com/pa
 └── tsconfig.json  # [Typescript](https://www.typescriptlang.org/)
 
 ```
+
+## Note
+
+### protobuf
+
+protoc --js_out=library=myproto_libs,binary:. block.proto common.proto control.proto faucet.proto log.proto receipt.proto transaction.proto web.proto
