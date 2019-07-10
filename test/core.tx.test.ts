@@ -89,7 +89,7 @@ test('Get the BOX balances of the given addresses', async () => {
       crypto: Keystore.keystore_3,
       pwd: Mock.acc_pwd
     })
-    // console.log('signed_tx_by_crypto:', JSON.stringify(signed_tx_by_crypto))
+    console.log('signed_tx_by_crypto :', JSON.stringify(signed_tx_by_crypto))
     expect(signed_tx).toEqual(signed_tx_by_crypto)
   } catch (err) {
     console.error('Sign transaction by privKey or crypto: Error !', err)

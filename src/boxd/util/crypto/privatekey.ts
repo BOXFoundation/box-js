@@ -53,7 +53,7 @@ export default class PrivateKey {
       const sigHashBuf = CommonUtil.getSignHash(rawMsgs[idx])
       const eccPrivKey = _privKey && Ecpair.getECfromPrivKey(_privKey)
       const signBuf = eccPrivKey.sign(sigHashBuf).sig
-      const scriptSig = CommonUtil.signatureScript(
+      const scriptSig = await CommonUtil.signatureScript(
         signBuf,
         this.privKey.toPublicKey().toBuffer()
       )

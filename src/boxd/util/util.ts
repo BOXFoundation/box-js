@@ -105,7 +105,7 @@ namespace Util {
     public OP_CHECK_SIG = OP_CHECK_SIG
     public opcode
 
-    constructor(org_code) {
+    public constructor(org_code: any) {
       this.opcode = Buffer.from(org_code, OPCODE_TYPE)
     }
 
@@ -119,11 +119,14 @@ namespace Util {
 
     /**
      * @export add-opcode
-     * @param [*pre_buf] Buffer
-     * @param [*and_buf] Buffer
+     * @param [*and_buf]
+     * @param [?isBuf] boolean
      * @returns [opcode] Buffer
      */
-    public add(and_buf: Buffer) {
+    public add(and_buf, isBuf?: boolean) {
+      if (!isBuf) {
+        and_buf = Buffer.from(and_buf, OPCODE_TYPE)
+      }
       const and_len = and_buf.length
       const and_len_str = gethexByteWithNumber(and_len)
       if (and_len < OP_PUSH_DATA_1) {
@@ -187,11 +190,14 @@ namespace Util {
    * @param [*Buffer] Buffer
    * @returns [end] Buffer
    */
-  export const signatureScript = async (sigBuf: Buffer, pubKeyBuf: Buffer) => {
+  export const signatureScript = (
+    sigBuf: Buffer,
+    pubKeyBuf: Buffer
+  ): Buffer => {
     const op = new Opcoder([])
-    return await op
-      .add(sigBuf)
-      .add(pubKeyBuf)
+    return op
+      .add(sigBuf, true)
+      .add(pubKeyBuf, true)
       .getCode()
   }
 
