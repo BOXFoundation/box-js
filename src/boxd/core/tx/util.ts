@@ -63,6 +63,7 @@ namespace Util {
         .add(op.OP_EQUAL_VERIFY)
         .add(op.OP_CHECK_SIG)
         .getCode()
+      console.log('script :', script)
       // + value
       const vout = new block_pb.TxOut()
         .setScriptPubKey(script.toString(OPCODE_TYPE))
@@ -85,6 +86,7 @@ namespace Util {
         .add(op.OP_EQUAL_VERIFY)
         .add(op.OP_CHECK_SIG)
         .getCode()
+      console.log('script :', script)
       // + value
       const vout = new block_pb.TxOut()
         .setScriptPubKey(script.toString(OPCODE_TYPE))

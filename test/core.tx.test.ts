@@ -8,7 +8,7 @@ import Keystore from './json/keystore.json'
 const cor = new Api(fetch, Mock.endpoint_test, 'http')
 const feature = new Feature(fetch, Mock.endpoint_test, 'http')
 
-test('Make a BOX transaction', async () => {
+/* test('Make a BOX transaction', async () => {
   try {
     const tx_result = await feature.makeBoxTxByCrypto({
       tx: {
@@ -49,7 +49,7 @@ test('Get the BOX balances of the given addresses', async () => {
     console.error('Dump cryptoJson from privateKey Error :', err)
     expect(0).toBe(1)
   }
-})
+}) */
 
 /* test('faucet', async () => {
   try {
@@ -64,7 +64,7 @@ test('Get the BOX balances of the given addresses', async () => {
   }
 }) */
 
-/* test('Sign transaction by privKey or crypto', async () => {
+test('Sign transaction by privKey || crypto', async () => {
   try {
     const unsigned_tx = await cor.makeUnsignedTx({
       from: Mock.acc_addr_3,
@@ -95,4 +95,4 @@ test('Get the BOX balances of the given addresses', async () => {
     console.error('Sign transaction by privKey or crypto: Error !', err)
     expect(0).toBe(1)
   }
-}) */
+})
