@@ -57,17 +57,17 @@ namespace Util {
       console.log('pub_hash_1 :', pub_hash)
       // + script_pub_key
       const script = op
-        .add(op.OP_DUP)
-        .add(op.OP_HASH_160)
+        .add([op.OP_DUP])
+        .add([op.OP_HASH_160])
         .add(pub_hash)
-        .add(op.OP_EQUAL_VERIFY)
-        .add(op.OP_CHECK_SIG)
+        .add([op.OP_EQUAL_VERIFY])
+        .add([op.OP_CHECK_SIG])
         .getCode()
       console.log('script :', script)
       // + value
       const vout = new block_pb.TxOut()
-        .setScriptPubKey(script.toString(OPCODE_TYPE))
-        .setValue(to_map[key])
+      vout.setScriptPubKey(script.toString(OPCODE_TYPE))
+      vout.setValue(to_map[key])
       vout_list.push(vout)
     })
     console.log('vout_list :', vout_list)
@@ -80,22 +80,27 @@ namespace Util {
       // + script_pub_key
       op.reset('')
       const script = op
-        .add(op.OP_DUP)
-        .add(op.OP_HASH_160)
+        .add([op.OP_DUP])
+        .add([op.OP_HASH_160])
         .add(pub_hash)
-        .add(op.OP_EQUAL_VERIFY)
-        .add(op.OP_CHECK_SIG)
+        .add([op.OP_EQUAL_VERIFY])
+        .add([op.OP_CHECK_SIG])
         .getCode()
       console.log('script :', script)
       // + value
       const vout = new block_pb.TxOut()
-        .setScriptPubKey(script.toString(OPCODE_TYPE))
-        .setValue(charge)
+      vout.setScriptPubKey(script.toString(OPCODE_TYPE))
+      vout.setValue(charge)
       vout_list.push(vout)
     }
 
-    tx_builder.addAllVin(vin_list)
-    tx_builder.addAllVout(vout_list)
+    console.log('vin_list :', vin_list)
+    console.log('vout_list :', vout_list)
+
+    tx_builder.setVinList(vin_list)
+    tx_builder.setVoutList(vout_list)
+
+    console.log('tx_builder :', JSON.stringify(tx_builder))
 
     return tx_builder
   }
