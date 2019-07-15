@@ -9,6 +9,7 @@ namespace Util {
   export const makeUnsignTx = (param: TxRequest.MakeUnsignTxReq) => {
     console.log('makeUnsignTx param :', JSON.stringify(param))
     const { from, to_map, fee, utxo_list } = param
+    const rowmsg_list: any = []
     let total_to = 0 // total tx count
     let total_utxo = 0
     let vin_list: any = []
@@ -39,6 +40,8 @@ namespace Util {
       out_point.setHash(utxo.out_point.hash)
       out_point.setIndex(utxo.out_point.index)
       console.log('out_point :', out_point)
+      out_point.toObject()
+      console.log('out_point.toObject :', out_point)
       // + script_sig
       const vin = new block_pb.TxIn()
       console.log('vin org :', vin)
@@ -46,8 +49,9 @@ namespace Util {
       vin.setScriptSig(utxo.tx_out.script_pub_key)
       console.log('vin :', vin)
       vin_list.push(vin)
+      rowmsg_list.push(vin.serializeBinary())
     })
-    console.log('vin_list :', vin_list)
+    console.log('vin_list :', JSON.stringify(vin_list))
 
     /* vout */
     const acc = new Account()
@@ -99,10 +103,11 @@ namespace Util {
 
     tx_builder.setVinList(vin_list)
     tx_builder.setVoutList(vout_list)
-
     console.log('tx_builder :', JSON.stringify(tx_builder))
 
-    return tx_builder
+    console.log('rowmsg_list :', rowmsg_list)
+
+    return { tx: tx_builder, rawMsgs: rowmsg_list }
   }
 }
 

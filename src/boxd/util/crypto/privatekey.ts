@@ -62,6 +62,34 @@ export default class PrivateKey {
     return tx
   }
 
+  /**
+   * @export sign-Transaction-by-PrivKey
+   * @param [*unsigned_tx] SignedTxByPrivKeyReq
+   * @returns [tx]
+   */
+  public signTxByPrivKeyOfProto = async unsigned_tx => {
+    let { tx, rawMsgs } = unsigned_tx.unsignedTx
+    console.log('unsignedTx :', unsigned_tx.unsignedTx)
+    let _privKey = unsigned_tx.privKey
+    // vin handler
+    const vin_list = tx.getVinList()
+    for (let idx = 0; idx < vin_list.length; idx++) {
+      const sigHashBuf = CommonUtil.getSignHash(rawMsgs[idx])
+      const eccPrivKey = _privKey && Ecpair.getECfromPrivKey(_privKey)
+      const signBuf = eccPrivKey.sign(sigHashBuf).sig
+      const scriptSig = await CommonUtil.signatureScript(
+        signBuf,
+        this.privKey.toPublicKey().toBuffer()
+      )
+      vin_list[idx].setScriptSig(scriptSig.toString('base64'))
+    }
+    tx.setVinList(vin_list)
+    console.log('tx :', tx)
+    const script = tx.getVinList()[0].getScriptSig()
+    console.log('script :', script)
+    return tx
+  }
+
   public getAddrByPrivKey = (prefixHex: string) => {
     const sha256Content = prefixHex + this.privKey.pkh
     const checksum = Hash.sha256(

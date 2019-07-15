@@ -155,6 +155,12 @@ export default class Api extends Fetch {
     return privK.signTxByPrivKey(unsigned_tx)
   }
 
+  public async signTxByPrivKeyOfProto(unsigned_tx) {
+    const _privKey = unsigned_tx.privKey
+    const privK = new PrivateKey(_privKey)
+    return await privK.signTxByPrivKeyOfProto(unsigned_tx)
+  }
+
   public sendTx(signed_tx: UtilInterface.TX): Promise<{ hash: string }> {
     return super.fetch('/tx/sendtransaction', { tx: signed_tx })
   }
@@ -187,41 +193,33 @@ export default class Api extends Fetch {
   }
 
   public async createRawTx(raw: TxRequest.Raw) {
-    const { addr, to, fee } = raw
+    const { addr, to, fee, privKey } = raw
     let sum = 0
     await Object.keys(to).forEach(item => {
       sum += Number(to[item])
     })
     sum += Number(fee)
     console.log('fetchUtxos param :', addr, sum)
-    await this.fetchUtxos({ addr, amount: sum })
-      .then(async res => {
-        console.log('fetchUtxos res :', JSON.stringify(res))
-        if (res['code'] === 0) {
-          // TODO 序列化 -> sign ->
-          const utxo_list = res.utxos
-          const unsigned_tx = await TxUtil.makeUnsignTx({
-            from: addr,
-            to_map: to,
-            fee,
-            utxo_list
-          })
-          console.log('unsigned_tx :', unsigned_tx)
-          /* return this.signTxByPrivKey({
-                unsignedTx: {
-                  tx: unsigned_tx.tx,
-                  rawMsgs: unsigned_tx.rawMsgs
-                },
-                privKey
-              }) */
-        } else {
-          throw new Error('createRawTx Error')
-        }
+    const utxo_res = await this.fetchUtxos({ addr, amount: sum })
+    console.log('fetchUtxos res :', JSON.stringify(utxo_res))
+    if (utxo_res['code'] === 0) {
+      const utxo_list = utxo_res.utxos
+      const unsigned_tx = await TxUtil.makeUnsignTx({
+        from: addr,
+        to_map: to,
+        fee,
+        utxo_list
       })
-      .catch(err => {
-        console.log('createRawTx Error:', err)
-        throw new Error('createRawTx Error')
+      console.log('unsigned_tx :', unsigned_tx)
+      const tx = await this.signTxByPrivKeyOfProto({
+        unsignedTx: { ...unsigned_tx },
+        privKey
       })
+      console.log('tx_1:', tx)
+      return tx
+    } else {
+      throw new Error('createRawTx Error')
+    }
   }
 
   public sendRawTx(raw_tx: string) {

@@ -72,7 +72,7 @@ test('Sign transaction by privKey || crypto', async () => {
       amounts: Mock.amounts,
       fee: Mock.fee
     })
-    // console.log('unsigned_tx:', JSON.stringify(unsigned_tx))
+    console.log('unsigned_tx:', JSON.stringify(unsigned_tx))
     const signed_tx = await cor.signTxByPrivKey({
       unsignedTx: {
         tx: unsigned_tx.tx,

@@ -206,8 +206,12 @@ namespace Util {
    * @param [*protobuf] string
    * @returns
    */
-  export const getSignHash = (protobuf: string) => {
-    return Hash.hash256(Buffer.from(protobuf, 'base64'))
+  export const getSignHash = (protobuf: string | Buffer) => {
+    if (typeof protobuf === 'string') {
+      return Hash.hash256(Buffer.from(protobuf, 'base64'))
+    } else {
+      return Hash.hash256(protobuf)
+    }
   }
 
   export const jsonInterfaceMethodToString = json => {

@@ -28,7 +28,7 @@ test('Make a raw transaction', async () => {
       privKey: Mock.acc_privateKey_3
     })
     expect(tx)
-    console.log('created_tx:', JSON.stringify(tx))
+    console.log('created_tx :', JSON.stringify(tx))
   } catch (err) {
     console.error('Make a raw transaction: Error !', err)
     expect(0).toBe(1)
