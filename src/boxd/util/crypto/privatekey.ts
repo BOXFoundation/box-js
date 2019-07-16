@@ -69,7 +69,6 @@ export default class PrivateKey {
    */
   public signTxByPrivKeyOfProto = async unsigned_tx => {
     let { tx, rawMsgs } = unsigned_tx.unsignedTx
-    console.log('unsignedTx :', unsigned_tx.unsignedTx)
     let _privKey = unsigned_tx.privKey
     // vin handler
     const vin_list = tx.getVinList()

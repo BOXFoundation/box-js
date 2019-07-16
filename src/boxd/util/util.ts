@@ -23,7 +23,6 @@ const PREFIXSTR2BYTES = {
   b2: Buffer.from([0x13, 0x28]),
   b3: Buffer.from([0x13, 0x2a])
 }
-const gethexByteWithNumber = (num: number) => (num & 255).toString(16)
 /* keccak = BEGIN = */
 const KECCAK256_NULL_S =
   '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470'
@@ -76,7 +75,9 @@ const _flattenTypes = function _flattenTypes(includeTuple, puts) {
 }
 
 namespace Util {
-  export const getNumberByte = (num: number) => num & 255
+  export const getHexStrWithNumber = (num: number) => (num & 255).toString(16)
+
+  export const getBufWithNumber = (num: number) => num & 255
 
   /**
    * @export put-Uint16
@@ -88,7 +89,7 @@ namespace Util {
     if (bytes.length < 2) {
       return new Error('The length of the bytes should more than 2 !')
     }
-    bytes[0] = getNumberByte(uint16)
+    bytes[0] = getBufWithNumber(uint16)
     bytes[1] = uint16 >> 8
 
     return bytes
@@ -128,7 +129,7 @@ namespace Util {
         and_buf = Buffer.from(and_buf, OPCODE_TYPE)
       }
       const and_len = and_buf.length
-      const and_len_str = gethexByteWithNumber(and_len)
+      const and_len_str = getHexStrWithNumber(and_len)
       if (and_len < OP_PUSH_DATA_1) {
         this.opcode = Buffer.from(
           this.opcode.toString(OPCODE_TYPE) + and_len_str,
@@ -137,7 +138,7 @@ namespace Util {
       } else if (and_len <= 0xff) {
         this.opcode = Buffer.concat([
           this.opcode,
-          Buffer.from(gethexByteWithNumber(OP_PUSH_DATA_1), OPCODE_TYPE),
+          Buffer.from(getHexStrWithNumber(OP_PUSH_DATA_1), OPCODE_TYPE),
           Buffer.from(and_len_str, OPCODE_TYPE)
         ])
       } else if (and_len <= 0xffff) {
@@ -145,7 +146,7 @@ namespace Util {
         buf = putUint16(buf, and_len)
         this.opcode = Buffer.concat([
           this.opcode,
-          Buffer.from(gethexByteWithNumber(OP_PUSH_DATA_2), OPCODE_TYPE),
+          Buffer.from(getHexStrWithNumber(OP_PUSH_DATA_2), OPCODE_TYPE),
           buf
         ])
       } else {
@@ -153,7 +154,7 @@ namespace Util {
         buf = putUint16(buf, and_len)
         this.opcode = Buffer.concat([
           this.opcode,
-          Buffer.from(gethexByteWithNumber(OP_PUSH_DATA_4), OPCODE_TYPE),
+          Buffer.from(getHexStrWithNumber(OP_PUSH_DATA_4), OPCODE_TYPE),
           buf
         ])
       }
@@ -176,7 +177,7 @@ namespace Util {
     if (bytes.length < 4) {
       return new Error('The length of the bytes should more than 4 !')
     }
-    bytes[0] = getNumberByte(uint32)
+    bytes[0] = getBufWithNumber(uint32)
     bytes[1] = uint32 >> 8
     bytes[2] = uint32 >> 16
     bytes[3] = uint32 >> 24

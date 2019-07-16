@@ -165,6 +165,10 @@ export default class Api extends Fetch {
     return super.fetch('/tx/sendtransaction', { tx: signed_tx })
   }
 
+  public sendTxOfProto(signed_tx) {
+    return super.fetch('/tx/sendtransaction', { tx: signed_tx })
+  }
+
   public viewTxDetail(hash: string): Promise<TxResponse.TxDetail> {
     return super.fetch('/tx/detail', { hash })
   }
@@ -210,7 +214,7 @@ export default class Api extends Fetch {
         fee,
         utxo_list
       })
-      console.log('unsigned_tx :', unsigned_tx)
+      console.log('unsigned_tx :', JSON.stringify(unsigned_tx))
       const tx = await this.signTxByPrivKeyOfProto({
         unsignedTx: { ...unsigned_tx },
         privKey
