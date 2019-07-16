@@ -3,8 +3,6 @@ import block_pb from '../../../protobuf/block_pb.js'
 import Account from '../../account/account'
 import CommonUtil from '../../util/util'
 
-const OPCODE_TYPE = 'hex'
-
 namespace Util {
   export const makeUnsignTx = (param: TxRequest.MakeUnsignTxReq) => {
     console.log('makeUnsignTx param :', JSON.stringify(param))
@@ -90,7 +88,7 @@ namespace Util {
       // tx vout
       vout_list.push({
         value: to_map[key],
-        script_pub_key: script.toString(OPCODE_TYPE)
+        script_pub_key: script.toString('base64')
       })
     })
 
@@ -102,11 +100,11 @@ namespace Util {
       // + script_pub_key
       op.reset('')
       const script = op
-        .add(op.OP_DUP)
-        .add(op.OP_HASH_160)
+        .add(CommonUtil.getHexStrWithNumber(op.OP_DUP))
+        .add(CommonUtil.getHexStrWithNumber(op.OP_HASH_160))
         .add(pub_hash)
-        .add(op.OP_EQUAL_VERIFY)
-        .add(op.OP_CHECK_SIG)
+        .add(CommonUtil.getHexStrWithNumber(op.OP_EQUAL_VERIFY))
+        .add(CommonUtil.getHexStrWithNumber(op.OP_CHECK_SIG))
         .getCode()
       console.log('script :', script.toString('base64'))
       // + value
@@ -118,7 +116,7 @@ namespace Util {
       // tx vout
       vout_list.push({
         value: charge,
-        script_pub_key: script.toString(OPCODE_TYPE)
+        script_pub_key: script.toString('base64')
       })
     }
     console.log('vout_list :', vout_list)
@@ -131,8 +129,8 @@ namespace Util {
 
     return {
       tx: { vin: vin_list, vout: vout_list },
-      rawMsgs: rowmsg_list,
-      tx_proto
+      rawMsgs: rowmsg_list
+      // tx_proto
     }
   }
 }

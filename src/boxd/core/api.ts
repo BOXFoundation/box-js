@@ -215,7 +215,7 @@ export default class Api extends Fetch {
         utxo_list
       })
       console.log('unsigned_tx :', JSON.stringify(unsigned_tx))
-      const tx = await this.signTxByPrivKeyOfProto({
+      const tx = await this.signTxByPrivKey({
         unsignedTx: { ...unsigned_tx },
         privKey
       })

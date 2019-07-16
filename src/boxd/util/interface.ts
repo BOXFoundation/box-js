@@ -62,9 +62,9 @@ namespace Interface {
   // TX
   export interface TX {
     data?: any;
-    lock_time: string;
-    magic: number;
-    version: number;
+    lock_time?: string;
+    magic?: number;
+    version?: number;
     vin: Vin[];
     vout: Vout[];
   }
