@@ -57,7 +57,8 @@ namespace Util {
           hash: utxo.out_point.hash,
           index: utxo.out_point.index
         },
-        script_sig: null
+        script_sig: null,
+        sequence: 0
       })
     })
     console.log('vin_list :', JSON.stringify(vin_list))
@@ -128,7 +129,14 @@ namespace Util {
     console.log('rowmsg_list :', rowmsg_list)
 
     return {
-      tx: { vin: vin_list, vout: vout_list },
+      tx: {
+        version: 0,
+        vin: vin_list,
+        vout: vout_list,
+        data: null,
+        magic: 0,
+        lock_time: '0'
+      },
       rawMsgs: rowmsg_list
       // tx_proto
     }

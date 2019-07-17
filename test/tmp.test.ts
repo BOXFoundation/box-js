@@ -29,7 +29,7 @@ test('Make a raw transaction', async () => {
     })
     expect(created_tx)
     console.log('created_tx :', JSON.stringify(created_tx))
-    const sent_tx = await cor.sendTxOfProto(created_tx)
+    const sent_tx = await cor.sendTx(created_tx)
     console.log('sent_tx :', JSON.stringify(sent_tx))
   } catch (err) {
     console.error('Make a raw transaction: Error !', err)
