@@ -7,7 +7,7 @@ namespace Util {
   export const makeUnsignTx = (param: TxRequest.MakeUnsignTxReq) => {
     console.log('makeUnsignTx param :', JSON.stringify(param))
     const { from, to_map, fee, utxo_list } = param
-    const rowmsg_list: any = []
+    let rowmsg_list: any = []
     let total_to = 0 // total tx count
     let total_utxo = 0
     let vin_list: any = []
@@ -29,40 +29,6 @@ namespace Util {
     console.log('total_utxo :', total_utxo)
 
     // TODO check
-
-    const tx_proto = new block_pb.Transaction()
-
-    /* vin */
-    utxo_list.forEach(utxo => {
-      // + prev_out_point
-      const out_point = new block_pb.OutPoint()
-      console.log('out_point org :', out_point)
-      out_point.setHash(utxo.out_point.hash)
-      out_point.setIndex(utxo.out_point.index)
-      console.log('out_point :', out_point)
-      out_point.toObject()
-      console.log('out_point.toObject :', out_point)
-      // + script_sig
-      const vin_proto = new block_pb.TxIn()
-      console.log('vin_proto org :', vin_proto)
-      vin_proto.setPrevOutPoint(out_point)
-      vin_proto.setScriptSig(utxo.tx_out.script_pub_key)
-      console.log('vin_proto :', vin_proto)
-      vin_list_proto.push(vin_proto)
-      rowmsg_list.push(vin_proto.serializeBinary())
-
-      // tx vin
-      vin_list.push({
-        prev_out_point: {
-          hash: utxo.out_point.hash,
-          index: utxo.out_point.index
-        },
-        script_sig: null,
-        sequence: 0
-      })
-    })
-    console.log('vin_list :', JSON.stringify(vin_list))
-    console.log('vin_list_proto :', JSON.stringify(vin_list_proto))
 
     /* vout */
     const acc = new Account()
@@ -123,10 +89,44 @@ namespace Util {
     console.log('vout_list :', vout_list)
     console.log('vout_list_proto :', vout_list_proto)
 
-    tx_proto.setVinList(vin_list_proto)
-    tx_proto.setVoutList(vout_list_proto)
+    /* vin */
+    utxo_list.forEach(utxo => {
+      vin_list.push({
+        prev_out_point: {
+          hash: utxo.out_point.hash,
+          index: utxo.out_point.index
+        },
+        script_sig: utxo.tx_out.script_pub_key,
+        sequence: 0
+      })
+    })
+    console.log('vin_list :', JSON.stringify(vin_list))
 
-    console.log('rowmsg_list :', rowmsg_list)
+    for (let vin_i = 0; vin_i < vin_list.length; vin_i++) {
+      const tx_proto = new block_pb.Transaction()
+      vin_list.forEach((vin, i) => {
+        // + prev_out_point
+        const out_point = new block_pb.OutPoint()
+        console.log('out_point org :', out_point)
+        out_point.setHash(vin.prev_out_point.hash)
+        out_point.setIndex(vin.prev_out_point.index)
+        console.log('out_point :', out_point)
+        // + script_sig
+        const vin_proto = new block_pb.TxIn()
+        console.log('vin_proto org :', vin_proto)
+        vin_proto.setPrevOutPoint(out_point)
+        if (i === vin_i) {
+          vin_proto.setScriptSig(vin.script_sig)
+        }
+        console.log('vin_proto :', vin_proto)
+        vin_list_proto.push(vin_proto)
+      })
+      tx_proto.setVinList(vin_list_proto)
+      tx_proto.setVoutList(vout_list_proto)
+      rowmsg_list.push(tx_proto.serializeBinary())
+    }
+
+    // console.log('rowmsg_list :', rowmsg_list)
 
     return {
       tx: {
