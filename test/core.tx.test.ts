@@ -1,14 +1,14 @@
 import 'jest'
 import fetch from 'isomorphic-fetch'
 import Api from '../src/boxd/core/api'
-import Feature from '../src/boxd/core/feature'
+// import Feature from '../src/boxd/core/feature'
 import Mock from './json/mock.json'
-import Keystore from './json/keystore.json'
+// import Keystore from './json/keystore.json'
 
 const cor = new Api(fetch, Mock.endpoint_test, 'http')
-const feature = new Feature(fetch, Mock.endpoint_test, 'http')
+/*const feature = new Feature(fetch, Mock.endpoint_test, 'http')
 
-test('Make a BOX transaction', async () => {
+ test('Make a BOX transaction', async () => {
   try {
     const tx_result = await feature.makeBoxTxByCrypto({
       tx: {
@@ -49,7 +49,20 @@ test('Get the BOX balances of the given addresses', async () => {
     console.error('Dump cryptoJson from privateKey Error :', err)
     expect(0).toBe(1)
   }
-})
+}) */
+
+/* test('faucet', async () => {
+  try {
+    const faucet_res = await cor.faucet({
+      addr: Mock.acc_addr_3,
+      amount: 30000000000
+    })
+    console.log('faucet res:', faucet_res)
+  } catch (err) {
+    console.error('faucet: Error !', err)
+    expect(0).toBe(1)
+  }
+}) */
 
 test('Make a raw transaction', async () => {
   try {
@@ -68,20 +81,6 @@ test('Make a raw transaction', async () => {
     expect(0).toBe(1)
   }
 })
-
-/* test('faucet', async () => {
-  try {
-    const faucet_res = await cor.faucet({
-      addr: Mock.acc_addr_2,
-      amount: 30000000000
-    })
-    console.log('faucet res:', faucet_res)
-  } catch (err) {
-    console.error('faucet: Error !', err)
-    expect(0).toBe(1)
-  }
-})
-*/
 
 /* test('Sign transaction by privKey || crypto', async () => {
   try {

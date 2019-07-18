@@ -23,22 +23,19 @@ namespace Util {
 
     /* utxo sum */
     utxo_list.forEach(utxo => {
-      const utxo_val = new BN(utxo.tx_out.value, 10)
-      total_utxo = total_utxo.add(utxo_val)
+      total_utxo = total_utxo.add(new BN(utxo.tx_out.value, 10))
     })
-    console.log('total_utxo :', total_utxo.toString())
+    console.log('total_utxo :', total_utxo.toNumber())
 
     /* tx count sum */
     Object.keys(to_map).forEach(to => {
-      const to_val = new BN(to_map[to], 10)
-      total_to = total_to.add(to_val)
+      total_to = total_to.add(new BN(to_map[to], 10))
     })
-    const fee_bn = new BN(fee, 10)
-    total_to = total_to.add(fee_bn)
-    console.log('total_to :', total_to.toString())
+    total_to = total_to.add(new BN(fee, 10))
+    console.log('total_to :', total_to.toNumber())
 
     /* check balance */
-    if (total_to.cmp(total_utxo)) {
+    if (total_to.toNumber() > total_utxo.toNumber()) {
       throw new Error(`The balance of ${from} is too low`)
     }
 
@@ -78,8 +75,8 @@ namespace Util {
     /* ======================== */
 
     /* charge */
-    if (total_utxo.cmp(total_to)) {
-      const charge = total_utxo.sub(total_to).toString()
+    if (total_utxo.toNumber() > total_to.toNumber()) {
+      const charge = total_utxo.sub(total_to).toNumber()
       console.log('charge :', charge)
       const pub_hash = acc.dumpPubKeyHashFromAddr(from)
       console.log('pub_hash_2 :', pub_hash)

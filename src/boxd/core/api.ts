@@ -111,7 +111,7 @@ export default class Api extends Fetch {
     token['addrs'] = [token.addr]
     const balances = await super.fetch('/tx/gettokenbalance', token)
     const arr_balances = await balances.balances.map(item => {
-      return new BN(item, 10).toString()
+      return new BN(item, 10).toNumber()
     })
     return { balance: arr_balances[0] }
   }
@@ -121,7 +121,7 @@ export default class Api extends Fetch {
   ): Promise<{ balances: number[] }> {
     const balances = await super.fetch('/tx/gettokenbalance', tokens)
     const arr_balances = await balances.balances.map(item => {
-      return new BN(item, 10).toString()
+      return new BN(item, 10).toNumber()
     })
     return { balances: arr_balances }
   }
@@ -170,7 +170,7 @@ export default class Api extends Fetch {
   public async getBalance(addr: string): Promise<{ balance: number }> {
     const balances = await super.fetch('/tx/getbalance', { addrs: [addr] })
     const arr_balances = await balances.balances.map(item => {
-      return new BN(item, 10).toString()
+      return new BN(item, 10).toNumber()
     })
     return { balance: arr_balances[0] }
   }
@@ -178,7 +178,7 @@ export default class Api extends Fetch {
   public async getBalances(addrs: string[]): Promise<{ balances: number[] }> {
     const balances = await super.fetch('/tx/getbalance', { addrs })
     const arr_balances = await balances.balances.map(item => {
-      return new BN(item, 10).toString()
+      return new BN(item, 10).toNumber()
     })
     return { balances: arr_balances }
   }
@@ -195,15 +195,13 @@ export default class Api extends Fetch {
 
     // fetch utxos
     await Object.keys(to).forEach(item => {
-      const item_bn = new BN(item, 10)
-      total_to = total_to.add(item_bn)
+      total_to = total_to.add(new BN(to[item], 10))
     })
-    const fee_bn = new BN(fee, 10)
-    total_to = total_to.add(fee_bn)
-    console.log('fetchUtxos param :', addr, total_to.toString())
+    total_to = total_to.add(new BN(fee, 10))
+    console.log('fetchUtxos param :', addr, total_to.toNumber())
     const utxo_res = await this.fetchUtxos({
       addr,
-      amount: total_to.toString()
+      amount: total_to.toNumber()
     })
     console.log('fetchUtxos res :', JSON.stringify(utxo_res))
     if (utxo_res['code'] === 0) {
@@ -223,7 +221,7 @@ export default class Api extends Fetch {
         privKey
       })
     } else {
-      throw new Error('fetch utxos Error')
+      throw new Error('Fetch utxos Error')
     }
   }
 
