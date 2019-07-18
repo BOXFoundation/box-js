@@ -67,7 +67,7 @@ export default class PrivateKey {
    * @param [*unsigned_tx] SignedTxByPrivKeyReq
    * @returns [tx]
    */
-  public signTxByPrivKeyOfProto = async unsigned_tx => {
+  /*   public signTxByPrivKeyOfProto = async unsigned_tx => {
     let { tx, rawMsgs } = unsigned_tx.unsignedTx
     let _privKey = unsigned_tx.privKey
     // vin handler
@@ -87,7 +87,7 @@ export default class PrivateKey {
     const script = tx.getVinList()[0].getScriptSig()
     console.log('script :', script)
     return tx
-  }
+  } */
 
   public getAddrByPrivKey = (prefixHex: string) => {
     const sha256Content = prefixHex + this.privKey.pkh

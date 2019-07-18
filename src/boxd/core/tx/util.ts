@@ -26,7 +26,7 @@ namespace Util {
       const utxo_val = new BN(utxo.tx_out.value, 10)
       total_utxo = total_utxo.add(utxo_val)
     })
-    console.log('total_utxo :', total_utxo.toNumber())
+    console.log('total_utxo :', total_utxo.toString())
 
     /* tx count sum */
     Object.keys(to_map).forEach(to => {
@@ -35,10 +35,10 @@ namespace Util {
     })
     const fee_bn = new BN(fee, 10)
     total_to = total_to.add(fee_bn)
-    console.log('total_to :', total_to.toNumber())
+    console.log('total_to :', total_to.toString())
 
     /* check balance */
-    if (total_utxo.toNumber() < total_to.toNumber()) {
+    if (total_to.cmp(total_utxo)) {
       throw new Error(`The balance of ${from} is too low`)
     }
 
@@ -68,7 +68,7 @@ namespace Util {
       vout.setValue(to_map[to_addr])
       vout_list_proto.push(vout)
 
-      // make tx vout
+      // make tx vout (json)
       vout_list.push({
         value: to_map[to_addr],
         script_pub_key: script.toString('base64')
@@ -78,9 +78,8 @@ namespace Util {
     /* ======================== */
 
     /* charge */
-    // TODO bn
-    if (total_utxo.toNumber() > total_to.toNumber()) {
-      const charge = total_utxo.sub(total_to).toNumber()
+    if (total_utxo.cmp(total_to)) {
+      const charge = total_utxo.sub(total_to).toString()
       console.log('charge :', charge)
       const pub_hash = acc.dumpPubKeyHashFromAddr(from)
       console.log('pub_hash_2 :', pub_hash)
@@ -102,7 +101,7 @@ namespace Util {
       vout.setValue(charge)
       vout_list_proto.push(vout)
 
-      // make tx vout
+      // make tx vout (json)
       vout_list.push({
         value: charge,
         script_pub_key: script.toString('base64')
@@ -114,6 +113,7 @@ namespace Util {
     /* ======================== */
 
     /* vin */
+    // make tx vin (json)
     utxo_list.forEach(utxo => {
       vin_list.push({
         prev_out_point: {
@@ -125,6 +125,7 @@ namespace Util {
     })
     console.log('vin_list :', JSON.stringify(vin_list))
 
+    // make tx vin (protobuf)
     for (let vin_i = 0; vin_i < vin_list.length; vin_i++) {
       const tx_proto = new block_pb.Transaction()
       vin_list.forEach((vin, i) => {
