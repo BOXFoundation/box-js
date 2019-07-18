@@ -219,7 +219,6 @@ export default class Api extends Fetch {
         unsignedTx: { ...unsigned_tx },
         privKey
       })
-      console.log('tx_1:', tx)
       return tx
     } else {
       throw new Error('createRawTx Error')

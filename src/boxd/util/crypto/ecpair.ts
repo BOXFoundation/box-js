@@ -52,13 +52,13 @@ namespace Ecpair {
 
     const b1 = Buffer.alloc(4)
     b1[0] = 0x30
-    b1[1] = CommonUtil.getBufWithNumber(length - 2)
+    b1[1] = CommonUtil.getBufFromNumber(length - 2)
     b1[2] = 0x02
-    b1[3] = CommonUtil.getBufWithNumber(rb.length)
+    b1[3] = CommonUtil.getBufFromNumber(rb.length)
 
     const b3 = Buffer.alloc(2)
     b3[0] = 0x02
-    b3[1] = CommonUtil.getBufWithNumber(sb.length)
+    b3[1] = CommonUtil.getBufFromNumber(sb.length)
 
     const allBytes = Buffer.concat([b1, rb, b3, sb])
     return allBytes

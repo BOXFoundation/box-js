@@ -75,9 +75,9 @@ const _flattenTypes = function _flattenTypes(includeTuple, puts) {
 }
 
 namespace Util {
-  export const getHexStrWithNumber = (num: number) => (num & 255).toString(16)
+  export const getHexStrFromNumber = (num: number) => (num & 255).toString(16)
 
-  export const getBufWithNumber = (num: number) => num & 255
+  export const getBufFromNumber = (num: number) => num & 255
 
   /**
    * @export put-Uint16
@@ -89,7 +89,7 @@ namespace Util {
     if (bytes.length < 2) {
       return new Error('The length of the bytes should more than 2 !')
     }
-    bytes[0] = getBufWithNumber(uint16)
+    bytes[0] = getBufFromNumber(uint16)
     bytes[1] = uint16 >> 8
 
     return bytes
@@ -112,6 +112,7 @@ namespace Util {
 
     public reset(org_code) {
       this.opcode = Buffer.from(org_code, OPCODE_TYPE)
+      return this
     }
 
     public getCode() {
@@ -129,7 +130,7 @@ namespace Util {
         and_buf = Buffer.from(and_buf, OPCODE_TYPE)
       }
       const and_len = and_buf.length
-      const and_len_str = getHexStrWithNumber(and_len)
+      const and_len_str = getHexStrFromNumber(and_len)
       if (and_len < OP_PUSH_DATA_1) {
         this.opcode = Buffer.from(
           this.opcode.toString(OPCODE_TYPE) + and_len_str,
@@ -138,7 +139,7 @@ namespace Util {
       } else if (and_len <= 0xff) {
         this.opcode = Buffer.concat([
           this.opcode,
-          Buffer.from(getHexStrWithNumber(OP_PUSH_DATA_1), OPCODE_TYPE),
+          Buffer.from(getHexStrFromNumber(OP_PUSH_DATA_1), OPCODE_TYPE),
           Buffer.from(and_len_str, OPCODE_TYPE)
         ])
       } else if (and_len <= 0xffff) {
@@ -146,7 +147,7 @@ namespace Util {
         buf = putUint16(buf, and_len)
         this.opcode = Buffer.concat([
           this.opcode,
-          Buffer.from(getHexStrWithNumber(OP_PUSH_DATA_2), OPCODE_TYPE),
+          Buffer.from(getHexStrFromNumber(OP_PUSH_DATA_2), OPCODE_TYPE),
           buf
         ])
       } else {
@@ -154,7 +155,7 @@ namespace Util {
         buf = putUint16(buf, and_len)
         this.opcode = Buffer.concat([
           this.opcode,
-          Buffer.from(getHexStrWithNumber(OP_PUSH_DATA_4), OPCODE_TYPE),
+          Buffer.from(getHexStrFromNumber(OP_PUSH_DATA_4), OPCODE_TYPE),
           buf
         ])
       }
@@ -177,7 +178,7 @@ namespace Util {
     if (bytes.length < 4) {
       return new Error('The length of the bytes should more than 4 !')
     }
-    bytes[0] = getBufWithNumber(uint32)
+    bytes[0] = getBufFromNumber(uint32)
     bytes[1] = uint32 >> 8
     bytes[2] = uint32 >> 16
     bytes[3] = uint32 >> 24
