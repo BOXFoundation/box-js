@@ -6,9 +6,9 @@ import Mock from './json/mock.json'
 // import Keystore from './json/keystore.json'
 
 const cor = new Api(fetch, Mock.endpoint_test, 'http')
-/*const feature = new Feature(fetch, Mock.endpoint_test, 'http')
+// const feature = new Feature(fetch, Mock.endpoint_test, 'http')
 
- test('Make a BOX transaction', async () => {
+/* test('Make a BOX transaction', async () => {
   try {
     const tx_result = await feature.makeBoxTxByCrypto({
       tx: {
@@ -28,16 +28,6 @@ const cor = new Api(fetch, Mock.endpoint_test, 'http')
   }
 })
 
-test('Get the BOX balance of the given address', async () => {
-  try {
-    const box_balance = await cor.getBalance(Mock.acc_addr_3)
-    expect(box_balance)
-  } catch (err) {
-    console.error('Get the BOX balance of the given address Error :', err)
-    expect(0).toBe(1)
-  }
-})
-
 test('Get the BOX balances of the given addresses', async () => {
   try {
     const box_balance = await cor.getBalances([
@@ -51,20 +41,7 @@ test('Get the BOX balances of the given addresses', async () => {
   }
 }) */
 
-/* test('faucet', async () => {
-  try {
-    const faucet_res = await cor.faucet({
-      addr: Mock.acc_addr_3,
-      amount: 30000000000
-    })
-    console.log('faucet res:', faucet_res)
-  } catch (err) {
-    console.error('faucet: Error !', err)
-    expect(0).toBe(1)
-  }
-}) */
-
-test('Make a raw transaction', async () => {
+test('Make a raw transaction (BOX)', async () => {
   try {
     const created_tx = await cor.createRawTx({
       addr: Mock.acc_addr_3,
@@ -81,6 +58,19 @@ test('Make a raw transaction', async () => {
     expect(0).toBe(1)
   }
 })
+
+/* test('faucet', async () => {
+  try {
+    const faucet_res = await cor.faucet({
+      addr: Mock.acc_addr_3,
+      amount: 30000000000
+    })
+    console.log('faucet res:', faucet_res)
+  } catch (err) {
+    console.error('faucet: Error !', err)
+    expect(0).toBe(1)
+  }
+}) */
 
 /* test('Sign transaction by privKey || crypto', async () => {
   try {

@@ -1,7 +1,7 @@
 import UtilInterface from '../../util/interface'
 
 namespace Request {
-  interface Topiclist {}
+  // interface Topiclist {}
 
   export interface OriginalContractReq {
     from: string;
@@ -29,11 +29,11 @@ namespace Request {
   }
 
   export interface GetLogsReq {
-    hash: string;
+    hash?: string;
     from: number;
     to: number;
     addresses: string[];
-    topics: string[][];
+    topics: any;
   }
 }
 

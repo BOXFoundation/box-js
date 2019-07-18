@@ -226,7 +226,7 @@ export default class Api extends Fetch {
   }
 
   public sendRawTx(raw_tx: string) {
-    return super.fetch('/tx/sendrawtransaction', { raw_tx })
+    return super.fetch('/tx/sendrawtransaction', { tx: raw_tx })
   }
 
   /* Contract */

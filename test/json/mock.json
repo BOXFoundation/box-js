@@ -2,6 +2,7 @@
   "endpoint_test": "http://39.97.169.1:19110",
   "endpoint_dev": "http://39.97.168.26:19110",
   "endpoint_local": "http://127.0.0.1:19110",
+  "endpoint_js": "http://192.168.21.52:19110",
   "acc_list": {
     "b1nebwpTAb6GZEqtSZnSciKYMbcs6hyVCst": {
       "cryptoJSON": {
@@ -72,22 +73,17 @@
   "blockHeight": 6406299,
   "blockHash": "cb698a0ab691a25b67a434f4b73867773c6aebaf1c39d6b3d22238796ec50867",
   "constract_logs_req": {
-    "hash": "",
     "from": 1,
-    "to": 2,
+    "to": 10000,
     "addresses": [
-      "",
-      ""
+      "b5nVcWMrScHapg492a89cntsQ7H9rv4we9K"
     ],
     "topics": [
-      [
-        "",
-        ""
-      ],
-      [
-        "",
-        ""
-      ]
+      {
+        "topics": [
+          "ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+        ]
+      }
     ]
   }
 }
