@@ -1,3 +1,4 @@
+import BN from 'bn.js'
 import { Fetch } from '../util/fetch'
 import TxRequest from './tx/request'
 import SplitRequest from './split/request'
@@ -7,7 +8,6 @@ import Account from '../account/account'
 import PrivateKey from '../util/crypto/privatekey'
 import Core from '../core/api'
 import TxUtil from './tx/util'
-import BN from 'bn.js'
 
 /**
  * @class [Feature]
@@ -16,14 +16,14 @@ import BN from 'bn.js'
  * @constructs endpoint string // user incoming
  */
 export default class Feature extends Fetch {
-  public constructor(_fetch: any, endpoint: string, fetch_type) {
+  public constructor(_fetch, endpoint: string, fetch_type: string) {
     super(_fetch, endpoint, fetch_type)
   }
 
   /**
    * @export Sign-Transaction-by-CryptoJson
-   * @param [*unsigned_tx] SignedTxByCryptoReq
-   * @returns [tx] TxResponse.TX
+   * @param [*unsigned_tx]
+   * @returns [signed_tx]
    */
   public async signTxByCrypto(unsigned_tx: TxRequest.SignedTxByCryptoReq) {
     const acc = new Account()
@@ -41,15 +41,16 @@ export default class Feature extends Fetch {
   }
 
   /**
-   * @export Make-Box-Transaction-by-Crypto
-   * @param [*org_tx] MakeBoxTxByCryptoReq
-   * @returns [Promise] { hash: string }
+   * @export Make-Box-Transaction-by-Crypto.json
+   * @param [*org_tx]
+   * @returns [Promise<sent_tx>] { hash: string }
    */
   public async makeBoxTxByCrypto(
     org_tx: TxRequest.MakeBoxTxByCryptoReq
   ): Promise<{ hash: string }> {
     const { from, to, amounts, fee } = org_tx.tx
     const acc = new Account()
+    // make privKey
     const privKey = await acc.dumpPrivKeyFromCrypto(org_tx.crypto, org_tx.pwd)
     let total_to = new BN(0, 10)
     let to_map = {}
@@ -69,7 +70,7 @@ export default class Feature extends Fetch {
     console.log('fetchUtxos res :', JSON.stringify(utxo_res))
 
     if (utxo_res['code'] === 0) {
-      // make unsign tx
+      // make unsigned tx
       const utxo_list = utxo_res.utxos
       const unsigned_tx = await TxUtil.makeUnsignTxHandle({
         from,
@@ -83,6 +84,7 @@ export default class Feature extends Fetch {
         privKey,
         tx_proto: unsigned_tx.tx_proto
       })
+      // send tx to boxd
       return await cor.sendTx(signed_tx)
     } else {
       throw new Error('Fetch utxos Error')
@@ -90,9 +92,9 @@ export default class Feature extends Fetch {
   }
 
   /**
-   * @export Make-Split-Transaction-by-Crypto
-   * @param [*org_tx] MakeSplitTxByCryptoReq
-   * @returns [Promise] { hash: string }
+   * @export Make-Split-Transaction-by-Crypto.json
+   * @param [*org_tx]
+   * @returns [Promise<sent_tx>] { splitAddr: string; hash: string }
    */
   public async makeSplitTxByCrypto(
     org_tx: SplitRequest.MakeSplitTxByCryptoReq
@@ -112,9 +114,9 @@ export default class Feature extends Fetch {
   }
 
   /**
-   * @export Issue-Token-by-Crypto
-   * @param [*org_tx] IssueTokenByCryptoReq
-   * @returns [Promise] { hash: string }
+   * @export Issue-Token-by-Crypto.json
+   * @param [*org_tx]
+   * @returns [Promise<sent_tx>] { hash: string }
    */
   public async issueTokenByCrypto(
     org_tx: TokenRequest.IssueTokenByCryptoReq
@@ -129,14 +131,13 @@ export default class Feature extends Fetch {
       crypto: org_tx.crypto,
       pwd: org_tx.pwd
     })
-    const tx_result = await cor.sendTx(signed_tx)
-    return tx_result
+    return await cor.sendTx(signed_tx)
   }
 
   /**
-   * @export Make-Token-Transaction-by-Crypto
-   * @param [*org_tx] MakeTokenTxByCryptoReq
-   * @returns [Promise] { hash: string }
+   * @export Make-Token-Transaction-by-Crypto.json
+   * @param [*org_tx]
+   * @returns [Promise<sent_tx>] { hash: string }
    */
   public async makeTokenTxByCrypto(
     org_tx: TokenRequest.MakeTokenTxByCryptoReq
@@ -151,14 +152,13 @@ export default class Feature extends Fetch {
       crypto: org_tx.crypto,
       pwd: org_tx.pwd
     })
-    const tx_result = await cor.sendTx(signed_tx)
-    return tx_result
+    return await cor.sendTx(signed_tx)
   }
 
   /**
-   * @export Make-Contract-Transaction-by-Crypto
-   * @param [*org_tx] ContractTxByCryptoReq
-   * @returns [Promise] { hash: string }
+   * @export Make-Contract-Transaction-by-Crypto.json
+   * @param [*org_tx]
+   * @returns [Promise<sent_tx>] { hash: string }
    */
   public async makeContractTxByCrypto(
     org_tx: ContractRequest.ContractTxByCryptoReq
@@ -180,8 +180,8 @@ export default class Feature extends Fetch {
 
   /**
    * @export Call-Contract
-   * @param [*org_tx] ContractTxByCryptoReq
-   * @returns [Promise] { hash: string }
+   * @param [*org_tx]
+   * @returns [Promise<sent_tx>] { result: string }
    */
   public async callContract(
     callParams: ContractRequest.CallContractReq

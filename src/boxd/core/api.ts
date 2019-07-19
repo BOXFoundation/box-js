@@ -1,5 +1,5 @@
-import { Fetch } from '../util/fetch'
 import BN from 'bn.js'
+import { Fetch } from '../util/fetch'
 import PrivateKey from '../util/crypto/privatekey'
 import UtilInterface from '../util/interface'
 import SplitRequest from './split/request'
@@ -20,7 +20,7 @@ import TxUtil from './tx/util'
  * @constructs endpoint string // user incoming
  */
 export default class Api extends Fetch {
-  public constructor(_fetch, endpoint: string, fetch_type) {
+  public constructor(_fetch, endpoint: string, fetch_type: string) {
     super(_fetch, endpoint, fetch_type)
   }
 
@@ -118,7 +118,6 @@ export default class Api extends Fetch {
     return super.fetch('/tx/makeunsignedtx/token/transfer', token_transfer_tx)
   }
 
-  // TODO
   /*   public fetchTokenUtxos(fetch_utxos_req: TxRequest.FetchUtxosReq) {
     return super.fetch('/todo', fetch_utxos_req)
   } */
@@ -143,10 +142,6 @@ export default class Api extends Fetch {
   }
 
   public sendTx(signed_tx: UtilInterface.TX): Promise<{ hash: string }> {
-    return super.fetch('/tx/sendtransaction', { tx: signed_tx })
-  }
-
-  public sendTxOfProto(signed_tx) {
     return super.fetch('/tx/sendtransaction', { tx: signed_tx })
   }
 
@@ -176,13 +171,21 @@ export default class Api extends Fetch {
     return super.fetch('/tx/fetchutxos', utxos_req)
   }
 
-  public async createRawTx(raw: TxRequest.Raw, is_row?) {
+  /**
+   * @func create-raw-tx
+   * @param [*raw]
+   * @param [?is_raw] boolean // is send raw tx ?
+   * @branch [sendTx||sendRawTx]
+   * @step [fetchUtxos->makeUnsignTx->signTxByPrivKey]
+   * @returns [signed_tx]
+   */
+  public async createRawTx(raw: TxRequest.Raw, is_raw?) {
     const { addr, to, fee, privKey } = raw
     let total_to = new BN(0, 10)
 
     // fetch utxos
-    await Object.keys(to).forEach(item => {
-      total_to = total_to.add(new BN(to[item], 10))
+    await Object.keys(to).forEach(addr => {
+      total_to = total_to.add(new BN(to[addr], 10))
     })
     total_to = total_to.add(new BN(fee, 10))
     console.log('fetchUtxos param :', addr, total_to.toNumber())
@@ -192,14 +195,14 @@ export default class Api extends Fetch {
     })
     console.log('fetchUtxos res :', JSON.stringify(utxo_res))
     if (utxo_res['code'] === 0) {
-      // make unsign tx
+      // make unsigned tx
       const utxo_list = utxo_res.utxos
       let unsigned_tx = await TxUtil.makeUnsignTxHandle({
         from: addr,
         to_map: to,
         fee,
         utxo_list,
-        is_row
+        is_raw
       })
       console.log('unsigned_tx :', JSON.stringify(unsigned_tx))
 
@@ -214,6 +217,7 @@ export default class Api extends Fetch {
     }
   }
 
+  // TODO
   public sendRawTx(raw_tx) {
     return super.fetch('/tx/sendrawtransaction', { tx: raw_tx })
   }

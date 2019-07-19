@@ -105,7 +105,7 @@ test('Make a raw transaction (BOX)', async () => {
         fee: Mock.fee,
         privKey: Mock.acc_privateKey_3
       },
-      'is_row'
+      'is_raw'
     )
     expect(created_tx_row)
     console.log('created_tx_row :', created_tx_row)

@@ -7,7 +7,7 @@ import TxRequest from './request'
 namespace Util {
   export const makeUnsignTxHandle = (param: TxRequest.MakeUnsignTxReq) => {
     console.log('makeUnsignTxHandle param ===', JSON.stringify(param))
-    const { from, to_map, fee, utxo_list, is_row } = param
+    const { from, to_map, fee, utxo_list, is_raw } = param
     let total_to = new BN(0, 10) // total tx count
     let total_utxo = new BN(0, 10) // total account utxo
     let rowmsg_list: any = [] // row message list
@@ -160,7 +160,7 @@ namespace Util {
     // console.log('rowmsg_list :', rowmsg_list)
 
     /* ======================== */
-    if (is_row) {
+    if (is_raw) {
       return {
         tx_json: {
           tx: {

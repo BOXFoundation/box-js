@@ -42,7 +42,7 @@ namespace Request {
     to_map: AddrsMap;
     fee: string;
     utxo_list: TxResponse.Utxo[];
-    is_row?: boolean;
+    is_raw?: boolean;
   }
 }
 
