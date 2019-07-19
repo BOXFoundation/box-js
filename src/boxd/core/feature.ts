@@ -32,7 +32,8 @@ export default class Feature extends Fetch {
     )
     const unsigned_tx_p = {
       privKey,
-      unsignedTx: unsigned_tx.unsignedTx
+      unsignedTx: unsigned_tx.unsignedTx,
+      tx_proto: null
     }
     const privk = new PrivateKey(privKey)
     return privk.signTxByPrivKey(unsigned_tx_p)
