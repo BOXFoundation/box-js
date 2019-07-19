@@ -57,13 +57,21 @@ export default class PrivateKey {
         signBuf,
         this.privKey.toPublicKey().toBuffer()
       )
-      tx.vin[idx].script_sig = scriptSig.toString('base64')
+      const scriptsig_bs64 = scriptSig.toString('base64')
+      tx.vin[idx].script_sig = scriptsig_bs64
+      if (unsigned_tx.tx_proto) {
+        unsigned_tx.tx_proto.getVinList()[idx].setScriptSig(scriptsig_bs64)
+      }
     }
-    return tx
+    if (unsigned_tx.tx_proto) {
+      return unsigned_tx.tx_proto.serializeBinary().toString(OPCODE_TYPE)
+    } else {
+      return tx
+    }
   }
 
   /**
-   * @export sign-Transaction-by-PrivKey
+   * @export sign-Transaction-by-PrivKey-Of-Protobuf
    * @param [*unsigned_tx] SignedTxByPrivKeyReq
    * @returns [tx]
    */

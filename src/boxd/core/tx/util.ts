@@ -7,13 +7,14 @@ import TxRequest from './request'
 namespace Util {
   export const makeUnsignTx = (param: TxRequest.MakeUnsignTxReq) => {
     console.log('makeUnsignTx param ===', JSON.stringify(param))
-    const { from, to_map, fee, utxo_list } = param
+    const { from, to_map, fee, utxo_list, is_row } = param
     let total_to = new BN(0, 10) // total tx count
     let total_utxo = new BN(0, 10) // total account utxo
     let rowmsg_list: any = [] // row message list
     let vin_list: any = [] // vin list (json)
     let vout_list: any = [] // vout list (json)
     let vin_list_proto: any = [] // vin list (protobuf)
+    let vin_list_proto_row: any = [] // vin list (protobuf)
     let vout_list_proto: any = [] // vout list (protobuf)
 
     /* check utxo */
@@ -123,8 +124,9 @@ namespace Util {
     console.log('vin_list :', JSON.stringify(vin_list))
 
     // make tx vin (protobuf)
+    const tx_proto = new block_pb.Transaction()
+    const tx_proto_row = new block_pb.Transaction()
     for (let vin_i = 0; vin_i < vin_list.length; vin_i++) {
-      const tx_proto = new block_pb.Transaction()
       vin_list.forEach((vin, i) => {
         // + prev_out_point
         const out_point = new block_pb.OutPoint()
@@ -135,16 +137,22 @@ namespace Util {
 
         // + script_sig
         const vin_proto = new block_pb.TxIn()
+        const vin_proto_row = new block_pb.TxIn()
         // console.log('vin_proto org :', vin_proto)
         vin_proto.setPrevOutPoint(out_point)
+        vin_proto_row.setPrevOutPoint(out_point)
+        vin_proto_row.setScriptSig(vin.script_sig)
         if (i === vin_i) {
           vin_proto.setScriptSig(vin.script_sig)
         }
         // console.log('vin_proto :', vin_proto)
         vin_list_proto.push(vin_proto)
+        vin_list_proto_row.push(vin_proto_row)
       })
       tx_proto.setVinList(vin_list_proto)
       tx_proto.setVoutList(vout_list_proto)
+      tx_proto_row.setVinList(vin_list_proto_row)
+      tx_proto_row.setVoutList(vout_list_proto)
 
       // serialize binary
       rowmsg_list.push(tx_proto.serializeBinary())
@@ -152,17 +160,36 @@ namespace Util {
     // console.log('rowmsg_list :', rowmsg_list)
 
     /* ======================== */
-
-    return {
-      tx: {
-        version: 0,
-        vin: vin_list,
-        vout: vout_list,
-        data: null,
-        magic: 0,
-        lock_time: '0'
-      },
-      rawMsgs: rowmsg_list
+    if (is_row) {
+      return {
+        tx_json: {
+          tx: {
+            version: 0,
+            vin: vin_list,
+            vout: vout_list,
+            data: null,
+            magic: 0,
+            lock_time: '0'
+          },
+          rawMsgs: rowmsg_list
+        },
+        tx_proto: tx_proto_row
+      }
+    } else {
+      return {
+        tx_json: {
+          tx: {
+            version: 0,
+            vin: vin_list,
+            vout: vout_list,
+            data: null,
+            magic: 0,
+            lock_time: '0'
+          },
+          rawMsgs: rowmsg_list
+        },
+        tx_proto: null
+      }
     }
   }
 }

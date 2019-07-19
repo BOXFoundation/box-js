@@ -189,7 +189,7 @@ export default class Api extends Fetch {
     return super.fetch('/tx/fetchutxos', utxos_req)
   }
 
-  public async createRawTx(raw: TxRequest.Raw) {
+  public async createRawTx(raw: TxRequest.Raw, is_row?) {
     const { addr, to, fee, privKey } = raw
     let total_to = new BN(0, 10)
 
@@ -207,25 +207,27 @@ export default class Api extends Fetch {
     if (utxo_res['code'] === 0) {
       // make unsign tx
       const utxo_list = utxo_res.utxos
-      const unsigned_tx = await TxUtil.makeUnsignTx({
+      let unsigned_tx = await TxUtil.makeUnsignTx({
         from: addr,
         to_map: to,
         fee,
-        utxo_list
+        utxo_list,
+        is_row
       })
       console.log('unsigned_tx :', JSON.stringify(unsigned_tx))
 
       // sign tx by privKey
       return await this.signTxByPrivKey({
-        unsignedTx: unsigned_tx,
-        privKey
+        unsignedTx: unsigned_tx.tx_json,
+        privKey,
+        tx_proto: unsigned_tx.tx_proto
       })
     } else {
       throw new Error('Fetch utxos Error')
     }
   }
 
-  public sendRawTx(raw_tx: string) {
+  public sendRawTx(raw_tx) {
     return super.fetch('/tx/sendrawtransaction', { tx: raw_tx })
   }
 

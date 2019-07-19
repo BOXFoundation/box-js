@@ -43,7 +43,7 @@ test('Get the BOX balances of the given addresses', async () => {
 
 test('Make a raw transaction (BOX)', async () => {
   try {
-    const created_tx = await cor.createRawTx({
+    /*     const created_tx = await cor.createRawTx({
       addr: Mock.acc_addr_3,
       to: Mock.to_map,
       fee: Mock.fee,
@@ -52,7 +52,22 @@ test('Make a raw transaction (BOX)', async () => {
     expect(created_tx)
     console.log('created_tx :', JSON.stringify(created_tx))
     const sent_tx = await cor.sendTx(created_tx)
-    console.log('sent_tx :', JSON.stringify(sent_tx))
+    console.log('sent_tx :', JSON.stringify(sent_tx)) */
+
+    // Row
+    const created_tx_row = await cor.createRawTx(
+      {
+        addr: Mock.acc_addr_3,
+        to: Mock.to_map,
+        fee: Mock.fee,
+        privKey: Mock.acc_privateKey_3
+      },
+      'is_row'
+    )
+    expect(created_tx_row)
+    console.log('created_tx_row :', created_tx_row)
+    const sent_tx_row = await cor.sendRawTx(created_tx_row)
+    console.log('sent_tx_row :', JSON.stringify(sent_tx_row))
   } catch (err) {
     console.error('Make a raw transaction: Error !', err)
     expect(0).toBe(1)
