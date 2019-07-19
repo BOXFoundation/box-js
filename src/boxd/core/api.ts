@@ -20,7 +20,7 @@ import TxUtil from './tx/util'
  * @constructs endpoint string // user incoming
  */
 export default class Api extends Fetch {
-  public constructor(_fetch: any, endpoint: string, fetch_type) {
+  public constructor(_fetch, endpoint: string, fetch_type) {
     super(_fetch, endpoint, fetch_type)
   }
 
@@ -42,17 +42,10 @@ export default class Api extends Fetch {
   public async getBlockByHeight(
     block_height: number
   ): Promise<{ block: BlockResponse.Block }> {
-    return await this.getBlockHashByHeight(block_height)
-      .then(block_hash => {
-        // console.log('getBlockHashByHeight res:', block_hash)
-        return super.fetch('/ctl/getblock', {
-          blockHash: block_hash.hash
-        })
-      })
-      .catch(err => {
-        console.log('getBlockHashByHeight Error:', err)
-        throw new Error('getBlockHashByHeight Error')
-      })
+    const block_hash = await this.getBlockHashByHeight(block_height)
+    return super.fetch('/ctl/getblock', {
+      blockHash: block_hash.hash
+    })
   }
 
   public getBlockHeaderByHash(
@@ -64,17 +57,10 @@ export default class Api extends Fetch {
   public async getBlockHeaderByHeight(
     block_height: number
   ): Promise<{ header: BlockResponse.BlockHeader }> {
-    return await this.getBlockHashByHeight(block_height)
-      .then(block_hash => {
-        // console.log('getBlockHashByHeight res:', block_hash)
-        return super.fetch('/ctl/getblockheader', {
-          blockHash: block_hash.hash
-        })
-      })
-      .catch(err => {
-        console.log('getBlockHashByHeight Error:', err)
-        throw new Error('getBlockHashByHeight Error')
-      })
+    const block_hash = await this.getBlockHashByHeight(block_height)
+    return super.fetch('/ctl/getblockheader', {
+      blockHash: block_hash.hash
+    })
   }
 
   public getBlockHeight(): Promise<{
@@ -110,8 +96,8 @@ export default class Api extends Fetch {
   ): Promise<{ balance: number }> {
     token['addrs'] = [token.addr]
     const balances = await super.fetch('/tx/gettokenbalance', token)
-    const arr_balances = await balances.balances.map(item => {
-      return new BN(item, 10).toNumber()
+    const arr_balances = await balances.balances.map(balance => {
+      return new BN(balance, 10).toNumber()
     })
     return { balance: arr_balances[0] }
   }
@@ -120,8 +106,8 @@ export default class Api extends Fetch {
     tokens: TokenRequest.TokenBalancesReq
   ): Promise<{ balances: number[] }> {
     const balances = await super.fetch('/tx/gettokenbalance', tokens)
-    const arr_balances = await balances.balances.map(item => {
-      return new BN(item, 10).toNumber()
+    const arr_balances = await balances.balances.map(balance => {
+      return new BN(balance, 10).toNumber()
     })
     return { balances: arr_balances }
   }
@@ -132,9 +118,10 @@ export default class Api extends Fetch {
     return super.fetch('/tx/makeunsignedtx/token/transfer', token_transfer_tx)
   }
 
-  public fetchTokenUtxos(fetch_utxos_req: TxRequest.FetchUtxosReq) {
+  // TODO
+  /*   public fetchTokenUtxos(fetch_utxos_req: TxRequest.FetchUtxosReq) {
     return super.fetch('/todo', fetch_utxos_req)
-  }
+  } */
 
   /* Transaction */
   public faucet(req) {
@@ -169,16 +156,16 @@ export default class Api extends Fetch {
 
   public async getBalance(addr: string): Promise<{ balance: number }> {
     const balances = await super.fetch('/tx/getbalance', { addrs: [addr] })
-    const arr_balances = await balances.balances.map(item => {
-      return new BN(item, 10).toNumber()
+    const arr_balances = await balances.balances.map(balance => {
+      return new BN(balance, 10).toNumber()
     })
     return { balance: arr_balances[0] }
   }
 
   public async getBalances(addrs: string[]): Promise<{ balances: number[] }> {
     const balances = await super.fetch('/tx/getbalance', { addrs })
-    const arr_balances = await balances.balances.map(item => {
-      return new BN(item, 10).toNumber()
+    const arr_balances = await balances.balances.map(balance => {
+      return new BN(balance, 10).toNumber()
     })
     return { balances: arr_balances }
   }
@@ -207,7 +194,7 @@ export default class Api extends Fetch {
     if (utxo_res['code'] === 0) {
       // make unsign tx
       const utxo_list = utxo_res.utxos
-      let unsigned_tx = await TxUtil.makeUnsignTx({
+      let unsigned_tx = await TxUtil.makeUnsignTxHandle({
         from: addr,
         to_map: to,
         fee,

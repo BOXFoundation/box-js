@@ -5,8 +5,8 @@ import CommonUtil from '../../util/util'
 import TxRequest from './request'
 
 namespace Util {
-  export const makeUnsignTx = (param: TxRequest.MakeUnsignTxReq) => {
-    console.log('makeUnsignTx param ===', JSON.stringify(param))
+  export const makeUnsignTxHandle = (param: TxRequest.MakeUnsignTxReq) => {
+    console.log('makeUnsignTxHandle param ===', JSON.stringify(param))
     const { from, to_map, fee, utxo_list, is_row } = param
     let total_to = new BN(0, 10) // total tx count
     let total_utxo = new BN(0, 10) // total account utxo

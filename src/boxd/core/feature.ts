@@ -6,7 +6,8 @@ import ContractRequest from './contract/request'
 import Account from '../account/account'
 import PrivateKey from '../util/crypto/privatekey'
 import Core from '../core/api'
-// import UtilInterface from '../util/interface'
+import TxUtil from './tx/util'
+import BN from 'bn.js'
 
 /**
  * @class [Feature]
@@ -47,18 +48,45 @@ export default class Feature extends Fetch {
   public async makeBoxTxByCrypto(
     org_tx: TxRequest.MakeBoxTxByCryptoReq
   ): Promise<{ hash: string }> {
-    const cor = new Core(this._fetch, this.endpoint, this.fetch_type)
-    const unsigned_tx = await cor.makeUnsignedTx(org_tx.tx)
-    const signed_tx = await this.signTxByCrypto({
-      unsignedTx: {
-        tx: unsigned_tx.tx,
-        rawMsgs: unsigned_tx.rawMsgs
-      },
-      crypto: org_tx.crypto,
-      pwd: org_tx.pwd
+    const { from, to, amounts, fee } = org_tx.tx
+    const acc = new Account()
+    const privKey = await acc.dumpPrivKeyFromCrypto(org_tx.crypto, org_tx.pwd)
+    let total_to = new BN(0, 10)
+    let to_map = {}
+
+    // fetch utxos
+    await to.forEach((item, index) => {
+      to_map[item] = amounts[index]
+      total_to = total_to.add(new BN(amounts[index], 10))
     })
-    const tx_result = await cor.sendTx(signed_tx)
-    return tx_result
+    total_to = total_to.add(new BN(fee, 10))
+    console.log('fetchUtxos param :', from, total_to.toNumber())
+    const cor = new Core(this._fetch, this.endpoint, this.fetch_type)
+    const utxo_res = await cor.fetchUtxos({
+      addr: from,
+      amount: total_to.toNumber()
+    })
+    console.log('fetchUtxos res :', JSON.stringify(utxo_res))
+
+    if (utxo_res['code'] === 0) {
+      // make unsign tx
+      const utxo_list = utxo_res.utxos
+      const unsigned_tx = await TxUtil.makeUnsignTxHandle({
+        from,
+        to_map,
+        fee,
+        utxo_list
+      })
+      // sign tx by privKey
+      const signed_tx = await cor.signTxByPrivKey({
+        unsignedTx: unsigned_tx.tx_json,
+        privKey,
+        tx_proto: unsigned_tx.tx_proto
+      })
+      return await cor.sendTx(signed_tx)
+    } else {
+      throw new Error('Fetch utxos Error')
+    }
   }
 
   /**
