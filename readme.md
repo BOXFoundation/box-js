@@ -1,8 +1,7 @@
 # boxd-js
 
-![contentbox](https://contentbox.one/img/logo-top.png)
-
 A Javascript implementation of BOX Payout blockchain on NodeJS or Browser.
+![contentbox](https://contentbox.one/img/home-background.png)
 
 ## Npm
 
