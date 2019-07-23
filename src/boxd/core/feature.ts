@@ -63,13 +63,13 @@ export default class Feature extends Fetch {
       total_to = total_to.add(new BN(amounts[index], 10))
     })
     total_to = total_to.add(new BN(fee, 10))
-    console.log('fetchUtxos param :', from, total_to.toString())
+    // console.log('fetchUtxos param :', from, total_to.toString())
     const cor = new Core(this._fetch, this.endpoint, this.fetch_type)
     const utxo_res = await cor.fetchUtxos({
       addr: from,
       amount: total_to.toString()
     })
-    console.log('fetchUtxos res :', JSON.stringify(utxo_res))
+    // console.log('fetchUtxos res :', JSON.stringify(utxo_res))
 
     if (utxo_res['code'] === 0) {
       /* make unsigned tx */

@@ -24,9 +24,9 @@ var AccountManager = /** @class */ (function () {
         this.updateAccount = updateAccount;
     }
     /**
-     * @func New-PrivateKey-Object
-     * @param [*privkey] string
-     * @returns [PrivateKey] object
+     * @func New_PrivateKey_Object
+     * @param [*privkey]
+     * @returns [privateKey]
      * @memberof AccountManager
      */
     AccountManager.prototype.newPrivateKey = function (privkey) {
@@ -34,9 +34,8 @@ var AccountManager = /** @class */ (function () {
         return privk.privKey;
     };
     /**
-     * @func Add-New-Account-to-Account-List
-     * @param {*cryptoJSON} { address ... }
-     * @returns void
+     * @func Add_New_Account_to_Account_List
+     * @param {*cryptoJSON}
      * @memberof AccountManager
      */
     AccountManager.prototype.addToAccList = function (cryptoJSON, otherInfo) {
@@ -53,8 +52,8 @@ var AccountManager = /** @class */ (function () {
         this.updateAccount && this.updateAccount(this.acc_list);
     };
     /**
-     * @func Sort-Account-List
-     * @returns [AccountList] object
+     * @func Sort_Account_List
+     * @returns [account_list]
      * @memberof AccountManager
      */
     AccountManager.prototype.sortAccList = function () {

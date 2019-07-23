@@ -64,7 +64,7 @@ var AbiCoder = /** @class */ (function () {
                     case 1:
                         keccaked = _a.sent();
                         if (keccaked) {
-                            return [2 /*return*/, keccaked.slice(0, 10)];
+                            return [2 /*return*/, keccaked.slice(2, 10)];
                         }
                         else {
                             throw new Error('keccak return Null !');
@@ -149,8 +149,8 @@ var AbiCoder = /** @class */ (function () {
      * @param [bytes] string
      * @returns {plain param} object
      */
-    AbiCoder.prototype.decodeParameter = function (type, bytes) {
-        return this.decodeParameters([type], bytes)[0];
+    AbiCoder.prototype.decodeParameter = function (output, bytes) {
+        return this.decodeParameters([output], bytes)[0];
     };
     /**
      * Should be used to decode list of params
@@ -177,19 +177,82 @@ var AbiCoder = /** @class */ (function () {
                         decodedValue = null;
                     }
                     returnValues[i] = decodedValue;
-                    if (isObject_1.default(output) && output.name) {
-                        returnValues[output.name] = decodedValue;
+                    if (isObject_1.default(output) && output['name']) {
+                        returnValues[output['name']] = decodedValue;
                     }
                 });
                 return returnValues;
             }
             return result;
         }
-        if (isObject_1.default(outputs[0]) && outputs[0].name) {
-            returnValues[outputs[0].name] = result;
+        if (isObject_1.default(outputs[0]) && outputs[0]['name']) {
+            returnValues[outputs[0]['name']] = result;
         }
         returnValues[0] = result;
         return returnValues;
+    };
+    /**
+     * @func Decode_events_non_and_indexed_parameters
+     * @param [inputs] array
+     * @param [data] string
+     * @param [topics] array
+     * @returns {Object with named and indexed properties of the returnValues} object
+     */
+    AbiCoder.prototype.decodeLog = function (inputs, data, topics) {
+        var _this = this;
+        if (data === void 0) { data = ''; }
+        var returnValues = {};
+        var topicCount = 0;
+        var value;
+        var nonIndexedInputKeys;
+        var nonIndexedInputItems;
+        if (!isArray_1.default(topics)) {
+            topics = [topics];
+        }
+        inputs.forEach(function (input, i) {
+            if (input.indexed) {
+                if (input.type === 'string') {
+                    return;
+                }
+                value = topics[topicCount];
+                if (_this.isStaticType(input.type)) {
+                    value = _this.decodeParameter(input.type, topics[topicCount]);
+                }
+                returnValues[i] = value;
+                returnValues[input.name] = value;
+                topicCount++;
+                return;
+            }
+            nonIndexedInputKeys.push(i);
+            nonIndexedInputItems.push(input);
+        });
+        if (data) {
+            var values_1 = this.decodeParameters(nonIndexedInputItems, data);
+            var decodedValue_1;
+            nonIndexedInputKeys.forEach(function (itemKey, index) {
+                decodedValue_1 = values_1[index];
+                returnValues[itemKey] = decodedValue_1;
+                returnValues[nonIndexedInputItems[index].name] = decodedValue_1;
+            });
+        }
+        return returnValues;
+    };
+    /**
+     * @func Checks_if_a_given_type_string_is_a_static_solidity_type
+     * @param [type] string
+     * @returns {is static type ?} boolean
+     */
+    AbiCoder.prototype.isStaticType = function (type) {
+        if (type === 'bytes') {
+            return false;
+        }
+        if (type === 'string') {
+            return false;
+        }
+        if (type.indexOf('[') && type.slice(type.indexOf('[')).length === 2) {
+            return false;
+        }
+        return true;
     };
     return AbiCoder;
 }());

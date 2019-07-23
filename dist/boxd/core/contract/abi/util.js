@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var bn_js_1 = __importDefault(require("bn.js"));
 var util_1 = __importDefault(require("../../../util/util"));
+var isObject_1 = __importDefault(require("lodash/isObject"));
 // Is a type an array?
 var abiIsArray = function (type) {
     return type.lastIndexOf(']') === type.length - 1;
@@ -210,7 +211,6 @@ var parseType = function (type) {
     var ret;
     if (abiIsArray(type)) {
         size = parseTypeArray(type);
-        console.log('type_2:', type);
         var subArray = type.slice(0, type.lastIndexOf('['));
         subArray = parseType(subArray);
         ret = {
@@ -263,7 +263,7 @@ var parseType = function (type) {
 // Decodes a single item (can be dynamic array)
 // @returns: array
 // FIXME: this method will need a lot of attention at checking limits and validation
-var decodeSingle = function (parsedType, data, offset) {
+function decodeSingle(parsedType, data, offset) {
     if (typeof parsedType === 'string') {
         parsedType = parseType(parsedType);
     }
@@ -343,7 +343,7 @@ var decodeSingle = function (parsedType, data, offset) {
         return num.div(size);
     }
     throw new Error('Unsupported or invalid type: ' + parsedType.name);
-};
+}
 var Util;
 (function (Util) {
     Util.rawEncode = function (types, values) {
@@ -368,6 +368,9 @@ var Util;
         });
         for (var i = 0; i < types.length; i++) {
             var type = elementaryName(types[i]);
+            if (type === 'address') {
+                values[i] = "0x" + values[i];
+            }
             var value = values[i];
             var cur = encodeSingle(type, value);
             // Use the head/tail method for storing dynamic data
@@ -387,9 +390,18 @@ var Util;
         data = Buffer.from(data);
         var offset = 0;
         for (var i = 0; i < types.length; i++) {
-            var type = elementaryName(types[i]);
+            var type;
+            if (isObject_1.default(types[i])) {
+                type = elementaryName(types[i].name);
+            }
+            else {
+                type = elementaryName(types[i]);
+            }
             var parsed = parseType(type);
             var decoded = decodeSingle(parsed, data, offset);
+            if (parsed.name.startsWith('uint') || parsed.name.startsWith('int')) {
+                decoded = parseInt(decoded.toString(10), 10);
+            }
             offset += parsed.memoryUsage;
             ret.push(decoded);
         }

@@ -6,15 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var tiny_secp256k1_1 = __importDefault(require("tiny-secp256k1"));
 var bs58_1 = __importDefault(require("bs58"));
 var hash_1 = __importDefault(require("../util/crypto/hash"));
-var OP_CODE_TYPE = 'hex';
-var getCheckSum = function (hex) {
-    if (hex instanceof Buffer) {
-        return hash_1.default.sha256(hash_1.default.sha256(hex)).slice(0, 4);
-    }
-    else {
-        return hash_1.default.sha256(hash_1.default.sha256(Buffer.from(hex, OP_CODE_TYPE))).slice(0, 4);
-    }
-};
+var OPCODE_TYPE = 'hex';
 var _typeof2 = function (obj) {
     if (typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol') {
         _typeof2 = function _typeof2(obj) {
@@ -36,11 +28,19 @@ var _typeof2 = function (obj) {
 var Verify;
 (function (Verify) {
     Verify.isPrivate = function (privKey) {
-        if (tiny_secp256k1_1.default.isPrivate(Buffer.from(privKey, OP_CODE_TYPE))) {
+        if (tiny_secp256k1_1.default.isPrivate(Buffer.from(privKey, OPCODE_TYPE))) {
             return privKey;
         }
         else {
             throw new Error('The private key entered is not a valid one !');
+        }
+    };
+    Verify.getCheckSum = function (hex) {
+        if (hex instanceof Buffer) {
+            return hash_1.default.sha256(hash_1.default.sha256(hex)).slice(0, 4);
+        }
+        else {
+            return hash_1.default.sha256(hash_1.default.sha256(Buffer.from(hex, OPCODE_TYPE))).slice(0, 4);
         }
     };
     Verify.isAddr = function (addr) {
@@ -53,7 +53,7 @@ var Verify;
         }
         var len = decoded.length;
         var pubkey_hash = decoded.slice(0, len - 4);
-        var checksum = getCheckSum(pubkey_hash);
+        var checksum = Verify.getCheckSum(pubkey_hash);
         if (!checksum.equals(decoded.slice(len - 4))) {
             throw new Error('Incorrect address format !');
         }

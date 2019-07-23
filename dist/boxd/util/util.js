@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var bs58_1 = __importDefault(require("bs58"));
 var var_1 = __importDefault(require("./var"));
 var verify_1 = __importDefault(require("./verify"));
 var hash_1 = __importDefault(require("./crypto/hash"));
@@ -10,9 +11,13 @@ var isObject_1 = __importDefault(require("lodash/isObject"));
 var isArray_1 = __importDefault(require("lodash/isArray"));
 var isString_1 = __importDefault(require("lodash/isString"));
 var isNumber_1 = __importDefault(require("lodash/isNumber"));
-var OP_PUSH_DATA1 = var_1.default.OP_PUSH_DATA1, OP_PUSH_DATA2 = var_1.default.OP_PUSH_DATA2, OP_PUSH_DATA4 = var_1.default.OP_PUSH_DATA4;
-var OP_CODE_TYPE = 'hex';
-var gethexByteWithNumber = function (num) { return (num & 255).toString(16); };
+var OP_0 = var_1.default.OP_0, OP_PUSH_DATA_1 = var_1.default.OP_PUSH_DATA_1, OP_PUSH_DATA_2 = var_1.default.OP_PUSH_DATA_2, OP_PUSH_DATA_4 = var_1.default.OP_PUSH_DATA_4, OP_DUP = var_1.default.OP_DUP, OP_HASH_160 = var_1.default.OP_HASH_160, OP_EQUAL_VERIFY = var_1.default.OP_EQUAL_VERIFY, OP_CHECK_SIG = var_1.default.OP_CHECK_SIG;
+var OPCODE_TYPE = 'hex';
+var PREFIXSTR2BYTES = {
+    b1: Buffer.from([0x13, 0x26]),
+    b2: Buffer.from([0x13, 0x28]),
+    b3: Buffer.from([0x13, 0x2a])
+};
 /* keccak = BEGIN = */
 var KECCAK256_NULL_S = '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470';
 var isHexStrict = function (hex) {
@@ -63,9 +68,10 @@ var _flattenTypes = function _flattenTypes(includeTuple, puts) {
 };
 var Util;
 (function (Util) {
-    Util.getNumberByte = function (num) { return num & 255; };
+    Util.getHexStrFromNumber = function (num) { return (num & 255).toString(16); };
+    Util.getBufFromNumber = function (num) { return num & 255; };
     /**
-     * @export put-Uint16
+     * @export Put_Uint16
      * @param [*bytes]
      * @param [*uint16]
      * @returns [bytes]
@@ -74,50 +80,76 @@ var Util;
         if (bytes.length < 2) {
             return new Error('The length of the bytes should more than 2 !');
         }
-        bytes[0] = Util.getNumberByte(uint16);
+        bytes[0] = Util.getBufFromNumber(uint16);
         bytes[1] = uint16 >> 8;
         return bytes;
     };
-    /**
-     * @export add-Operand
-     * @param [*strBuf] Buffer | Uint8Array
-     * @param [*operand] Buffer
-     * @returns Buffer
-     */
-    var addOperand = function (strBuf, operand) {
-        var dataLen = operand.length;
-        var dataLen_str = gethexByteWithNumber(dataLen);
-        if (dataLen < OP_PUSH_DATA1) {
-            strBuf = Buffer.from(strBuf.toString(OP_CODE_TYPE) + dataLen_str, OP_CODE_TYPE);
+    var Opcoder = /** @class */ (function () {
+        function Opcoder(org_code) {
+            this.OP_0 = OP_0;
+            this.OP_PUSH_DATA_1 = OP_PUSH_DATA_1;
+            this.OP_PUSH_DATA_2 = OP_PUSH_DATA_2;
+            this.OP_PUSH_DATA_4 = OP_PUSH_DATA_4;
+            this.OP_DUP = OP_DUP;
+            this.OP_HASH_160 = OP_HASH_160;
+            this.OP_EQUAL_VERIFY = OP_EQUAL_VERIFY;
+            this.OP_CHECK_SIG = OP_CHECK_SIG;
+            this.opcode = Buffer.from(org_code, OPCODE_TYPE);
         }
-        else if (dataLen <= 0xff) {
-            strBuf = Buffer.concat([
-                strBuf,
-                Buffer.from(gethexByteWithNumber(OP_PUSH_DATA1), OP_CODE_TYPE),
-                Buffer.from(dataLen_str, OP_CODE_TYPE)
-            ]);
-        }
-        else if (dataLen <= 0xffff) {
-            var buf = Buffer.alloc(2);
-            buf = Util.putUint16(buf, dataLen);
-            strBuf = Buffer.concat([
-                strBuf,
-                Buffer.from(gethexByteWithNumber(OP_PUSH_DATA2), OP_CODE_TYPE),
-                buf
-            ]);
-        }
-        else {
-            var buf = Buffer.alloc(4);
-            buf = Util.putUint16(buf, dataLen);
-            strBuf = Buffer.concat([
-                strBuf,
-                Buffer.from(gethexByteWithNumber(OP_PUSH_DATA4), OP_CODE_TYPE),
-                buf
-            ]);
-        }
-        // Append the actual operand
-        return Buffer.concat([strBuf, operand]);
-    };
+        Opcoder.prototype.reset = function (org_code) {
+            this.opcode = Buffer.from(org_code, OPCODE_TYPE);
+            return this;
+        };
+        Opcoder.prototype.getCode = function () {
+            return this.opcode;
+        };
+        /**
+         * @export add-opcode
+         * @param [*and_buf]
+         * @param [?isBuf] boolean
+         * @returns [opcode] Buffer
+         */
+        Opcoder.prototype.add = function (and_buf, isBuf) {
+            if (!isBuf) {
+                and_buf = Buffer.from(and_buf, OPCODE_TYPE);
+            }
+            var and_len = and_buf.length;
+            var and_len_str = Util.getHexStrFromNumber(and_len);
+            if (and_len < OP_PUSH_DATA_1) {
+                this.opcode = Buffer.from(this.opcode.toString(OPCODE_TYPE) + and_len_str, OPCODE_TYPE);
+            }
+            else if (and_len <= 0xff) {
+                this.opcode = Buffer.concat([
+                    this.opcode,
+                    Buffer.from(Util.getHexStrFromNumber(OP_PUSH_DATA_1), OPCODE_TYPE),
+                    Buffer.from(and_len_str, OPCODE_TYPE)
+                ]);
+            }
+            else if (and_len <= 0xffff) {
+                var buf = Buffer.alloc(2);
+                buf = Util.putUint16(buf, and_len);
+                this.opcode = Buffer.concat([
+                    this.opcode,
+                    Buffer.from(Util.getHexStrFromNumber(OP_PUSH_DATA_2), OPCODE_TYPE),
+                    buf
+                ]);
+            }
+            else {
+                var buf = Buffer.alloc(4);
+                buf = Util.putUint16(buf, and_len);
+                this.opcode = Buffer.concat([
+                    this.opcode,
+                    Buffer.from(Util.getHexStrFromNumber(OP_PUSH_DATA_4), OPCODE_TYPE),
+                    buf
+                ]);
+            }
+            // opcode concat the and_buf
+            this.opcode = Buffer.concat([this.opcode, and_buf]);
+            return this;
+        };
+        return Opcoder;
+    }());
+    Util.Opcoder = Opcoder;
     /**
      * @export put-Uint32
      * TODO: it not support int32 now
@@ -129,7 +161,7 @@ var Util;
         if (bytes.length < 4) {
             return new Error('The length of the bytes should more than 4 !');
         }
-        bytes[0] = Util.getNumberByte(uint32);
+        bytes[0] = Util.getBufFromNumber(uint32);
         bytes[1] = uint32 >> 8;
         bytes[2] = uint32 >> 16;
         bytes[3] = uint32 >> 24;
@@ -142,9 +174,11 @@ var Util;
      * @returns [end] Buffer
      */
     Util.signatureScript = function (sigBuf, pubKeyBuf) {
-        var before = addOperand(Buffer.from([]), sigBuf);
-        var end = addOperand(before, pubKeyBuf);
-        return end;
+        var op = new Opcoder([]);
+        return op
+            .add(sigBuf, true)
+            .add(pubKeyBuf, true)
+            .getCode();
     };
     /**
      * @export get-SignHash
@@ -152,7 +186,12 @@ var Util;
      * @returns
      */
     Util.getSignHash = function (protobuf) {
-        return hash_1.default.hash256(Buffer.from(protobuf, 'base64'));
+        if (typeof protobuf === 'string') {
+            return hash_1.default.hash256(Buffer.from(protobuf, 'base64'));
+        }
+        else {
+            return hash_1.default.hash256(protobuf);
+        }
     };
     Util.jsonInterfaceMethodToString = function (json) {
         if (isObject_1.default(json) && json.name && json.name.includes('(')) {
@@ -198,6 +237,41 @@ var Util;
             return str;
         }
         return Util.isHexPrefixed(str) ? str.slice(2) : str;
+    };
+    /**
+     * Convert hex address to box address format
+     * @param {String} prefix: the box address prefix
+     * @param {hexAddr} hexAddr: hex address without '0x' prefix
+     * @return {String} box address, starting with "b"
+     * @throws when prefix is not expected
+     */
+    Util.hex2BoxAddr = function (prefix, hexAddr) {
+        if (prefix !== ('b1' || 'b2' || 'b3')) {
+            throw new Error('Incorrect address prefix !');
+        }
+        var prefixBuf = PREFIXSTR2BYTES[prefix];
+        var prefixPKH = Buffer.concat([prefixBuf, Buffer.from(hexAddr, 'hex')]);
+        return bs58_1.default.encode(Buffer.concat([prefixPKH, verify_1.default.getCheckSum(prefixPKH)]));
+    };
+    /**
+     * Convert box address to hex address format
+     * @param {boxAddr} boxAddr: address in box format, starting with 'b'
+     * @return {String} hex address
+     * @throws if convertion fails
+     */
+    Util.box2HexAddr = function (boxAddr) {
+        try {
+            var pubKey_hash = verify_1.default.isAddr(boxAddr);
+            if (pubKey_hash) {
+                return pubKey_hash.slice(2).toString(OPCODE_TYPE);
+            }
+            console.log('dumpPubKeyHashFromAddr Error !');
+            throw new Error('dumpPubKeyHashFromAddr Error');
+        }
+        catch (err) {
+            console.log('dumpPubKeyHashFromAddr Error !');
+            throw new Error(err);
+        }
     };
 })(Util || (Util = {}));
 exports.default = Util;

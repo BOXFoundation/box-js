@@ -188,12 +188,12 @@ export default class Api extends Fetch {
       total_to = total_to.add(new BN(to[addr], 10))
     })
     total_to = total_to.add(new BN(fee, 10))
-    console.log('fetchUtxos param :', addr, total_to.toString())
+    // console.log('fetchUtxos param :', addr, total_to.toString())
     const utxo_res = await this.fetchUtxos({
       addr,
       amount: total_to.toString()
     })
-    console.log('fetchUtxos res :', JSON.stringify(utxo_res))
+    // console.log('fetchUtxos res :', JSON.stringify(utxo_res))
     if (utxo_res['code'] === 0) {
       // make unsigned tx
       const utxo_list = utxo_res.utxos
@@ -204,7 +204,7 @@ export default class Api extends Fetch {
         utxo_list,
         is_raw
       })
-      console.log('unsigned_tx :', JSON.stringify(unsigned_tx))
+      // console.log('unsigned_tx :', JSON.stringify(unsigned_tx))
 
       // sign tx by privKey
       return await this.signTxByPrivKey({

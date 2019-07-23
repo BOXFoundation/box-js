@@ -51,16 +51,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var bn_js_1 = __importDefault(require("bn.js"));
 var fetch_1 = require("../util/fetch");
 var account_1 = __importDefault(require("../account/account"));
 var privatekey_1 = __importDefault(require("../util/crypto/privatekey"));
 var api_1 = __importDefault(require("../core/api"));
-// import UtilInterface from '../util/interface'
+var util_1 = __importDefault(require("./tx/util"));
 /**
  * @class [Feature]
  * @extends Fetch
- * @constructs _fetch // user incoming
- * @constructs endpoint string // user incoming
+ * @constructs _fetch # user incoming
+ * @constructs endpoint string # user incoming
  */
 var Feature = /** @class */ (function (_super) {
     __extends(Feature, _super);
@@ -68,9 +69,9 @@ var Feature = /** @class */ (function (_super) {
         return _super.call(this, _fetch, endpoint, fetch_type) || this;
     }
     /**
-     * @export Sign-Transaction-by-CryptoJson
-     * @param [*unsigned_tx] SignedTxByCryptoReq
-     * @returns [tx] TxResponse.TX
+     * @export Sign_transaction_by_Crypto.json
+     * @param [*unsigned_tx]
+     * @returns [signed_tx]
      */
     Feature.prototype.signTxByCrypto = function (unsigned_tx) {
         return __awaiter(this, void 0, void 0, function () {
@@ -84,7 +85,8 @@ var Feature = /** @class */ (function (_super) {
                         privKey = _a.sent();
                         unsigned_tx_p = {
                             privKey: privKey,
-                            unsignedTx: unsigned_tx.unsignedTx
+                            unsignedTx: unsigned_tx.unsignedTx,
+                            protocalTx: null
                         };
                         privk = new privatekey_1.default(privKey);
                         return [2 /*return*/, privk.signTxByPrivKey(unsigned_tx_p)];
@@ -93,42 +95,75 @@ var Feature = /** @class */ (function (_super) {
         });
     };
     /**
-     * @export Make-Box-Transaction-by-Crypto
-     * @param [*org_tx] MakeBoxTxByCryptoReq
-     * @returns [Promise] { hash: string }
+     * @export Make_BOX_transaction_by_Crypto.json
+     * @param [*org_tx]
+     * @step [make_privKey->fetch_utxos->make_unsigned_tx->sign_tx->send_tx]
+     * @returns [Promise<sent_tx>] { hash: string }
      */
     Feature.prototype.makeBoxTxByCrypto = function (org_tx) {
         return __awaiter(this, void 0, void 0, function () {
-            var cor, unsigned_tx, signed_tx, tx_result;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var _a, from, to, amounts, fee, acc, privKey, total_to, to_map, cor, utxo_res, unsigned_tx, signed_tx;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        cor = new api_1.default(this._fetch, this.endpoint, this.fetch_type);
-                        return [4 /*yield*/, cor.makeUnsignedTx(org_tx.tx)];
+                        _a = org_tx.tx, from = _a.from, to = _a.to, amounts = _a.amounts, fee = _a.fee;
+                        acc = new account_1.default();
+                        return [4 /*yield*/, acc.dumpPrivKeyFromCrypto(org_tx.crypto, org_tx.pwd)];
                     case 1:
-                        unsigned_tx = _a.sent();
-                        return [4 /*yield*/, this.signTxByCrypto({
-                                unsignedTx: {
-                                    tx: unsigned_tx.tx,
-                                    rawMsgs: unsigned_tx.rawMsgs
-                                },
-                                crypto: org_tx.crypto,
-                                pwd: org_tx.pwd
+                        privKey = _b.sent();
+                        total_to = new bn_js_1.default(0, 10);
+                        to_map = {};
+                        /* fetch utxos */
+                        return [4 /*yield*/, to.forEach(function (item, index) {
+                                to_map[item] = amounts[index];
+                                total_to = total_to.add(new bn_js_1.default(amounts[index], 10));
                             })];
                     case 2:
-                        signed_tx = _a.sent();
-                        return [4 /*yield*/, cor.sendTx(signed_tx)];
+                        /* fetch utxos */
+                        _b.sent();
+                        total_to = total_to.add(new bn_js_1.default(fee, 10));
+                        cor = new api_1.default(this._fetch, this.endpoint, this.fetch_type);
+                        return [4 /*yield*/, cor.fetchUtxos({
+                                addr: from,
+                                amount: total_to.toString()
+                            })
+                            // console.log('fetchUtxos res :', JSON.stringify(utxo_res))
+                        ];
                     case 3:
-                        tx_result = _a.sent();
-                        return [2 /*return*/, tx_result];
+                        utxo_res = _b.sent();
+                        if (!(utxo_res['code'] === 0)) return [3 /*break*/, 7];
+                        return [4 /*yield*/, util_1.default.makeUnsignedTxHandle({
+                                from: from,
+                                to_map: to_map,
+                                fee: fee,
+                                utxo_list: utxo_res.utxos
+                            })
+                            /* sign tx by privKey */
+                        ];
+                    case 4:
+                        unsigned_tx = _b.sent();
+                        return [4 /*yield*/, cor.signTxByPrivKey({
+                                unsignedTx: unsigned_tx.tx_json,
+                                protocalTx: unsigned_tx.protocalTx,
+                                privKey: privKey
+                            })
+                            /* send tx to boxd */
+                        ];
+                    case 5:
+                        signed_tx = _b.sent();
+                        return [4 /*yield*/, cor.sendTx(signed_tx)];
+                    case 6: 
+                    /* send tx to boxd */
+                    return [2 /*return*/, _b.sent()];
+                    case 7: throw new Error('Fetch utxos Error');
                 }
             });
         });
     };
     /**
-     * @export Make-Split-Transaction-by-Crypto
-     * @param [*org_tx] MakeSplitTxByCryptoReq
-     * @returns [Promise] { hash: string }
+     * @export Make_Split_transaction_by_Crypto.json
+     * @param [*org_tx]
+     * @returns [Promise<sent_tx>] { splitAddr: string; hash: string }
      */
     Feature.prototype.makeSplitTxByCrypto = function (org_tx) {
         return __awaiter(this, void 0, void 0, function () {
@@ -159,13 +194,13 @@ var Feature = /** @class */ (function (_super) {
         });
     };
     /**
-     * @export Issue-Token-by-Crypto
-     * @param [*org_tx] IssueTokenByCryptoReq
-     * @returns [Promise] { hash: string }
+     * @export Issue_Token_by_Crypto.json
+     * @param [*org_tx]
+     * @returns [Promise<sent_tx>] { hash: string }
      */
     Feature.prototype.issueTokenByCrypto = function (org_tx) {
         return __awaiter(this, void 0, void 0, function () {
-            var cor, unsigned_tx, signed_tx, tx_result;
+            var cor, unsigned_tx, signed_tx;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -184,21 +219,19 @@ var Feature = /** @class */ (function (_super) {
                     case 2:
                         signed_tx = _a.sent();
                         return [4 /*yield*/, cor.sendTx(signed_tx)];
-                    case 3:
-                        tx_result = _a.sent();
-                        return [2 /*return*/, tx_result];
+                    case 3: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
     /**
-     * @export Make-Token-Transaction-by-Crypto
-     * @param [*org_tx] MakeTokenTxByCryptoReq
-     * @returns [Promise] { hash: string }
+     * @export Make_Token_Transaction_by_Crypto.json
+     * @param [*org_tx]
+     * @returns [Promise<sent_tx>] { hash: string }
      */
     Feature.prototype.makeTokenTxByCrypto = function (org_tx) {
         return __awaiter(this, void 0, void 0, function () {
-            var cor, unsigned_tx, signed_tx, tx_result;
+            var cor, unsigned_tx, signed_tx;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -217,9 +250,60 @@ var Feature = /** @class */ (function (_super) {
                     case 2:
                         signed_tx = _a.sent();
                         return [4 /*yield*/, cor.sendTx(signed_tx)];
+                    case 3: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /**
+     * @export Make_Contract_transaction_by_Crypto.json
+     * @param [*org_tx]
+     * @returns [Promise<sent_tx>] { hash: string }
+     */
+    Feature.prototype.makeContractTxByCrypto = function (org_tx) {
+        return __awaiter(this, void 0, void 0, function () {
+            var cor, unsigned_tx, signed_tx, tx_result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        cor = new api_1.default(this._fetch, this.endpoint, this.fetch_type);
+                        return [4 /*yield*/, cor.makeUnsignedContractTx(org_tx.tx)];
+                    case 1:
+                        unsigned_tx = _a.sent();
+                        return [4 /*yield*/, this.signTxByCrypto({
+                                unsignedTx: {
+                                    tx: unsigned_tx.tx,
+                                    rawMsgs: unsigned_tx.rawMsgs
+                                },
+                                crypto: org_tx.crypto,
+                                pwd: org_tx.pwd
+                            })];
+                    case 2:
+                        signed_tx = _a.sent();
+                        return [4 /*yield*/, cor.sendTx(signed_tx)];
                     case 3:
                         tx_result = _a.sent();
-                        return [2 /*return*/, tx_result];
+                        return [2 /*return*/, { hash: tx_result.hash, contractAddr: unsigned_tx.contract_addr }];
+                }
+            });
+        });
+    };
+    /**
+     * @export Call_Contract
+     * @param [*org_tx]
+     * @returns [Promise<sent_tx>] { result: string }
+     */
+    Feature.prototype.callContract = function (callParams) {
+        return __awaiter(this, void 0, void 0, function () {
+            var cor, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        cor = new api_1.default(this._fetch, this.endpoint, this.fetch_type);
+                        return [4 /*yield*/, cor.callContract(callParams)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, { result: result.output }];
                 }
             });
         });

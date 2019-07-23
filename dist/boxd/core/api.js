@@ -51,20 +51,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var bn_js_1 = __importDefault(require("bn.js"));
 var fetch_1 = require("../util/fetch");
 var privatekey_1 = __importDefault(require("../util/crypto/privatekey"));
+var util_1 = __importDefault(require("./tx/util"));
 /**
  * @class [Api]
  * @extends Fetch
- * @constructs _fetch // user incoming
- * @constructs endpoint string // user incoming
+ * @constructs _fetch # user incoming
+ * @constructs endpoint string # user incoming
  */
 var Api = /** @class */ (function (_super) {
     __extends(Api, _super);
     function Api(_fetch, endpoint, fetch_type) {
         return _super.call(this, _fetch, endpoint, fetch_type) || this;
     }
-    // Block
+    /* Block */
     Api.prototype.getNodeInfo = function () {
         return _super.prototype.fetch.call(this, '/ctl/getnodeinfo');
     };
@@ -76,21 +78,15 @@ var Api = /** @class */ (function (_super) {
     };
     Api.prototype.getBlockByHeight = function (block_height) {
         return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
+            var block_hash;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getBlockHashByHeight(block_height)
-                            .then(function (block_hash) {
-                            // console.log('getBlockHashByHeight res:', block_hash)
-                            return _super.prototype.fetch.call(_this, '/ctl/getblock', {
+                    case 0: return [4 /*yield*/, this.getBlockHashByHeight(block_height)];
+                    case 1:
+                        block_hash = _a.sent();
+                        return [2 /*return*/, _super.prototype.fetch.call(this, '/ctl/getblock', {
                                 blockHash: block_hash.hash
-                            });
-                        })
-                            .catch(function (err) {
-                            console.log('getBlockHashByHeight Error:', err);
-                            throw new Error('getBlockHashByHeight Error');
-                        })];
-                    case 1: return [2 /*return*/, _a.sent()];
+                            })];
                 }
             });
         });
@@ -100,21 +96,15 @@ var Api = /** @class */ (function (_super) {
     };
     Api.prototype.getBlockHeaderByHeight = function (block_height) {
         return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
+            var block_hash;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getBlockHashByHeight(block_height)
-                            .then(function (block_hash) {
-                            // console.log('getBlockHashByHeight res:', block_hash)
-                            return _super.prototype.fetch.call(_this, '/ctl/getblockheader', {
+                    case 0: return [4 /*yield*/, this.getBlockHashByHeight(block_height)];
+                    case 1:
+                        block_hash = _a.sent();
+                        return [2 /*return*/, _super.prototype.fetch.call(this, '/ctl/getblockheader', {
                                 blockHash: block_hash.hash
-                            });
-                        })
-                            .catch(function (err) {
-                            console.log('getBlockHashByHeight Error:', err);
-                            throw new Error('getBlockHashByHeight Error');
-                        })];
-                    case 1: return [2 /*return*/, _a.sent()];
+                            })];
                 }
             });
         });
@@ -125,11 +115,14 @@ var Api = /** @class */ (function (_super) {
     Api.prototype.viewBlockDetail = function (hash) {
         return _super.prototype.fetch.call(this, '/block/detail', { hash: hash });
     };
-    // Split
+    Api.prototype.getNonce = function (addr) {
+        return _super.prototype.fetch.call(this, '/account/nonce', { addr: addr });
+    };
+    /* Split */
     Api.prototype.makeUnsignedSplitAddrTx = function (split_addr_tx) {
         return _super.prototype.fetch.call(this, '/tx/makeunsignedtx/splitaddr', split_addr_tx);
     };
-    // Token
+    /* Token */
     Api.prototype.makeUnsignedTokenIssueTx = function (token_issue_tx) {
         return _super.prototype.fetch.call(this, '/tx/makeunsignedtx/token/issue', token_issue_tx);
     };
@@ -143,8 +136,8 @@ var Api = /** @class */ (function (_super) {
                         return [4 /*yield*/, _super.prototype.fetch.call(this, '/tx/gettokenbalance', token)];
                     case 1:
                         balances = _a.sent();
-                        return [4 /*yield*/, balances.balances.map(function (item) {
-                                return Number(item);
+                        return [4 /*yield*/, balances.balances.map(function (balance) {
+                                return new bn_js_1.default(balance, 10).toString();
                             })];
                     case 2:
                         arr_balances = _a.sent();
@@ -161,8 +154,8 @@ var Api = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, _super.prototype.fetch.call(this, '/tx/gettokenbalance', tokens)];
                     case 1:
                         balances = _a.sent();
-                        return [4 /*yield*/, balances.balances.map(function (item) {
-                                return Number(item);
+                        return [4 /*yield*/, balances.balances.map(function (balance) {
+                                return new bn_js_1.default(balance, 10).toString();
                             })];
                     case 2:
                         arr_balances = _a.sent();
@@ -174,15 +167,15 @@ var Api = /** @class */ (function (_super) {
     Api.prototype.makeUnsignedTokenTx = function (token_transfer_tx) {
         return _super.prototype.fetch.call(this, '/tx/makeunsignedtx/token/transfer', token_transfer_tx);
     };
-    Api.prototype.fetchTokenUtxos = function (fetch_utxos_req) {
-        return _super.prototype.fetch.call(this, '/todo', fetch_utxos_req);
+    /*   public fetchTokenUtxos(fetch_utxos_req: TxRequest.FetchUtxosReq) {
+      return super.fetch('/todo', fetch_utxos_req)
+    } */
+    /* Transaction */
+    Api.prototype.faucet = function (acc_info) {
+        return _super.prototype.fetch.call(this, '/faucet/claim', acc_info);
     };
-    // TX
-    Api.prototype.faucet = function (req) {
-        return _super.prototype.fetch.call(this, '/faucet/claim', req);
-    };
-    Api.prototype.makeUnsignedTx = function (tx) {
-        return _super.prototype.fetch.call(this, '/tx/makeunsignedtx', tx);
+    Api.prototype.makeUnsignedTx = function (org_tx) {
+        return _super.prototype.fetch.call(this, '/tx/makeunsignedtx', org_tx);
     };
     Api.prototype.signTxByPrivKey = function (unsigned_tx) {
         var _privKey = unsigned_tx.privKey;
@@ -203,8 +196,8 @@ var Api = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, _super.prototype.fetch.call(this, '/tx/getbalance', { addrs: [addr] })];
                     case 1:
                         balances = _a.sent();
-                        return [4 /*yield*/, balances.balances.map(function (item) {
-                                return Number(item);
+                        return [4 /*yield*/, balances.balances.map(function (balance) {
+                                return new bn_js_1.default(balance, 10).toString();
                             })];
                     case 2:
                         arr_balances = _a.sent();
@@ -221,8 +214,8 @@ var Api = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, _super.prototype.fetch.call(this, '/tx/getbalance', { addrs: addrs })];
                     case 1:
                         balances = _a.sent();
-                        return [4 /*yield*/, balances.balances.map(function (item) {
-                                return Number(item);
+                        return [4 /*yield*/, balances.balances.map(function (balance) {
+                                return new bn_js_1.default(balance, 10).toString();
                             })];
                     case 2:
                         arr_balances = _a.sent();
@@ -231,78 +224,82 @@ var Api = /** @class */ (function (_super) {
             });
         });
     };
-    Api.prototype.fetchUtxos = function (fetch_utxos_req) {
-        return _super.prototype.fetch.call(this, '/tx/fetchutxos', fetch_utxos_req);
+    Api.prototype.fetchUtxos = function (utxos_req) {
+        return _super.prototype.fetch.call(this, '/tx/fetchutxos', utxos_req);
     };
-    // TODO Raw
-    Api.prototype.makeUnsignedContractTx = function (tx) {
-        return _super.prototype.fetch.call(this, '/todo', tx);
-    };
-    Api.prototype.createRawTx = function (raw) {
+    /**
+     * @func create_raw_tx
+     * @param [*raw]
+     * @param [?is_raw] boolean # is send raw tx ?
+     * @branch [next__sendTx_||_sendRawTx]
+     * @step [fetchUtxos->makeUnsignTx->signTxByPrivKey]
+     * @returns [signed_tx]
+     */
+    Api.prototype.createRawTx = function (raw, is_raw) {
         return __awaiter(this, void 0, void 0, function () {
-            var addr, to, fee, privKey, sum;
-            var _this = this;
+            var addr, to, fee, privKey, total_to, utxo_res, utxo_list, unsigned_tx;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         addr = raw.addr, to = raw.to, fee = raw.fee, privKey = raw.privKey;
-                        sum = 0;
-                        return [4 /*yield*/, Object.keys(to).forEach(function (item) {
-                                sum += Number(to[item]);
+                        total_to = new bn_js_1.default(0, 10);
+                        // fetch utxos
+                        return [4 /*yield*/, Object.keys(to).forEach(function (addr) {
+                                total_to = total_to.add(new bn_js_1.default(to[addr], 10));
                             })];
                     case 1:
+                        // fetch utxos
                         _a.sent();
-                        sum += Number(fee);
-                        console.log('fetchUtxos:', addr, sum);
-                        return [4 /*yield*/, this.fetchUtxos({ addr: addr, amount: sum })
-                                .then(function (res) { return __awaiter(_this, void 0, void 0, function () {
-                                var utxos;
-                                var _this = this;
-                                return __generator(this, function (_a) {
-                                    switch (_a.label) {
-                                        case 0:
-                                            console.log('fetchUtxos res:', res);
-                                            if (!(res.code === 0)) return [3 /*break*/, 2];
-                                            utxos = res.utxos;
-                                            return [4 /*yield*/, _super.prototype.fetch.call(this, '/tx/getrawtransaction', {
-                                                    from: addr,
-                                                    to: to,
-                                                    fee: fee,
-                                                    utxos: utxos
-                                                })
-                                                    .then(function (res) {
-                                                    console.log('unsigned_tx:', res);
-                                                    console.log('privKey:', privKey);
-                                                    // TODO verify
-                                                    return _this.signTxByPrivKey({
-                                                        unsignedTx: {
-                                                            tx: res.tx,
-                                                            rawMsgs: res.rawMsgs
-                                                        },
-                                                        privKey: privKey
-                                                    });
-                                                })];
-                                        case 1:
-                                            _a.sent();
-                                            return [3 /*break*/, 3];
-                                        case 2: throw new Error('createRawTx Error');
-                                        case 3: return [2 /*return*/];
-                                    }
-                                });
-                            }); })
-                                .catch(function (err) {
-                                console.log('createRawTx Error:', err);
-                                throw new Error('createRawTx Error');
-                            })];
+                        total_to = total_to.add(new bn_js_1.default(fee, 10));
+                        return [4 /*yield*/, this.fetchUtxos({
+                                addr: addr,
+                                amount: total_to.toString()
+                            })
+                            // console.log('fetchUtxos res :', JSON.stringify(utxo_res))
+                        ];
                     case 2:
-                        _a.sent();
-                        return [2 /*return*/];
+                        utxo_res = _a.sent();
+                        if (!(utxo_res['code'] === 0)) return [3 /*break*/, 5];
+                        utxo_list = utxo_res.utxos;
+                        return [4 /*yield*/, util_1.default.makeUnsignedTxHandle({
+                                from: addr,
+                                to_map: to,
+                                fee: fee,
+                                utxo_list: utxo_list,
+                                is_raw: is_raw
+                            })
+                            // console.log('unsigned_tx :', JSON.stringify(unsigned_tx))
+                            // sign tx by privKey
+                        ];
+                    case 3:
+                        unsigned_tx = _a.sent();
+                        return [4 /*yield*/, this.signTxByPrivKey({
+                                unsignedTx: unsigned_tx.tx_json,
+                                privKey: privKey,
+                                protocalTx: unsigned_tx.protocalTx
+                            })];
+                    case 4: 
+                    // console.log('unsigned_tx :', JSON.stringify(unsigned_tx))
+                    // sign tx by privKey
+                    return [2 /*return*/, _a.sent()];
+                    case 5: throw new Error('Fetch utxos Error');
                 }
             });
         });
     };
+    // TODO
     Api.prototype.sendRawTx = function (raw_tx) {
-        return _super.prototype.fetch.call(this, '/tx/sendrawtransaction', { raw_tx: raw_tx });
+        return _super.prototype.fetch.call(this, '/tx/sendrawtransaction', { tx: raw_tx });
+    };
+    /* Contract */
+    Api.prototype.makeUnsignedContractTx = function (org_tx) {
+        return _super.prototype.fetch.call(this, '/tx/makeunsignedtx/contract', org_tx);
+    };
+    Api.prototype.callContract = function (org_tx) {
+        return _super.prototype.fetch.call(this, '/contract/call', org_tx);
+    };
+    Api.prototype.getLogs = function (logs_req) {
+        return _super.prototype.fetch.call(this, '/contract/getLogs', logs_req);
     };
     return Api;
 }(fetch_1.Fetch));

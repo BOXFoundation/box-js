@@ -85,38 +85,48 @@ var HttpError = /** @class */ (function (_super) {
     return HttpError;
 }(Error));
 /**
- * @func http-Fetch-function
- * @param [*body] object  // request body
- * @returns [result]  // response => result
+ * @func Http_handler_of_Fetch
+ * @param [*path] # request url
+ * @param [*body] # request body
+ * @param [*_fetch]
+ * @param [*endpoint]
+ * @returns [result]  # response -> result
  */
 var httpFetch = function (path, body, _fetch, endpoint) { return __awaiter(_this, void 0, void 0, function () {
     var response, result, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 4, , 5]);
+                _a.trys.push([0, 6, , 7]);
                 return [4 /*yield*/, _fetch(endpoint + '/v1' + path, {
                         body: JSON.stringify(body),
                         method: 'POST'
                     })
                     // console.log('[fetch] response:', response)
-                    // handle
+                    /* handle */
                 ];
             case 1:
                 // console.log(`[fetch] ${path}:\n`, JSON.stringify(body))
-                // request
+                /* request */
                 response = _a.sent();
-                if (!response) return [3 /*break*/, 3];
-                if (response.status >= 400) {
-                    // console.log('[fetch] Error: status >= 400')
-                    result.code = response.status;
-                    result.statusText = response.statusText;
-                    throw new HttpError(result);
-                }
-                return [4 /*yield*/, response.json()
-                    // console.log('[fetch] Result:', result)
-                ];
+                if (!response) return [3 /*break*/, 5];
+                if (!(response.status >= 400)) return [3 /*break*/, 3];
+                console.log('[fetch] Error: status >= 400 ' +
+                    response.status +
+                    ', ' +
+                    response.statusText);
+                return [4 /*yield*/, response.json()];
             case 2:
+                result = _a.sent();
+                console.log(result);
+                return [2 /*return*/, result
+                    // result.code = response.status
+                    // result.statusText = response.statusText
+                ];
+            case 3: return [4 /*yield*/, response.json()
+                // console.log('[fetch] Result:', result)
+            ];
+            case 4:
                 result = _a.sent();
                 // console.log('[fetch] Result:', result)
                 if (result.code) {
@@ -133,11 +143,11 @@ var httpFetch = function (path, body, _fetch, endpoint) { return __awaiter(_this
                     throw new HttpError(result);
                 }
                 return [2 /*return*/, result];
-            case 3: return [3 /*break*/, 5];
-            case 4:
+            case 5: return [3 /*break*/, 7];
+            case 6:
                 err_1 = _a.sent();
                 throw new HttpError(err_1);
-            case 5: return [2 /*return*/];
+            case 7: return [2 /*return*/];
         }
     });
 }); };
@@ -145,10 +155,10 @@ var rpcFetch = function (path, body, _fetch, endpoint) {
     console.log('rpcFetch:', path, body, _fetch, endpoint);
 };
 /**
- * @class [Http]
+ * @class [Fetch]
  * @constructs _fetch  // user incoming
  * @constructs endpoint string // user incoming
- * @constructs path string  // URL path
+ * @constructs fetch_type string  // http || rpc
  */
 var Fetch = /** @class */ (function () {
     function Fetch(_fetch, endpoint, fetch_type) {

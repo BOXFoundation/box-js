@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var tiny_secp256k1_1 = __importDefault(require("tiny-secp256k1"));
 var util_1 = __importDefault(require("../util"));
-var OP_CODE_TYPE = 'hex';
+var OPCODE_TYPE = 'hex';
 var Ecpair;
 (function (Ecpair) {
     function canonicalizeInt(b) {
@@ -51,12 +51,12 @@ var Ecpair;
         var length = 6 + rb.length + sb.length;
         var b1 = Buffer.alloc(4);
         b1[0] = 0x30;
-        b1[1] = util_1.default.getNumberByte(length - 2);
+        b1[1] = util_1.default.getBufFromNumber(length - 2);
         b1[2] = 0x02;
-        b1[3] = util_1.default.getNumberByte(rb.length);
+        b1[3] = util_1.default.getBufFromNumber(rb.length);
         var b3 = Buffer.alloc(2);
         b3[0] = 0x02;
-        b3[1] = util_1.default.getNumberByte(sb.length);
+        b3[1] = util_1.default.getBufFromNumber(sb.length);
         var allBytes = Buffer.concat([b1, rb, b3, sb]);
         return allBytes;
     };
@@ -64,7 +64,7 @@ var Ecpair;
         return tiny_secp256k1_1.default.verify(hash, this.publicKey, signature);
     };
     Ecpair.getECfromPrivKey = function (privkey, options) {
-        privkey = Buffer.from(privkey, OP_CODE_TYPE);
+        privkey = Buffer.from(privkey, OPCODE_TYPE);
         if (!tiny_secp256k1_1.default.isPrivate(privkey))
             throw new TypeError('Private key not in range [1, n)');
         return new ECPair(privkey, null, options);

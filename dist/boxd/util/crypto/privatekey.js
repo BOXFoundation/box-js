@@ -44,55 +44,87 @@ var hash_1 = __importDefault(require("./hash"));
 var ecpair_1 = __importDefault(require("./ecpair"));
 var util_1 = __importDefault(require("../util"));
 var crypto_json_1 = __importDefault(require("./crypto-json"));
-var OP_CODE_TYPE = 'hex';
+var OPCODE_TYPE = 'hex';
 var prefix = {
     P2PKH: '1326',
     P2SH: '132b'
 };
 /**
  * @class [PrivateKey]
- * @constructs [privKey]
+ * @constructs privKey
  */
 var PrivateKey = /** @class */ (function () {
     function PrivateKey(privkey_str) {
         var _this = this;
         /**
-         * @func get-CryptoJson-by-PrivateKey&Password
-         * @param [*pwd] string
+         * @func Get_CryptoJson_by_PrivateKey_&_Password
+         * @param [*pwd]
          * @returns [cryptoJSON]
+         * @memberof PrivateKey   *
          */
         this.getCryptoByPrivKey = function (pwd) {
             return crypto_json_1.default.getCryptoByPrivKey(_this.privKey, pwd);
         };
         /**
-         * @export sign-Transaction-by-PrivKey
-         * @param [*unsigned_tx] SignedTxByPrivKeyReq
+         * @export Sign_Transaction_by_PrivKey
+         * @param [*unsigned_tx]
+         * @branch [next__sendTx_||_sendRawTx]
          * @returns [tx]
+         * @memberof PrivateKey   *
          */
         this.signTxByPrivKey = function (unsigned_tx) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, tx, rawMsgs, _privKey, idx, sigHashBuf, eccPrivKey, signBuf, scriptSig;
+            var _a, tx, rawMsgs, _privKey, idx, sigHashBuf, eccPrivKey, signBuf, scriptSig, scriptsig_bs64;
             return __generator(this, function (_b) {
-                _a = unsigned_tx.unsignedTx, tx = _a.tx, rawMsgs = _a.rawMsgs;
-                _privKey = unsigned_tx.privKey;
-                // vin handler
-                for (idx = 0; idx < tx.vin.length; idx++) {
-                    sigHashBuf = util_1.default.getSignHash(rawMsgs[idx]);
-                    eccPrivKey = _privKey && ecpair_1.default.getECfromPrivKey(_privKey);
-                    signBuf = eccPrivKey.sign(sigHashBuf).sig;
-                    scriptSig = util_1.default.signatureScript(signBuf, this.privKey.toPublicKey().toBuffer());
-                    tx.vin[idx].script_sig = scriptSig.toString('base64');
+                switch (_b.label) {
+                    case 0:
+                        _a = unsigned_tx.unsignedTx, tx = _a.tx, rawMsgs = _a.rawMsgs;
+                        _privKey = unsigned_tx.privKey;
+                        idx = 0;
+                        _b.label = 1;
+                    case 1:
+                        if (!(idx < tx.vin.length)) return [3 /*break*/, 4];
+                        sigHashBuf = util_1.default.getSignHash(rawMsgs[idx]);
+                        eccPrivKey = _privKey && ecpair_1.default.getECfromPrivKey(_privKey);
+                        signBuf = eccPrivKey.sign(sigHashBuf).sig;
+                        return [4 /*yield*/, util_1.default.signatureScript(signBuf, this.privKey.toPublicKey().toBuffer())];
+                    case 2:
+                        scriptSig = _b.sent();
+                        scriptsig_bs64 = scriptSig.toString('base64');
+                        tx.vin[idx].script_sig = scriptsig_bs64;
+                        if (unsigned_tx.protocalTx) {
+                            unsigned_tx.protocalTx.getVinList()[idx].setScriptSig(scriptsig_bs64);
+                        }
+                        _b.label = 3;
+                    case 3:
+                        idx++;
+                        return [3 /*break*/, 1];
+                    case 4:
+                        if (unsigned_tx.protocalTx) {
+                            return [2 /*return*/, unsigned_tx.protocalTx.serializeBinary().toString(OPCODE_TYPE)];
+                        }
+                        else {
+                            return [2 /*return*/, tx];
+                        }
+                        return [2 /*return*/];
                 }
-                return [2 /*return*/, tx];
             });
         }); };
+        /**
+         * @func get_Address_by_PrivKey
+         * @memberof PrivateKey
+         */
         this.getAddrByPrivKey = function (prefixHex) {
             var sha256Content = prefixHex + _this.privKey.pkh;
-            var checksum = hash_1.default.sha256(hash_1.default.sha256(Buffer.from(sha256Content, OP_CODE_TYPE))).slice(0, 4);
-            var content = sha256Content.concat(checksum.toString(OP_CODE_TYPE));
-            return bs58_1.default.encode(Buffer.from(content, OP_CODE_TYPE));
+            var checksum = hash_1.default.sha256(hash_1.default.sha256(Buffer.from(sha256Content, OPCODE_TYPE))).slice(0, 4);
+            var content = sha256Content.concat(checksum.toString(OPCODE_TYPE));
+            return bs58_1.default.encode(Buffer.from(content, OPCODE_TYPE));
         };
+        /**
+         * @func get_PubKeyHash_by_PrivKey
+         * @memberof PrivateKey
+         */
         this.getPubKeyHashByPrivKey = function () {
-            return hash_1.default.hash160(_this.privKey.toPublicKey().toBuffer()).toString(OP_CODE_TYPE);
+            return hash_1.default.hash160(_this.privKey.toPublicKey().toBuffer()).toString(OPCODE_TYPE);
         };
         this.privKey = new bitcore_lib_1.default.PrivateKey(privkey_str);
         this.privKey.signMsg = function (sigHash) {
