@@ -1,5 +1,5 @@
 import BN from 'bn.js'
-import block_pb from '../../../protobuf/block_pb.js'
+import block_pb from '../../../protobuf/js/block_pb.js'
 import Account from '../../account/account'
 import CommonUtil from '../../util/util'
 import TxRequest from './request'

@@ -12,9 +12,9 @@ const OPCODE_TYPE = 'hex'
  */
 export default class Account {
   /**
-   * @func Dump-P2PKH-address-from-privateKey
-   * @param [*privKey] string | Buffer
-   * @returns [P2PKH_Address] string
+   * @func Dump_P2PKH_address_from_PrivateKey
+   * @param [*privKey]
+   * @returns [P2PKH_Address]
    * @memberof Account
    */
   public dumpAddrFromPrivKey(privKey: string | Buffer) {
@@ -33,9 +33,9 @@ export default class Account {
   }
 
   /**
-   * @func Dump-PublicKey-from-PrivateKey
-   * @param [*privKey] string | Buffer
-   * @returns [PublicKey] string
+   * @func Dump_PublicKey_from_PrivateKey
+   * @param [*privKey]
+   * @returns [PublicKey]
    * @memberof Account
    */
   public dumpPubKeyFromPrivKey(privKey: string | Buffer) {
@@ -54,10 +54,10 @@ export default class Account {
   }
 
   /**
-   * @func Dump-Crypto-from-PrivateKey
-   * @param [*privKey] string | Buffer
-   * @param [*pwd] string
-   * @returns [CryptoJson] CryptoJson
+   * @func Dump_Crypto_from_PrivateKey
+   * @param [*privKey]
+   * @param [*pwd]
+   * @returns [CryptoJson]
    * @memberof Account
    */
   public dumpCryptoFromPrivKey(privKey: string | Buffer, pwd: string) {
@@ -76,9 +76,9 @@ export default class Account {
   }
 
   /**
-   * @func Dump-PublicKey-Hash-from-PrivateKey
-   * @param [*privKey] string | Buffer
-   * @returns [PublicKey_hash] string
+   * @func Dump_PublicKey_Hash_from_PrivateKey
+   * @param [*privKey]
+   * @returns [PublicKey_hash]
    * @memberof Account
    */
   public dumpPubKeyHashFromPrivKey(privKey: string | Buffer) {
@@ -97,9 +97,9 @@ export default class Account {
   }
 
   /**
-   * @func dump-PublicKey-Hash-from-Address
-   * @param [*addr] string
-   * @returns [PublicKey] string
+   * @func Dump_PublicKey_Hash_from_Address
+   * @param [*addr]
+   * @returns [PublicKey]
    * @memberof Account
    */
   public dumpPubKeyHashFromAddr(addr: string) {
@@ -107,10 +107,10 @@ export default class Account {
   }
 
   /**
-   * @func Dump-PrivateKey-from-Crypto
-   * @param [*key_store] CryptoJson
-   * @param [*pwd] string
-   * @returns [PrivateKey] string
+   * @func Dump_PrivateKey_from_Crypto
+   * @param [*cryptoJSON]
+   * @param [*pwd]
+   * @returns [PrivateKey]
    * @memberof Account
    */
   public async dumpPrivKeyFromCrypto(
@@ -152,10 +152,10 @@ export default class Account {
   }
 
   /**
-   * @func get-Crypto-Account
-   * @param [*pwd] string
-   * @param [*privateKey_str] string
-   * @returns {} Crypto
+   * @func Get_account_Crypto_by_Password
+   * @param [*pwd]
+   * @param [*privKey]
+   * @returns [Crypto]
    * @memberof Account
    */
   public getCryptoByPwd(pwd: string, privKey?: string | Buffer) {

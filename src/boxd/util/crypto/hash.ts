@@ -423,25 +423,25 @@ const keccak = bits => str => {
 }
 
 namespace Hash {
-  export const ripemd160 = (buf: any) => {
+  export const ripemd160 = (buf) => {
     return createHash('rmd160')
       .update(buf)
       .digest()
   }
 
-  export const sha1 = (buf: any) => {
+  export const sha1 = (buf) => {
     return createHash('sha1')
       .update(buf)
       .digest()
   }
 
-  export const sha256 = (buf: any) => {
+  export const sha256 = (buf) => {
     return createHash('sha256')
       .update(buf)
       .digest()
   }
 
-  export const hash160 = (buf: any) => {
+  export const hash160 = (buf) => {
     return ripemd160(sha256(buf))
   }
 

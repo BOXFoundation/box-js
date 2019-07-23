@@ -61,7 +61,7 @@ namespace Interface {
 
   // TX
   export interface TX {
-    data?: any;
+    data?;
     lock_time?: string;
     magic?: number;
     version?: number;
@@ -88,7 +88,7 @@ namespace Interface {
   export interface SignedTxByPrivKeyReq {
     unsignedTx: UnsignedTx;
     privKey: string;
-    protocalTx: any;
+    protocalTx;
   }
 }
 

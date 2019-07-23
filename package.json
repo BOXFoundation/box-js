@@ -5,7 +5,7 @@
   "main": "dist/boxd/boxd.js",
   "types": "./types/index.d.ts",
   "scripts": {
-    "test": "jest --coverage --colors",
+    "test": "jest --colors",
     "lint": "eslint --ext .js --ext .ts src",
     "lint:fix": "eslint --fix --ext .js --fix --ext .ts src",
     "build": "gulp",

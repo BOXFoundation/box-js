@@ -14,7 +14,7 @@ namespace Ecpair {
     return b
   }
 
-  function ECPair(d: any, Q: any, options: { compressed?: any }) {
+  function ECPair(d, Q, options: { compressed? }) {
     options = options || {}
 
     this.compressed =
@@ -44,7 +44,7 @@ namespace Ecpair {
     return { sig: this.toCompact(signature), signature }
   }
 
-  ECPair.prototype.toCompact = function(signature: any) {
+  ECPair.prototype.toCompact = function(signature) {
     const rb = canonicalizeInt(signature.slice(0, 32))
     const sb = canonicalizeInt(signature.slice(32))
 
@@ -64,11 +64,11 @@ namespace Ecpair {
     return allBytes
   }
 
-  ECPair.prototype.verify = function(hash: any, signature: any) {
+  ECPair.prototype.verify = function(hash, signature) {
     return ecc.verify(hash, this.publicKey, signature)
   }
 
-  export const getECfromPrivKey = function(privkey, options?: any) {
+  export const getECfromPrivKey = function(privkey, options?) {
     privkey = Buffer.from(privkey, OPCODE_TYPE)
     if (!ecc.isPrivate(privkey))
       throw new TypeError('Private key not in range [1, n)')

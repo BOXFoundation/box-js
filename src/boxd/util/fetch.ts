@@ -37,29 +37,37 @@ class HttpError extends Error {
 }
 
 /**
- * @func http-Fetch-function
- * @param [*body] object  // request body
- * @returns [result]  // response => result
+ * @func Http_handler_of_Fetch
+ * @param [*path] # request url
+ * @param [*body] # request body
+ * @param [*_fetch]
+ * @param [*endpoint]
+ * @returns [result]  # response -> result
  */
 const httpFetch = async (path, body, _fetch, endpoint) => {
   let response
   let result
   try {
     // console.log(`[fetch] ${path}:\n`, JSON.stringify(body))
-    // request
+    /* request */
     response = await _fetch(endpoint + '/v1' + path, {
       body: JSON.stringify(body),
       method: 'POST'
     })
     // console.log('[fetch] response:', response)
-    // handle
+    /* handle */
     if (response) {
       if (response.status >= 400) {
-        console.log('[fetch] Error: status >= 400 ' + response.status + ', ' + response.statusText)
+        console.log(
+          '[fetch] Error: status >= 400 ' +
+            response.status +
+            ', ' +
+            response.statusText
+        )
         result = await response.json()
         console.log(result)
         return result
-      
+
         // result.code = response.status
         // result.statusText = response.statusText
         throw new HttpError(result)
@@ -78,6 +86,7 @@ const httpFetch = async (path, body, _fetch, endpoint) => {
       if (!response.ok) {
         throw new HttpError(result)
       }
+
       return result
     }
   } catch (err) {
@@ -90,10 +99,10 @@ const rpcFetch = (path, body, _fetch, endpoint) => {
 }
 
 /**
- * @class [Http]
+ * @class [Fetch]
  * @constructs _fetch  // user incoming
  * @constructs endpoint string // user incoming
- * @constructs path string  // URL path
+ * @constructs fetch_type string  // http || rpc
  */
 export class Fetch {
   public _fetch

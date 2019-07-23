@@ -3,7 +3,7 @@ import UtilInterface from '../util/interface'
 
 export default class AccountManager {
   public acc_list: { [acc_addr: string]: UtilInterface.Account }
-  public updateAccount: any
+  public updateAccount
 
   public constructor(
     acc_list: { [acc_addr: string]: UtilInterface.Account },
@@ -16,9 +16,9 @@ export default class AccountManager {
   }
 
   /**
-   * @func New-PrivateKey-Object
-   * @param [*privkey] string
-   * @returns [PrivateKey] object
+   * @func New_PrivateKey_Object
+   * @param [*privkey]
+   * @returns [privateKey]
    * @memberof AccountManager
    */
   public newPrivateKey(privkey: string): object {
@@ -27,12 +27,11 @@ export default class AccountManager {
   }
 
   /**
-   * @func Add-New-Account-to-Account-List
-   * @param {*cryptoJSON} { address ... }
-   * @returns void
+   * @func Add_New_Account_to_Account_List
+   * @param {*cryptoJSON}
    * @memberof AccountManager
    */
-  public addToAccList(cryptoJSON: UtilInterface.Crypto, otherInfo: any): void {
+  public addToAccList(cryptoJSON: UtilInterface.Crypto, otherInfo): void {
     const address = cryptoJSON.address
     const updateTime = Date.now()
     /*     console.log('acc_list:', this.acc_list)
@@ -51,8 +50,8 @@ export default class AccountManager {
   }
 
   /**
-   * @func Sort-Account-List
-   * @returns [AccountList] object
+   * @func Sort_Account_List
+   * @returns [account_list]
    * @memberof AccountManager
    */
   public sortAccList(): object {

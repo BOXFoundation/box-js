@@ -33,7 +33,7 @@ namespace Request {
     from: number;
     to: number;
     addresses: string[];
-    topics: any;
+    topics;
   }
 }
 

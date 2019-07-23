@@ -28,7 +28,7 @@ namespace Request {
 
   export interface FetchUtxosReq {
     addr: string;
-    amount: any;
+    amount;
   }
 
   export interface MakeBoxTxByCryptoReq {

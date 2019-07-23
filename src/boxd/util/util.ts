@@ -23,6 +23,7 @@ const PREFIXSTR2BYTES = {
   b2: Buffer.from([0x13, 0x28]),
   b3: Buffer.from([0x13, 0x2a])
 }
+
 /* keccak = BEGIN = */
 const KECCAK256_NULL_S =
   '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470'
@@ -44,6 +45,7 @@ const hexToBytes = hex => {
   return bytes
 }
 /* keccak = END = */
+
 const _flattenTypes = function _flattenTypes(includeTuple, puts) {
   let types: any = []
   puts.forEach(function(param) {
@@ -80,7 +82,7 @@ namespace Util {
   export const getBufFromNumber = (num: number) => num & 255
 
   /**
-   * @export put-Uint16
+   * @export Put_Uint16
    * @param [*bytes]
    * @param [*uint16]
    * @returns [bytes]
@@ -106,7 +108,7 @@ namespace Util {
     public OP_CHECK_SIG = OP_CHECK_SIG
     public opcode
 
-    public constructor(org_code: any) {
+    public constructor(org_code) {
       this.opcode = Buffer.from(org_code, OPCODE_TYPE)
     }
 
