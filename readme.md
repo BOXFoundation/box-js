@@ -1,35 +1,39 @@
 # boxd-js
 
+![contentbox](https://contentbox.one/img/logo-top.png)
+
 A Javascript implementation of BOX Payout blockchain on NodeJS or Browser.
 
-## NPM
+## Npm
 
 The official distribution package can be found at [npm](https://www.npmjs.com/package/boxdjs).
 
-## Setup
+## Install
 
-### NPM Instal
+### Npm
 
 ```
-`npm i boxdjs`
+npm i boxdjs
 ```
 
-### CDN Install
+### CDN
 
 ```
 <script src="https://todo"></script>
 ```
 
-## Build (nodejs & browser)
+## Setup
+
+### Build (nodejs & browser)
 
 ```
-`npm run build`
+npm run build
 ```
 
-## Test (jest)
+### Test (Jest)
 
 ```
-`npm run test`
+npm run test
 ```
 
 ## Project Structure
