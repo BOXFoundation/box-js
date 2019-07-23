@@ -12,8 +12,8 @@ import TxUtil from './tx/util'
 /**
  * @class [Feature]
  * @extends Fetch
- * @constructs _fetch // user incoming
- * @constructs endpoint string // user incoming
+ * @constructs _fetch # user incoming
+ * @constructs endpoint string # user incoming
  */
 export default class Feature extends Fetch {
   public constructor(_fetch, endpoint: string, fetch_type: string) {
@@ -21,7 +21,7 @@ export default class Feature extends Fetch {
   }
 
   /**
-   * @export Sign-Transaction-by-CryptoJson
+   * @export Sign_transaction_by_Crypto.json
    * @param [*unsigned_tx]
    * @returns [signed_tx]
    */
@@ -34,15 +34,16 @@ export default class Feature extends Fetch {
     const unsigned_tx_p = {
       privKey,
       unsignedTx: unsigned_tx.unsignedTx,
-      tx_proto: null
+      protocalTx: null
     }
     const privk = new PrivateKey(privKey)
     return privk.signTxByPrivKey(unsigned_tx_p)
   }
 
   /**
-   * @export Make-Box-Transaction-by-Crypto.json
+   * @export Make_BOX_transaction_by_Crypto.json
    * @param [*org_tx]
+   * @step [make_privKey->fetch_utxos->make_unsigned_tx->sign_tx->send_tx]
    * @returns [Promise<sent_tx>] { hash: string }
    */
   public async makeBoxTxByCrypto(
@@ -50,41 +51,41 @@ export default class Feature extends Fetch {
   ): Promise<{ hash: string }> {
     const { from, to, amounts, fee } = org_tx.tx
     const acc = new Account()
-    // make privKey
+
+    /* make privKey */
     const privKey = await acc.dumpPrivKeyFromCrypto(org_tx.crypto, org_tx.pwd)
     let total_to = new BN(0, 10)
     let to_map = {}
 
-    // fetch utxos
+    /* fetch utxos */
     await to.forEach((item, index) => {
       to_map[item] = amounts[index]
       total_to = total_to.add(new BN(amounts[index], 10))
     })
     total_to = total_to.add(new BN(fee, 10))
-    console.log('fetchUtxos param :', from, total_to.toNumber())
+    console.log('fetchUtxos param :', from, total_to.toString())
     const cor = new Core(this._fetch, this.endpoint, this.fetch_type)
     const utxo_res = await cor.fetchUtxos({
       addr: from,
-      amount: total_to.toNumber()
+      amount: total_to.toString()
     })
     console.log('fetchUtxos res :', JSON.stringify(utxo_res))
 
     if (utxo_res['code'] === 0) {
-      // make unsigned tx
-      const utxo_list = utxo_res.utxos
-      const unsigned_tx = await TxUtil.makeUnsignTxHandle({
+      /* make unsigned tx */
+      const unsigned_tx = await TxUtil.makeUnsignedTxHandle({
         from,
         to_map,
         fee,
-        utxo_list
+        utxo_list: utxo_res.utxos
       })
-      // sign tx by privKey
+      /* sign tx by privKey */
       const signed_tx = await cor.signTxByPrivKey({
         unsignedTx: unsigned_tx.tx_json,
-        privKey,
-        tx_proto: unsigned_tx.tx_proto
+        protocalTx: unsigned_tx.protocalTx,
+        privKey
       })
-      // send tx to boxd
+      /* send tx to boxd */
       return await cor.sendTx(signed_tx)
     } else {
       throw new Error('Fetch utxos Error')
@@ -92,7 +93,7 @@ export default class Feature extends Fetch {
   }
 
   /**
-   * @export Make-Split-Transaction-by-Crypto.json
+   * @export Make_Split_transaction_by_Crypto.json
    * @param [*org_tx]
    * @returns [Promise<sent_tx>] { splitAddr: string; hash: string }
    */
@@ -114,7 +115,7 @@ export default class Feature extends Fetch {
   }
 
   /**
-   * @export Issue-Token-by-Crypto.json
+   * @export Issue_Token_by_Crypto.json
    * @param [*org_tx]
    * @returns [Promise<sent_tx>] { hash: string }
    */
@@ -135,7 +136,7 @@ export default class Feature extends Fetch {
   }
 
   /**
-   * @export Make-Token-Transaction-by-Crypto.json
+   * @export Make_Token_Transaction_by_Crypto.json
    * @param [*org_tx]
    * @returns [Promise<sent_tx>] { hash: string }
    */
@@ -156,7 +157,7 @@ export default class Feature extends Fetch {
   }
 
   /**
-   * @export Make-Contract-Transaction-by-Crypto.json
+   * @export Make_Contract_transaction_by_Crypto.json
    * @param [*org_tx]
    * @returns [Promise<sent_tx>] { hash: string }
    */
@@ -179,7 +180,7 @@ export default class Feature extends Fetch {
   }
 
   /**
-   * @export Call-Contract
+   * @export Call_Contract
    * @param [*org_tx]
    * @returns [Promise<sent_tx>] { result: string }
    */

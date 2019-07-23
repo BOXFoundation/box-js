@@ -16,8 +16,8 @@ import TxUtil from './tx/util'
 /**
  * @class [Api]
  * @extends Fetch
- * @constructs _fetch // user incoming
- * @constructs endpoint string // user incoming
+ * @constructs _fetch # user incoming
+ * @constructs endpoint string # user incoming
  */
 export default class Api extends Fetch {
   public constructor(_fetch, endpoint: string, fetch_type: string) {
@@ -97,7 +97,7 @@ export default class Api extends Fetch {
     token['addrs'] = [token.addr]
     const balances = await super.fetch('/tx/gettokenbalance', token)
     const arr_balances = await balances.balances.map(balance => {
-      return new BN(balance, 10).toNumber()
+      return new BN(balance, 10).toString()
     })
     return { balance: arr_balances[0] }
   }
@@ -107,7 +107,7 @@ export default class Api extends Fetch {
   ): Promise<{ balances: number[] }> {
     const balances = await super.fetch('/tx/gettokenbalance', tokens)
     const arr_balances = await balances.balances.map(balance => {
-      return new BN(balance, 10).toNumber()
+      return new BN(balance, 10).toString()
     })
     return { balances: arr_balances }
   }
@@ -123,14 +123,14 @@ export default class Api extends Fetch {
   } */
 
   /* Transaction */
-  public faucet(req) {
-    return super.fetch('/faucet/claim', req)
+  public faucet(acc_info) {
+    return super.fetch('/faucet/claim', acc_info)
   }
 
   public makeUnsignedTx(
-    tx: TxRequest.OriginalTxReq
+    org_tx: TxRequest.OriginalTxReq
   ): Promise<UtilInterface.UnsignedTx> {
-    return super.fetch('/tx/makeunsignedtx', tx)
+    return super.fetch('/tx/makeunsignedtx', org_tx)
   }
 
   public signTxByPrivKey(
@@ -152,7 +152,7 @@ export default class Api extends Fetch {
   public async getBalance(addr: string): Promise<{ balance: number }> {
     const balances = await super.fetch('/tx/getbalance', { addrs: [addr] })
     const arr_balances = await balances.balances.map(balance => {
-      return new BN(balance, 10).toNumber()
+      return new BN(balance, 10).toString()
     })
     return { balance: arr_balances[0] }
   }
@@ -160,7 +160,7 @@ export default class Api extends Fetch {
   public async getBalances(addrs: string[]): Promise<{ balances: number[] }> {
     const balances = await super.fetch('/tx/getbalance', { addrs })
     const arr_balances = await balances.balances.map(balance => {
-      return new BN(balance, 10).toNumber()
+      return new BN(balance, 10).toString()
     })
     return { balances: arr_balances }
   }
@@ -172,10 +172,10 @@ export default class Api extends Fetch {
   }
 
   /**
-   * @func create-raw-tx
+   * @func create_raw_tx
    * @param [*raw]
-   * @param [?is_raw] boolean // is send raw tx ?
-   * @branch [sendTx||sendRawTx]
+   * @param [?is_raw] boolean # is send raw tx ?
+   * @branch [next__sendTx_||_sendRawTx]
    * @step [fetchUtxos->makeUnsignTx->signTxByPrivKey]
    * @returns [signed_tx]
    */
@@ -188,16 +188,16 @@ export default class Api extends Fetch {
       total_to = total_to.add(new BN(to[addr], 10))
     })
     total_to = total_to.add(new BN(fee, 10))
-    console.log('fetchUtxos param :', addr, total_to.toNumber())
+    console.log('fetchUtxos param :', addr, total_to.toString())
     const utxo_res = await this.fetchUtxos({
       addr,
-      amount: total_to.toNumber()
+      amount: total_to.toString()
     })
     console.log('fetchUtxos res :', JSON.stringify(utxo_res))
     if (utxo_res['code'] === 0) {
       // make unsigned tx
       const utxo_list = utxo_res.utxos
-      let unsigned_tx = await TxUtil.makeUnsignTxHandle({
+      let unsigned_tx = await TxUtil.makeUnsignedTxHandle({
         from: addr,
         to_map: to,
         fee,
@@ -210,7 +210,7 @@ export default class Api extends Fetch {
       return await this.signTxByPrivKey({
         unsignedTx: unsigned_tx.tx_json,
         privKey,
-        tx_proto: unsigned_tx.tx_proto
+        protocalTx: unsigned_tx.protocalTx
       })
     } else {
       throw new Error('Fetch utxos Error')
@@ -224,15 +224,15 @@ export default class Api extends Fetch {
 
   /* Contract */
   public makeUnsignedContractTx(
-    tx: ContractRequest.OriginalContractReq
+    org_tx: ContractRequest.OriginalContractReq
   ): Promise<ContractResponse.UnsignedContractTx> {
-    return super.fetch('/tx/makeunsignedtx/contract', tx)
+    return super.fetch('/tx/makeunsignedtx/contract', org_tx)
   }
 
   public callContract(
-    tx: ContractRequest.CallContractReq
+    org_tx: ContractRequest.CallContractReq
   ): Promise<ContractResponse.CallContractResp> {
-    return super.fetch('/contract/call', tx)
+    return super.fetch('/contract/call', org_tx)
   }
 
   public getLogs(

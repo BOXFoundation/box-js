@@ -14,10 +14,11 @@ const prefix = {
 
 /**
  * @class [PrivateKey]
- * @constructs [privKey]
+ * @constructs privKey
  */
 export default class PrivateKey {
   public privKey
+
   public constructor(privkey_str) {
     this.privKey = new bitcore.PrivateKey(privkey_str)
     this.privKey.signMsg = sigHash => {
@@ -30,18 +31,21 @@ export default class PrivateKey {
   }
 
   /**
-   * @func get-CryptoJson-by-PrivateKey&Password
-   * @param [*pwd] string
+   * @func Get_CryptoJson_by_PrivateKey_&_Password
+   * @param [*pwd]
    * @returns [cryptoJSON]
+   * @memberof PrivateKey   *
    */
   public getCryptoByPrivKey = (pwd: string) => {
     return CryptoJson.getCryptoByPrivKey(this.privKey, pwd)
   }
 
   /**
-   * @export sign-Transaction-by-PrivKey
-   * @param [*unsigned_tx] SignedTxByPrivKeyReq
+   * @export Sign_Transaction_by_PrivKey
+   * @param [*unsigned_tx]
+   * @branch [next__sendTx_||_sendRawTx]
    * @returns [tx]
+   * @memberof PrivateKey   *
    */
   public signTxByPrivKey = async (
     unsigned_tx: UtilInterface.SignedTxByPrivKeyReq
@@ -59,44 +63,21 @@ export default class PrivateKey {
       )
       const scriptsig_bs64 = scriptSig.toString('base64')
       tx.vin[idx].script_sig = scriptsig_bs64
-      if (unsigned_tx.tx_proto) {
-        unsigned_tx.tx_proto.getVinList()[idx].setScriptSig(scriptsig_bs64)
+      if (unsigned_tx.protocalTx) {
+        unsigned_tx.protocalTx.getVinList()[idx].setScriptSig(scriptsig_bs64)
       }
     }
-    if (unsigned_tx.tx_proto) {
-      return unsigned_tx.tx_proto.serializeBinary().toString(OPCODE_TYPE)
+    if (unsigned_tx.protocalTx) {
+      return unsigned_tx.protocalTx.serializeBinary().toString(OPCODE_TYPE)
     } else {
       return tx
     }
   }
 
   /**
-   * @export sign-Transaction-by-PrivKey-Of-Protobuf
-   * @param [*unsigned_tx] SignedTxByPrivKeyReq
-   * @returns [tx]
+   * @func get_Address_by_PrivKey
+   * @memberof PrivateKey
    */
-  /*   public signTxByPrivKeyOfProto = async unsigned_tx => {
-    let { tx, rawMsgs } = unsigned_tx.unsignedTx
-    let _privKey = unsigned_tx.privKey
-    // vin handler
-    const vin_list = tx.getVinList()
-    for (let idx = 0; idx < vin_list.length; idx++) {
-      const sigHashBuf = CommonUtil.getSignHash(rawMsgs[idx])
-      const eccPrivKey = _privKey && Ecpair.getECfromPrivKey(_privKey)
-      const signBuf = eccPrivKey.sign(sigHashBuf).sig
-      const scriptSig = await CommonUtil.signatureScript(
-        signBuf,
-        this.privKey.toPublicKey().toBuffer()
-      )
-      vin_list[idx].setScriptSig(scriptSig.toString('base64'))
-    }
-    tx.setVinList(vin_list)
-    console.log('tx :', tx)
-    const script = tx.getVinList()[0].getScriptSig()
-    console.log('script :', script)
-    return tx
-  } */
-
   public getAddrByPrivKey = (prefixHex: string) => {
     const sha256Content = prefixHex + this.privKey.pkh
     const checksum = Hash.sha256(
@@ -106,6 +87,10 @@ export default class PrivateKey {
     return bs58.encode(Buffer.from(content, OPCODE_TYPE))
   }
 
+  /**
+   * @func get_PubKeyHash_by_PrivKey
+   * @memberof PrivateKey
+   */
   public getPubKeyHashByPrivKey = () => {
     return Hash.hash160(this.privKey.toPublicKey().toBuffer()).toString(
       OPCODE_TYPE

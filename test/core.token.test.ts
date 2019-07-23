@@ -10,8 +10,6 @@ const cor = new Api(fetch, Mock.endpoint_test, 'http')
 const feature = new Feature(fetch, Mock.endpoint_test, 'http')
 let token_hash
 
-jest.setTimeout(10000)
-
 test('Issue a token & get the token balance', async done => {
   try {
     const issue_result = await feature.issueTokenByCrypto({

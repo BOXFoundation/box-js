@@ -8,8 +8,6 @@ import Keystore from './json/keystore.json'
 const cor = new Api(fetch, Mock.endpoint_test, 'http')
 const feature = new Feature(fetch, Mock.endpoint_test, 'http')
 
-jest.setTimeout(10000)
-
 test('Make a BOX transaction', async () => {
   try {
     const tx_result = await feature.makeBoxTxByCrypto({
@@ -61,7 +59,7 @@ test('Sign transaction by privKey || crypto', async done => {
         rawMsgs: unsigned_tx.rawMsgs
       },
       privKey: Mock.acc_privateKey_3,
-      tx_proto: null
+      protocalTx: null
     })
     // console.log('signed_tx:', JSON.stringify(signed_tx))
     const signed_tx_by_crypto = await feature.signTxByCrypto({
@@ -94,7 +92,7 @@ test('Make a raw transaction (BOX)', async () => {
     expect(created_tx)
     // console.log('created_tx :', JSON.stringify(created_tx))
     const sent_tx = await cor.sendTx(created_tx)
-    console.log('sent_tx :', JSON.stringify(sent_tx))
+    // console.log('sent_tx :', JSON.stringify(sent_tx))
     expect(sent_tx['code']).toBe(0)
     expect(sent_tx.hash)
     // Row
@@ -117,7 +115,9 @@ test('Make a raw transaction (BOX)', async () => {
   }
 })
 
-/* test('faucet', async () => {
+/*
+// using
+test('faucet', async () => {
   try {
     const faucet_res = await cor.faucet({
       addr: Mock.acc_addr_3,

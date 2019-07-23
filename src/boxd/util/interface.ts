@@ -88,7 +88,7 @@ namespace Interface {
   export interface SignedTxByPrivKeyReq {
     unsignedTx: UnsignedTx;
     privKey: string;
-    tx_proto: any;
+    protocalTx: any;
   }
 }
 

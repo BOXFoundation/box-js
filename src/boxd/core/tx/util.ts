@@ -5,11 +5,19 @@ import CommonUtil from '../../util/util'
 import TxRequest from './request'
 
 namespace Util {
-  export const makeUnsignTxHandle = (param: TxRequest.MakeUnsignTxReq) => {
-    console.log('makeUnsignTxHandle param ===', JSON.stringify(param))
+  /**
+   * @func Make_Unsigned_transaction_handle
+   * @param [*param] {utxo_list: TxResponse.Utxo[]; is_raw?: boolean}
+   * @branch [next__sendTx_||_sendRawTx]
+   * @step [check->add_vout->add_charge->add_vin]
+   * @returns [tx_json] # tx type of json {rawMsgs: []}
+   * @returns [protocalTx] # tx type of protocal
+   */
+  export const makeUnsignedTxHandle = (param: TxRequest.MakeUnsignTxReq) => {
+    // console.log('makeUnsignedTxHandle param ===', JSON.stringify(param))
     const { from, to_map, fee, utxo_list, is_raw } = param
-    let total_to = new BN(0, 10) // total tx count
-    let total_utxo = new BN(0, 10) // total account utxo
+    let total_to = new BN(0, 10) // total tx count (big number)
+    let total_utxo = new BN(0, 10) // total account utxo (big number)
     let rowmsg_list: any = [] // row message list
     let vin_list: any = [] // vin list (json)
     let vout_list: any = [] // vout list (json)
@@ -26,14 +34,14 @@ namespace Util {
     utxo_list.forEach(utxo => {
       total_utxo = total_utxo.add(new BN(utxo.tx_out.value, 10))
     })
-    console.log('total_utxo :', total_utxo.toNumber())
+    // console.log('total_utxo :', total_utxo.toString())
 
     /* tx count sum */
     Object.keys(to_map).forEach(to => {
       total_to = total_to.add(new BN(to_map[to], 10))
     })
     total_to = total_to.add(new BN(fee, 10))
-    console.log('total_to :', total_to.toNumber())
+    // console.log('total_to :', total_to.toString())
 
     /* check balance */
     if (total_to.toNumber() > total_utxo.toNumber()) {
@@ -47,7 +55,7 @@ namespace Util {
     const op = new CommonUtil.Opcoder('')
     Object.keys(to_map).forEach(to_addr => {
       const pub_hash = acc.dumpPubKeyHashFromAddr(to_addr)
-      console.log('pub_hash_1 :', pub_hash)
+      // console.log('pub_hash_1 :', pub_hash)
 
       // + script_pub_key
       const script = op
@@ -76,11 +84,11 @@ namespace Util {
     /* ======================== */
 
     /* charge */
-    if (total_utxo.toNumber() > total_to.toNumber()) {
-      const charge = total_utxo.sub(total_to).toNumber()
-      console.log('charge :', charge)
+    if (total_to.toNumber() < total_utxo.toNumber()) {
+      const charge = total_utxo.sub(total_to).toString()
+      // console.log('charge :', charge)
       const pub_hash = acc.dumpPubKeyHashFromAddr(from)
-      console.log('pub_hash_2 :', pub_hash)
+      // console.log('pub_hash_2 :', pub_hash)
 
       // + script_pub_key
       const script = op
@@ -105,8 +113,8 @@ namespace Util {
         script_pub_key: script.toString('base64')
       })
     }
-    console.log('vout_list :', vout_list)
-    console.log('vout_list_proto :', vout_list_proto)
+    // console.log('vout_list :', vout_list)
+    // console.log('vout_list_proto :', vout_list_proto)
 
     /* ======================== */
 
@@ -121,10 +129,10 @@ namespace Util {
         script_sig: utxo.tx_out.script_pub_key
       })
     })
-    console.log('vin_list :', JSON.stringify(vin_list))
+    // console.log('vin_list :', JSON.stringify(vin_list))
 
     // make tx vin (protobuf)
-    const tx_proto = new block_pb.Transaction()
+    const protocalTx = new block_pb.Transaction()
     const tx_proto_row = new block_pb.Transaction()
     for (let vin_i = 0; vin_i < vin_list.length; vin_i++) {
       vin_list.forEach((vin, i) => {
@@ -149,13 +157,13 @@ namespace Util {
         vin_list_proto.push(vin_proto)
         vin_list_proto_row.push(vin_proto_row)
       })
-      tx_proto.setVinList(vin_list_proto)
-      tx_proto.setVoutList(vout_list_proto)
+      protocalTx.setVinList(vin_list_proto)
+      protocalTx.setVoutList(vout_list_proto)
       tx_proto_row.setVinList(vin_list_proto_row)
       tx_proto_row.setVoutList(vout_list_proto)
 
       // serialize binary
-      rowmsg_list.push(tx_proto.serializeBinary())
+      rowmsg_list.push(protocalTx.serializeBinary())
     }
     // console.log('rowmsg_list :', rowmsg_list)
 
@@ -173,7 +181,7 @@ namespace Util {
           },
           rawMsgs: rowmsg_list
         },
-        tx_proto: tx_proto_row
+        protocalTx: tx_proto_row
       }
     } else {
       return {
@@ -188,7 +196,7 @@ namespace Util {
           },
           rawMsgs: rowmsg_list
         },
-        tx_proto: null
+        protocalTx: null
       }
     }
   }
