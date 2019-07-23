@@ -36,7 +36,13 @@ function browserifyBundle() {
     .pipe(sourcemaps.init({
       loadMaps: true
     }))
-    // .pipe(uglify())
+    .pipe(uglify({
+      compress: {
+        warnings: false,
+        drop_console: true, // console filter
+        drop_debugger: true // debugger filter
+      }
+    }))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('dist-web'))
 }
@@ -53,7 +59,13 @@ function watchedBundle() {
     .pipe(sourcemaps.init({
       loadMaps: true
     }))
-    .pipe(uglify())
+    .pipe(uglify({
+      compress: {
+        warnings: false,
+        drop_console: true,
+        drop_debugger: true
+      }
+    }))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('dist-web'))
 }
