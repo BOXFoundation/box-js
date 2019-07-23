@@ -29,11 +29,11 @@ test('Issue a token & get the token balance', async done => {
       crypto: Keystore.keystore_2,
       pwd: Mock.acc_pwd
     })
-    // console.log('tx_result:', issue_result)
+    // console.log('tx_result :', issue_result)
     const tx_detail = await cor.viewTxDetail(issue_result.hash)
-    // console.log('tx_detail:', tx_detail)
+    // console.log('tx_detail :', tx_detail)
     expect(tx_detail.detail.hash).toEqual(issue_result.hash)
-    // console.log('issue_result:', issue_result)
+    // console.log('issue_result :', issue_result)
     token_hash = issue_result.hash
     const token_addr = await TokenUtil.encodeTokenAddr({
       opHash: token_hash,
@@ -57,7 +57,7 @@ test('Issue a token & get the token balance', async done => {
       done()
     }, 2000)
   } catch (err) {
-    console.error('Issue a token & get the token balance: Error !', err)
+    console.error('Issue a token & get the token balance Error :', err)
     expect(0).toBe(1)
   }
 })
@@ -80,7 +80,7 @@ test('Make a token transaction', async () => {
     // console.log('token_detail:', token_detail)
     expect(token_detail.detail.hash).toEqual(token_result.hash)
   } catch (err) {
-    console.error('Make a token transaction: Error !', err)
+    console.error('Make a token transaction Error :', err)
     expect(0).toBe(1)
   }
 })

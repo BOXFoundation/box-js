@@ -6,7 +6,7 @@ import CommonUtil from '../util'
 import CryptoJson from './crypto-json'
 import UtilInterface from '../interface'
 
-const OP_CODE_TYPE = 'hex'
+const OPCODE_TYPE = 'hex'
 const prefix = {
   P2PKH: '1326',
   P2SH: '132b'
@@ -53,27 +53,62 @@ export default class PrivateKey {
       const sigHashBuf = CommonUtil.getSignHash(rawMsgs[idx])
       const eccPrivKey = _privKey && Ecpair.getECfromPrivKey(_privKey)
       const signBuf = eccPrivKey.sign(sigHashBuf).sig
-      const scriptSig = CommonUtil.signatureScript(
+      const scriptSig = await CommonUtil.signatureScript(
         signBuf,
         this.privKey.toPublicKey().toBuffer()
       )
-      tx.vin[idx].script_sig = scriptSig.toString('base64')
+      const scriptsig_bs64 = scriptSig.toString('base64')
+      tx.vin[idx].script_sig = scriptsig_bs64
+      if (unsigned_tx.tx_proto) {
+        unsigned_tx.tx_proto.getVinList()[idx].setScriptSig(scriptsig_bs64)
+      }
     }
-    return tx
+    if (unsigned_tx.tx_proto) {
+      return unsigned_tx.tx_proto.serializeBinary().toString(OPCODE_TYPE)
+    } else {
+      return tx
+    }
   }
+
+  /**
+   * @export sign-Transaction-by-PrivKey-Of-Protobuf
+   * @param [*unsigned_tx] SignedTxByPrivKeyReq
+   * @returns [tx]
+   */
+  /*   public signTxByPrivKeyOfProto = async unsigned_tx => {
+    let { tx, rawMsgs } = unsigned_tx.unsignedTx
+    let _privKey = unsigned_tx.privKey
+    // vin handler
+    const vin_list = tx.getVinList()
+    for (let idx = 0; idx < vin_list.length; idx++) {
+      const sigHashBuf = CommonUtil.getSignHash(rawMsgs[idx])
+      const eccPrivKey = _privKey && Ecpair.getECfromPrivKey(_privKey)
+      const signBuf = eccPrivKey.sign(sigHashBuf).sig
+      const scriptSig = await CommonUtil.signatureScript(
+        signBuf,
+        this.privKey.toPublicKey().toBuffer()
+      )
+      vin_list[idx].setScriptSig(scriptSig.toString('base64'))
+    }
+    tx.setVinList(vin_list)
+    console.log('tx :', tx)
+    const script = tx.getVinList()[0].getScriptSig()
+    console.log('script :', script)
+    return tx
+  } */
 
   public getAddrByPrivKey = (prefixHex: string) => {
     const sha256Content = prefixHex + this.privKey.pkh
     const checksum = Hash.sha256(
-      Hash.sha256(Buffer.from(sha256Content, OP_CODE_TYPE))
+      Hash.sha256(Buffer.from(sha256Content, OPCODE_TYPE))
     ).slice(0, 4)
-    const content = sha256Content.concat(checksum.toString(OP_CODE_TYPE))
-    return bs58.encode(Buffer.from(content, OP_CODE_TYPE))
+    const content = sha256Content.concat(checksum.toString(OPCODE_TYPE))
+    return bs58.encode(Buffer.from(content, OPCODE_TYPE))
   }
 
   public getPubKeyHashByPrivKey = () => {
     return Hash.hash160(this.privKey.toPublicKey().toBuffer()).toString(
-      OP_CODE_TYPE
+      OPCODE_TYPE
     )
   }
 }

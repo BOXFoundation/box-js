@@ -1,6 +1,8 @@
 {
-  "endpoint_test": "http://39.97.168.26:19110",
+  "endpoint_test": "http://39.97.169.1:19110",
+  "endpoint_dev": "http://39.97.168.26:19110",
   "endpoint_local": "http://127.0.0.1:19110",
+  "endpoint_js": "http://192.168.21.52:19110",
   "acc_list": {
     "b1nebwpTAb6GZEqtSZnSciKYMbcs6hyVCst": {
       "cryptoJSON": {
@@ -47,7 +49,7 @@
   ],
   "to_map": {
     "b1oLGVzM7znUJid2B6zPWvwbiqmRV8HDcq1": 10001,
-    "b1WpdQ1odtmVEMqTTTmpT5xjbudTJg1jtvX": 30003
+    "b1WpdQ1odtmVEMqTTTmpT5xjbudTJg1jtvX": 50005
   },
   "token_addr": "8b9aLjo62TiDWr3JoszMWYAQH5iEvJFKyNZJQ73ghywJC7ACVHh",
   "token_hash": "e26dc08ca79a9a07a82e2cef5350ae74f2590385fa1d316a5c7e9500c749ab71",
@@ -69,5 +71,19 @@
   "gasPrice": 2,
   "gasLimit": 2000000,
   "blockHeight": 6406299,
-  "blockHash": "4550b95b53dc37835c8a19c9a73df6e25f64e549be558c31656fa03bf98aed93"
+  "blockHash": "cb698a0ab691a25b67a434f4b73867773c6aebaf1c39d6b3d22238796ec50867",
+  "constract_logs_req": {
+    "from": 1,
+    "to": 10000,
+    "addresses": [
+      "b5nVcWMrScHapg492a89cntsQ7H9rv4we9K"
+    ],
+    "topics": [
+      {
+        "topics": [
+          "ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+        ]
+      }
+    ]
+  }
 }

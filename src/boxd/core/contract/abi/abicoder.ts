@@ -138,15 +138,13 @@ export default class AbiCoder {
   }
 
   /**
-   * @TODO
-   * Decodes events non- and indexed parameters.
-   *
+   * @func Decode_events_non_and_indexed_parameters
    * @param [inputs] array
    * @param [data] string
    * @param [topics] array
    * @returns {Object with named and indexed properties of the returnValues} object
    */
-  /*   public decodeLog(inputs, data = '', topics) {
+  public decodeLog(inputs, data = '', topics) {
     const returnValues = {}
     let topicCount = 0
     let value
@@ -184,16 +182,14 @@ export default class AbiCoder {
     }
 
     return returnValues
-  } */
+  }
 
   /**
-   * @TODO
-   * Checks if a given type string is a static solidity type
-   *
+   * @func Checks_if_a_given_type_string_is_a_static_solidity_type
    * @param [type] string
    * @returns {is static type ?} boolean
    */
-  /*   public isStaticType(type) {
+  public isStaticType(type) {
     if (type === 'bytes') {
       return false
     }
@@ -205,5 +201,5 @@ export default class AbiCoder {
     }
 
     return true
-  } */
+  }
 }

@@ -97,3 +97,30 @@ The official distribution package can be found at [npm](https://www.npmjs.com/pa
 └── tsconfig.json  # [Typescript](https://www.typescriptlang.org/)
 
 ```
+
+## Note
+
+### protobuf
+
+protoc --js_out=library=myproto_libs,binary:. block.proto common.proto control.proto faucet.proto log.proto receipt.proto transaction.proto web.proto
+
+    Number 转 字节数组
+
+// let buffer = new Buffer(size) /// size 为 number 类型所占字节数
+// buffer.writeXLE(number) /// 小端顺序写入， X 为 Number 类型
+// buffer.writeXBE(number) /// 小端顺序写入， X 为 Number 类型
+// 比如：
+
+let number = 3.1415926 // PI
+let buffer = new Buffer(8) // double 类型占 8 字节
+buffer.writeDoubleLE(number) // 小端顺序写入 number
+
+    字节数组转 Number
+
+// let buffer = new Buffer([...])
+// let number = buffer.readXLE(0) // 小端顺序读取
+// let number = buffer.readXBE(0) // 大端顺序读取
+// 如:
+let buffer = new Buffer([0, 0, 0, 1])
+let number = buffer.readUInt32LE(0)
+// 1677216

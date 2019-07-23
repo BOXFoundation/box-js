@@ -1,7 +1,7 @@
+import BN from 'bn.js'
 import { Fetch } from '../util/fetch'
 import PrivateKey from '../util/crypto/privatekey'
 import UtilInterface from '../util/interface'
-// import BlockRequest from './block/request'
 import SplitRequest from './split/request'
 import TokenRequest from './token/request'
 import TxRequest from './tx/request'
@@ -11,6 +11,7 @@ import BlockResponse from './block/response'
 import SplitResponse from './split/response'
 import TokenResponse from './token/response'
 import TxResponse from './tx/response'
+import TxUtil from './tx/util'
 
 /**
  * @class [Api]
@@ -19,11 +20,11 @@ import TxResponse from './tx/response'
  * @constructs endpoint string // user incoming
  */
 export default class Api extends Fetch {
-  public constructor(_fetch: any, endpoint: string, fetch_type) {
+  public constructor(_fetch, endpoint: string, fetch_type: string) {
     super(_fetch, endpoint, fetch_type)
   }
 
-  // Block
+  /* Block */
   public getNodeInfo(): Promise<BlockResponse.NodeInfo> {
     return super.fetch('/ctl/getnodeinfo')
   }
@@ -41,17 +42,10 @@ export default class Api extends Fetch {
   public async getBlockByHeight(
     block_height: number
   ): Promise<{ block: BlockResponse.Block }> {
-    return await this.getBlockHashByHeight(block_height)
-      .then(block_hash => {
-        // console.log('getBlockHashByHeight res:', block_hash)
-        return super.fetch('/ctl/getblock', {
-          blockHash: block_hash.hash
-        })
-      })
-      .catch(err => {
-        console.log('getBlockHashByHeight Error:', err)
-        throw new Error('getBlockHashByHeight Error')
-      })
+    const block_hash = await this.getBlockHashByHeight(block_height)
+    return super.fetch('/ctl/getblock', {
+      blockHash: block_hash.hash
+    })
   }
 
   public getBlockHeaderByHash(
@@ -63,17 +57,10 @@ export default class Api extends Fetch {
   public async getBlockHeaderByHeight(
     block_height: number
   ): Promise<{ header: BlockResponse.BlockHeader }> {
-    return await this.getBlockHashByHeight(block_height)
-      .then(block_hash => {
-        // console.log('getBlockHashByHeight res:', block_hash)
-        return super.fetch('/ctl/getblockheader', {
-          blockHash: block_hash.hash
-        })
-      })
-      .catch(err => {
-        console.log('getBlockHashByHeight Error:', err)
-        throw new Error('getBlockHashByHeight Error')
-      })
+    const block_hash = await this.getBlockHashByHeight(block_height)
+    return super.fetch('/ctl/getblockheader', {
+      blockHash: block_hash.hash
+    })
   }
 
   public getBlockHeight(): Promise<{
@@ -90,14 +77,14 @@ export default class Api extends Fetch {
     return super.fetch('/account/nonce', { addr })
   }
 
-  // Split
+  /* Split */
   public makeUnsignedSplitAddrTx(
     split_addr_tx: SplitRequest.SplitAddrTxReq
   ): Promise<SplitResponse.UnsignedSplitAddrTx> {
     return super.fetch('/tx/makeunsignedtx/splitaddr', split_addr_tx)
   }
 
-  // Token
+  /* Token */
   public makeUnsignedTokenIssueTx(
     token_issue_tx: TokenRequest.IssueTokenReq
   ): Promise<TokenResponse.UnsignedTokenIssueTx> {
@@ -109,8 +96,8 @@ export default class Api extends Fetch {
   ): Promise<{ balance: number }> {
     token['addrs'] = [token.addr]
     const balances = await super.fetch('/tx/gettokenbalance', token)
-    const arr_balances = await balances.balances.map(item => {
-      return Number(item)
+    const arr_balances = await balances.balances.map(balance => {
+      return new BN(balance, 10).toNumber()
     })
     return { balance: arr_balances[0] }
   }
@@ -119,8 +106,8 @@ export default class Api extends Fetch {
     tokens: TokenRequest.TokenBalancesReq
   ): Promise<{ balances: number[] }> {
     const balances = await super.fetch('/tx/gettokenbalance', tokens)
-    const arr_balances = await balances.balances.map(item => {
-      return Number(item)
+    const arr_balances = await balances.balances.map(balance => {
+      return new BN(balance, 10).toNumber()
     })
     return { balances: arr_balances }
   }
@@ -131,11 +118,11 @@ export default class Api extends Fetch {
     return super.fetch('/tx/makeunsignedtx/token/transfer', token_transfer_tx)
   }
 
-  public fetchTokenUtxos(fetch_utxos_req: TxRequest.SetchUtxosReq) {
+  /*   public fetchTokenUtxos(fetch_utxos_req: TxRequest.FetchUtxosReq) {
     return super.fetch('/todo', fetch_utxos_req)
-  }
+  } */
 
-  // TX
+  /* Transaction */
   public faucet(req) {
     return super.fetch('/faucet/claim', req)
   }
@@ -164,79 +151,93 @@ export default class Api extends Fetch {
 
   public async getBalance(addr: string): Promise<{ balance: number }> {
     const balances = await super.fetch('/tx/getbalance', { addrs: [addr] })
-    const arr_balances = await balances.balances.map(item => {
-      return Number(item)
+    const arr_balances = await balances.balances.map(balance => {
+      return new BN(balance, 10).toNumber()
     })
     return { balance: arr_balances[0] }
   }
 
   public async getBalances(addrs: string[]): Promise<{ balances: number[] }> {
     const balances = await super.fetch('/tx/getbalance', { addrs })
-    const arr_balances = await balances.balances.map(item => {
-      return Number(item)
+    const arr_balances = await balances.balances.map(balance => {
+      return new BN(balance, 10).toNumber()
     })
     return { balances: arr_balances }
   }
 
-  public fetchUtxos(fetch_utxos_req: TxRequest.SetchUtxosReq) {
-    return super.fetch('/tx/fetchutxos', fetch_utxos_req)
+  public fetchUtxos(
+    utxos_req: TxRequest.FetchUtxosReq
+  ): Promise<{ utxos: TxResponse.Utxo[] }> {
+    return super.fetch('/tx/fetchutxos', utxos_req)
   }
 
-  // Contract
-  public makeUnsignedContractTx(tx: ContractRequest.OriginalContractReq
+  /**
+   * @func create-raw-tx
+   * @param [*raw]
+   * @param [?is_raw] boolean // is send raw tx ?
+   * @branch [sendTx||sendRawTx]
+   * @step [fetchUtxos->makeUnsignTx->signTxByPrivKey]
+   * @returns [signed_tx]
+   */
+  public async createRawTx(raw: TxRequest.Raw, is_raw?) {
+    const { addr, to, fee, privKey } = raw
+    let total_to = new BN(0, 10)
+
+    // fetch utxos
+    await Object.keys(to).forEach(addr => {
+      total_to = total_to.add(new BN(to[addr], 10))
+    })
+    total_to = total_to.add(new BN(fee, 10))
+    console.log('fetchUtxos param :', addr, total_to.toNumber())
+    const utxo_res = await this.fetchUtxos({
+      addr,
+      amount: total_to.toNumber()
+    })
+    console.log('fetchUtxos res :', JSON.stringify(utxo_res))
+    if (utxo_res['code'] === 0) {
+      // make unsigned tx
+      const utxo_list = utxo_res.utxos
+      let unsigned_tx = await TxUtil.makeUnsignTxHandle({
+        from: addr,
+        to_map: to,
+        fee,
+        utxo_list,
+        is_raw
+      })
+      console.log('unsigned_tx :', JSON.stringify(unsigned_tx))
+
+      // sign tx by privKey
+      return await this.signTxByPrivKey({
+        unsignedTx: unsigned_tx.tx_json,
+        privKey,
+        tx_proto: unsigned_tx.tx_proto
+      })
+    } else {
+      throw new Error('Fetch utxos Error')
+    }
+  }
+
+  // TODO
+  public sendRawTx(raw_tx) {
+    return super.fetch('/tx/sendrawtransaction', { tx: raw_tx })
+  }
+
+  /* Contract */
+  public makeUnsignedContractTx(
+    tx: ContractRequest.OriginalContractReq
   ): Promise<ContractResponse.UnsignedContractTx> {
     return super.fetch('/tx/makeunsignedtx/contract', tx)
   }
 
-  public callContract(tx: ContractRequest.CallContractReq
+  public callContract(
+    tx: ContractRequest.CallContractReq
   ): Promise<ContractResponse.CallContractResp> {
-      return super.fetch('/contract/call', tx)
+    return super.fetch('/contract/call', tx)
   }
 
-  public async createRawTx(raw: TxRequest.Raw) {
-    const { addr, to, fee, privKey } = raw
-    let sum = 0
-    await Object.keys(to).forEach(item => {
-      sum += Number(to[item])
-    })
-    sum += Number(fee)
-    console.log('fetchUtxos:', addr, sum)
-    await this.fetchUtxos({ addr, amount: sum })
-      .then(async res => {
-        console.log('fetchUtxos res:', res)
-        if (res.code === 0) {
-          // TODO 序列化 -> sign ->
-          const utxos: TxResponse.Utxo[] = res.utxos
-          await super
-            .fetch('/tx/getrawtransaction', {
-              from: addr,
-              to,
-              fee,
-              utxos
-            })
-            .then(res => {
-              console.log('unsigned_tx:', res)
-              console.log('privKey:', privKey)
-              // TODO verify
-              return this.signTxByPrivKey({
-                unsignedTx: {
-                  tx: res.tx,
-                  rawMsgs: res.rawMsgs
-                },
-                privKey
-              })
-            })
-        } else {
-          throw new Error('createRawTx Error')
-        }
-      })
-      .catch(err => {
-        console.log('createRawTx Error:', err)
-        throw new Error('createRawTx Error')
-      })
-  }
-
-  public sendRawTx(raw_tx: string) {
-    return super.fetch('/tx/sendrawtransaction', { raw_tx })
+  public getLogs(
+    logs_req: ContractRequest.GetLogsReq
+  ): Promise<ContractResponse.LogDetail[]> {
+    return super.fetch('/contract/getLogs', logs_req)
   }
 }

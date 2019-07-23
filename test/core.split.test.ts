@@ -20,12 +20,12 @@ test('Make a split contract transaction', async () => {
       crypto: Keystore.keystore_1,
       pwd: Mock.acc_pwd
     })
-    // console.log('tx_result:', tx_result)
+    // console.log('tx_result :', tx_result)
     const tx_detail = await cor.viewTxDetail(tx_result.hash)
-    // console.log('tx_detail:', tx_detail)
+    // console.log('tx_detail :', tx_detail)
     expect(tx_detail.detail.hash).toEqual(tx_result.hash)
   } catch (err) {
-    console.error('Make a split contract transaction: Error !', err)
+    console.error('Make a split contract transaction Error :', err)
     expect(0).toBe(1)
   }
 })
