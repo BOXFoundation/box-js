@@ -115,6 +115,10 @@ async function getNonce(): Promise<number> {
   return addrNonce
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 test('Deploy a contract', async () => {
   jest.setTimeout(60000);
   let addrNonce = +(await getNonce())
@@ -133,6 +137,7 @@ test('Deploy a contract', async () => {
     crypto: Keystore.keystore_4,
     pwd: Mock.acc_pwd
   })
+  await sleep(5000)
   console.log('contract deployed at: ' + tx_result.contractAddr)
   const tx_detail = await cor.viewTxDetail(tx_result.hash)
   expect(tx_detail.detail.hash).toEqual(tx_result.hash)
@@ -176,6 +181,7 @@ test('Send a contract method', async () => {
     crypto: Keystore.keystore_4,
     pwd: Mock.acc_pwd
   })
+  await sleep(5000)
   const tx_detail = await cor.viewTxDetail(tx_result.hash)
   expect(tx_detail.detail.hash).toEqual(tx_result.hash)
   expect(await getBalance()).toEqual(initBalance + depositAmount)
