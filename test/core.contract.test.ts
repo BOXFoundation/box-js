@@ -116,11 +116,11 @@ async function getNonce(): Promise<number> {
 }
 
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise(resolve => setTimeout(resolve, ms))
 }
 
 test('Deploy a contract', async () => {
-  jest.setTimeout(60000);
+  jest.setTimeout(60000)
   let addrNonce = +(await getNonce())
 
   const tx_result = await feature.makeContractTxByCrypto({
@@ -147,7 +147,7 @@ test('Deploy a contract', async () => {
 
 // This must be run after deploy
 test('Send a contract method', async () => {
-  jest.setTimeout(60000);
+  jest.setTimeout(60000)
   let addrNonce = +(await getNonce())
   let initBalance = await getBalance()
   let depositAmount = 137

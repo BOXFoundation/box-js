@@ -5,8 +5,10 @@ import Mock from './json/mock.json'
 import Feature from '../src/boxd/core/feature'
 import Keystore from './json/keystore.json'
 
-const cor = new Api(fetch, Mock.endpoint_test, 'http')
-const feature = new Feature(fetch, Mock.endpoint_test, 'http')
+const cor = new Api(fetch, Mock.endpoint_dev, 'http')
+const feature = new Feature(fetch, Mock.endpoint_dev, 'http')
+
+jest.setTimeout(10000)
 
 test('Make a split contract transaction', async () => {
   try {

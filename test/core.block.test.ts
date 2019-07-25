@@ -3,7 +3,7 @@ import fetch from 'isomorphic-fetch'
 import Api from '../src/boxd/core/api'
 import Mock from './json/mock.json'
 
-const cor = new Api(fetch, Mock.endpoint_test, 'http')
+const cor = new Api(fetch, Mock.endpoint_dev, 'http')
 let node_id
 
 test('Get node info', async () => {

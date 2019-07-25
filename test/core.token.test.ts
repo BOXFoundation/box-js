@@ -6,9 +6,11 @@ import TokenUtil from '../src/boxd/core/token/util'
 import Mock from './json/mock.json'
 import Keystore from './json/keystore.json'
 
-const cor = new Api(fetch, Mock.endpoint_test, 'http')
-const feature = new Feature(fetch, Mock.endpoint_test, 'http')
+const cor = new Api(fetch, Mock.endpoint_dev, 'http')
+const feature = new Feature(fetch, Mock.endpoint_dev, 'http')
 let token_hash
+
+jest.setTimeout(15000)
 
 test('Issue a token & get the token balance', async done => {
   try {
@@ -48,7 +50,7 @@ test('Issue a token & get the token balance', async done => {
         tokenHash: token_hash,
         tokenIndex: 0
       })
-      // console.log('token_balances:', token_balances)
+      console.log('token_balances:', token_balances)
       expect(
         Number(token_balances.balances[1]) / Math.pow(10, Mock.token_decimal)
       ).toEqual(Mock.token_supply)
@@ -58,22 +60,27 @@ test('Issue a token & get the token balance', async done => {
     console.error('Issue a token & get the token balance Error :', err)
     expect(0).toBe(1)
   }
+  setTimeout(async () => {
+    done()
+  }, 10000)
 })
 
 test('Make a token transaction', async () => {
   try {
-    const token_result = await feature.makeTokenTxByCrypto({
+    const param = {
       tx: {
         amounts: Mock.amounts,
         fee: Mock.fee,
         from: Mock.acc_addr_2,
         to: Mock.to_addrs,
-        token_hash: token_hash,
+        token_hash,
         token_index: 0
       },
       crypto: Keystore.keystore_2,
       pwd: Mock.acc_pwd
-    })
+    }
+    console.log('param :', param)
+    const token_result = await feature.makeTokenTxByCrypto(param)
     const token_detail = await cor.viewTxDetail(token_result.hash)
     // console.log('token_detail:', token_detail)
     expect(token_detail.detail.hash).toEqual(token_result.hash)

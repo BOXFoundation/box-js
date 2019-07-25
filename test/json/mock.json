@@ -2,7 +2,6 @@
   "endpoint_test": "http://39.97.169.1:19110",
   "endpoint_dev": "http://39.97.168.26:19110",
   "endpoint_local": "http://127.0.0.1:19110",
-  "endpoint_js": "http://192.168.21.52:19110",
   "acc_list": {
     "b1nebwpTAb6GZEqtSZnSciKYMbcs6hyVCst": {
       "cryptoJSON": {
@@ -52,11 +51,10 @@
     "b1WpdQ1odtmVEMqTTTmpT5xjbudTJg1jtvX": 50005
   },
   "token_addr": "8b9aLjo62TiDWr3JoszMWYAQH5iEvJFKyNZJQ73ghywJC7ACVHh",
-  "token_hash": "e26dc08ca79a9a07a82e2cef5350ae74f2590385fa1d316a5c7e9500c749ab71",
-  "token_index": 0,
+  "token_hash": "3eee007b30b559b57492d24225286899639262c392876ce0c9a777e686aaa98f",
   "token_name": "UFO",
   "token_symbol": "U",
-  "token_supply": 10000,
+  "token_supply": 100000,
   "token_decimal": 3,
   "split_weights": [
     600000,
@@ -71,7 +69,7 @@
   "gasPrice": 2,
   "gasLimit": 2000000,
   "blockHeight": 6406299,
-  "blockHash": "cb698a0ab691a25b67a434f4b73867773c6aebaf1c39d6b3d22238796ec50867",
+  "blockHash": "c7dd63f7bc0ebbfdb085d368ec0efc22fce7946f00c6e91d4b2599d46be6de38",
   "constract_logs_req": {
     "from": 1,
     "to": 10000,

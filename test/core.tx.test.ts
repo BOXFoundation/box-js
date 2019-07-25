@@ -5,8 +5,10 @@ import Feature from '../src/boxd/core/feature'
 import Mock from './json/mock.json'
 import Keystore from './json/keystore.json'
 
-const cor = new Api(fetch, Mock.endpoint_test, 'http')
-const feature = new Feature(fetch, Mock.endpoint_test, 'http')
+const cor = new Api(fetch, Mock.endpoint_dev, 'http')
+const feature = new Feature(fetch, Mock.endpoint_dev, 'http')
+
+jest.setTimeout(10000)
 
 test('Make a BOX transaction', async () => {
   try {
@@ -115,12 +117,11 @@ test('Make a raw transaction (BOX)', async () => {
   }
 })
 
-/*
-// using
-test('faucet', async () => {
+// USING
+/* test('faucet', async () => {
   try {
     const faucet_res = await cor.faucet({
-      addr: Mock.acc_addr_3,
+      addr: Mock.acc_addr_4,
       amount: 30000000000
     })
     console.log('faucet res:', faucet_res)
