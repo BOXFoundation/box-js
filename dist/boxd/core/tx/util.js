@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var bn_js_1 = __importDefault(require("bn.js"));
-var block_pb_js_1 = __importDefault(require("../../../protobuf/js/block_pb.js"));
+var block_pb_js_1 = __importDefault(require("../../util/protobuf-js/block_pb.js"));
 var account_1 = __importDefault(require("../../account/account"));
 var util_1 = __importDefault(require("../../util/util"));
 var Util;

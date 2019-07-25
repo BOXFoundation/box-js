@@ -8,7 +8,7 @@ import Keystore from './json/keystore.json'
 const cor = new Api(fetch, Mock.endpoint_dev, 'http')
 const feature = new Feature(fetch, Mock.endpoint_dev, 'http')
 
-jest.setTimeout(10000)
+jest.setTimeout(15000)
 
 test('Make a BOX transaction', async () => {
   try {
@@ -80,7 +80,7 @@ test('Sign transaction by privKey || crypto', async done => {
   }
   setTimeout(function() {
     done()
-  }, 2000)
+  }, 10000)
 })
 
 test('Make a raw transaction (BOX)', async () => {
