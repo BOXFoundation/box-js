@@ -1,6 +1,6 @@
 {
   "name": "boxdjs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Javascript implementation of BOX Payout blockchain on NodeJS or Browser.",
   "main": "dist/boxd/boxd.js",
   "types": "./types/index.d.ts",
