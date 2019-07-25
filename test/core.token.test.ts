@@ -60,9 +60,6 @@ test('Issue a token & get the token balance', async done => {
     console.error('Issue a token & get the token balance Error :', err)
     expect(0).toBe(1)
   }
-  setTimeout(async () => {
-    done()
-  }, 10000)
 })
 
 test('Make a token transaction', async () => {
