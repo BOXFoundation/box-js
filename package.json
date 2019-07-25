@@ -88,10 +88,11 @@
     "builded for browser": "dist-web"
   },
   "keywords": [
-    "blockchain",
-    "cryptocurrency",
     "box",
     "boxd",
+    "contentbox",
+    "blockchain",
+    "cryptocurrency",
     "transaction",
     "payment"
   ],
