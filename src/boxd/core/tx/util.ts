@@ -60,11 +60,11 @@ namespace Util {
       // + script_pub_key
       const script = op
         .reset('')
-        .add(CommonUtil.getHexStrFromNumber(op.OP_DUP))
-        .add(CommonUtil.getHexStrFromNumber(op.OP_HASH_160))
+        .add(CommonUtil.to16StrFromNumber(op.OP_DUP))
+        .add(CommonUtil.to16StrFromNumber(op.OP_HASH_160))
         .add(pub_hash)
-        .add(CommonUtil.getHexStrFromNumber(op.OP_EQUAL_VERIFY))
-        .add(CommonUtil.getHexStrFromNumber(op.OP_CHECK_SIG))
+        .add(CommonUtil.to16StrFromNumber(op.OP_EQUAL_VERIFY))
+        .add(CommonUtil.to16StrFromNumber(op.OP_CHECK_SIG))
         .getCode()
       // console.log('script :', script.toString('base64'))
 
@@ -93,11 +93,11 @@ namespace Util {
       // + script_pub_key
       const script = op
         .reset('')
-        .add(CommonUtil.getHexStrFromNumber(op.OP_DUP))
-        .add(CommonUtil.getHexStrFromNumber(op.OP_HASH_160))
+        .add(CommonUtil.to16StrFromNumber(op.OP_DUP))
+        .add(CommonUtil.to16StrFromNumber(op.OP_HASH_160))
         .add(pub_hash)
-        .add(CommonUtil.getHexStrFromNumber(op.OP_EQUAL_VERIFY))
-        .add(CommonUtil.getHexStrFromNumber(op.OP_CHECK_SIG))
+        .add(CommonUtil.to16StrFromNumber(op.OP_EQUAL_VERIFY))
+        .add(CommonUtil.to16StrFromNumber(op.OP_CHECK_SIG))
         .getCode()
       // console.log('script :', script.toString('base64'))
 

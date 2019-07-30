@@ -77,7 +77,7 @@ const _flattenTypes = function _flattenTypes(includeTuple, puts) {
 }
 
 namespace Util {
-  export const getHexStrFromNumber = (num: number) => (num & 255).toString(16)
+  export const to16StrFromNumber = (num: number) => (num & 255).toString(16)
 
   export const getBufFromNumber = (num: number) => num & 255
 
@@ -132,16 +132,17 @@ namespace Util {
         and_buf = Buffer.from(and_buf, OPCODE_TYPE)
       }
       const and_len = and_buf.length
-      const and_len_str = getHexStrFromNumber(and_len)
+      const and_len_str = to16StrFromNumber(and_len)
+      // console.log('and_len_str :', and_len_str)
       if (and_len < OP_PUSH_DATA_1) {
-        this.opcode = Buffer.from(
-          this.opcode.toString(OPCODE_TYPE) + and_len_str,
-          OPCODE_TYPE
-        )
+        this.opcode = Buffer.concat([
+          this.opcode,
+          Buffer.from(and_len_str, OPCODE_TYPE)
+        ])
       } else if (and_len <= 0xff) {
         this.opcode = Buffer.concat([
           this.opcode,
-          Buffer.from(getHexStrFromNumber(OP_PUSH_DATA_1), OPCODE_TYPE),
+          Buffer.from(to16StrFromNumber(OP_PUSH_DATA_1), OPCODE_TYPE),
           Buffer.from(and_len_str, OPCODE_TYPE)
         ])
       } else if (and_len <= 0xffff) {
@@ -149,7 +150,7 @@ namespace Util {
         buf = putUint16(buf, and_len)
         this.opcode = Buffer.concat([
           this.opcode,
-          Buffer.from(getHexStrFromNumber(OP_PUSH_DATA_2), OPCODE_TYPE),
+          Buffer.from(to16StrFromNumber(OP_PUSH_DATA_2), OPCODE_TYPE),
           buf
         ])
       } else {
@@ -157,7 +158,7 @@ namespace Util {
         buf = putUint16(buf, and_len)
         this.opcode = Buffer.concat([
           this.opcode,
-          Buffer.from(getHexStrFromNumber(OP_PUSH_DATA_4), OPCODE_TYPE),
+          Buffer.from(to16StrFromNumber(OP_PUSH_DATA_4), OPCODE_TYPE),
           buf
         ])
       }
