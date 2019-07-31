@@ -39,7 +39,7 @@ namespace Verify {
   }
 
   export const isAddr = (addr: string) => {
-    if (addr.substring(0, 2) !== ('b1' || 'b2' || 'b3')) {
+    if (!['b1', 'b2', 'b3', 'b5'].includes(addr.substring(0, 2))) {
       throw new Error('Incorrect address format !')
     }
     const decoded = bs58.decode(addr)
