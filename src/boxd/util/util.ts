@@ -21,7 +21,8 @@ const OPCODE_TYPE = 'hex'
 const PREFIXSTR2BYTES = {
   b1: Buffer.from([0x13, 0x26]),
   b2: Buffer.from([0x13, 0x28]),
-  b3: Buffer.from([0x13, 0x2a])
+  b3: Buffer.from([0x13, 0x2a]),
+  b5: Buffer.from([0x13, 0x30])
 }
 
 /* keccak = BEGIN = */
@@ -279,7 +280,7 @@ namespace Util {
    * @throws when prefix is not expected
    */
   export const hex2BoxAddr = (prefix: string, hexAddr: string) => {
-    if (prefix !== ('b1' || 'b2' || 'b3')) {
+    if (!['b1', 'b2', 'b3', 'b5'].includes(prefix)) {
       throw new Error('Incorrect address prefix !')
     }
     const prefixBuf = PREFIXSTR2BYTES[prefix]
