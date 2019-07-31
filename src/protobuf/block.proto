@@ -6,6 +6,10 @@ syntax = "proto3";
 
 package corepb;
 
+option java_package = "one.contentbox.boxd.protocol.rpc.protobuf.generated";
+option java_outer_classname ="BlockProto";
+option java_multiple_files = true;
+
 message BlockHeader {
     int32 version = 1;
     bytes prev_block_hash = 2;
@@ -21,6 +25,7 @@ message BlockHeader {
     uint32 height = 12;
     uint64 gas_used = 13;
     bytes book_keeper = 14;
+    bytes bloom = 15;
 }
 
 message IrreversibleInfo {

@@ -5,6 +5,10 @@
 syntax = "proto3";
 package rpcpb;
 
+option java_package = "one.contentbox.boxd.protocol.rpc.protobuf.generated";
+option java_outer_classname ="ControlProto";
+option java_multiple_files = true;
+
 import "block.proto";
 import "common.proto";
 //import "google/api/annotations.proto";

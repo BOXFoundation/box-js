@@ -1,9 +1,13 @@
-// Copyright (c) 2018 ContentBox Authors.
-// Use of this source code is governed by a MIT-style
+// Copyright (c) 2018 ContentBox Authors. 
+// Use of this source code is governed by a MIT-style 
 // license that can be found in the LICENSE file.
 
 syntax = "proto3";
 package rpcpb;
+
+option java_package = "one.contentbox.boxd.protocol.rpc.protobuf.generated";
+option java_outer_classname ="TransactionProto";
+option java_multiple_files = true;
 
 import "block.proto";
 //import "google/api/annotations.proto";
@@ -84,8 +88,8 @@ service TransactionCommand {
 //    }
 
 
-    rpc MakeUnsignedSplitAddrTx (MakeSplitAddrTxReq) returns (MakeSplitAddrTxResp) ;
-//    rpc MakeUnsignedSplitAddrTx (MakeSplitAddrTxReq) returns (MakeSplitAddrTxResp) {
+    rpc MakeUnsignedSplitAddrTx (MakeSplitAddrTxReq) returns (MakeTxResp) ;
+//    rpc MakeUnsignedSplitAddrTx (MakeSplitAddrTxReq) returns (MakeTxResp) {
 //        option (google.api.http) = {
 //            post: "/v1/tx/makeunsignedtx/splitaddr"
 //            body: "*"
@@ -115,6 +119,15 @@ service TransactionCommand {
 //    rpc MakeUnsignedContractTx (MakeContractTxReq) returns (MakeContractTxResp) {
 //        option (google.api.http) = {
 //            post: "/v1/tx/makeunsignedtx/contract"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc MakeUnsignedCombineTx (MakeCombineTx) returns (MakeTxResp) ;
+//    rpc MakeUnsignedCombineTx (MakeCombineTx) returns (MakeTxResp) {
+//        option (google.api.http) = {
+//            post: "/v1/tx/makeunsignedtx/combine"
 //            body: "*"
 //        };
 //    }
@@ -199,20 +212,12 @@ message MakeSplitAddrTxReq {
     uint64 gas_price = 4;
 }
 
-message MakeSplitAddrTxResp {
-    int32 code = 1;
-    string message = 2;
-    string splitAddr = 3;
-    corepb.Transaction tx = 4;
-    repeated bytes rawMsgs = 5;
-}
-
 message MakeTokenIssueTxReq {
     string issuer = 1;
     string owner = 2;
     TokenTag tag = 3;
     uint64 gas_price = 4;
-}
+} 
 
 message MakeTokenIssueTxResp {
     int32 code = 1;
@@ -255,4 +260,11 @@ message MakeContractTxResp {
     corepb.Transaction tx = 3;
     repeated bytes rawMsgs = 4;
     string contract_addr = 5;
+}
+
+message MakeCombineTx {
+    string addr = 1;
+    uint64 gas_price = 2;
+    string token_hash = 3; // combine box if token_hash is set empty
+    uint32 token_index = 4;
 }

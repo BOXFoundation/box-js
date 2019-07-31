@@ -111,7 +111,10 @@ export default class Feature extends Fetch {
       pwd: org_tx.pwd
     })
     const tx_result = await cor.sendTx(signed_tx)
-    return Object.assign(tx_result, { splitAddr: unsigned_tx.splitAddr })
+    {
+      splitAddr: unsigned_tx.splitAddr
+    }
+    return Object.assign(tx_result)
   }
 
   /**

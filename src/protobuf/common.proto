@@ -1,9 +1,13 @@
-// Copyright (c) 2018 ContentBox Authors.
-// Use of this source code is governed by a MIT-style
+// Copyright (c) 2018 ContentBox Authors. 
+// Use of this source code is governed by a MIT-style 
 // license that can be found in the LICENSE file.
 
 syntax = "proto3";
 package rpcpb;
+
+option java_package = "one.contentbox.boxd.protocol.rpc.protobuf.generated";
+option java_outer_classname ="CommonProto";
+option java_multiple_files = true;
 
 import "block.proto";
 

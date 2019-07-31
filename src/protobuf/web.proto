@@ -5,6 +5,10 @@
 syntax = "proto3";
 package rpcpb;
 
+option java_package = "one.contentbox.boxd.protocol.rpc.protobuf.generated";
+option java_outer_classname ="WebProto";
+option java_multiple_files = true;
+
 import "transaction.proto";
 //import "google/api/annotations.proto";
 
@@ -27,8 +31,6 @@ service WebApi {
 //        };
 //    }
 
-    rpc ListenAndReadNewBlock(ListenBlocksReq) returns (stream BlockDetail);
-
 
     rpc DoCall (CallReq) returns (CallResp) ;
 //    rpc DoCall (CallReq) returns (CallResp) {
@@ -46,8 +48,35 @@ service WebApi {
 //            body: "*"
 //        };
 //    }
+
+
+    rpc GetLogs (LogsReq) returns (Logs) ;
+//    rpc GetLogs (LogsReq) returns (Logs) {
+//        option (google.api.http) = {
+//            post: "/v1/contract/getLogs"
+//            body: "*"
+//        };
+//    }
+
+    rpc Connect (stream RegisterReq) returns (stream ListenedData);
+
 }
 
+message RegisterReq {
+    uint32 type = 1;
+    oneof info {
+        LogsReq logs_req= 2;
+    }
+}
+
+message ListenedData {
+    uint32 type = 1;
+    oneof data {
+        BlockDetail block = 2;
+        LogDetails logs = 3;
+    }
+}
+    
 message ViewTxDetailReq {
     string hash = 1;
     bool spread_split = 2;
@@ -93,6 +122,40 @@ message ContractInfo {
 message ListenBlocksReq {
 }
 
+message LogsReq {
+    string hash = 1;
+    uint32 from = 2;
+    uint32 to = 3;
+    repeated string addresses = 4;
+    repeated topiclist topics = 5;
+
+    message topiclist {
+        repeated string topics = 1;
+    }
+}
+
+message Logs {
+    int32 code = 1;
+    string message = 2;
+    repeated LogDetail logs = 3;
+}
+
+message LogDetails {
+    repeated LogDetail logs = 1;
+}
+
+message LogDetail {
+    string address = 1;
+    repeated string topics = 2;
+    string data = 3;
+    uint64 block_number = 4;
+    string tx_hash = 5;
+    uint32 tx_index = 6;
+    string block_hash = 7;
+    uint32 index = 8;
+    bool removed = 9;
+}
+
 message TxDetail {
     string hash = 1;
     repeated TxInDetail vin = 2;
@@ -122,9 +185,9 @@ message TxOutDetail {
         contract_create = 7;
         contract_call = 8;
     }
-    TxOutType type = 5;
+    TxOutType type = 5; 
     oneof appendix {
-        TokenIssueInfo token_issue_info = 6;
+        TokenIssueInfo token_issue_info = 6; 
         TokenTransferInfo token_transfer_info = 7;
         SplitContractInfo split_contract_info = 8;
         ContractInfo contract_info = 9;
