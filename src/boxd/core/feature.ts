@@ -8,6 +8,7 @@ import Account from '../account/account'
 import PrivateKey from '../util/crypto/privatekey'
 import Core from '../core/api'
 import TxUtil from './tx/util'
+import SplitUtil from '../core/split/util'
 
 /**
  * @class [Feature]
@@ -111,10 +112,15 @@ export default class Feature extends Fetch {
       pwd: org_tx.pwd
     })
     const tx_result = await cor.sendTx(signed_tx)
-    {
-      splitAddr: unsigned_tx.splitAddr
-    }
-    return Object.assign(tx_result)
+    const split_addr = await SplitUtil.calcSplitAddr({
+      addrs: org_tx.tx.addrs,
+      weights: org_tx.tx.weights,
+      txHash: tx_result.hash,
+      index: tx_result['index']
+    })
+    return Object.assign(tx_result, {
+      splitAddr: split_addr
+    })
   }
 
   /**

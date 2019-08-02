@@ -8,8 +8,6 @@ import Keystore from './json/keystore.json'
 const cor = new Api(fetch, Mock.endpoint_dev, 'http')
 const feature = new Feature(fetch, Mock.endpoint_dev, 'http')
 
-jest.setTimeout(10000)
-
 test('Make a split contract transaction', async () => {
   try {
     const tx_result = await feature.makeSplitTxByCrypto({

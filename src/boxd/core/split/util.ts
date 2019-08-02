@@ -1,14 +1,15 @@
 import CommonUtil from '../../util/util'
 import Account from '../../account/account'
 import Hash from '../../util/crypto/hash'
+import SplitRequest from './request'
 
 namespace Util {
-  export const calcSplitAddr = (
-    addrs: string[],
-    weights: number[],
-    txHash: string,
-    index: number
-  ) => {
+  export const calcSplitAddr = ({
+    addrs,
+    weights,
+    txHash,
+    index
+  }: SplitRequest.CalcSplitAddrReq) => {
     if (addrs.length !== weights.length) {
       throw new Error(`Address count doesn't match weight count`)
     }
