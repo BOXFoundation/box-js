@@ -1,5 +1,6 @@
 import grpc from 'grpc'
 import protoLoader from '@grpc/proto-loader'
+// import Interface from './interface'
 
 /* load protobuf file */
 const packageDefinition = protoLoader.loadSync('../../protobuf/web.proto', {
@@ -26,19 +27,23 @@ export default class Grpc {
       grpc.credentials.createInsecure()
     )
 
-    // connecting
+    // connection
     return new Promise(resolve => {
       const stream = client.Connect()
       // console.log('stream :', stream)
 
+      // connecting
       stream.on('data', data => {
         console.log('[Connect] Data :', data)
       })
+
+      // ended
       stream.on('end', () => {
         console.log('[Connect] End')
         resolve()
       })
 
+      // try
       stream.write(param)
     })
   }

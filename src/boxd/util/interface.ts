@@ -90,6 +90,54 @@ namespace Interface {
     privKey: string;
     protocalTx;
   }
+
+  interface LogsReq {
+    hash: string;
+    from: number;
+    to: number;
+    addresses: string[];
+    topics: string[];
+  }
+
+  export interface RegisterReq {
+    type: number;
+    info?: {
+      logs_req: LogsReq;
+    };
+  }
+
+  interface BlockDetail {
+    version: number;
+    height: number;
+    time_stamp: number;
+    size: number;
+    hash: string;
+    prev_block_hash: string;
+    coin_base: string;
+    confirmed: boolean;
+    signature: string;
+    TxDetail: [];
+  }
+
+  interface LogDetail {
+    address: string;
+    topics: string[];
+    data: string;
+    block_number: number;
+    tx_hash: string;
+    tx_index: number;
+    block_hash: string;
+    index: number;
+    removed: boolean;
+  }
+
+  export interface ListenedData {
+    type: number;
+    data?: {
+      block: BlockDetail;
+      logs: LogDetail[];
+    };
+  }
 }
 
 export default Interface
