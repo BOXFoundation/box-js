@@ -17,10 +17,7 @@ namespace Util {
     const op = new CommonUtil.Opcoder('')
     for (let i = 0; i < addrs.length; i++) {
       const weight = CommonUtil.putUint32(Buffer.alloc(4), weights[i])
-      const pkh = Buffer.from(
-        new Account().dumpPubKeyHashFromAddr(addrs[i]),
-        'hex'
-      )
+      const pkh = Buffer.from(Account.dumpPubKeyHashFromAddr(addrs[i]), 'hex')
       op.add(pkh).add(weight)
     }
 

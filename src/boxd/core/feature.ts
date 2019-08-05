@@ -27,8 +27,7 @@ export default class Feature extends Fetch {
    * @returns [signed_tx]
    */
   public async signTxByCrypto(unsigned_tx: TxRequest.SignedTxByCryptoReq) {
-    const acc = new Account()
-    const privKey = await acc.dumpPrivKeyFromCrypto(
+    const privKey = await Account.dumpPrivKeyFromCrypto(
       unsigned_tx.crypto,
       unsigned_tx.pwd
     )
@@ -51,10 +50,12 @@ export default class Feature extends Fetch {
     org_tx: TxRequest.MakeBoxTxByCryptoReq
   ): Promise<{ hash: string }> {
     const { from, to, amounts, fee } = org_tx.tx
-    const acc = new Account()
 
     /* make privKey */
-    const privKey = await acc.dumpPrivKeyFromCrypto(org_tx.crypto, org_tx.pwd)
+    const privKey = await Account.dumpPrivKeyFromCrypto(
+      org_tx.crypto,
+      org_tx.pwd
+    )
     let total_to = new BN(0, 10)
     let to_map = {}
 

@@ -3,16 +3,16 @@ import UtilInterface from '../util/interface'
 
 export default class AccountManager {
   public acc_list: { [acc_addr: string]: UtilInterface.Account }
-  public updateAccount
+  public update_func
 
   public constructor(
     acc_list: { [acc_addr: string]: UtilInterface.Account },
-    updateAccount: object = (new_acc_list: object) => {
+    update_func: object = (new_acc_list: object) => {
       return new_acc_list
     }
   ) {
     this.acc_list = acc_list
-    this.updateAccount = updateAccount
+    this.update_func = update_func
   }
 
   /**
@@ -46,7 +46,7 @@ export default class AccountManager {
       },
       ...otherInfo
     }
-    this.updateAccount && this.updateAccount(this.acc_list)
+    this.update_func && this.update_func(this.acc_list)
   }
 
   /**

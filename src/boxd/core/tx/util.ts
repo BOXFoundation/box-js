@@ -51,10 +51,9 @@ namespace Util {
     /* ======================== */
 
     /* vout */
-    const acc = new Account()
     const op = new CommonUtil.Opcoder('')
     Object.keys(to_map).forEach(to_addr => {
-      const pub_hash = acc.dumpPubKeyHashFromAddr(to_addr)
+      const pub_hash = Account.dumpPubKeyHashFromAddr(to_addr)
       // console.log('pub_hash_1 :', pub_hash)
 
       // + script_pub_key
@@ -87,7 +86,7 @@ namespace Util {
     if (total_to.toNumber() < total_utxo.toNumber()) {
       const charge = total_utxo.sub(total_to).toString()
       // console.log('charge :', charge)
-      const pub_hash = acc.dumpPubKeyHashFromAddr(from)
+      const pub_hash = Account.dumpPubKeyHashFromAddr(from)
       // console.log('pub_hash_2 :', pub_hash)
 
       // + script_pub_key

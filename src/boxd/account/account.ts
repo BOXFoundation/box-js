@@ -5,28 +5,22 @@ import Verify from '../util/verify'
 import UtilInterface from '../util/interface'
 import Util from '../util/util'
 
-/**
- * @class [Account]
- */
-export default class Account {
+namespace Account {
   /**
    * @func Dump_P2PKH_address_from_PrivateKey
    * @param [*privKey]
    * @returns [P2PKH_Address]
    * @memberof Account
    */
-  public dumpAddrFromPrivKey(privKey: string | Buffer) {
-    try {
-      if (privKey instanceof Buffer) {
-        privKey = privKey.toString('hex')
-      }
-      if (Verify.isPrivate(privKey)) {
-        const privK = new PrivateKey(privKey)
-        return privK.privKey.toP2PKHAddress
-      }
-    } catch (err) {
-      console.log('dumpAddrFromPrivKey Error !')
-      throw new Error(err)
+  export const dumpAddrFromPrivKey = (privKey: string | Buffer) => {
+    if (privKey instanceof Buffer) {
+      privKey = privKey.toString('hex')
+    }
+    if (Verify.isPrivate(privKey)) {
+      const privK = new PrivateKey(privKey)
+      return privK.privKey.toP2PKHAddress
+    } else {
+      throw new Error('Private key format error !')
     }
   }
 
@@ -36,18 +30,15 @@ export default class Account {
    * @returns [PublicKey]
    * @memberof Account
    */
-  public dumpPubKeyFromPrivKey(privKey: string | Buffer) {
-    try {
-      if (privKey instanceof Buffer) {
-        privKey = privKey.toString('hex')
-      }
-      if (Verify.isPrivate(privKey)) {
-        const privK = new PrivateKey(privKey)
-        return privK.privKey.toPublicKey().toString('hex')
-      }
-    } catch (err) {
-      console.log('dumpPubKeyFromPrivKey Error !')
-      throw new Error(err)
+  export const dumpPubKeyFromPrivKey = (privKey: string | Buffer) => {
+    if (privKey instanceof Buffer) {
+      privKey = privKey.toString('hex')
+    }
+    if (Verify.isPrivate(privKey)) {
+      const privK = new PrivateKey(privKey)
+      return privK.privKey.toPublicKey().toString('hex')
+    } else {
+      throw new Error('Private key format error !')
     }
   }
 
@@ -58,18 +49,18 @@ export default class Account {
    * @returns [CryptoJson]
    * @memberof Account
    */
-  public dumpCryptoFromPrivKey(privKey: string | Buffer, pwd: string) {
-    try {
-      if (privKey instanceof Buffer) {
-        privKey = privKey.toString('hex')
-      }
-      if (Verify.isPrivate(privKey)) {
-        const privK = new PrivateKey(privKey)
-        return privK.getCryptoByPrivKey(pwd)
-      }
-    } catch (err) {
-      console.log('dumpKeyStoreFromPrivKey Error !')
-      throw new Error(err)
+  export const dumpCryptoFromPrivKey = (
+    privKey: string | Buffer,
+    pwd: string
+  ) => {
+    if (privKey instanceof Buffer) {
+      privKey = privKey.toString('hex')
+    }
+    if (Verify.isPrivate(privKey)) {
+      const privK = new PrivateKey(privKey)
+      return privK.getCryptoByPrivKey(pwd)
+    } else {
+      throw new Error('Private key format error !')
     }
   }
 
@@ -79,18 +70,15 @@ export default class Account {
    * @returns [PublicKey_hash]
    * @memberof Account
    */
-  public dumpPubKeyHashFromPrivKey(privKey: string | Buffer) {
-    try {
-      if (privKey instanceof Buffer) {
-        privKey = privKey.toString('hex')
-      }
-      if (Verify.isPrivate(privKey)) {
-        const privK = new PrivateKey(privKey)
-        return privK.privKey.pkh
-      }
-    } catch (err) {
-      console.log('dumpPubKeyHashFromPrivKey Error !')
-      throw new Error(err)
+  export const dumpPubKeyHashFromPrivKey = (privKey: string | Buffer) => {
+    if (privKey instanceof Buffer) {
+      privKey = privKey.toString('hex')
+    }
+    if (Verify.isPrivate(privKey)) {
+      const privK = new PrivateKey(privKey)
+      return privK.privKey.pkh
+    } else {
+      throw new Error('Private key format error !')
     }
   }
 
@@ -100,7 +88,7 @@ export default class Account {
    * @returns [PublicKey]
    * @memberof Account
    */
-  public dumpPubKeyHashFromAddr(addr: string) {
+  export const dumpPubKeyHashFromAddr = (addr: string) => {
     return Util.box2HexAddr(addr)
   }
 
@@ -111,42 +99,37 @@ export default class Account {
    * @returns [PrivateKey]
    * @memberof Account
    */
-  public async dumpPrivKeyFromCrypto(
+  export const dumpPrivKeyFromCrypto = async (
     cryptoJSON: UtilInterface.Crypto,
     pwd: string
-  ) {
+  ) => {
     // console.log('dumpPrivKeyFromCrypto param:', cryptoJSON, pwd)
-    try {
-      const cpt = cryptoJSON.crypto
-      const kdfParams = cpt.kdfparams
-      const saltBuffer = Buffer.from(kdfParams.salt, 'hex')
-      const derivedKey = CryptoJson.getDerivedKey(
-        pwd,
-        saltBuffer,
-        kdfParams.n,
-        kdfParams.r,
-        kdfParams.p,
-        kdfParams.dklen
-      )
-      const aesKey = derivedKey.slice(0, 16).toString('hex')
-      const sha256Key = derivedKey.slice(16, 32).toString('hex')
-      const mac = Aes.getMac(sha256Key, cpt.ciphertext)
-      if (mac !== cpt.mac) {
-        throw new Error('Wrong passphrase !')
-      }
-      const privateKeyHexStr = await Aes.getCiphertext(
-        aesKey,
-        cpt.ciphertext,
-        cpt.cipherparams.iv
-      )
-      if (!privateKeyHexStr) {
-        throw new Error('Privat Key not found !')
-      }
-      return privateKeyHexStr
-    } catch (err) {
-      console.log('dumpPrivKeyFromCrypto Error !')
-      throw new Error(err)
+    const cpt = cryptoJSON.crypto
+    const kdfParams = cpt.kdfparams
+    const saltBuffer = Buffer.from(kdfParams.salt, 'hex')
+    const derivedKey = CryptoJson.getDerivedKey(
+      pwd,
+      saltBuffer,
+      kdfParams.n,
+      kdfParams.r,
+      kdfParams.p,
+      kdfParams.dklen
+    )
+    const aesKey = derivedKey.slice(0, 16).toString('hex')
+    const sha256Key = derivedKey.slice(16, 32).toString('hex')
+    const mac = Aes.getMac(sha256Key, cpt.ciphertext)
+    if (mac !== cpt.mac) {
+      throw new Error('Wrong passphrase !')
     }
+    const privateKeyHexStr = await Aes.getCiphertext(
+      aesKey,
+      cpt.ciphertext,
+      cpt.cipherparams.iv
+    )
+    if (!privateKeyHexStr) {
+      throw new Error('Privat Key not found !')
+    }
+    return privateKeyHexStr
   }
 
   /**
@@ -156,7 +139,7 @@ export default class Account {
    * @returns [Crypto]
    * @memberof Account
    */
-  public getCryptoByPwd(pwd: string, privKey?: string | Buffer) {
+  export const getCryptoByPwd = (pwd: string, privKey?: string | Buffer) => {
     if (privKey && privKey instanceof Buffer) {
       privKey = privKey.toString('hex')
     }
@@ -170,3 +153,5 @@ export default class Account {
     }
   }
 }
+
+export default Account
