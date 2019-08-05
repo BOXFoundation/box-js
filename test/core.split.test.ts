@@ -1,11 +1,11 @@
 import 'jest'
 import fetch from 'isomorphic-fetch'
-import Api from '../src/boxd/core/api'
 import Mock from './json/mock.json'
-import Feature from '../src/boxd/core/feature'
 import Keystore from './json/keystore.json'
+import Api from '../src/boxd/core/api'
+import Feature from '../src/boxd/core/feature'
 
-const cor = new Api(fetch, Mock.endpoint_dev, 'http')
+const api = new Api(fetch, Mock.endpoint_dev, 'http')
 const feature = new Feature(fetch, Mock.endpoint_dev, 'http')
 
 test('Make a split contract transaction', async () => {
@@ -21,7 +21,7 @@ test('Make a split contract transaction', async () => {
       pwd: Mock.acc_pwd
     })
     // console.log('tx_result :', tx_result)
-    const tx_detail = await cor.viewTxDetail(tx_result.hash)
+    const tx_detail = await api.viewTxDetail(tx_result.hash)
     // console.log('tx_detail :', tx_detail)
     expect(tx_detail.detail.hash).toEqual(tx_result.hash)
   } catch (err) {

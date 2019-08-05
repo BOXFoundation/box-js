@@ -1,12 +1,12 @@
 import 'jest'
 import fetch from 'isomorphic-fetch'
+import Mock from './json/mock.json'
+import Keystore from './json/keystore.json'
 import Api from '../src/boxd/core/api'
 import Feature from '../src/boxd/core/feature'
 import TokenUtil from '../src/boxd/core/token/util'
-import Mock from './json/mock.json'
-import Keystore from './json/keystore.json'
 
-const cor = new Api(fetch, Mock.endpoint_dev, 'http')
+const api = new Api(fetch, Mock.endpoint_dev, 'http')
 const feature = new Feature(fetch, Mock.endpoint_dev, 'http')
 let token_hash
 
@@ -30,7 +30,7 @@ test('Issue a token & get the token balance', async done => {
       pwd: Mock.acc_pwd
     })
     // console.log('tx_result :', issue_result)
-    const tx_detail = await cor.viewTxDetail(issue_result.hash)
+    const tx_detail = await api.viewTxDetail(issue_result.hash)
     // console.log('tx_detail :', tx_detail)
     expect(tx_detail.detail.hash).toEqual(issue_result.hash)
     // console.log('issue_result :', issue_result)
@@ -43,9 +43,9 @@ test('Issue a token & get the token balance', async done => {
     const { opHash, index } = await TokenUtil.decodeTokenAddr(token_addr)
     expect(opHash).toEqual(token_hash)
     expect(index).toEqual(0)
-    // test func [Core.getTokenbalances]
+    // test func [Api.getTokenbalances]
     setTimeout(async () => {
-      const token_balances = await cor.getTokenbalances({
+      const token_balances = await api.getTokenbalances({
         addrs: [Mock.acc_addr_2, Mock.acc_addr_2],
         tokenHash: token_hash,
         tokenIndex: 0
@@ -78,7 +78,7 @@ test('Make a token transaction', async () => {
     }
     console.log('param :', param)
     const token_result = await feature.makeTokenTxByCrypto(param)
-    const token_detail = await cor.viewTxDetail(token_result.hash)
+    const token_detail = await api.viewTxDetail(token_result.hash)
     // console.log('token_detail:', token_detail)
     expect(token_detail.detail.hash).toEqual(token_result.hash)
   } catch (err) {

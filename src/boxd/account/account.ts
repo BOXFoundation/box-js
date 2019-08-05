@@ -5,8 +5,6 @@ import Verify from '../util/verify'
 import UtilInterface from '../util/interface'
 import Util from '../util/util'
 
-const OPCODE_TYPE = 'hex'
-
 /**
  * @class [Account]
  */
@@ -20,7 +18,7 @@ export default class Account {
   public dumpAddrFromPrivKey(privKey: string | Buffer) {
     try {
       if (privKey instanceof Buffer) {
-        privKey = privKey.toString(OPCODE_TYPE)
+        privKey = privKey.toString('hex')
       }
       if (Verify.isPrivate(privKey)) {
         const privK = new PrivateKey(privKey)
@@ -41,11 +39,11 @@ export default class Account {
   public dumpPubKeyFromPrivKey(privKey: string | Buffer) {
     try {
       if (privKey instanceof Buffer) {
-        privKey = privKey.toString(OPCODE_TYPE)
+        privKey = privKey.toString('hex')
       }
       if (Verify.isPrivate(privKey)) {
         const privK = new PrivateKey(privKey)
-        return privK.privKey.toPublicKey().toString(OPCODE_TYPE)
+        return privK.privKey.toPublicKey().toString('hex')
       }
     } catch (err) {
       console.log('dumpPubKeyFromPrivKey Error !')
@@ -63,7 +61,7 @@ export default class Account {
   public dumpCryptoFromPrivKey(privKey: string | Buffer, pwd: string) {
     try {
       if (privKey instanceof Buffer) {
-        privKey = privKey.toString(OPCODE_TYPE)
+        privKey = privKey.toString('hex')
       }
       if (Verify.isPrivate(privKey)) {
         const privK = new PrivateKey(privKey)
@@ -84,7 +82,7 @@ export default class Account {
   public dumpPubKeyHashFromPrivKey(privKey: string | Buffer) {
     try {
       if (privKey instanceof Buffer) {
-        privKey = privKey.toString(OPCODE_TYPE)
+        privKey = privKey.toString('hex')
       }
       if (Verify.isPrivate(privKey)) {
         const privK = new PrivateKey(privKey)
@@ -121,7 +119,7 @@ export default class Account {
     try {
       const cpt = cryptoJSON.crypto
       const kdfParams = cpt.kdfparams
-      const saltBuffer = Buffer.from(kdfParams.salt, OPCODE_TYPE)
+      const saltBuffer = Buffer.from(kdfParams.salt, 'hex')
       const derivedKey = CryptoJson.getDerivedKey(
         pwd,
         saltBuffer,
@@ -130,8 +128,8 @@ export default class Account {
         kdfParams.p,
         kdfParams.dklen
       )
-      const aesKey = derivedKey.slice(0, 16).toString(OPCODE_TYPE)
-      const sha256Key = derivedKey.slice(16, 32).toString(OPCODE_TYPE)
+      const aesKey = derivedKey.slice(0, 16).toString('hex')
+      const sha256Key = derivedKey.slice(16, 32).toString('hex')
       const mac = Aes.getMac(sha256Key, cpt.ciphertext)
       if (mac !== cpt.mac) {
         throw new Error('Wrong passphrase !')
@@ -160,7 +158,7 @@ export default class Account {
    */
   public getCryptoByPwd(pwd: string, privKey?: string | Buffer) {
     if (privKey && privKey instanceof Buffer) {
-      privKey = privKey.toString(OPCODE_TYPE)
+      privKey = privKey.toString('hex')
     }
     const privK = new PrivateKey(privKey)
     const cryptoJSON = privK.getCryptoByPrivKey(pwd)

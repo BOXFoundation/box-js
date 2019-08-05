@@ -17,7 +17,7 @@ const {
   OP_EQUAL_VERIFY,
   OP_CHECK_SIG
 } = Opcode
-const OPCODE_TYPE = 'hex'
+
 const PREFIXSTR2BYTES = {
   b1: Buffer.from([0x13, 0x26]),
   b2: Buffer.from([0x13, 0x28]),
@@ -110,11 +110,11 @@ namespace Util {
     public opcode
 
     public constructor(org_code) {
-      this.opcode = Buffer.from(org_code, OPCODE_TYPE)
+      this.opcode = Buffer.from(org_code, 'hex')
     }
 
     public reset(org_code) {
-      this.opcode = Buffer.from(org_code, OPCODE_TYPE)
+      this.opcode = Buffer.from(org_code, 'hex')
       return this
     }
 
@@ -130,7 +130,7 @@ namespace Util {
      */
     public add(and_buf, isBuf?: boolean) {
       if (!isBuf) {
-        and_buf = Buffer.from(and_buf, OPCODE_TYPE)
+        and_buf = Buffer.from(and_buf, 'hex')
       }
       const and_len = and_buf.length
       const and_len_str = to16StrFromNumber(and_len)
@@ -138,20 +138,20 @@ namespace Util {
       if (and_len < OP_PUSH_DATA_1) {
         this.opcode = Buffer.concat([
           this.opcode,
-          Buffer.from(and_len_str, OPCODE_TYPE)
+          Buffer.from(and_len_str, 'hex')
         ])
       } else if (and_len <= 0xff) {
         this.opcode = Buffer.concat([
           this.opcode,
-          Buffer.from(to16StrFromNumber(OP_PUSH_DATA_1), OPCODE_TYPE),
-          Buffer.from(and_len_str, OPCODE_TYPE)
+          Buffer.from(to16StrFromNumber(OP_PUSH_DATA_1), 'hex'),
+          Buffer.from(and_len_str, 'hex')
         ])
       } else if (and_len <= 0xffff) {
         let buf = Buffer.alloc(2)
         buf = putUint16(buf, and_len)
         this.opcode = Buffer.concat([
           this.opcode,
-          Buffer.from(to16StrFromNumber(OP_PUSH_DATA_2), OPCODE_TYPE),
+          Buffer.from(to16StrFromNumber(OP_PUSH_DATA_2), 'hex'),
           buf
         ])
       } else {
@@ -159,7 +159,7 @@ namespace Util {
         buf = putUint16(buf, and_len)
         this.opcode = Buffer.concat([
           this.opcode,
-          Buffer.from(to16StrFromNumber(OP_PUSH_DATA_4), OPCODE_TYPE),
+          Buffer.from(to16StrFromNumber(OP_PUSH_DATA_4), 'hex'),
           buf
         ])
       }
@@ -250,7 +250,7 @@ namespace Util {
   export const isHexPrefixed = str => {
     if (typeof str !== 'string') {
       throw new Error(
-        '[is-hex-prefixed] value must be type \'string\', is currently type ' +
+        "[is-hex-prefixed] value must be type 'string', is currently type " +
           typeof str +
           ', while checking isHexPrefixed.'
       )
@@ -300,7 +300,7 @@ namespace Util {
     try {
       const pubKey_hash = Verify.isAddr(boxAddr)
       if (pubKey_hash) {
-        return pubKey_hash.slice(2).toString(OPCODE_TYPE)
+        return pubKey_hash.slice(2).toString('hex')
       }
       console.log('dumpPubKeyHashFromAddr Error !')
       throw new Error('dumpPubKeyHashFromAddr Error')

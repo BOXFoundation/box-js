@@ -6,7 +6,7 @@ import TokenRequest from './token/request'
 import ContractRequest from './contract/request'
 import Account from '../account/account'
 import PrivateKey from '../util/crypto/privatekey'
-import Core from '../core/api'
+import Api from '../core/api'
 import TxUtil from './tx/util'
 import SplitUtil from '../core/split/util'
 
@@ -65,8 +65,8 @@ export default class Feature extends Fetch {
     })
     total_to = total_to.add(new BN(fee, 10))
     // console.log('fetchUtxos param :', from, total_to.toString())
-    const cor = new Core(this._fetch, this.endpoint, this.fetch_type)
-    const utxo_res = await cor.fetchUtxos({
+    const api = new Api(this._fetch, this.endpoint, this.fetch_type)
+    const utxo_res = await api.fetchUtxos({
       addr: from,
       amount: total_to.toString()
     })
@@ -81,13 +81,13 @@ export default class Feature extends Fetch {
         utxo_list: utxo_res.utxos
       })
       /* sign tx by privKey */
-      const signed_tx = await cor.signTxByPrivKey({
+      const signed_tx = await api.signTxByPrivKey({
         unsignedTx: unsigned_tx.tx_json,
         protocalTx: unsigned_tx.protocalTx,
         privKey
       })
       /* send tx to boxd */
-      return await cor.sendTx(signed_tx)
+      return await api.sendTx(signed_tx)
     } else {
       throw new Error('Fetch utxos Error')
     }
@@ -101,8 +101,8 @@ export default class Feature extends Fetch {
   public async makeSplitTxByCrypto(
     org_tx: SplitRequest.MakeSplitTxByCryptoReq
   ): Promise<{ splitAddr: string; hash: string }> {
-    const cor = new Core(this._fetch, this.endpoint, this.fetch_type)
-    const unsigned_tx = await cor.makeUnsignedSplitAddrTx(org_tx.tx)
+    const api = new Api(this._fetch, this.endpoint, this.fetch_type)
+    const unsigned_tx = await api.makeUnsignedSplitAddrTx(org_tx.tx)
     const signed_tx = await this.signTxByCrypto({
       unsignedTx: {
         tx: unsigned_tx.tx,
@@ -111,7 +111,7 @@ export default class Feature extends Fetch {
       crypto: org_tx.crypto,
       pwd: org_tx.pwd
     })
-    const tx_result = await cor.sendTx(signed_tx)
+    const tx_result = await api.sendTx(signed_tx)
     const split_addr = await SplitUtil.calcSplitAddr({
       addrs: org_tx.tx.addrs,
       weights: org_tx.tx.weights,
@@ -131,8 +131,8 @@ export default class Feature extends Fetch {
   public async issueTokenByCrypto(
     org_tx: TokenRequest.IssueTokenByCryptoReq
   ): Promise<{ hash: string }> {
-    const cor = new Core(this._fetch, this.endpoint, this.fetch_type)
-    const unsigned_tx = await cor.makeUnsignedTokenIssueTx(org_tx.tx)
+    const api = new Api(this._fetch, this.endpoint, this.fetch_type)
+    const unsigned_tx = await api.makeUnsignedTokenIssueTx(org_tx.tx)
     const signed_tx = await this.signTxByCrypto({
       unsignedTx: {
         tx: unsigned_tx.tx,
@@ -141,7 +141,7 @@ export default class Feature extends Fetch {
       crypto: org_tx.crypto,
       pwd: org_tx.pwd
     })
-    return await cor.sendTx(signed_tx)
+    return await api.sendTx(signed_tx)
   }
 
   /**
@@ -152,8 +152,8 @@ export default class Feature extends Fetch {
   public async makeTokenTxByCrypto(
     org_tx: TokenRequest.MakeTokenTxByCryptoReq
   ): Promise<{ hash: string }> {
-    const cor = new Core(this._fetch, this.endpoint, this.fetch_type)
-    const unsigned_tx = await cor.makeUnsignedTokenTx(org_tx.tx)
+    const api = new Api(this._fetch, this.endpoint, this.fetch_type)
+    const unsigned_tx = await api.makeUnsignedTokenTx(org_tx.tx)
     const signed_tx = await this.signTxByCrypto({
       unsignedTx: {
         tx: unsigned_tx.tx,
@@ -162,7 +162,7 @@ export default class Feature extends Fetch {
       crypto: org_tx.crypto,
       pwd: org_tx.pwd
     })
-    return await cor.sendTx(signed_tx)
+    return await api.sendTx(signed_tx)
   }
 
   /**
@@ -173,8 +173,8 @@ export default class Feature extends Fetch {
   public async makeContractTxByCrypto(
     org_tx: ContractRequest.ContractTxByCryptoReq
   ): Promise<{ hash: string; contractAddr: string }> {
-    const cor = new Core(this._fetch, this.endpoint, this.fetch_type)
-    const unsigned_tx = await cor.makeUnsignedContractTx(org_tx.tx)
+    const api = new Api(this._fetch, this.endpoint, this.fetch_type)
+    const unsigned_tx = await api.makeUnsignedContractTx(org_tx.tx)
 
     const signed_tx = await this.signTxByCrypto({
       unsignedTx: {
@@ -184,7 +184,7 @@ export default class Feature extends Fetch {
       crypto: org_tx.crypto,
       pwd: org_tx.pwd
     })
-    const tx_result = await cor.sendTx(signed_tx)
+    const tx_result = await api.sendTx(signed_tx)
     return { hash: tx_result.hash, contractAddr: unsigned_tx.contract_addr }
   }
 
@@ -196,8 +196,8 @@ export default class Feature extends Fetch {
   public async callContract(
     callParams: ContractRequest.CallContractReq
   ): Promise<{ result: string }> {
-    const cor = new Core(this._fetch, this.endpoint, this.fetch_type)
-    const result = await cor.callContract(callParams)
+    const api = new Api(this._fetch, this.endpoint, this.fetch_type)
+    const result = await api.callContract(callParams)
     return { result: result.output }
   }
 }

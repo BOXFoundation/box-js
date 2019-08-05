@@ -1,8 +1,6 @@
 import ecc from 'tiny-secp256k1'
 import CommonUtil from '../util'
 
-const OPCODE_TYPE = 'hex'
-
 namespace Ecpair {
   function canonicalizeInt(b: Buffer | Uint8Array) {
     if (b.length === 0) {
@@ -69,7 +67,7 @@ namespace Ecpair {
   }
 
   export const getECfromPrivKey = function(privkey, options?) {
-    privkey = Buffer.from(privkey, OPCODE_TYPE)
+    privkey = Buffer.from(privkey, 'hex')
     if (!ecc.isPrivate(privkey))
       throw new TypeError('Private key not in range [1, n)')
     return new ECPair(privkey, null, options)

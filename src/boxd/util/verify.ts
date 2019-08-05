@@ -2,7 +2,6 @@ import tinySecp from 'tiny-secp256k1'
 import bs58 from 'bs58'
 import Hash from '../util/crypto/hash'
 
-const OPCODE_TYPE = 'hex'
 let _typeof2 = obj => {
   if (typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol') {
     _typeof2 = function _typeof2(obj) {
@@ -23,7 +22,7 @@ let _typeof2 = obj => {
 
 namespace Verify {
   export const isPrivate = (privKey: string) => {
-    if (tinySecp.isPrivate(Buffer.from(privKey, OPCODE_TYPE))) {
+    if (tinySecp.isPrivate(Buffer.from(privKey, 'hex'))) {
       return privKey
     } else {
       throw new Error('The private key entered is not a valid one !')
@@ -34,7 +33,7 @@ namespace Verify {
     if (hex instanceof Buffer) {
       return Hash.sha256(Hash.sha256(hex)).slice(0, 4)
     } else {
-      return Hash.sha256(Hash.sha256(Buffer.from(hex, OPCODE_TYPE))).slice(0, 4)
+      return Hash.sha256(Hash.sha256(Buffer.from(hex, 'hex'))).slice(0, 4)
     }
   }
 

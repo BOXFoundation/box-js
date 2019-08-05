@@ -1,6 +1,6 @@
 import 'jest'
-import AbiCoder from '../src/boxd/core/contract/abi/abicoder'
 import BN from 'bn.js'
+import AbiCoder from '../src/boxd/core/contract/abi/abicoder'
 
 const abi = new AbiCoder()
 

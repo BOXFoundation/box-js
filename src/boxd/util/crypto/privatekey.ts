@@ -6,7 +6,6 @@ import CommonUtil from '../util'
 import CryptoJson from './crypto-json'
 import UtilInterface from '../interface'
 
-const OPCODE_TYPE = 'hex'
 const prefix = {
   P2PKH: '1326',
   P2SH: '132b'
@@ -68,7 +67,7 @@ export default class PrivateKey {
       }
     }
     if (unsigned_tx.protocalTx) {
-      return unsigned_tx.protocalTx.serializeBinary().toString(OPCODE_TYPE)
+      return unsigned_tx.protocalTx.serializeBinary().toString('hex')
     } else {
       return tx
     }
@@ -81,10 +80,10 @@ export default class PrivateKey {
   public getAddrByPrivKey = (prefixHex: string) => {
     const sha256Content = prefixHex + this.privKey.pkh
     const checksum = Hash.sha256(
-      Hash.sha256(Buffer.from(sha256Content, OPCODE_TYPE))
+      Hash.sha256(Buffer.from(sha256Content, 'hex'))
     ).slice(0, 4)
-    const content = sha256Content.concat(checksum.toString(OPCODE_TYPE))
-    return bs58.encode(Buffer.from(content, OPCODE_TYPE))
+    const content = sha256Content.concat(checksum.toString('hex'))
+    return bs58.encode(Buffer.from(content, 'hex'))
   }
 
   /**
@@ -93,7 +92,7 @@ export default class PrivateKey {
    */
   public getPubKeyHashByPrivKey = () => {
     return Hash.hash160(this.privKey.toPublicKey().toBuffer()).toString(
-      OPCODE_TYPE
+      'hex'
     )
   }
 }

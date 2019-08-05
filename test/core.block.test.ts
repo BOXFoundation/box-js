@@ -1,14 +1,14 @@
 import 'jest'
 import fetch from 'isomorphic-fetch'
-import Api from '../src/boxd/core/api'
 import Mock from './json/mock.json'
+import Api from '../src/boxd/core/api'
 
-const cor = new Api(fetch, Mock.endpoint_dev, 'http')
+const api = new Api(fetch, Mock.endpoint_dev, 'http')
 let node_id
 
 test('Get node info', async () => {
   try {
-    const node_info = await cor.getNodeInfo()
+    const node_info = await api.getNodeInfo()
     // console.log('node_info :', JSON.stringify(node_info))
     node_id = node_info.nodes[0].id
     // console.log('node_id :', node_id)
@@ -21,7 +21,7 @@ test('Get node info', async () => {
 
 test('Get block hash by Height', async () => {
   try {
-    expect(await cor.getBlockHashByHeight(Mock.blockHeight))
+    expect(await api.getBlockHashByHeight(Mock.blockHeight))
   } catch (err) {
     console.error('Get block hash by Height Error :', err)
     expect(0).toBe(1)
@@ -30,7 +30,7 @@ test('Get block hash by Height', async () => {
 
 test('Get block by Height', async () => {
   try {
-    expect(await cor.getBlockByHeight(Mock.blockHeight))
+    expect(await api.getBlockByHeight(Mock.blockHeight))
   } catch (err) {
     console.error('Get block by Height Error :', err)
     expect(0).toBe(1)
@@ -39,7 +39,7 @@ test('Get block by Height', async () => {
 
 test('Get block by Hash', async () => {
   try {
-    expect(await cor.getBlockByHash(Mock.blockHash))
+    expect(await api.getBlockByHash(Mock.blockHash))
   } catch (err) {
     console.error('Get block by Hash Error :', err)
     expect(0).toBe(1)
@@ -48,7 +48,7 @@ test('Get block by Hash', async () => {
 
 test('Get block header by Hash', async () => {
   try {
-    expect(await cor.getBlockHeaderByHash(Mock.blockHash))
+    expect(await api.getBlockHeaderByHash(Mock.blockHash))
   } catch (err) {
     console.error('Get block header by Hash Error :', err)
     expect(0).toBe(1)
@@ -57,7 +57,7 @@ test('Get block header by Hash', async () => {
 
 test('Get block header by Height', async () => {
   try {
-    expect(await cor.getBlockHeaderByHeight(Mock.blockHeight))
+    expect(await api.getBlockHeaderByHeight(Mock.blockHeight))
   } catch (err) {
     console.error('Get block header by Height Error :', err)
     expect(0).toBe(1)
@@ -66,7 +66,7 @@ test('Get block header by Height', async () => {
 
 test('Get block Height', async () => {
   try {
-    expect(await cor.getBlockHeight())
+    expect(await api.getBlockHeight())
   } catch (err) {
     console.error('Get block Height Error :', err)
     expect(0).toBe(1)
@@ -75,7 +75,7 @@ test('Get block Height', async () => {
 
 test('View block detail', async () => {
   try {
-    expect(await cor.viewBlockDetail(Mock.blockHash))
+    expect(await api.viewBlockDetail(Mock.blockHash))
   } catch (err) {
     console.error('View block detail Error :', err)
     expect(0).toBe(1)

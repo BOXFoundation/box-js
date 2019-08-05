@@ -1,22 +1,20 @@
 import 'jest'
-import AbiCoder from '../src/boxd/core/contract/abi/abicoder'
-import Api from '../src/boxd/core/api'
-import Feature from '../src/boxd/core/feature'
 import fetch from 'isomorphic-fetch'
 import Mock from './json/mock.json'
 import Keystore from './json/keystore.json'
+import AbiCoder from '../src/boxd/core/contract/abi/abicoder'
+import Api from '../src/boxd/core/api'
+import Feature from '../src/boxd/core/feature'
 import Util from '../src/boxd/util/util'
-
-const abi = new AbiCoder()
 
 // base58 format
 let src = Mock.acc_addr_4
+let contractAddr
 // hex format
+const abi = new AbiCoder()
 const srcHexAddr = Util.box2HexAddr(src)
 const anotherHexAddr = Util.box2HexAddr(Mock.acc_addr_1)
-let contractAddr
-
-const cor = new Api(fetch, Mock.endpoint_dev, 'http')
+const api = new Api(fetch, Mock.endpoint_dev, 'http')
 const feature = new Feature(fetch, Mock.endpoint_dev, 'http')
 
 // const contract = `pragma solidity >=0.4.0 <0.6.0;
@@ -101,7 +99,7 @@ async function isMinter(hexAddr: string | undefined): Promise<boolean> {
 async function getNonce(): Promise<number> {
   let addrNonce = 0
 
-  await cor
+  await api
     .getNonce(src)
     .then(result => {
       addrNonce = result.nonce
@@ -139,7 +137,7 @@ test('Deploy a contract', async () => {
   })
   await sleep(5000)
   console.log('contract deployed at: ' + tx_result.contractAddr)
-  const tx_detail = await cor.viewTxDetail(tx_result.hash)
+  const tx_detail = await api.viewTxDetail(tx_result.hash)
   expect(tx_detail.detail.hash).toEqual(tx_result.hash)
   contractAddr = tx_result.contractAddr
   expect(await getBalance()).toEqual(100)
@@ -182,7 +180,7 @@ test('Send a contract method', async () => {
     pwd: Mock.acc_pwd
   })
   await sleep(5000)
-  const tx_detail = await cor.viewTxDetail(tx_result.hash)
+  const tx_detail = await api.viewTxDetail(tx_result.hash)
   expect(tx_detail.detail.hash).toEqual(tx_result.hash)
   expect(await getBalance()).toEqual(initBalance + depositAmount)
 })
@@ -194,7 +192,7 @@ test('Call a contract method', async () => {
 })
 
 test('Get logs', async () => {
-  const logs = await cor.getLogs(Mock.constract_logs_req)
+  const logs = await api.getLogs(Mock.constract_logs_req)
   expect(logs)
   // console.log('logs :', logs)
 })

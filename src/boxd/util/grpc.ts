@@ -1,6 +1,5 @@
 import grpc from 'grpc'
 import protoLoader from '@grpc/proto-loader'
-// import Interface from './interface'
 
 /* load protobuf file */
 const packageDefinition = protoLoader.loadSync('../../protobuf/web.proto', {
@@ -10,7 +9,7 @@ const packageDefinition = protoLoader.loadSync('../../protobuf/web.proto', {
   defaults: true,
   oneofs: true
 })
-const hello_proto = grpc.loadPackageDefinition(packageDefinition).rpcpb
+var hello_proto = grpc.loadPackageDefinition(packageDefinition).rpcpb
 // console.log('hello_proto.WebApi :', hello_proto.WebApi)
 
 export default class Grpc {

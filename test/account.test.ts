@@ -1,12 +1,11 @@
 import 'jest'
-import Account from '../src/boxd/account/account'
-import AccountManager from '../src/boxd/account/account-manager'
 import Mock from './json/mock.json'
 import Keystore from './json/keystore.json'
+import Account from '../src/boxd/account/account'
+import AccountManager from '../src/boxd/account/account-manager'
 
 let acc_list_result
-const OPCODE_TYPE = 'hex'
-const acc_buf = Buffer.from(Mock.acc_privateKey, OPCODE_TYPE) // private key (buffer ed)
+const acc_buf = Buffer.from(Mock.acc_privateKey, 'hex') // private key (buffer ed)
 const updateAccount = (new_acc_list = {}) => {
   // console.log('new_acc_list :', new_acc_list)
   acc_list_result = new_acc_list
