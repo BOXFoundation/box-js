@@ -29,7 +29,7 @@ class HttpError extends Error {
     } else if (json.statusText) {
       super(json.statusText)
     } else {
-      super('Unknow Error!')
+      super('Unknow Error !')
     }
     Object.setPrototypeOf(this, HttpError.prototype)
     this.json = json
@@ -66,20 +66,16 @@ const httpFetch = async (path, body, _fetch, endpoint) => {
         )
         result = await response.json()
         console.log(result)
-        return result
-
-        // result.code = response.status
-        // result.statusText = response.statusText
         throw new HttpError(result)
       }
       result = await response.json()
-      // console.log('[fetch] Result:', result)
+      // console.log('[fetch] Result :', result)
       if (result.code) {
         if (result.code === 0) {
           delete result.code
           delete result.message
         } else {
-          // console.log('[fetch] Error: code !== 0')
+          // console.log('[fetch] Error : code !== 0')
           throw new HttpError(result)
         }
       }

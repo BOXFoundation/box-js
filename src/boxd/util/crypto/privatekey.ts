@@ -2,7 +2,7 @@ import bitcore from 'bitcore-lib'
 import bs58 from 'bs58'
 import Hash from './hash'
 import Ecpair from './ecpair'
-import CommonUtil from '../util'
+import Util from '../util'
 import CryptoJson from './crypto-json'
 import UtilInterface from '../interface'
 
@@ -53,10 +53,10 @@ export default class PrivateKey {
     let _privKey = unsigned_tx.privKey
     // vin handler
     for (let idx = 0; idx < tx.vin.length; idx++) {
-      const sigHashBuf = CommonUtil.getSignHash(rawMsgs[idx])
+      const sigHashBuf = Util.getSignHash(rawMsgs[idx])
       const eccPrivKey = _privKey && Ecpair.getECfromPrivKey(_privKey)
       const signBuf = eccPrivKey.sign(sigHashBuf).sig
-      const scriptSig = await CommonUtil.signatureScript(
+      const scriptSig = await Util.signatureScript(
         signBuf,
         this.privKey.toPublicKey().toBuffer()
       )
@@ -91,8 +91,6 @@ export default class PrivateKey {
    * @memberof PrivateKey
    */
   public getPubKeyHashByPrivKey = () => {
-    return Hash.hash160(this.privKey.toPublicKey().toBuffer()).toString(
-      'hex'
-    )
+    return Hash.hash160(this.privKey.toPublicKey().toBuffer()).toString('hex')
   }
 }

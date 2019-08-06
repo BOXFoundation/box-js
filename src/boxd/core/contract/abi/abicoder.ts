@@ -1,5 +1,4 @@
-import CommonUtil from '../../../util/util'
-import AbiUtil from './util'
+import Util from '../../../util/util'
 import isObject from 'lodash/isObject'
 import isArray from 'lodash/isArray'
 
@@ -12,9 +11,9 @@ export default class AbiCoder {
    */
   public async encodeFunctionSignature(functionName: string | object) {
     if (isObject(functionName)) {
-      functionName = CommonUtil.jsonInterfaceMethodToString(functionName)
+      functionName = Util.jsonInterfaceMethodToString(functionName)
     }
-    const keccaked = await CommonUtil.keccak256(functionName)
+    const keccaked = await Util.keccak256(functionName)
     if (keccaked) {
       return keccaked.slice(2, 10)
     } else {
@@ -30,10 +29,10 @@ export default class AbiCoder {
    */
   public encodeEventSignature(functionName: string | object) {
     if (isObject(functionName)) {
-      functionName = CommonUtil.jsonInterfaceMethodToString(functionName)
+      functionName = Util.jsonInterfaceMethodToString(functionName)
     }
 
-    return CommonUtil.keccak256(functionName)
+    return Util.keccak256(functionName)
   }
 
   /**
@@ -55,7 +54,7 @@ export default class AbiCoder {
    * @returns {encoded list of params} string
    */
   public async encodeParameters(types: string[], params: any[]) {
-    return await AbiUtil.rawEncode(types, params).toString('hex')
+    return await Util.rawEncode(types, params).toString('hex')
   }
 
   /**
@@ -102,7 +101,7 @@ export default class AbiCoder {
       throw new Error(`Invalid bytes string given: ${bytes}`)
     }
 
-    const result = AbiUtil.rawDecode(outputs, bytes)
+    const result = Util.rawDecode(outputs, bytes)
     let returnValues = {}
     let decodedValue
 

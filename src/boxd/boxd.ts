@@ -2,16 +2,16 @@ import Account from './account/account'
 import AccountManager from './account/account-manager'
 import Api from './core/api'
 import Feature from './core/feature'
-import TokenUtil from '../boxd/core/token/util'
 import Util from '../boxd/util/util'
+import Grpc from '../boxd/util/grpc'
 
 const boxd = {
   Account,
   AccountManager,
   Api,
   Feature,
-  Util,
-  util: TokenUtil
+  Grpc,
+  Util
 }
 
 export default boxd

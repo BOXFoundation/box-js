@@ -7,8 +7,7 @@ import ContractRequest from './contract/request'
 import Account from '../account/account'
 import PrivateKey from '../util/crypto/privatekey'
 import Api from '../core/api'
-import TxUtil from './tx/util'
-import SplitUtil from '../core/split/util'
+import Util from '../util/util'
 
 /**
  * @class [Feature]
@@ -77,7 +76,7 @@ export default class Feature extends Fetch {
 
     if (utxo_res['code'] === 0) {
       /* make unsigned tx */
-      const unsigned_tx = await TxUtil.makeUnsignedTxHandle({
+      const unsigned_tx = await Util.makeUnsignedTxHandle({
         from,
         to_map,
         fee,
@@ -116,7 +115,7 @@ export default class Feature extends Fetch {
       pwd: org_tx.pwd
     })
     const tx_result = await api.sendTx(signed_tx)
-    const split_addr = await SplitUtil.calcSplitAddr({
+    const split_addr = await Util.calcSplitAddr({
       addrs: org_tx.tx.addrs,
       weights: org_tx.tx.weights,
       txHash: tx_result.hash,

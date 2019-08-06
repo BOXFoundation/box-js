@@ -1,10 +1,10 @@
 import BN from 'bn.js'
 import block_pb from '../../util/protobuf-js/block_pb.js'
 import Account from '../../account/account'
-import CommonUtil from '../../util/util'
+import Util from '../../util/util'
 import TxRequest from './request'
 
-namespace Util {
+namespace TxUtil {
   /**
    * @func Make_Unsigned_transaction_handle
    * @param [*param] {utxo_list: TxResponse.Utxo[]; is_raw?: boolean}
@@ -51,7 +51,7 @@ namespace Util {
     /* ======================== */
 
     /* vout */
-    const op = new CommonUtil.Opcoder('')
+    const op = new Util.Opcoder('')
     Object.keys(to_map).forEach(to_addr => {
       const pub_hash = Account.dumpPubKeyHashFromAddr(to_addr)
       // console.log('pub_hash_1 :', pub_hash)
@@ -59,11 +59,11 @@ namespace Util {
       // + script_pub_key
       const script = op
         .reset('')
-        .add(CommonUtil.to16StrFromNumber(op.OP_DUP))
-        .add(CommonUtil.to16StrFromNumber(op.OP_HASH_160))
+        .add(Util.to16StrFromNumber(op.OP_DUP))
+        .add(Util.to16StrFromNumber(op.OP_HASH_160))
         .add(pub_hash)
-        .add(CommonUtil.to16StrFromNumber(op.OP_EQUAL_VERIFY))
-        .add(CommonUtil.to16StrFromNumber(op.OP_CHECK_SIG))
+        .add(Util.to16StrFromNumber(op.OP_EQUAL_VERIFY))
+        .add(Util.to16StrFromNumber(op.OP_CHECK_SIG))
         .getCode()
       // console.log('script :', script.toString('base64'))
 
@@ -92,11 +92,11 @@ namespace Util {
       // + script_pub_key
       const script = op
         .reset('')
-        .add(CommonUtil.to16StrFromNumber(op.OP_DUP))
-        .add(CommonUtil.to16StrFromNumber(op.OP_HASH_160))
+        .add(Util.to16StrFromNumber(op.OP_DUP))
+        .add(Util.to16StrFromNumber(op.OP_HASH_160))
         .add(pub_hash)
-        .add(CommonUtil.to16StrFromNumber(op.OP_EQUAL_VERIFY))
-        .add(CommonUtil.to16StrFromNumber(op.OP_CHECK_SIG))
+        .add(Util.to16StrFromNumber(op.OP_EQUAL_VERIFY))
+        .add(Util.to16StrFromNumber(op.OP_CHECK_SIG))
         .getCode()
       // console.log('script :', script.toString('base64'))
 
@@ -201,4 +201,4 @@ namespace Util {
   }
 }
 
-export default Util
+export default TxUtil

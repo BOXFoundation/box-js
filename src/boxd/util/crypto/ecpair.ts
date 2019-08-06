@@ -1,5 +1,5 @@
 import ecc from 'tiny-secp256k1'
-import CommonUtil from '../util'
+import Util from '../util'
 
 namespace Ecpair {
   function canonicalizeInt(b: Buffer | Uint8Array) {
@@ -50,13 +50,13 @@ namespace Ecpair {
 
     const b1 = Buffer.alloc(4)
     b1[0] = 0x30
-    b1[1] = CommonUtil.getBufFromNumber(length - 2)
+    b1[1] = Util.getBufFromNumber(length - 2)
     b1[2] = 0x02
-    b1[3] = CommonUtil.getBufFromNumber(rb.length)
+    b1[3] = Util.getBufFromNumber(rb.length)
 
     const b3 = Buffer.alloc(2)
     b3[0] = 0x02
-    b3[1] = CommonUtil.getBufFromNumber(sb.length)
+    b3[1] = Util.getBufFromNumber(sb.length)
 
     const allBytes = Buffer.concat([b1, rb, b3, sb])
     return allBytes

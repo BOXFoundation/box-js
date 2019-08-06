@@ -6,6 +6,10 @@ import isObject from 'lodash/isObject'
 import isArray from 'lodash/isArray'
 import isString from 'lodash/isString'
 import isNumber from 'lodash/isNumber'
+import AbiUtil from '../core/contract/abi/util'
+import SplitUtil from '../core/split/util'
+import TokenUtil from '../core/token/util'
+import TxUtil from '../core/tx/util'
 
 const {
   OP_0,
@@ -77,7 +81,7 @@ const _flattenTypes = (includeTuple, puts) => {
   return types
 }
 
-namespace Util {
+namespace CommonUtil {
   export const to16StrFromNumber = (num: number) => (num & 255).toString(16)
 
   export const getBufFromNumber = (num: number) => num & 255
@@ -306,4 +310,4 @@ namespace Util {
   }
 }
 
-export default Util
+export default Object.assign(CommonUtil, AbiUtil, SplitUtil, TokenUtil, TxUtil)

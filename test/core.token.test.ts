@@ -4,13 +4,11 @@ import Mock from './json/mock.json'
 import Keystore from './json/keystore.json'
 import Api from '../src/boxd/core/api'
 import Feature from '../src/boxd/core/feature'
-import TokenUtil from '../src/boxd/core/token/util'
+import Util from '../src/boxd/util/util'
 
 const api = new Api(fetch, Mock.endpoint_dev, 'http')
 const feature = new Feature(fetch, Mock.endpoint_dev, 'http')
 let token_hash
-
-jest.setTimeout(15000)
 
 test('Issue a token & get the token balance', async done => {
   try {
@@ -35,12 +33,12 @@ test('Issue a token & get the token balance', async done => {
     expect(tx_detail.detail.hash).toEqual(issue_result.hash)
     // console.log('issue_result :', issue_result)
     token_hash = issue_result.hash
-    const token_addr = await TokenUtil.encodeTokenAddr({
+    const token_addr = await Util.encodeTokenAddr({
       opHash: token_hash,
       index: 0
     })
     // test func [TokenUtil.decodeTokenAddr]
-    const { opHash, index } = await TokenUtil.decodeTokenAddr(token_addr)
+    const { opHash, index } = await Util.decodeTokenAddr(token_addr)
     expect(opHash).toEqual(token_hash)
     expect(index).toEqual(0)
     // test func [Api.getTokenbalances]
@@ -50,7 +48,7 @@ test('Issue a token & get the token balance', async done => {
         tokenHash: token_hash,
         tokenIndex: 0
       })
-      console.log('token_balances:', token_balances)
+      // console.log('token_balances:', token_balances)
       expect(
         Number(token_balances.balances[1]) / Math.pow(10, Mock.token_decimal)
       ).toEqual(Mock.token_supply)
@@ -76,7 +74,7 @@ test('Make a token transaction', async () => {
       crypto: Keystore.keystore_2,
       pwd: Mock.acc_pwd
     }
-    console.log('param :', param)
+    // console.log('param :', param)
     const token_result = await feature.makeTokenTxByCrypto(param)
     const token_detail = await api.viewTxDetail(token_result.hash)
     // console.log('token_detail:', token_detail)

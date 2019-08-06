@@ -11,7 +11,7 @@ import BlockResponse from './block/response'
 import SplitResponse from './split/response'
 import TokenResponse from './token/response'
 import TxResponse from './tx/response'
-import TxUtil from './tx/util'
+import Util from '../util/util'
 
 /**
  * @class [Api]
@@ -198,7 +198,7 @@ export default class Api extends Fetch {
     if (utxo_res['code'] === 0) {
       // make unsigned tx
       const utxo_list = utxo_res.utxos
-      let unsigned_tx = await TxUtil.makeUnsignedTxHandle({
+      let unsigned_tx = await Util.makeUnsignedTxHandle({
         from: addr,
         to_map: to,
         fee,

@@ -1,5 +1,5 @@
 import BN from 'bn.js'
-import CommonUtil from '../../../util/util'
+import Util from '../../../util/util'
 import isObject from 'lodash/isObject'
 
 // Is a type an array?
@@ -19,8 +19,8 @@ const parseTypeArray = type => {
 const parseNumber = arg => {
   var type = typeof arg
   if (type === 'string') {
-    if (CommonUtil.isHexPrefixed(arg)) {
-      return new BN(CommonUtil.stripHexPrefix(arg), 16)
+    if (Util.isHexPrefixed(arg)) {
+      return new BN(Util.stripHexPrefix(arg), 16)
     } else {
       return new BN(arg, 10)
     }
@@ -360,7 +360,7 @@ function decodeSingle(parsedType, data, offset) {
   throw new Error('Unsupported or invalid type: ' + parsedType.name)
 }
 
-namespace Util {
+namespace AbiUtil {
   export const rawEncode = (types, values) => {
     var output: any = []
     var data: any = []
@@ -423,4 +423,4 @@ namespace Util {
   }
 }
 
-export default Util
+export default AbiUtil

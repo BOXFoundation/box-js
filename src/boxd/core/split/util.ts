@@ -1,9 +1,9 @@
-import CommonUtil from '../../util/util'
+import Util from '../../util/util'
 import Account from '../../account/account'
 import Hash from '../../util/crypto/hash'
 import SplitRequest from './request'
 
-namespace Util {
+namespace SplitUtil {
   /**
    * @func make_split_address
    * @param [*split_info] {addrs,weights,txHash,index}
@@ -21,16 +21,16 @@ namespace Util {
     }
 
     /* opcoder */
-    const op = new CommonUtil.Opcoder('')
+    const op = new Util.Opcoder('')
     for (let i = 0; i < addrs.length; i++) {
-      const weight = CommonUtil.putUint32(Buffer.alloc(4), weights[i])
+      const weight = Util.putUint32(Buffer.alloc(4), weights[i])
       const pkh = Buffer.from(Account.dumpPubKeyHashFromAddr(addrs[i]), 'hex')
       op.add(pkh).add(weight)
     }
 
     /* make raw */
     const splitHashBs = Hash.ripemd160(Hash.sha256(op.getCode()))
-    const idxBytes = CommonUtil.putUint32(Buffer.alloc(4), index)
+    const idxBytes = Util.putUint32(Buffer.alloc(4), index)
     const hashBytes = Buffer.from(txHash, 'hex')
     const raw = Buffer.concat([hashBytes, idxBytes, splitHashBs])
 
@@ -38,4 +38,4 @@ namespace Util {
   }
 }
 
-export default Util
+export default SplitUtil
