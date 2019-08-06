@@ -54,12 +54,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var bn_js_1 = __importDefault(require("bn.js"));
 var fetch_1 = require("../util/fetch");
 var privatekey_1 = __importDefault(require("../util/crypto/privatekey"));
-var util_1 = __importDefault(require("./tx/util"));
+var util_1 = __importDefault(require("../util/util"));
 /**
  * @class [Api]
  * @extends Fetch
- * @constructs _fetch # user incoming
- * @constructs endpoint string # user incoming
+ * @constructs _fetch user incoming
+ * @constructs endpoint user incoming
+ * @constructs fetch_type http / rpc
  */
 var Api = /** @class */ (function (_super) {
     __extends(Api, _super);

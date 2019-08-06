@@ -7,12 +7,14 @@ var account_1 = __importDefault(require("./account/account"));
 var account_manager_1 = __importDefault(require("./account/account-manager"));
 var api_1 = __importDefault(require("./core/api"));
 var feature_1 = __importDefault(require("./core/feature"));
-var util_1 = __importDefault(require("../boxd/core/token/util"));
+var util_1 = __importDefault(require("../boxd/util/util"));
+var grpc_1 = __importDefault(require("../boxd/util/grpc"));
 var boxd = {
     Account: account_1.default,
     AccountManager: account_manager_1.default,
     Api: api_1.default,
     Feature: feature_1.default,
-    util: util_1.default
+    Grpc: grpc_1.default,
+    Util: util_1.default
 };
 exports.default = boxd;

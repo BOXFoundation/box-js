@@ -39,7 +39,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __importDefault(require("../../../util/util"));
-var util_2 = __importDefault(require("./util"));
 var isObject_1 = __importDefault(require("lodash/isObject"));
 var isArray_1 = __importDefault(require("lodash/isArray"));
 var AbiCoder = /** @class */ (function () {
@@ -107,7 +106,7 @@ var AbiCoder = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, util_2.default.rawEncode(types, params).toString('hex')];
+                    case 0: return [4 /*yield*/, util_1.default.rawEncode(types, params).toString('hex')];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
@@ -166,7 +165,7 @@ var AbiCoder = /** @class */ (function () {
         if (!bytes || bytes === '0x' || bytes === '0X') {
             throw new Error("Invalid bytes string given: " + bytes);
         }
-        var result = util_2.default.rawDecode(outputs, bytes);
+        var result = util_1.default.rawDecode(outputs, bytes);
         var returnValues = {};
         var decodedValue;
         if (result) {

@@ -43,157 +43,141 @@ var aes_1 = __importDefault(require("../util/crypto/aes"));
 var privatekey_1 = __importDefault(require("../util/crypto/privatekey"));
 var verify_1 = __importDefault(require("../util/verify"));
 var util_1 = __importDefault(require("../util/util"));
-var OPCODE_TYPE = 'hex';
-/**
- * @class [Account]
- */
-var Account = /** @class */ (function () {
-    function Account() {
-    }
+var Account;
+(function (Account) {
+    var _this = this;
     /**
-     * @func Dump_P2PKH_address_from_PrivateKey
+     * @func Dump_P2PKH_address_from_privateKey
      * @param [*privKey]
-     * @returns [P2PKH_Address]
+     * @returns [P2PKH_address]
      * @memberof Account
      */
-    Account.prototype.dumpAddrFromPrivKey = function (privKey) {
-        try {
-            if (privKey instanceof Buffer) {
-                privKey = privKey.toString(OPCODE_TYPE);
-            }
-            if (verify_1.default.isPrivate(privKey)) {
-                var privK = new privatekey_1.default(privKey);
-                return privK.privKey.toP2PKHAddress;
-            }
+    Account.dumpAddrFromPrivKey = function (privKey) {
+        if (privKey instanceof Buffer) {
+            privKey = privKey.toString('hex');
         }
-        catch (err) {
-            console.log('dumpAddrFromPrivKey Error !');
-            throw new Error(err);
+        if (verify_1.default.isPrivate(privKey)) {
+            var privK = new privatekey_1.default(privKey);
+            return privK.privKey.toP2PKHAddress;
+        }
+        else {
+            throw new Error('Private key format error !');
         }
     };
     /**
-     * @func Dump_PublicKey_from_PrivateKey
+     * @func Dump_publicKey_from_privateKey
      * @param [*privKey]
-     * @returns [PublicKey]
+     * @returns [publicKey]
      * @memberof Account
      */
-    Account.prototype.dumpPubKeyFromPrivKey = function (privKey) {
-        try {
-            if (privKey instanceof Buffer) {
-                privKey = privKey.toString(OPCODE_TYPE);
-            }
-            if (verify_1.default.isPrivate(privKey)) {
-                var privK = new privatekey_1.default(privKey);
-                return privK.privKey.toPublicKey().toString(OPCODE_TYPE);
-            }
+    Account.dumpPubKeyFromPrivKey = function (privKey) {
+        if (privKey instanceof Buffer) {
+            privKey = privKey.toString('hex');
         }
-        catch (err) {
-            console.log('dumpPubKeyFromPrivKey Error !');
-            throw new Error(err);
+        if (verify_1.default.isPrivate(privKey)) {
+            var privK = new privatekey_1.default(privKey);
+            return privK.privKey.toPublicKey().toString('hex');
+        }
+        else {
+            throw new Error('Private key format error !');
         }
     };
     /**
-     * @func Dump_Crypto_from_PrivateKey
+     * @func Dump_cryptoJson_from_privateKey
      * @param [*privKey]
      * @param [*pwd]
-     * @returns [CryptoJson]
+     * @returns [cryptoJson]
      * @memberof Account
      */
-    Account.prototype.dumpCryptoFromPrivKey = function (privKey, pwd) {
-        try {
-            if (privKey instanceof Buffer) {
-                privKey = privKey.toString(OPCODE_TYPE);
-            }
-            if (verify_1.default.isPrivate(privKey)) {
-                var privK = new privatekey_1.default(privKey);
-                return privK.getCryptoByPrivKey(pwd);
-            }
+    Account.dumpCryptoFromPrivKey = function (privKey, pwd) {
+        if (privKey instanceof Buffer) {
+            privKey = privKey.toString('hex');
         }
-        catch (err) {
-            console.log('dumpKeyStoreFromPrivKey Error !');
-            throw new Error(err);
+        if (verify_1.default.isPrivate(privKey)) {
+            var privK = new privatekey_1.default(privKey);
+            return privK.getCryptoByPrivKey(pwd);
+        }
+        else {
+            throw new Error('Private key format error !');
         }
     };
     /**
-     * @func Dump_PublicKey_Hash_from_PrivateKey
+     * @func Dump_publicKey_hash_from_privateKey
      * @param [*privKey]
-     * @returns [PublicKey_hash]
+     * @returns [publicKey_hash]
      * @memberof Account
      */
-    Account.prototype.dumpPubKeyHashFromPrivKey = function (privKey) {
-        try {
-            if (privKey instanceof Buffer) {
-                privKey = privKey.toString(OPCODE_TYPE);
-            }
-            if (verify_1.default.isPrivate(privKey)) {
-                var privK = new privatekey_1.default(privKey);
-                return privK.privKey.pkh;
-            }
+    Account.dumpPubKeyHashFromPrivKey = function (privKey) {
+        if (privKey instanceof Buffer) {
+            privKey = privKey.toString('hex');
         }
-        catch (err) {
-            console.log('dumpPubKeyHashFromPrivKey Error !');
-            throw new Error(err);
+        if (verify_1.default.isPrivate(privKey)) {
+            var privK = new privatekey_1.default(privKey);
+            return privK.privKey.pkh;
+        }
+        else {
+            throw new Error('Private key format error !');
         }
     };
     /**
-     * @func Dump_PublicKey_Hash_from_Address
+     * @func Dump_publicKey_hash_from_address
      * @param [*addr]
-     * @returns [PublicKey]
+     * @returns [publicKey]
      * @memberof Account
      */
-    Account.prototype.dumpPubKeyHashFromAddr = function (addr) {
+    Account.dumpPubKeyHashFromAddr = function (addr) {
         return util_1.default.box2HexAddr(addr);
     };
     /**
-     * @func Dump_PrivateKey_from_Crypto
+     * @func Dump_privateKey_from_crypto.json
      * @param [*cryptoJSON]
      * @param [*pwd]
-     * @returns [PrivateKey]
+     * @returns [privKey]
      * @memberof Account
      */
-    Account.prototype.dumpPrivKeyFromCrypto = function (cryptoJSON, pwd) {
-        return __awaiter(this, void 0, void 0, function () {
-            var cpt, kdfParams, saltBuffer, derivedKey, aesKey, sha256Key, mac, privateKeyHexStr, err_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        cpt = cryptoJSON.crypto;
-                        kdfParams = cpt.kdfparams;
-                        saltBuffer = Buffer.from(kdfParams.salt, OPCODE_TYPE);
-                        derivedKey = crypto_json_1.default.getDerivedKey(pwd, saltBuffer, kdfParams.n, kdfParams.r, kdfParams.p, kdfParams.dklen);
-                        aesKey = derivedKey.slice(0, 16).toString(OPCODE_TYPE);
-                        sha256Key = derivedKey.slice(16, 32).toString(OPCODE_TYPE);
-                        mac = aes_1.default.getMac(sha256Key, cpt.ciphertext);
-                        if (mac !== cpt.mac) {
-                            throw new Error('Wrong passphrase !');
-                        }
-                        return [4 /*yield*/, aes_1.default.getCiphertext(aesKey, cpt.ciphertext, cpt.cipherparams.iv)];
-                    case 1:
-                        privateKeyHexStr = _a.sent();
-                        if (!privateKeyHexStr) {
-                            throw new Error('Privat Key not found !');
-                        }
+    Account.dumpPrivKeyFromCrypto = function (cryptoJSON, pwd) { return __awaiter(_this, void 0, void 0, function () {
+        var cpt, kdfParams, saltBuffer, derivedKey, aesKey, sha256Key, mac, privateKeyHexStr;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    cpt = cryptoJSON.crypto;
+                    kdfParams = cpt.kdfparams;
+                    saltBuffer = Buffer.from(kdfParams.salt, 'hex');
+                    derivedKey = crypto_json_1.default.getDerivedKey(pwd, saltBuffer, kdfParams.n, kdfParams.r, kdfParams.p, kdfParams.dklen);
+                    aesKey = derivedKey.slice(0, 16).toString('hex');
+                    sha256Key = derivedKey.slice(16, 32).toString('hex');
+                    mac = aes_1.default.getMac(sha256Key, cpt.ciphertext);
+                    if (mac !== cpt.mac) {
+                        throw new Error('Wrong passphrase !');
+                    }
+                    return [4 /*yield*/, aes_1.default.getCiphertext(aesKey, cpt.ciphertext, cpt.cipherparams.iv)];
+                case 1:
+                    privateKeyHexStr = _a.sent();
+                    if (privateKeyHexStr) {
                         return [2 /*return*/, privateKeyHexStr];
-                    case 2:
-                        err_1 = _a.sent();
-                        console.log('dumpPrivKeyFromCrypto Error !');
-                        throw new Error(err_1);
-                    case 3: return [2 /*return*/];
-                }
-            });
+                    }
+                    else {
+                        throw new Error('Private Key not found !');
+                    }
+                    return [2 /*return*/];
+            }
         });
-    };
+    }); };
     /**
-     * @func Get_account_Crypto_by_Password
+     * @func Get_account_crypto_by_password
      * @param [*pwd]
      * @param [*privKey]
-     * @returns [Crypto]
+     * @returns [cryptoJson]
      * @memberof Account
      */
-    Account.prototype.getCryptoByPwd = function (pwd, privKey) {
-        if (privKey && privKey instanceof Buffer) {
-            privKey = privKey.toString(OPCODE_TYPE);
+    Account.getCryptoByPwd = function (pwd, privKey) {
+        if (privKey) {
+            if (privKey instanceof Buffer) {
+                privKey = privKey.toString('hex');
+            }
+            if (!verify_1.default.isPrivate(privKey)) {
+                throw new Error('Private key format error !');
+            }
         }
         var privK = new privatekey_1.default(privKey);
         var cryptoJSON = privK.getCryptoByPrivKey(pwd);
@@ -204,6 +188,5 @@ var Account = /** @class */ (function () {
             cryptoJSON: cryptoJSON
         };
     };
-    return Account;
-}());
+})(Account || (Account = {}));
 exports.default = Account;

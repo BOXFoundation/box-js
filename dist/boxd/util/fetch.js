@@ -76,7 +76,7 @@ var HttpError = /** @class */ (function (_super) {
             _this = _super.call(this, json.statusText) || this;
         }
         else {
-            _this = _super.call(this, 'Unknow Error!') || this;
+            _this = _super.call(this, 'Unknow Error !') || this;
         }
         Object.setPrototypeOf(_this, HttpError.prototype);
         _this.json = json;
@@ -119,23 +119,20 @@ var httpFetch = function (path, body, _fetch, endpoint) { return __awaiter(_this
             case 2:
                 result = _a.sent();
                 console.log(result);
-                return [2 /*return*/, result
-                    // result.code = response.status
-                    // result.statusText = response.statusText
-                ];
+                throw new HttpError(result);
             case 3: return [4 /*yield*/, response.json()
-                // console.log('[fetch] Result:', result)
+                // console.log('[fetch] Result :', result)
             ];
             case 4:
                 result = _a.sent();
-                // console.log('[fetch] Result:', result)
+                // console.log('[fetch] Result :', result)
                 if (result.code) {
                     if (result.code === 0) {
                         delete result.code;
                         delete result.message;
                     }
                     else {
-                        // console.log('[fetch] Error: code !== 0')
+                        // console.log('[fetch] Error : code !== 0')
                         throw new HttpError(result);
                     }
                 }

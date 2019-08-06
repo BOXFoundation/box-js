@@ -44,7 +44,6 @@ var hash_1 = __importDefault(require("./hash"));
 var ecpair_1 = __importDefault(require("./ecpair"));
 var util_1 = __importDefault(require("../util"));
 var crypto_json_1 = __importDefault(require("./crypto-json"));
-var OPCODE_TYPE = 'hex';
 var prefix = {
     P2PKH: '1326',
     P2SH: '132b'
@@ -100,7 +99,7 @@ var PrivateKey = /** @class */ (function () {
                         return [3 /*break*/, 1];
                     case 4:
                         if (unsigned_tx.protocalTx) {
-                            return [2 /*return*/, unsigned_tx.protocalTx.serializeBinary().toString(OPCODE_TYPE)];
+                            return [2 /*return*/, unsigned_tx.protocalTx.serializeBinary().toString('hex')];
                         }
                         else {
                             return [2 /*return*/, tx];
@@ -115,16 +114,16 @@ var PrivateKey = /** @class */ (function () {
          */
         this.getAddrByPrivKey = function (prefixHex) {
             var sha256Content = prefixHex + _this.privKey.pkh;
-            var checksum = hash_1.default.sha256(hash_1.default.sha256(Buffer.from(sha256Content, OPCODE_TYPE))).slice(0, 4);
-            var content = sha256Content.concat(checksum.toString(OPCODE_TYPE));
-            return bs58_1.default.encode(Buffer.from(content, OPCODE_TYPE));
+            var checksum = hash_1.default.sha256(hash_1.default.sha256(Buffer.from(sha256Content, 'hex'))).slice(0, 4);
+            var content = sha256Content.concat(checksum.toString('hex'));
+            return bs58_1.default.encode(Buffer.from(content, 'hex'));
         };
         /**
          * @func get_PubKeyHash_by_PrivKey
          * @memberof PrivateKey
          */
         this.getPubKeyHashByPrivKey = function () {
-            return hash_1.default.hash160(_this.privKey.toPublicKey().toBuffer()).toString(OPCODE_TYPE);
+            return hash_1.default.hash160(_this.privKey.toPublicKey().toBuffer()).toString('hex');
         };
         this.privKey = new bitcore_lib_1.default.PrivateKey(privkey_str);
         this.privKey.signMsg = function (sigHash) {

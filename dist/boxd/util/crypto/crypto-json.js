@@ -29,26 +29,25 @@ var scryptOpt = {
 var CryptoJson;
 (function (CryptoJson) {
     /**
-   * @export get-DerivedKey-by-Passphrase
-   * @param [passphrase] string
-   * @param [salt] Buffer
-   * @param [n] number
-   * @param [r] number
-   * @param [p] number
-   * @param [dklen] number
-   * @returns Buffer
-   */
+     * @export get-DerivedKey-by-Passphrase
+     * @param [passphrase] string
+     * @param [salt] Buffer
+     * @param [n] number
+     * @param [r] number
+     * @param [p] number
+     * @param [dklen] number
+     * @returns Buffer
+     */
     CryptoJson.getDerivedKey = function (passphrase, salt, n, r, p, dklen) {
-        return scrypt_js_1.default(Buffer.from(passphrase), salt, n, r, p, dklen, function (progress) {
-            console.log('progress:', progress);
-        });
+        return scrypt_js_1.default(Buffer.from(passphrase), salt, n, r, p, dklen);
+        // delete progress
     };
     /**
-   * @export get-Crypto-by-PrivateKey&Passphrase
-   * @param [privateKey] privateKey
-   * @param [passphrase] string
-   * @returns [CryptoJson] CryptoJson
-   */
+     * @export get-Crypto-by-PrivateKey&Passphrase
+     * @param [privateKey] privateKey
+     * @param [passphrase] string
+     * @returns [CryptoJson] CryptoJson
+     */
     CryptoJson.getCryptoByPrivKey = function (privateKey, passphrase) {
         if (!privateKey) {
             throw new Error('PrivateKey is require!');
@@ -86,48 +85,48 @@ var CryptoJson;
         }
     };
     /**
-   * @export unlock-PrivateKey-by-Passphrase
-   * @param [ksJSON] object
-   * @param [passphrase] string
-   * @returns [privateKeyHexStr]
-   */
+     * @export unlock-PrivateKey-by-Passphrase
+     * @param [ksJSON] object
+     * @param [passphrase] string
+     * @returns [privateKeyHexStr]
+     */
     /*   export const unlockPrivateKeyWithPassphrase = (
-    ksJSON: { crypto },
-    passphrase: string
-  ) => {
-    if (!passphrase) {
-      throw new Error('Passphrase is require!')
-    }
-    if (!ksJSON) {
-      throw new Error('ksJSON is require!')
-    }
-    const cpt = ksJSON.crypto
-    const kdfParams = cpt.kdfparams
-    const saltBuffer = Buffer.from(kdfParams.salt, _STRING_ENC_)
-    const derivedKey = getDerivedKey(
-      passphrase,
-      saltBuffer,
-      kdfParams.n,
-      kdfParams.r,
-      kdfParams.p,
-      kdfParams.dklen
-    )
-
-    const aesKey = derivedKey.slice(0, 16).toString(_STRING_ENC_)
-    const sha256Key = derivedKey.slice(16, 32).toString(_STRING_ENC_)
-    const mac = Aes.getMac(sha256Key, cpt.ciphertext)
-    if (mac !== cpt.mac) {
-      throw new Error('passphrase is error!')
-    }
-    const privateKeyHexStr = Aes.getCiphertext(
-      aesKey,
-      cpt.ciphertext,
-      cpt.cipherparams.iv
-    )
-    if (!privateKeyHexStr) {
-      throw new Error("Can't find privateKey!")
-    }
-    return privateKeyHexStr
-  } */
+      ksJSON: { crypto },
+      passphrase: string
+    ) => {
+      if (!passphrase) {
+        throw new Error('Passphrase is require!')
+      }
+      if (!ksJSON) {
+        throw new Error('ksJSON is require!')
+      }
+      const cpt = ksJSON.crypto
+      const kdfParams = cpt.kdfparams
+      const saltBuffer = Buffer.from(kdfParams.salt, _STRING_ENC_)
+      const derivedKey = getDerivedKey(
+        passphrase,
+        saltBuffer,
+        kdfParams.n,
+        kdfParams.r,
+        kdfParams.p,
+        kdfParams.dklen
+      )
+  
+      const aesKey = derivedKey.slice(0, 16).toString(_STRING_ENC_)
+      const sha256Key = derivedKey.slice(16, 32).toString(_STRING_ENC_)
+      const mac = Aes.getMac(sha256Key, cpt.ciphertext)
+      if (mac !== cpt.mac) {
+        throw new Error('passphrase is error!')
+      }
+      const privateKeyHexStr = Aes.getCiphertext(
+        aesKey,
+        cpt.ciphertext,
+        cpt.cipherparams.iv
+      )
+      if (!privateKeyHexStr) {
+        throw new Error("Can't find privateKey!")
+      }
+      return privateKeyHexStr
+    } */
 })(CryptoJson || (CryptoJson = {}));
 exports.default = CryptoJson;

@@ -7,8 +7,8 @@ var bn_js_1 = __importDefault(require("bn.js"));
 var block_pb_js_1 = __importDefault(require("../../util/protobuf-js/block_pb.js"));
 var account_1 = __importDefault(require("../../account/account"));
 var util_1 = __importDefault(require("../../util/util"));
-var Util;
-(function (Util) {
+var TxUtil;
+(function (TxUtil) {
     /**
      * @func Make_Unsigned_transaction_handle
      * @param [*param] {utxo_list: TxResponse.Utxo[]; is_raw?: boolean}
@@ -17,7 +17,7 @@ var Util;
      * @returns [tx_json] # tx type of json {rawMsgs: []}
      * @returns [protocalTx] # tx type of protocal
      */
-    Util.makeUnsignedTxHandle = function (param) {
+    TxUtil.makeUnsignedTxHandle = function (param) {
         // console.log('makeUnsignedTxHandle param ===', JSON.stringify(param))
         var from = param.from, to_map = param.to_map, fee = param.fee, utxo_list = param.utxo_list, is_raw = param.is_raw;
         var total_to = new bn_js_1.default(0, 10); // total tx count (big number)
@@ -49,19 +49,18 @@ var Util;
         }
         /* ======================== */
         /* vout */
-        var acc = new account_1.default();
         var op = new util_1.default.Opcoder('');
         Object.keys(to_map).forEach(function (to_addr) {
-            var pub_hash = acc.dumpPubKeyHashFromAddr(to_addr);
+            var pub_hash = account_1.default.dumpPubKeyHashFromAddr(to_addr);
             // console.log('pub_hash_1 :', pub_hash)
             // + script_pub_key
             var script = op
                 .reset('')
-                .add(util_1.default.getHexStrFromNumber(op.OP_DUP))
-                .add(util_1.default.getHexStrFromNumber(op.OP_HASH_160))
+                .add(util_1.default.to16StrFromNumber(op.OP_DUP))
+                .add(util_1.default.to16StrFromNumber(op.OP_HASH_160))
                 .add(pub_hash)
-                .add(util_1.default.getHexStrFromNumber(op.OP_EQUAL_VERIFY))
-                .add(util_1.default.getHexStrFromNumber(op.OP_CHECK_SIG))
+                .add(util_1.default.to16StrFromNumber(op.OP_EQUAL_VERIFY))
+                .add(util_1.default.to16StrFromNumber(op.OP_CHECK_SIG))
                 .getCode();
             // console.log('script :', script.toString('base64'))
             // + value
@@ -80,16 +79,16 @@ var Util;
         if (total_to.toNumber() < total_utxo.toNumber()) {
             var charge = total_utxo.sub(total_to).toString();
             // console.log('charge :', charge)
-            var pub_hash = acc.dumpPubKeyHashFromAddr(from);
+            var pub_hash = account_1.default.dumpPubKeyHashFromAddr(from);
             // console.log('pub_hash_2 :', pub_hash)
             // + script_pub_key
             var script = op
                 .reset('')
-                .add(util_1.default.getHexStrFromNumber(op.OP_DUP))
-                .add(util_1.default.getHexStrFromNumber(op.OP_HASH_160))
+                .add(util_1.default.to16StrFromNumber(op.OP_DUP))
+                .add(util_1.default.to16StrFromNumber(op.OP_HASH_160))
                 .add(pub_hash)
-                .add(util_1.default.getHexStrFromNumber(op.OP_EQUAL_VERIFY))
-                .add(util_1.default.getHexStrFromNumber(op.OP_CHECK_SIG))
+                .add(util_1.default.to16StrFromNumber(op.OP_EQUAL_VERIFY))
+                .add(util_1.default.to16StrFromNumber(op.OP_CHECK_SIG))
                 .getCode();
             // console.log('script :', script.toString('base64'))
             // + value
@@ -188,5 +187,5 @@ var Util;
             };
         }
     };
-})(Util || (Util = {}));
-exports.default = Util;
+})(TxUtil || (TxUtil = {}));
+exports.default = TxUtil;
