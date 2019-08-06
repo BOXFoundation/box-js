@@ -1,4 +1,3 @@
-import PrivateKey from '../util/crypto/privatekey'
 import UtilInterface from '../util/interface'
 
 export default class AccountManager {
@@ -16,26 +15,15 @@ export default class AccountManager {
   }
 
   /**
-   * @func New_PrivateKey_Object
-   * @param [*privkey]
-   * @returns [privateKey]
-   * @memberof AccountManager
-   */
-  public newPrivateKey(privkey: string): object {
-    const privk = new PrivateKey(privkey)
-    return privk.privKey
-  }
-
-  /**
-   * @func Add_New_Account_to_Account_List
+   * @func add_New_Account_to_Account_List
    * @param {*cryptoJSON}
    * @memberof AccountManager
    */
   public addToAccList(cryptoJSON: UtilInterface.Crypto, otherInfo): void {
     const address = cryptoJSON.address
     const updateTime = Date.now()
-    /*     console.log('acc_list:', this.acc_list)
-    console.log('address:', address) */
+    // console.log('acc_list:', this.acc_list)
+    // console.log('address:', address)
     if (this.acc_list[address]) {
       console.warn('This Account already existed. It will be rewrited...')
     }
@@ -50,7 +38,7 @@ export default class AccountManager {
   }
 
   /**
-   * @func Sort_Account_List
+   * @func Sort_account_list
    * @returns [account_list]
    * @memberof AccountManager
    */

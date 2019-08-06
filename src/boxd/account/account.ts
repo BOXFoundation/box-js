@@ -7,9 +7,9 @@ import Util from '../util/util'
 
 namespace Account {
   /**
-   * @func Dump_P2PKH_address_from_PrivateKey
+   * @func Dump_P2PKH_address_from_privateKey
    * @param [*privKey]
-   * @returns [P2PKH_Address]
+   * @returns [P2PKH_address]
    * @memberof Account
    */
   export const dumpAddrFromPrivKey = (privKey: string | Buffer) => {
@@ -25,9 +25,9 @@ namespace Account {
   }
 
   /**
-   * @func Dump_PublicKey_from_PrivateKey
+   * @func Dump_publicKey_from_privateKey
    * @param [*privKey]
-   * @returns [PublicKey]
+   * @returns [publicKey]
    * @memberof Account
    */
   export const dumpPubKeyFromPrivKey = (privKey: string | Buffer) => {
@@ -43,10 +43,10 @@ namespace Account {
   }
 
   /**
-   * @func Dump_Crypto_from_PrivateKey
+   * @func Dump_cryptoJson_from_privateKey
    * @param [*privKey]
    * @param [*pwd]
-   * @returns [CryptoJson]
+   * @returns [cryptoJson]
    * @memberof Account
    */
   export const dumpCryptoFromPrivKey = (
@@ -65,9 +65,9 @@ namespace Account {
   }
 
   /**
-   * @func Dump_PublicKey_Hash_from_PrivateKey
+   * @func Dump_publicKey_hash_from_privateKey
    * @param [*privKey]
-   * @returns [PublicKey_hash]
+   * @returns [publicKey_hash]
    * @memberof Account
    */
   export const dumpPubKeyHashFromPrivKey = (privKey: string | Buffer) => {
@@ -83,9 +83,9 @@ namespace Account {
   }
 
   /**
-   * @func Dump_PublicKey_Hash_from_Address
+   * @func Dump_publicKey_hash_from_address
    * @param [*addr]
-   * @returns [PublicKey]
+   * @returns [publicKey]
    * @memberof Account
    */
   export const dumpPubKeyHashFromAddr = (addr: string) => {
@@ -93,10 +93,10 @@ namespace Account {
   }
 
   /**
-   * @func Dump_PrivateKey_from_Crypto
+   * @func Dump_privateKey_from_crypto.json
    * @param [*cryptoJSON]
    * @param [*pwd]
-   * @returns [PrivateKey]
+   * @returns [privKey]
    * @memberof Account
    */
   export const dumpPrivKeyFromCrypto = async (
@@ -126,22 +126,28 @@ namespace Account {
       cpt.ciphertext,
       cpt.cipherparams.iv
     )
-    if (!privateKeyHexStr) {
-      throw new Error('Privat Key not found !')
+    if (privateKeyHexStr) {
+      return privateKeyHexStr
+    } else {
+      throw new Error('Private Key not found !')
     }
-    return privateKeyHexStr
   }
 
   /**
-   * @func Get_account_Crypto_by_Password
+   * @func Get_account_crypto_by_password
    * @param [*pwd]
    * @param [*privKey]
-   * @returns [Crypto]
+   * @returns [cryptoJson]
    * @memberof Account
    */
   export const getCryptoByPwd = (pwd: string, privKey?: string | Buffer) => {
-    if (privKey && privKey instanceof Buffer) {
-      privKey = privKey.toString('hex')
+    if (privKey) {
+      if (privKey instanceof Buffer) {
+        privKey = privKey.toString('hex')
+      }
+      if (!Verify.isPrivate(privKey)) {
+        throw new Error('Private key format error !')
+      }
     }
     const privK = new PrivateKey(privKey)
     const cryptoJSON = privK.getCryptoByPrivKey(pwd)

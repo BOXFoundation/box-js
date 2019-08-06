@@ -21,14 +21,11 @@ let _typeof2 = obj => {
 }
 
 namespace Verify {
-  export const isPrivate = (privKey: string) => {
-    if (tinySecp.isPrivate(Buffer.from(privKey, 'hex'))) {
-      return privKey
-    } else {
-      throw new Error('The private key entered is not a valid one !')
-    }
-  }
-
+  /**
+   * @func get_check_sum
+   * @param [*hex]
+   * @returns [check_sum]
+   */
   export const getCheckSum = (hex: string | Buffer) => {
     if (hex instanceof Buffer) {
       return Hash.sha256(Hash.sha256(hex)).slice(0, 4)
@@ -37,29 +34,41 @@ namespace Verify {
     }
   }
 
-  export const isAddr = (addr: string) => {
+  /**
+   * @func check_is_private_key
+   * @param [*privKey]
+   * @returns [boolean]
+   */
+  export const isPrivate = (privKey: string) => {
+    if (tinySecp.isPrivate(Buffer.from(privKey, 'hex'))) {
+      return privKey
+    } else {
+      return false
+    }
+  }
+
+  /**
+   * @func check_is_BOX_address
+   * @param [*addr]
+   * @returns [pubkey_hash]
+   */
+  export const isBoxAddr = (addr: string) => {
     if (!['b1', 'b2', 'b3', 'b5'].includes(addr.substring(0, 2))) {
-      throw new Error('Incorrect address format !')
+      throw new Error('[isBoxAddr] Incorrect address format !')
     }
     const decoded = bs58.decode(addr)
     if (decoded.length < 4) {
-      throw new Error(`Address length = ${decoded.length}: is too short !`)
+      throw new Error(
+        `[isBoxAddr] Address length = ${decoded.length}: is too short !`
+      )
     }
     const len = decoded.length
     const pubkey_hash = decoded.slice(0, len - 4)
     const checksum = getCheckSum(pubkey_hash)
     if (!checksum.equals(decoded.slice(len - 4))) {
-      throw new Error('Incorrect address format !')
+      throw new Error('[isBoxAddr] Incorrect address format !')
     }
     return pubkey_hash
-  }
-
-  export const isPublic = privKey => {
-    console.log('privKey:', privKey)
-  }
-
-  export const isPublicHash = pubkey_hash => {
-    console.log('pubkey_hash:', pubkey_hash)
   }
 
   export let _typeof = obj => {

@@ -83,7 +83,7 @@ namespace Util {
   export const getBufFromNumber = (num: number) => num & 255
 
   /**
-   * @export Put_Uint16
+   * @func Put_Uint16
    * @param [*bytes]
    * @param [*uint16]
    * @returns [bytes]
@@ -172,7 +172,7 @@ namespace Util {
   }
 
   /**
-   * @export put-Uint32
+   * @func Put-Uint32
    * TODO: it not support int32 now
    * @param [*bytes]
    * @param [*uint32]
@@ -191,10 +191,10 @@ namespace Util {
   }
 
   /**
-   * @export signature-Script
-   * @param [*sigBuf] Buffer
-   * @param [*Buffer] Buffer
-   * @returns [end] Buffer
+   * @func Signature-Script
+   * @param [*sigBuf]
+   * @param [*Buffer]
+   * @returns [end]
    */
   export const signatureScript = (
     sigBuf: Buffer,
@@ -208,8 +208,8 @@ namespace Util {
   }
 
   /**
-   * @export get-SignHash
-   * @param [*protobuf] string
+   * @func Get-SignHash
+   * @param [*protobuf]
    * @returns
    */
   export const getSignHash = (protobuf: string | Buffer) => {
@@ -242,9 +242,9 @@ namespace Util {
   }
 
   /**
-   * Returns a `Boolean` on whether or not the a `String` starts with '0x'
-   * @param {String} str the string input value
-   * @return {Boolean} a boolean if it is or is not hex prefixed
+   * @func # Returns a `Boolean` on whether or not the a `String` starts with '0x'
+   * @param [*str] str the string input value
+   * @return [boolean] a boolean if it is or is not hex prefixed
    * @throws if the str input is not a string
    */
   export const isHexPrefixed = str => {
@@ -260,9 +260,9 @@ namespace Util {
   }
 
   /**
-   * Removes '0x' from a given `String` is present
-   * @param {String} str the string value
-   * @return {String|Optional} a string by pass if necessary
+   * @func # Removes '0x' from a given `String` is present
+   * @param [*str] str the string value
+   * @return [string|optional] a string by pass if necessary
    */
   export const stripHexPrefix = str => {
     if (typeof str !== 'string') {
@@ -273,10 +273,10 @@ namespace Util {
   }
 
   /**
-   * Convert hex address to box address format
-   * @param {String} prefix: the box address prefix
-   * @param {hexAddr} hexAddr: hex address without '0x' prefix
-   * @return {String} box address, starting with "b"
+   * @func # Convert hex address to box address format
+   * @param [*prefix] string # the box address prefix
+   * @param [*hexAddr] string # hex address without '0x' prefix
+   * @return [string] box address, starting with "b"
    * @throws when prefix is not expected
    */
   export const hex2BoxAddr = (prefix: string, hexAddr: string) => {
@@ -291,22 +291,17 @@ namespace Util {
   }
 
   /**
-   * Convert box address to hex address format
-   * @param {boxAddr} boxAddr: address in box format, starting with 'b'
-   * @return {String} hex address
+   * @func Convert_box_address_to_hex_address_format
+   * @param [*box_addr] string # address in box format, starting with 'b'
+   * @return [string] hex address
    * @throws if convertion fails
    */
-  export const box2HexAddr = (boxAddr: string) => {
-    try {
-      const pubKey_hash = Verify.isAddr(boxAddr)
-      if (pubKey_hash) {
-        return pubKey_hash.slice(2).toString('hex')
-      }
-      console.log('dumpPubKeyHashFromAddr Error !')
+  export const box2HexAddr = (box_addr: string) => {
+    const pubKey_hash = Verify.isBoxAddr(box_addr)
+    if (pubKey_hash) {
+      return pubKey_hash.slice(2).toString('hex')
+    } else {
       throw new Error('dumpPubKeyHashFromAddr Error')
-    } catch (err) {
-      console.log('dumpPubKeyHashFromAddr Error !')
-      throw new Error(err)
     }
   }
 }
