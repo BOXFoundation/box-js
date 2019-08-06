@@ -16,8 +16,9 @@ import TxUtil from './tx/util'
 /**
  * @class [Api]
  * @extends Fetch
- * @constructs _fetch # user incoming
- * @constructs endpoint string # user incoming
+ * @constructs _fetch user incoming
+ * @constructs endpoint user incoming
+ * @constructs fetch_type http / rpc
  */
 export default class Api extends Fetch {
   public constructor(_fetch, endpoint: string, fetch_type: string) {

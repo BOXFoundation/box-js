@@ -13,8 +13,9 @@ import SplitUtil from '../core/split/util'
 /**
  * @class [Feature]
  * @extends Fetch
- * @constructs _fetch # user incoming
- * @constructs endpoint string # user incoming
+ * @constructs _fetch user incoming
+ * @constructs endpoint user incoming
+ * @constructs fetch_type http / rpc
  */
 export default class Feature extends Fetch {
   public constructor(_fetch, endpoint: string, fetch_type: string) {
@@ -22,7 +23,7 @@ export default class Feature extends Fetch {
   }
 
   /**
-   * @export Sign_transaction_by_Crypto.json
+   * @export Sign_transaction_by_crypto.json
    * @param [*unsigned_tx]
    * @returns [signed_tx]
    */
@@ -37,11 +38,12 @@ export default class Feature extends Fetch {
       protocalTx: null
     }
     const privk = new PrivateKey(privKey)
+
     return privk.signTxByPrivKey(unsigned_tx_p)
   }
 
   /**
-   * @export Make_BOX_transaction_by_Crypto.json
+   * @export Make_BOX_transaction_by_crypto.json
    * @param [*org_tx]
    * @step [make_privKey->fetch_utxos->make_unsigned_tx->sign_tx->send_tx]
    * @returns [Promise<sent_tx>] { hash: string }
@@ -88,6 +90,7 @@ export default class Feature extends Fetch {
         privKey
       })
       /* send tx to boxd */
+
       return await api.sendTx(signed_tx)
     } else {
       throw new Error('Fetch utxos Error')
@@ -95,7 +98,7 @@ export default class Feature extends Fetch {
   }
 
   /**
-   * @export Make_Split_transaction_by_Crypto.json
+   * @export Make_split_transaction_by_crypto.json
    * @param [*org_tx]
    * @returns [Promise<sent_tx>] { splitAddr: string; hash: string }
    */
@@ -119,13 +122,14 @@ export default class Feature extends Fetch {
       txHash: tx_result.hash,
       index: tx_result['index']
     })
+
     return Object.assign(tx_result, {
       splitAddr: split_addr
     })
   }
 
   /**
-   * @export Issue_Token_by_Crypto.json
+   * @export Issue_token_by_crypto.json
    * @param [*org_tx]
    * @returns [Promise<sent_tx>] { hash: string }
    */
@@ -142,11 +146,12 @@ export default class Feature extends Fetch {
       crypto: org_tx.crypto,
       pwd: org_tx.pwd
     })
+
     return await api.sendTx(signed_tx)
   }
 
   /**
-   * @export Make_Token_Transaction_by_Crypto.json
+   * @export Make_token_transaction_by_crypto.json
    * @param [*org_tx]
    * @returns [Promise<sent_tx>] { hash: string }
    */
@@ -163,11 +168,12 @@ export default class Feature extends Fetch {
       crypto: org_tx.crypto,
       pwd: org_tx.pwd
     })
+
     return await api.sendTx(signed_tx)
   }
 
   /**
-   * @export Make_Contract_transaction_by_Crypto.json
+   * @export Make_contract_transaction_by_crypto.json
    * @param [*org_tx]
    * @returns [Promise<sent_tx>] { hash: string }
    */
@@ -186,11 +192,12 @@ export default class Feature extends Fetch {
       pwd: org_tx.pwd
     })
     const tx_result = await api.sendTx(signed_tx)
+
     return { hash: tx_result.hash, contractAddr: unsigned_tx.contract_addr }
   }
 
   /**
-   * @export Call_Contract
+   * @export Call_contract
    * @param [*org_tx]
    * @returns [Promise<sent_tx>] { result: string }
    */
@@ -199,6 +206,7 @@ export default class Feature extends Fetch {
   ): Promise<{ result: string }> {
     const api = new Api(this._fetch, this.endpoint, this.fetch_type)
     const result = await api.callContract(callParams)
+
     return { result: result.output }
   }
 }

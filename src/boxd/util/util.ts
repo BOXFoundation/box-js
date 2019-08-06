@@ -47,7 +47,7 @@ const hexToBytes = hex => {
 }
 /* keccak = END = */
 
-const _flattenTypes = function _flattenTypes(includeTuple, puts) {
+const _flattenTypes = (includeTuple, puts) => {
   let types: any = []
   puts.forEach(function(param) {
     if (Verify._typeof(param.components) === 'object') {
