@@ -19,6 +19,7 @@ export default class PrivateKey {
   public privKey
 
   public constructor(privkey_str) {
+    privkey_str = privkey_str.padStart(64, '0')
     this.privKey = new bitcore.PrivateKey(privkey_str)
     this.privKey.signMsg = sigHash => {
       const eccPrivateKey = privkey_str && Ecpair.getECfromPrivKey(privkey_str)
@@ -32,7 +33,7 @@ export default class PrivateKey {
   /**
    * @func Get_CryptoJson_by_PrivateKey_&_Password
    * @param [*pwd]
-   * @returns [cryptoJSON]
+   * @returns [crypto.json]
    * @memberof PrivateKey   *
    */
   public getCryptoByPrivKey = (pwd: string) => {

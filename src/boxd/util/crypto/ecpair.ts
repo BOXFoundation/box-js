@@ -67,6 +67,7 @@ namespace Ecpair {
   }
 
   export const getECfromPrivKey = function(privkey, options?) {
+    // console.log('==> getECfromPrivKey')
     privkey = Buffer.from(privkey, 'hex')
     if (!ecc.isPrivate(privkey))
       throw new TypeError('Private key not in range [1, n)')
