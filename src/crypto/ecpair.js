@@ -73,10 +73,11 @@ ECPair.prototype.verify = function (hash, signature) {
   return ecc.verify(hash, this.publicKey, signature);
 };
 
-function fromPrivateKey(buffer, options) {
-  /*   if (!ecc.isPrivate(buffer))
-      throw new TypeError('Private key not in range [1, n)'); */
-  return new ECPair(buffer, null, options);
+function fromPrivateKey(buf, options) {
+  // console.log('==> fromPrivateKey')
+  if (!ecc.isPrivate(buf))
+    throw new TypeError('Private key not in range [1, n)');
+  return new ECPair(buf, null, options);
 }
 
 module.exports = {

@@ -1,7 +1,13 @@
 const scrypt = require('scrypt.js');
 const randomBytes = require('randombytes');
-const { getCiphertext, aesBlockSize, getMac } = require('./aes');
-const { hash160 } = require('./hash');
+const {
+  getCiphertext,
+  aesBlockSize,
+  getMac
+} = require('./aes');
+const {
+  hash160
+} = require('./hash');
 
 const _STRING_ENC_ = 'hex';
 
@@ -25,7 +31,7 @@ const scryptOpt = {
  */
 const getDerivedKey = (passphrase, salt, n, r, p, dklen) => {
   return scrypt(Buffer.from(passphrase), salt, n, r, p, dklen, progress => {
-    console.log('progress:', progress);
+    // console.log('progress:', progress);
   });
 };
 

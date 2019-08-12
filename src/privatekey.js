@@ -27,14 +27,17 @@ function getAddress(_this, prefixHex) {
 }
 
 /**
- * creat a new accont
- *
- * @param {string} privateKeyStr
+ * @func creat_a_new_accont
+ * @param [*privKey_Str]
  */
-export function newPrivateKey(privateKeyStr) {
-  const newPrivateKey = new bitcore.PrivateKey(privateKeyStr);
+export function newPrivateKey(privKey_Str) {
+  // console.log('==> newPrivateKey')
+  // console.log('privKey_Str_1 :', privKey_Str)
+  privKey_Str = privKey_Str.padStart(64, '0')
+  // console.log('privKey_Str_2 :', privKey_Str)
+  const newPrivateKey = new bitcore.PrivateKey(privKey_Str);
   newPrivateKey.signMsg = sigHash => {
-    const eccPrivateKey = fromPrivateKey(Buffer.from(privateKeyStr, 'hex'));
+    const eccPrivateKey = fromPrivateKey(Buffer.from(privKey_Str, 'hex'));
     return eccPrivateKey.sign(sigHash).sig;
   };
   newPrivateKey.pkh = getPublicAddress(newPrivateKey);
