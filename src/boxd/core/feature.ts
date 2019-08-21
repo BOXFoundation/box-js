@@ -8,6 +8,7 @@ import Account from '../account/account'
 import PrivateKey from '../util/crypto/privatekey'
 import Api from '../core/api'
 import Util from '../util/util'
+import UtilInterface from '../util/interface'
 
 /**
  * @class [Feature]
@@ -22,23 +23,35 @@ export default class Feature extends Fetch {
   }
 
   /**
+   * @export Sign_transaction_by_priv_key.json
+   * @param [*unsigned_tx]
+   * @param [*priv_key_hex_str]
+   * @returns [signed_tx]
+   */
+  public async signTxByPrivKey(unsigned_tx: UtilInterface.UnsignedTx, priv_key_hex_str: string) {
+    const privk = new PrivateKey(priv_key_hex_str)
+
+    const unsigned_tx_p = {
+      privKey: priv_key_hex_str,
+      unsignedTx: unsigned_tx,
+      protocalTx: null
+    }
+
+    return privk.signTxByPrivKey(unsigned_tx_p)
+  }
+
+  /**
    * @export Sign_transaction_by_crypto.json
    * @param [*unsigned_tx]
    * @returns [signed_tx]
    */
   public async signTxByCrypto(unsigned_tx: TxRequest.SignedTxByCryptoReq) {
-    const privKey = await Account.dumpPrivKeyFromCrypto(
+    const privKeyHexStr = await Account.dumpPrivKeyFromCrypto(
       unsigned_tx.crypto,
       unsigned_tx.pwd
     )
-    const unsigned_tx_p = {
-      privKey,
-      unsignedTx: unsigned_tx.unsignedTx,
-      protocalTx: null
-    }
-    const privk = new PrivateKey(privKey)
 
-    return privk.signTxByPrivKey(unsigned_tx_p)
+    return this.signTxByPrivKey(unsigned_tx.unsignedTx, privKeyHexStr)
   }
 
   /**
@@ -169,6 +182,27 @@ export default class Feature extends Fetch {
     })
 
     return await api.sendTx(signed_tx)
+  }
+
+  /**
+   * @export Make_contract_transaction_by_priv_key.json
+   * @param [*org_tx]
+   * @param [*priv_key_hex_str]
+   * @returns [Promise<sent_tx>] { hash: string }
+   */
+  public async makeContractTxByPrivKey(
+    org_tx: ContractRequest.OriginalContractReq, priv_key_hex_str: string
+  ): Promise<{ hash: string; contractAddr: string }> {
+    const api = new Api(this._fetch, this.endpoint, this.fetch_type)
+    const unsigned_tx = await api.makeUnsignedContractTx(org_tx)
+
+    const signed_tx = await this.signTxByPrivKey({
+        tx: unsigned_tx.tx,
+        rawMsgs: unsigned_tx.rawMsgs
+    }, priv_key_hex_str)
+    const tx_result = await api.sendTx(signed_tx)
+
+    return { hash: tx_result.hash, contractAddr: unsigned_tx.contract_addr }
   }
 
   /**

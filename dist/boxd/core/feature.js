@@ -70,25 +70,39 @@ var Feature = /** @class */ (function (_super) {
         return _super.call(this, _fetch, endpoint, fetch_type) || this;
     }
     /**
+     * @export Sign_transaction_by_priv_key.json
+     * @param [*unsigned_tx]
+     * @param [*priv_key_hex_str]
+     * @returns [signed_tx]
+     */
+    Feature.prototype.signTxByPrivKey = function (unsigned_tx, priv_key_hex_str) {
+        return __awaiter(this, void 0, void 0, function () {
+            var privk, unsigned_tx_p;
+            return __generator(this, function (_a) {
+                privk = new privatekey_1.default(priv_key_hex_str);
+                unsigned_tx_p = {
+                    privKey: priv_key_hex_str,
+                    unsignedTx: unsigned_tx,
+                    protocalTx: null
+                };
+                return [2 /*return*/, privk.signTxByPrivKey(unsigned_tx_p)];
+            });
+        });
+    };
+    /**
      * @export Sign_transaction_by_crypto.json
      * @param [*unsigned_tx]
      * @returns [signed_tx]
      */
     Feature.prototype.signTxByCrypto = function (unsigned_tx) {
         return __awaiter(this, void 0, void 0, function () {
-            var privKey, unsigned_tx_p, privk;
+            var privKeyHexStr;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, account_1.default.dumpPrivKeyFromCrypto(unsigned_tx.crypto, unsigned_tx.pwd)];
                     case 1:
-                        privKey = _a.sent();
-                        unsigned_tx_p = {
-                            privKey: privKey,
-                            unsignedTx: unsigned_tx.unsignedTx,
-                            protocalTx: null
-                        };
-                        privk = new privatekey_1.default(privKey);
-                        return [2 /*return*/, privk.signTxByPrivKey(unsigned_tx_p)];
+                        privKeyHexStr = _a.sent();
+                        return [2 /*return*/, this.signTxByPrivKey(unsigned_tx.unsignedTx, privKeyHexStr)];
                 }
             });
         });
@@ -259,6 +273,36 @@ var Feature = /** @class */ (function (_super) {
                         signed_tx = _a.sent();
                         return [4 /*yield*/, api.sendTx(signed_tx)];
                     case 3: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /**
+     * @export Make_contract_transaction_by_priv_key.json
+     * @param [*org_tx]
+     * @param [*priv_key_hex_str]
+     * @returns [Promise<sent_tx>] { hash: string }
+     */
+    Feature.prototype.makeContractTxByPrivKey = function (org_tx, priv_key_hex_str) {
+        return __awaiter(this, void 0, void 0, function () {
+            var api, unsigned_tx, signed_tx, tx_result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        api = new api_1.default(this._fetch, this.endpoint, this.fetch_type);
+                        return [4 /*yield*/, api.makeUnsignedContractTx(org_tx)];
+                    case 1:
+                        unsigned_tx = _a.sent();
+                        return [4 /*yield*/, this.signTxByPrivKey({
+                                tx: unsigned_tx.tx,
+                                rawMsgs: unsigned_tx.rawMsgs
+                            }, priv_key_hex_str)];
+                    case 2:
+                        signed_tx = _a.sent();
+                        return [4 /*yield*/, api.sendTx(signed_tx)];
+                    case 3:
+                        tx_result = _a.sent();
+                        return [2 /*return*/, { hash: tx_result.hash, contractAddr: unsigned_tx.contract_addr }];
                 }
             });
         });
