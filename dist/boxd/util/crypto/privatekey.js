@@ -58,7 +58,7 @@ var PrivateKey = /** @class */ (function () {
         /**
          * @func Get_CryptoJson_by_PrivateKey_&_Password
          * @param [*pwd]
-         * @returns [cryptoJSON]
+         * @returns [crypto.json]
          * @memberof PrivateKey   *
          */
         this.getCryptoByPrivKey = function (pwd) {
@@ -125,6 +125,10 @@ var PrivateKey = /** @class */ (function () {
         this.getPubKeyHashByPrivKey = function () {
             return hash_1.default.hash160(_this.privKey.toPublicKey().toBuffer()).toString('hex');
         };
+        console.log('privkey_str :', privkey_str);
+        if (privkey_str) {
+            privkey_str = privkey_str.padStart(64, '0');
+        }
         this.privKey = new bitcore_lib_1.default.PrivateKey(privkey_str);
         this.privKey.signMsg = function (sigHash) {
             var eccPrivateKey = privkey_str && ecpair_1.default.getECfromPrivKey(privkey_str);

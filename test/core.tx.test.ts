@@ -118,10 +118,10 @@ test('Make a raw transaction (BOX)', async () => {
 })
 
 // USING
-/* test('faucet', async () => {
+test('faucet', async () => {
   try {
     const faucet_res = await api.faucet({
-      addr: Mock.acc_addr_3,
+      addr: Mock.acc_addr_4,
       amount: 30000000000
     })
     console.log('faucet res:', faucet_res)
@@ -129,4 +129,4 @@ test('Make a raw transaction (BOX)', async () => {
     console.error('faucet: Error !', err)
     expect(0).toBe(1)
   }
-}) */
+})

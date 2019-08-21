@@ -63,6 +63,7 @@ var Ecpair;
         return tiny_secp256k1_1.default.verify(hash, this.publicKey, signature);
     };
     Ecpair.getECfromPrivKey = function (privkey, options) {
+        // console.log('==> getECfromPrivKey')
         privkey = Buffer.from(privkey, 'hex');
         if (!tiny_secp256k1_1.default.isPrivate(privkey))
             throw new TypeError('Private key not in range [1, n)');
