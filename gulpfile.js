@@ -11,6 +11,7 @@ const buffer = require('vinyl-buffer')
 const ts = require('gulp-typescript')
 const tsProject = ts.createProject('tsconfig.json')
 
+/* watch browserify */
 const watchedBrowserify = watchify(browserify({
   basedir: '.',
   debug: true,
@@ -19,7 +20,30 @@ const watchedBrowserify = watchify(browserify({
   packageCache: {}
 }).plugin(tsify))
 
-function browserifyBundle() {
+const watchedBundle = () => {
+  return watchedBrowserify
+    .transform('babelify', {
+      presets: ['env'],
+      extensions: ['.ts']
+    })
+    .bundle()
+    .pipe(source('bundle.js'))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({
+      loadMaps: true
+    }))
+    .pipe(uglify({
+      compress: {
+        warnings: false,
+        drop_console: true,
+        drop_debugger: true
+      }
+    }))
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest('dist-script'))
+}
+
+const browserifyBundle = () => {
   return browserify({
     basedir: '.',
     debug: true,
@@ -44,30 +68,7 @@ function browserifyBundle() {
       }
     }))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('dist-web'))
-}
-
-function watchedBundle() {
-  return watchedBrowserify
-    .transform('babelify', {
-      presets: ['env'],
-      extensions: ['.ts']
-    })
-    .bundle()
-    .pipe(source('bundle.js'))
-    .pipe(buffer())
-    .pipe(sourcemaps.init({
-      loadMaps: true
-    }))
-    .pipe(uglify({
-      compress: {
-        warnings: false,
-        drop_console: true,
-        drop_debugger: true
-      }
-    }))
-    .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('dist-web'))
+    .pipe(gulp.dest('dist-script'))
 }
 
 gulp.task('watch:web', function () {
@@ -79,11 +80,16 @@ gulp.task('build:node', function () {
 })
 
 gulp.task('build:web', function () {
+  return gulp.src('src/**/*.ts').pipe(tsProject()).js.pipe(gulp.dest('dist-web'))
+})
+
+gulp.task('build:script', function () {
   return browserifyBundle()
 })
 
-gulp.task('build', gulp.series(['build:node', 'build:web']))
+gulp.task('build', gulp.series(['build:node', 'build:web', 'build:script']))
 
 gulp.task('default', gulp.series('build'))
+
 watchedBrowserify.on('update', browserifyBundle)
 watchedBrowserify.on('log', gutil.log)
