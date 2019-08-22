@@ -71,7 +71,7 @@ const browserifyBundle = () => {
     .pipe(gulp.dest('dist-script'))
 }
 
-gulp.task('watch:web', function () {
+gulp.task('watch:script', function () {
   return watchedBundle()
 })
 
@@ -87,7 +87,7 @@ gulp.task('build:script', function () {
   return browserifyBundle()
 })
 
-gulp.task('build', gulp.series(['build:node', 'build:web', 'build:script']))
+gulp.task('build', gulp.series(['build:web', 'build:script']))
 
 gulp.task('default', gulp.series('build'))
 
