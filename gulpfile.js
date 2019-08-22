@@ -87,7 +87,7 @@ gulp.task('build:script', function () {
   return browserifyBundle()
 })
 
-gulp.task('build', gulp.series(['build:node', 'build:web', 'build:script']))
+gulp.task('build', gulp.series(['build:node']))
 
 gulp.task('default', gulp.series('build'))
 

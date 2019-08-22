@@ -9,9 +9,6 @@
     "lint": "eslint --ext .js --ext .ts src",
     "lint:fix": "eslint --fix --ext .js --fix --ext .ts src",
     "build": "gulp",
-    "build:node": "gulp build:node",
-    "build:web": "gulp build:web",
-    "watch:web": "gulp watch:web",
     "lock": "npm shrinkwrap--dev"
   },
   "dependencies": {
@@ -87,8 +84,7 @@
   "directories": {
     "boxdjs": "src/boxd",
     "test": "test",
-    "builded for nodejs": "dist",
-    "builded for browser": "dist-web"
+    "builded for nodejs": "dist"
   },
   "keywords": [
     "box",
