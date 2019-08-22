@@ -1,8 +1,8 @@
 {
-  "name": "boxdjs-node",
+  "name": "boxdjs-web",
   "version": "1.0.4",
-  "description": "A Javascript implementation of BOX Payout blockchain on NodeJS.",
-  "main": "dist/boxd/boxd.js",
+  "description": "A Javascript implementation of BOX Payout blockchain on Browser (node.js or script).",
+  "main": "dist/boxd/boxd-web.js",
   "types": "./types/index.d.ts",
   "scripts": {
     "test": "jest --colors",
@@ -11,6 +11,7 @@
     "build": "gulp",
     "build:node": "gulp build:node",
     "build:web": "gulp build:web",
+    "build:script": "gulp build:script",
     "watch:web": "gulp watch:web",
     "lock": "npm shrinkwrap--dev"
   },
