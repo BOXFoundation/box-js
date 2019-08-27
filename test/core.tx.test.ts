@@ -10,11 +10,35 @@ const feature = new Feature(fetch, Mock.endpoint_dev, 'http')
 
 jest.setTimeout(15000)
 
-test('Make a BOX transaction', async () => {
+test('Make a BOX transaction (Backend Serialization)', async done => {
+  try {
+    const sent_tx = await feature.makeBoxTxByCryptoUseBoxd({
+      tx: {
+        from: Mock.acc_addr_4,
+        to: Mock.to_addrs,
+        amounts: Mock.amounts,
+        fee: Mock.fee
+      },
+      crypto: Keystore.keystore_3,
+      pwd: Mock.acc_pwd
+    })
+    // console.log('sent_tx :', sent_tx)
+    expect(sent_tx['code']).toBe(0)
+    expect(sent_tx.hash)
+  } catch (err) {
+    console.error('Make a BOX transaction (Backend Serialization) Error :', err)
+    expect(0).toBe(1)
+  }
+  setTimeout(function() {
+    done()
+  }, 10000)
+})
+
+test('Make a BOX transaction (Local Serialization)', async () => {
   try {
     const tx_result = await feature.makeBoxTxByCrypto({
       tx: {
-        from: Mock.acc_addr_3,
+        from: Mock.acc_addr_4,
         to: Mock.to_addrs,
         amounts: Mock.amounts,
         fee: Mock.fee
@@ -25,7 +49,7 @@ test('Make a BOX transaction', async () => {
     const tx_detail = await api.viewTxDetail(tx_result.hash)
     expect(tx_detail.detail.hash).toEqual(tx_result.hash)
   } catch (err) {
-    console.error('Make a BOX transaction Error :', err)
+    console.error('Make a BOX transaction (Local Serialization) Error :', err)
     expect(0).toBe(1)
   }
 })
@@ -33,8 +57,8 @@ test('Make a BOX transaction', async () => {
 test('Get the BOX balances of the given addresses', async done => {
   try {
     const box_balance = await api.getBalances([
-      Mock.acc_addr_3,
-      Mock.acc_addr_3
+      Mock.acc_addr_4,
+      Mock.acc_addr_4
     ])
     expect(box_balance)
   } catch (err) {
@@ -49,7 +73,7 @@ test('Get the BOX balances of the given addresses', async done => {
 test('Sign transaction by privKey || crypto', async done => {
   try {
     const unsigned_tx = await api.makeUnsignedTx({
-      from: Mock.acc_addr_3,
+      from: Mock.acc_addr_4,
       to: Mock.to_addrs,
       amounts: Mock.amounts,
       fee: Mock.fee
@@ -86,7 +110,7 @@ test('Sign transaction by privKey || crypto', async done => {
 test('Make a raw transaction (BOX)', async () => {
   try {
     const created_tx = await api.createRawTx({
-      addr: Mock.acc_addr_3,
+      addr: Mock.acc_addr_4,
       to: Mock.to_map,
       fee: Mock.fee,
       privKey: Mock.acc_privateKey_3
@@ -100,7 +124,7 @@ test('Make a raw transaction (BOX)', async () => {
     // Row
     /*     const created_tx_row = await api.createRawTx(
       {
-        addr: Mock.acc_addr_3,
+        addr: Mock.acc_addr_4,
         to: Mock.to_map,
         fee: Mock.fee,
         privKey: Mock.acc_privateKey_3
@@ -118,15 +142,15 @@ test('Make a raw transaction (BOX)', async () => {
 })
 
 // USING
-test('faucet', async () => {
-  try {
-    const faucet_res = await api.faucet({
-      addr: Mock.acc_addr_4,
-      amount: 30000000000
-    })
-    console.log('faucet res:', faucet_res)
-  } catch (err) {
-    console.error('faucet: Error !', err)
-    expect(0).toBe(1)
-  }
-})
+// test('faucet', async () => {
+//   try {
+//     const faucet_res = await api.faucet({
+//       addr: Mock.acc_addr_4,
+//       amount: 60000000000
+//     })
+//     console.log('faucet res:', faucet_res)
+//   } catch (err) {
+//     console.error('faucet: Error !', err)
+//     expect(0).toBe(1)
+//   }
+// })
