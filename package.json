@@ -2,7 +2,7 @@
   "name": "boxdjs-web",
   "version": "0.9.0",
   "description": "A Javascript implementation of BOX Payout blockchain on Browser (node.js or script).",
-  "main": "dist/boxd/boxd-web.js",
+  "main": "dist-web/boxd/boxd-web.js",
   "types": "./types/index.d.ts",
   "scripts": {
     "test": "jest --colors",

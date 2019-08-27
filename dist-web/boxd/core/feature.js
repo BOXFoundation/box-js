@@ -108,7 +108,46 @@ var Feature = /** @class */ (function (_super) {
         });
     };
     /**
-     * @export Make_BOX_transaction_by_crypto.json
+     * @export Make_BOX_transaction_by_crypto.json_(Backend_Serialization)
+     * @param [*org_tx]
+     * @step [makeUnsignedTx->signTxByCrypto->send_tx]
+     * @returns [Promise<sent_tx>] { hash: string }
+     */
+    Feature.prototype.makeBoxTxByCryptoUseBoxd = function (org_tx) {
+        return __awaiter(this, void 0, void 0, function () {
+            var tx, crypto, pwd, api, unsigned_tx, signed_tx_by_crypto;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        tx = org_tx.tx, crypto = org_tx.crypto, pwd = org_tx.pwd;
+                        api = new api_1.default(this._fetch, this.endpoint, this.fetch_type);
+                        return [4 /*yield*/, api.makeUnsignedTx(tx)
+                            // console.log('unsigned_tx:', JSON.stringify(unsigned_tx))
+                        ];
+                    case 1:
+                        unsigned_tx = _a.sent();
+                        return [4 /*yield*/, this.signTxByCrypto({
+                                unsignedTx: {
+                                    tx: unsigned_tx.tx,
+                                    rawMsgs: unsigned_tx.rawMsgs
+                                },
+                                crypto: crypto,
+                                pwd: pwd
+                            })
+                            // console.log('signed_tx_by_crypto :', JSON.stringify(signed_tx_by_crypto))
+                        ];
+                    case 2:
+                        signed_tx_by_crypto = _a.sent();
+                        return [4 /*yield*/, api.sendTx(signed_tx_by_crypto)];
+                    case 3: 
+                    // console.log('signed_tx_by_crypto :', JSON.stringify(signed_tx_by_crypto))
+                    return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /**
+     * @export Make_BOX_transaction_by_crypto.json_(Local_Serialization)
      * @param [*org_tx]
      * @step [make_privKey->fetch_utxos->make_unsigned_tx->sign_tx->send_tx]
      * @returns [Promise<sent_tx>] { hash: string }
