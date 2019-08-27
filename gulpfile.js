@@ -76,11 +76,11 @@ gulp.task('watch:script', function () {
 })
 
 gulp.task('build:node', function () {
-  return gulp.src('src/**/*.ts').pipe(tsProject()).js.pipe(gulp.dest('dist'))
+  return gulp.src(['src/**/*.ts', 'src/**/*.js']).pipe(tsProject()).js.pipe(gulp.dest('dist'))
 })
 
 gulp.task('build:web', function () {
-  return gulp.src('src/**/*.ts').pipe(tsProject()).js.pipe(gulp.dest('dist-web'))
+  return gulp.src('src/**/*.ts').pipe(tsProject()).js.pipe(gulp.dest('dist-web')).pipe(gulp.src('src/**/*.js')).pipe(gulp.dest('dist-web'))
 })
 
 gulp.task('build:script', function () {
