@@ -25,7 +25,12 @@
     "lodash": "^4.17.11",
     "randombytes": "^2.0.6",
     "scrypt.js": "^0.2.0",
-    "tiny-secp256k1": "^1.0.1"
+    "tiny-secp256k1": "^1.0.1",
+    "underscore": "^1.9.1",
+    "web3-core-helpers": "^1.2.1",
+    "web3-core-promievent": "^1.2.1",
+    "web3-eth-abi": "^1.2.1",
+    "web3-utils": "^1.2.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",

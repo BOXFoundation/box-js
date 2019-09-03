@@ -1,16 +1,19 @@
 "use strict"
 
-
+var fetch = require('isomorphic-fetch')
 var _ = require('underscore')
-var core = require('web3-core')
-var Method = require('web3-core-method')
+// var core = require('web3-core')
+// var Method = require('web3-core-method')
 var utils = require('web3-utils')
-var Subscription = require('web3-core-subscriptions').subscription
+// var Subscription = require('web3-core-subscriptions').subscription
 var formatters = require('web3-core-helpers').formatters
 var errors = require('web3-core-helpers').errors
 var promiEvent = require('web3-core-promievent')
 var abi = require('web3-eth-abi')
 
+var Api = require('../../../../dist/boxd/core/api')
+var Feature = require('../../../../dist/boxd/core/feature') 
+var PrivateKey = require('../../../../dist/boxd/util/crypto/privatekey')
 
 /**
  * Should be called to create new contract instance
@@ -31,7 +34,7 @@ var Contract = function Contract(jsonInterface, address, options) {
 
   // TODO
   // sets _requestmanager
-  core.packageInit(this, [this.constructor.currentProvider])
+  // core.packageInit(this, [this.constructor.currentProvider])
 
   //this.clearSubscriptions = this._requestManager.clearSubscriptions
 
@@ -60,7 +63,7 @@ var Contract = function Contract(jsonInterface, address, options) {
   Object.defineProperty(this.options, 'address', {
     set: function(value) {
       if (value) {
-        _this._address = utils.toChecksumAddress(formatters.inputAddressFormatter(value))
+        _this._address = value //utils.toChecksumAddress(formatters.inputAddressFormatter(value))
       }
     },
     get: function() {
@@ -158,7 +161,7 @@ var Contract = function Contract(jsonInterface, address, options) {
     },
     set: function(val) {
       if (val) {
-        defaultAccount = utils.toChecksumAddress(formatters.inputAddressFormatter(val))
+        defaultAccount = val //utils.toChecksumAddress(formatters.inputAddressFormatter(val))
       }
 
       return val
@@ -190,11 +193,14 @@ var Contract = function Contract(jsonInterface, address, options) {
 
 }
 
-Contract.setProvider = function(provider, accounts) {
-  Contract.currentProvider = provider
+Contract.setProvider = function(provider, privKey) {
+  // Contract.currentProvider = provider
   //   core.packageInit(this, [provider])
+  Contract.api = new Api.default(fetch, provider, 'http')
+  Contract.feature = new Feature.default(fetch, provider, 'http')
 
-  this._ethAccounts = accounts
+  Contract._privKey = privKey
+  Contract._from = new PrivateKey.default(privKey).privKey.toP2PKHAddress
 }
 
 
@@ -235,7 +241,7 @@ Contract.prototype._getCallback = function getCallback(args) {
  */
 Contract.prototype._getOrSetDefaultOptions = function getOrSetDefaultOptions(options) {
   var gasPrice = options.gasPrice ? String(options.gasPrice) : null
-  var from = options.from ? utils.toChecksumAddress(formatters.inputAddressFormatter(options.from)) : null
+  var from = options.from ? options.from : null
 
   options.data = options.data || this.options.data
 
@@ -712,7 +718,7 @@ Contract.prototype._processExecuteArguments = function _processExecuteArguments(
   processedArgs.options.data = this.encodeABI()
 
   // add contract address
-  if (!this._deployData && !utils.isAddress(this._parent.options.address))
+  if (!this._deployData && !this._parent.options.address)
     throw new Error('This contract object doesn\'t have address set yet, please set an address first.')
 
   if (!this._deployData)
@@ -732,11 +738,11 @@ Contract.prototype._processExecuteArguments = function _processExecuteArguments(
  * @param {String} type the type this execute function should execute
  * @param {Boolean} makeRequest if true, it simply returns the request parameters, rather than executing it
  */
-Contract.prototype._executeMethod = function _executeMethod() {
-  var _this = this,
-    args = this._parent._processExecuteArguments.call(this, Array.prototype.slice.call(arguments), defer),
-    defer = promiEvent((args.type !== 'send')),
-    ethAccounts = _this.constructor._ethAccounts || _this._ethAccounts
+Contract.prototype._executeMethod = async function _executeMethod() {
+  // var _this = this,
+  var args = this._parent._processExecuteArguments.call(this, Array.prototype.slice.call(arguments), defer),
+    defer = promiEvent((args.type !== 'send'))
+    // ethAccounts = _this.constructor._ethAccounts || _this._ethAccounts
 
   // simple return request for batch requests
   if (args.generateRequest) {
@@ -794,12 +800,14 @@ Contract.prototype._executeMethod = function _executeMethod() {
       //   defaultBlock: _this._parent.defaultBlock
       // })).createFunction()
 
+      console.log("call")
+      return
       // return call(args.options, args.defaultBlock, args.callback)
 
     case 'send':
 
       // return error, if no "from" is specified
-      if (!utils.isAddress(args.options.from)) {
+      if (!this._parent.constructor._from) {
         return utils._fireError(new Error('No "from" address specified in neither the given options, nor the default options.'), defer.eventEmitter, defer.reject, args.callback)
       }
 
@@ -866,6 +874,23 @@ Contract.prototype._executeMethod = function _executeMethod() {
       // })).createFunction()
 
       // return sendTransaction(args.options, args.callback)
+      // let addrNonce = +(await this._parent._getNonce.call(this, this._parent._from))
+      let result = await this._parent.constructor.api.getNonce(this._parent.constructor._from)
+      // + is to convert to number
+      let addrNonce = +result.nonce
+      return this._parent.constructor.feature.makeContractTxByPrivKey(
+        {
+          from: this._parent.constructor._from,
+          to: args.options.to,
+          amount: 0,
+          gasPrice: args.options.gasPrice || 2,
+          gasLimit: args.options.gasLimit || 2000000,
+          nonce: addrNonce + 1,
+          isDeploy: false,
+          data: args.options.data.slice(2)  // remove '0x' prefix
+        },
+        this._parent.constructor._privKey
+      )
 
     }
 
