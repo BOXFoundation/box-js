@@ -19,7 +19,7 @@ export default class PrivateKey {
   public privKey
 
   public constructor(privkey_str) {
-    console.log('privkey_str :', privkey_str)
+    // console.log('privkey_str :', privkey_str)
     if (privkey_str) {
       privkey_str = privkey_str.padStart(64, '0')
     }
