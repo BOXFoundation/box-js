@@ -310,4 +310,6 @@ namespace CommonUtil {
   }
 }
 
-export default Object.assign(CommonUtil, AbiUtil, SplitUtil, TokenUtil, TxUtil)
+const tmp = Object.assign(CommonUtil, AbiUtil, SplitUtil, TokenUtil, TxUtil)
+
+export default tmp

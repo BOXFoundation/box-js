@@ -14,8 +14,8 @@ let contractAddr
 const abi = new AbiCoder()
 const srcHexAddr = Util.box2HexAddr(src)
 const anotherHexAddr = Util.box2HexAddr(Mock.acc_addr_1)
-const api = new Api(fetch, Mock.endpoint_dev, 'http')
-const feature = new Feature(fetch, Mock.endpoint_dev, 'http')
+const api = new Api(fetch, Mock.endpoint_local, 'http')
+const feature = new Feature(fetch, Mock.endpoint_local, 'http')
 
 // const contract = `pragma solidity >=0.4.0 <0.6.0;
 

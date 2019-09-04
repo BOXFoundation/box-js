@@ -1,0 +1,6 @@
+{
+  "search.exclude": {
+    "**/dist-script": true,
+    "**/dist-web": true
+  }
+}
