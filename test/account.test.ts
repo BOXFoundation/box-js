@@ -1,8 +1,8 @@
 import 'jest'
-import Mock from './json/mock.json'
-import Keystore from './json/keystore.json'
-import Account from '../src/boxd/account/account'
-import AccountManager from '../src/boxd/account/account-manager'
+import Mock from '../static/json/mock.json'
+import Keystore from '../static/json/keystore.json'
+import Account from '../package/boxd/account/account'
+import AccountManager from '../package/boxd/account/account-manager'
 
 let acc_list_result
 const acc_buf = Buffer.from(Mock.acc_privateKey, 'hex') // private key (buffer ed)

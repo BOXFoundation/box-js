@@ -1,5 +1,5 @@
 import 'jest'
-import Util from '../src/boxd/util/util'
+import Util from '../package/boxd/util/util'
 
 test('Convert between box and hex address', async () => {
   try {

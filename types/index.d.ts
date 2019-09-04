@@ -1,3 +1,3 @@
-import boxd from '../src/boxd/boxd'
+import boxd from '../package/index'
 
 export default boxd

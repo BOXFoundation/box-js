@@ -44,7 +44,7 @@ npm run test
 ├── dist  # builded for nodejs
 ├── dist-web  # builded for browser
 │
-├── src
+├── package
 │   └── boxd
 │       ├── boxd.ts  # boxd output file
 │       ├── account

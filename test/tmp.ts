@@ -1,5 +1,5 @@
 import 'jest'
-import Grpc from '../src/boxd/util/grpc'
+import Grpc from '../package/boxd/util/grpc'
 
 const grpc = new Grpc('39.97.170.105:19151')
 

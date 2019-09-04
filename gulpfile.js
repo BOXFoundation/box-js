@@ -15,7 +15,7 @@ const tsProject = ts.createProject('tsconfig.json')
 const watchedBrowserify = watchify(browserify({
   basedir: '.',
   debug: true,
-  entries: ['src/boxd/boxd.ts'],
+  entries: ['package/index.ts'],
   cache: {},
   packageCache: {}
 }).plugin(tsify))
@@ -40,14 +40,14 @@ const watchedBundle = () => {
       }
     }))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('dist-script'))
+    .pipe(gulp.dest('boxdjs-script'))
 }
 
 const browserifyBundle = () => {
   return browserify({
     basedir: '.',
     debug: true,
-    entries: ['src/boxd/boxd.ts'],
+    entries: ['package/index.ts'],
     cache: {},
     packageCache: {}
   }).plugin(tsify).transform('babelify', {
@@ -68,26 +68,22 @@ const browserifyBundle = () => {
       }
     }))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('dist-script'))
+    .pipe(gulp.dest('boxdjs-script'))
 }
 
-gulp.task('watch:web', function () {
+gulp.task('watch:script', function () {
   return watchedBundle()
 })
 
 gulp.task('build:node', function () {
-  return gulp.src('src/**/*.ts').pipe(tsProject()).js.pipe(gulp.dest('dist'))
-})
-
-gulp.task('build:web', function () {
-  return gulp.src('src/**/*.ts').pipe(tsProject()).js.pipe(gulp.dest('dist-web'))
+  return gulp.src('package/**/*.ts').pipe(tsProject()).js.pipe(gulp.dest('dist')).pipe(gulp.src('package/**/*.js')).pipe(gulp.dest('dist'))
 })
 
 gulp.task('build:script', function () {
   return browserifyBundle()
 })
 
-gulp.task('build', gulp.series(['build:node']))
+gulp.task('build', gulp.series(['build:node', 'build:script']))
 
 gulp.task('default', gulp.series('build'))
 

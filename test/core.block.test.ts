@@ -1,7 +1,7 @@
 import 'jest'
 import fetch from 'isomorphic-fetch'
-import Mock from './json/mock.json'
-import Api from '../src/boxd/core/api'
+import Mock from '../static/json/mock.json'
+import Api from '../package/boxd/core/api'
 
 let node_id
 const api = new Api(fetch, Mock.endpoint_dev, 'http')

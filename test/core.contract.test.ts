@@ -1,11 +1,11 @@
 import 'jest'
 import fetch from 'isomorphic-fetch'
-import Mock from './json/mock.json'
-import Keystore from './json/keystore.json'
-import AbiCoder from '../src/boxd/core/contract/abi/abicoder'
-import Api from '../src/boxd/core/api'
-import Feature from '../src/boxd/core/feature'
-import Util from '../src/boxd/util/util'
+import Mock from '../static/json/mock.json'
+import Keystore from '../static/json/keystore.json'
+import AbiCoder from '../package/boxd/core/contract/abi/abicoder'
+import Api from '../package/boxd/core/api'
+import Feature from '../package/boxd/core/feature'
+import Util from '../package/boxd/util/util'
 
 // base58 format
 let src = Mock.acc_addr_4
@@ -14,8 +14,8 @@ let contractAddr
 const abi = new AbiCoder()
 const srcHexAddr = Util.box2HexAddr(src)
 const anotherHexAddr = Util.box2HexAddr(Mock.acc_addr_1)
-const api = new Api(fetch, Mock.endpoint_dev, 'http')
-const feature = new Feature(fetch, Mock.endpoint_dev, 'http')
+const api = new Api(fetch, Mock.endpoint_local, 'http')
+const feature = new Feature(fetch, Mock.endpoint_local, 'http')
 
 // const contract = `pragma solidity >=0.4.0 <0.6.0;
 

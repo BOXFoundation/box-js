@@ -1,0 +1,79 @@
+// Copyright (c) 2018 ContentBox Authors.
+// Use of this source code is governed by a MIT-style
+// license that can be found in the LICENSE file.
+
+syntax = "proto3";
+
+package corepb;
+
+option java_package = "one.contentbox.boxd.protocol.rpc.protobuf.generated";
+option java_outer_classname ="BlockProto";
+option java_multiple_files = true;
+
+message BlockHeader {
+    int32 version = 1;
+    bytes prev_block_hash = 2;
+    bytes txs_root = 3;
+    bytes internal_txs_root = 4;
+    bytes utxo_root = 5;
+    bytes receipt_hash = 6;
+    int64 time_stamp = 7;
+    uint32 magic = 8;
+    bytes period_hash = 9;
+    bytes candidates_hash = 10;
+    bytes root_hash = 11;
+    uint32 height = 12;
+    uint64 gas_used = 13;
+    bytes book_keeper = 14;
+    bytes bloom = 15;
+}
+
+message IrreversibleInfo {
+    bytes hash = 1;
+    repeated bytes signatures = 2;
+}
+
+message Block {
+    BlockHeader header = 1;
+    repeated Transaction txs = 2;
+    repeated Transaction internal_txs = 3;
+    bytes signature = 4;
+    IrreversibleInfo irreversible_info = 5;
+}
+
+message Transaction {
+    int32 version = 1;
+    repeated TxIn vin  = 2;
+    repeated TxOut vout  = 3;
+    Data data = 4;
+    uint32 magic = 5;
+    int64 lock_time = 6;
+}
+
+message TxIn {
+    OutPoint prev_out_point = 1;
+    bytes script_sig = 2;
+    uint32 sequence = 3;
+}
+
+message TxOut {
+    uint64 value = 1;
+    bytes script_pub_key = 2;
+}
+
+message OutPoint {
+    bytes hash = 1;
+    uint32 index =2;
+}
+
+message Data {
+    int32 type = 1;
+    bytes content = 2;
+}
+
+message UtxoWrap {
+  TxOut output = 1;
+	uint32 block_height = 2;
+	bool is_spent = 3;
+	bool is_coinbase = 4;
+}

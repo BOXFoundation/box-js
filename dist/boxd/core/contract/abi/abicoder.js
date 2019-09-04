@@ -113,7 +113,7 @@ var AbiCoder = /** @class */ (function () {
         });
     };
     /**
-     * Encodes a function call from its json interface and parameters.
+     * Encodes a function call from its json interface and parameters
      *
      * @param [jsonInterface] object
      * @param [params] array
