@@ -125,7 +125,7 @@ var PrivateKey = /** @class */ (function () {
         this.getPubKeyHashByPrivKey = function () {
             return hash_1.default.hash160(_this.privKey.toPublicKey().toBuffer()).toString('hex');
         };
-        console.log('privkey_str :', privkey_str);
+        // console.log('privkey_str :', privkey_str)
         if (privkey_str) {
             privkey_str = privkey_str.padStart(64, '0');
         }
