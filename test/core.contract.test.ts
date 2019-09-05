@@ -115,13 +115,13 @@ const abiJson = [
 ]
 
 async function getBalance(): Promise<number> {
-  var contract = new Contract(abiJson, contractAddr);
+  var contract = new Contract(abiJson, contractAddr)
   console.log('calling contract at: ' + contractAddr)
   return +(await contract.methods.getBalance().call())
 }
 
 async function isMinter(hexAddr: string | undefined): Promise<boolean> {
-  var contract = new Contract(abiJson, contractAddr);
+  var contract = new Contract(abiJson, contractAddr)
   console.log('calling contract at: ' + contractAddr)
   return await contract.methods.isMinter(hexAddr).call()
 }
