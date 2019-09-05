@@ -2,7 +2,6 @@ import 'jest'
 import fetch from 'isomorphic-fetch'
 import Mock from '../static/json/mock.json'
 import Keystore from '../static/json/keystore.json'
-import AbiCoder from '../package/boxd/core/contract/abi/abicoder'
 import Api from '../package/boxd/core/api'
 import Feature from '../package/boxd/core/feature'
 import Util from '../package/boxd/util/util'
@@ -12,7 +11,6 @@ import Contract from '../package/boxd/core/contract/'
 let src = Mock.acc_addr_4
 let contractAddr
 // hex format
-const abi = new AbiCoder()
 const srcHexAddr = Util.box2HexAddr(src)
 const anotherHexAddr = Util.box2HexAddr(Mock.acc_addr_1)
 const url = Mock.endpoint_dev
@@ -117,56 +115,15 @@ const abiJson = [
 ]
 
 async function getBalance(): Promise<number> {
-  const data = await abi.encodeFunctionCall(
-    {
-      name: 'getBalance',
-      inputs: []
-    },
-    []
-  )
-
+  var contract = new Contract(abiJson, contractAddr);
   console.log('calling contract at: ' + contractAddr)
-  const ret = await feature.callContract({
-    from: src,
-    to: contractAddr,
-    data: data,
-    height: 0,
-    timeout: 0
-  })
-  const result = ret.result
-  console.log(result)
-  const decoded = await abi.decodeParameter(
-    'uint256',
-    Buffer.from(result, 'hex')
-  )
-  return decoded
+  return +(await contract.methods.getBalance().call())
 }
 
 async function isMinter(hexAddr: string | undefined): Promise<boolean> {
-  const data = await abi.encodeFunctionCall(
-    {
-      name: 'isMinter',
-      inputs: [
-        {
-          type: 'address'
-        }
-      ]
-    },
-    [hexAddr]
-  )
-
+  var contract = new Contract(abiJson, contractAddr);
   console.log('calling contract at: ' + contractAddr)
-  const ret = await feature.callContract({
-    from: src,
-    to: contractAddr,
-    data: data,
-    height: 0,
-    timeout: 0
-  })
-  const result = ret.result
-  console.log(result)
-  const decoded = await abi.decodeParameter('bool', Buffer.from(result, 'hex'))
-  return decoded
+  return await contract.methods.isMinter(hexAddr).call()
 }
 
 async function getNonce(): Promise<number> {
