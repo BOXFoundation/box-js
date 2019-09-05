@@ -10,5 +10,5 @@ export default {
   Api,
   Feature,
   Util
-  // Grpc, now only for node.js
+  // Grpc, only for node.js now
 }

@@ -14,8 +14,9 @@
     "lock": "npm shrinkwrap--dev"
   },
   "browser": {
-    "dist/index.js": "dist/browser.js"
+    "./dist/index.js": "./dist/browser.js"
   },
+  "types": "./types/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/BOXFoundation/box-js.git"

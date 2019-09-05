@@ -14,5 +14,5 @@ exports.default = {
     Api: api_1.default,
     Feature: feature_1.default,
     Util: util_1.default
-    // Grpc, now only for node.js
+    // Grpc, only for node.js now
 };
