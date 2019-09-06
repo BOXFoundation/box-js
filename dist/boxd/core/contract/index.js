@@ -805,11 +805,11 @@ Contract.prototype._executeMethod = async function _executeMethod() {
       const ret = await this._parent.constructor.feature.callContract({
         from: this._parent.constructor._from,
         to: args.options.to,
-        data: args.options.data.slice(2),  // remove '0x' prefix
+        data: args.options.data.slice(2), // remove '0x' prefix
         height: 0,
         timeout: 0
       })
-      return this._parent._decodeMethodReturn(this._method.outputs, '0x' + ret.result /* add '0x' prefix */)
+      return this._parent._decodeMethodReturn(this._method.outputs, '0x' + ret.result /* add '0x' prefix */ )
       // return call(args.options, args.defaultBlock, args.callback)
 
     case 'send':
@@ -889,7 +889,7 @@ Contract.prototype._executeMethod = async function _executeMethod() {
       return this._parent.constructor.feature.makeContractTxByPrivKey({
         from: this._parent.constructor._from,
         to: args.options.to,
-        amount: 0,
+        amount: args.options.value || 0,
         gasPrice: args.options.gasPrice || 2,
         gasLimit: args.options.gasLimit || 2000000,
         nonce: addrNonce + 1,
