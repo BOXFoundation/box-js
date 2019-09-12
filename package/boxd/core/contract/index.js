@@ -12,8 +12,8 @@ var errors = require('web3-core-helpers').errors
 var promiEvent = require('web3-core-promievent')
 var abi = require('web3-eth-abi')
 
-var Api = require('../../../../dist/boxd/core/api')
-var Feature = require('../../../../dist/boxd/core/feature')
+var Api = require('../api')
+var Feature = require('../feature')
 
 /**
  * Should be called to create new contract instance
