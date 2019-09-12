@@ -9,7 +9,7 @@ const packageDefinition = protoLoader.loadSync('web.proto', {
   enums: String,
   defaults: true,
   oneofs: true,
-  includeDirs: [path.join(__dirname, '../../protobuf')]
+  includeDirs: [path.join(__dirname, '../../../static/protobuf')]
 })
 
 const grpc_object = grpc.loadPackageDefinition(packageDefinition).rpcpb
