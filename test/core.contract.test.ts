@@ -16,8 +16,8 @@ const anotherHexAddr = Util.box2HexAddr(Mock.acc_addr_1)
 const url = Mock.endpoint_dev
 const api = new Api(fetch, url, 'http')
 const feature = new Feature(fetch, url, 'http')
-// set provider and private key for all later instances to use
-Contract.setProvider(url, Mock.acc_privateKey_4)
+// set provider and from address for all later instances to use
+Contract.setProvider(url, src)
 
 // const contract = `pragma solidity >=0.4.0 <0.6.0;
 
@@ -176,7 +176,7 @@ test('Send a contract method', async () => {
   )
   const tx_result = await contract.methods
     .incrementBalance(depositAmount)
-    .send()
+    .send({privateKey: Mock.acc_privateKey_4})
 
   await sleep(5000)
   const tx_detail = await api.viewTxDetail(tx_result.hash)

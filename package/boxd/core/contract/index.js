@@ -14,7 +14,6 @@ var abi = require('web3-eth-abi')
 
 var Api = require('../../../../dist/boxd/core/api')
 var Feature = require('../../../../dist/boxd/core/feature')
-var PrivateKey = require('../../../../dist/boxd/util/crypto/privatekey')
 
 /**
  * Should be called to create new contract instance
@@ -194,14 +193,13 @@ var Contract = function Contract(jsonInterface, address, options) {
 
 }
 
-Contract.setProvider = function (provider, privKey) {
+Contract.setProvider = function (provider, from) {
   // Contract.currentProvider = provider
   //   core.packageInit(this, [provider])
   Contract.api = new Api.default(fetch, provider, 'http')
   Contract.feature = new Feature.default(fetch, provider, 'http')
 
-  Contract._privKey = privKey
-  Contract._from = new PrivateKey.default(privKey).privKey.toP2PKHAddress
+  Contract._from = from
 }
 
 
@@ -803,7 +801,7 @@ Contract.prototype._executeMethod = async function _executeMethod() {
       // })).createFunction()
 
       const ret = await this._parent.constructor.feature.callContract({
-        from: this._parent.constructor._from,
+        from: args.options.from || this._parent.constructor._from,
         to: args.options.to,
         data: args.options.data.slice(2), // remove '0x' prefix
         height: 0,
@@ -814,8 +812,12 @@ Contract.prototype._executeMethod = async function _executeMethod() {
 
     case 'send':
 
+      if (!args.options.privateKey) {
+        return utils._fireError(new Error('No private key specified in the given options.'), defer.eventEmitter, defer.reject, args.callback)
+      }
+
       // return error, if no "from" is specified
-      if (!this._parent.constructor._from) {
+      if (!(args.options.from || this._parent.constructor._from)) {
         return utils._fireError(new Error('No "from" address specified in neither the given options, nor the default options.'), defer.eventEmitter, defer.reject, args.callback)
       }
 
@@ -887,7 +889,7 @@ Contract.prototype._executeMethod = async function _executeMethod() {
       // + is to convert to number
       let addrNonce = +result.nonce
       return this._parent.constructor.feature.makeContractTxByPrivKey({
-        from: this._parent.constructor._from,
+        from: args.options.from || this._parent.constructor._from,
         to: args.options.to,
         amount: args.options.value || 0,
         gasPrice: args.options.gasPrice || 2,
@@ -896,7 +898,7 @@ Contract.prototype._executeMethod = async function _executeMethod() {
         isDeploy: false,
         data: args.options.data.slice(2) // remove '0x' prefix
       },
-      this._parent.constructor._privKey
+      args.options.privateKey
       )
 
     }
