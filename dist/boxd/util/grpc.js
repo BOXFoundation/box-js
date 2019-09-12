@@ -20,7 +20,7 @@ var packageDefinition = protoLoader.loadSync('web.proto', {
     enums: String,
     defaults: true,
     oneofs: true,
-    includeDirs: [path_1.default.join(__dirname, '../../protobuf')]
+    includeDirs: [path_1.default.join(__dirname, '../../../static/protobuf')]
 });
 var grpc_object = grpc_1.default.loadPackageDefinition(packageDefinition).rpcpb;
 var Grpc = /** @class */ (function () {
