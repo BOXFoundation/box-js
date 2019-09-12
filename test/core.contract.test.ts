@@ -17,7 +17,7 @@ const url = Mock.endpoint_dev
 const api = new Api(fetch, url, 'http')
 const feature = new Feature(fetch, url, 'http')
 // set provider and from address for all later instances to use
-Contract.setProvider(url, src)
+Contract.setProvider(url, src, Mock.acc_privateKey_4)
 
 // const contract = `pragma solidity >=0.4.0 <0.6.0;
 
@@ -175,8 +175,7 @@ test('Send a contract method', async () => {
     'sending contract @ ' + contractAddr + ' with balance: ' + initBalance
   )
   const tx_result = await contract.methods
-    .incrementBalance(depositAmount)
-    .send({privateKey: Mock.acc_privateKey_4})
+    .incrementBalance(depositAmount).send()
 
   await sleep(5000)
   const tx_detail = await api.viewTxDetail(tx_result.hash)
