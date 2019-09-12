@@ -193,13 +193,14 @@ var Contract = function Contract(jsonInterface, address, options) {
 
 }
 
-Contract.setProvider = function (provider, from) {
+Contract.setProvider = function (provider, from, privateKey) {
   // Contract.currentProvider = provider
   //   core.packageInit(this, [provider])
   Contract.api = new Api.default(fetch, provider, 'http')
   Contract.feature = new Feature.default(fetch, provider, 'http')
 
   Contract._from = from
+  Contract._privateKey = privateKey
 }
 
 
@@ -812,8 +813,9 @@ Contract.prototype._executeMethod = async function _executeMethod() {
 
     case 'send':
 
-      if (!args.options.privateKey) {
-        return utils._fireError(new Error('No private key specified in the given options.'), defer.eventEmitter, defer.reject, args.callback)
+      // return error, if no "privateKey" is specified
+      if (!(args.options.privateKey || this._parent.constructor._privateKey)) {
+        return utils._fireError(new Error('No privateKey specified in neither the given options, nor the default options.'), defer.eventEmitter, defer.reject, args.callback)
       }
 
       // return error, if no "from" is specified
@@ -898,7 +900,7 @@ Contract.prototype._executeMethod = async function _executeMethod() {
         isDeploy: false,
         data: args.options.data.slice(2) // remove '0x' prefix
       },
-      args.options.privateKey
+      args.options.privateKey || this._parent.constructor._privateKey
       )
 
     }
