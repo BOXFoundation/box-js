@@ -7,12 +7,12 @@ const api = new Api(fetch, Mock.endpoint_dev, 'http')
 const sleep = seconds => {
   return new Promise(resolve => setTimeout(resolve, seconds * 1000))
 }
-const amount = 2000000 * 100000000
+const amount = 200 * 100000000
 
 test('faucet_0', async () => {
   try {
     await api.faucet({
-      addr: 'b1XpBAFh3a1uiXehZdiYpk1eHKFE49dypV8',
+      addr: Mock.acc_addr,
       amount
     })
     console.log(Mock.acc_addr, 'Charged', amount / 100000000, 'BOX')
@@ -22,50 +22,50 @@ test('faucet_0', async () => {
   }
   await sleep(1)
 })
-// test('faucet_1', async () => {
-//   try {
-//     await api.faucet({
-//       addr: Mock.acc_addr_1,
-//       amount
-//     })
-//     console.log(Mock.acc_addr_1, 'Charged', amount / 100000000, 'BOX')
-//   } catch (err) {
-//     expect(0).toBe(1)
-//   }
-//   await sleep(1)
-// })
-// test('faucet_2', async () => {
-//   try {
-//     await api.faucet({
-//       addr: Mock.acc_addr_2,
-//       amount
-//     })
-//     console.log(Mock.acc_addr_2, 'Charged', amount / 100000000, 'BOX')
-//   } catch (err) {
-//     expect(0).toBe(1)
-//   }
-//   await sleep(1)
-// })
-// test('faucet_3', async () => {
-//   try {
-//     await api.faucet({
-//       addr: Mock.acc_addr_3,
-//       amount
-//     })
-//     console.log(Mock.acc_addr_3, 'Charged', amount / 100000000, 'BOX')
-//   } catch (err) {
-//     expect(0).toBe(1)
-//   }
-//   await sleep(1)
-// })
-// test('faucet_4', async () => {
-//   try {
-//     await api.faucet({
-//       addr: Mock.acc_addr_4,
-//       amount
-//     })
-//     console.log(Mock.acc_addr_4, 'Charged', amount / 100000000, 'BOX')
-//   } catch (err) {
-//     expect(0).toBe(1)
-//   }
-// })
+test('faucet_1', async () => {
+  try {
+    await api.faucet({
+      addr: Mock.acc_addr_1,
+      amount
+    })
+    console.log(Mock.acc_addr_1, 'Charged', amount / 100000000, 'BOX')
+  } catch (err) {
+    expect(0).toBe(1)
+  }
+  await sleep(1)
+})
+test('faucet_2', async () => {
+  try {
+    await api.faucet({
+      addr: Mock.acc_addr_2,
+      amount
+    })
+    console.log(Mock.acc_addr_2, 'Charged', amount / 100000000, 'BOX')
+  } catch (err) {
+    expect(0).toBe(1)
+  }
+  await sleep(1)
+})
+test('faucet_3', async () => {
+  try {
+    await api.faucet({
+      addr: Mock.acc_addr_3,
+      amount
+    })
+    console.log(Mock.acc_addr_3, 'Charged', amount / 100000000, 'BOX')
+  } catch (err) {
+    expect(0).toBe(1)
+  }
+  await sleep(1)
+})
+test('faucet_4', async () => {
+  try {
+    await api.faucet({
+      addr: Mock.acc_addr_4,
+      amount
+    })
+    console.log(Mock.acc_addr_4, 'Charged', amount / 100000000, 'BOX')
+  } catch (err) {
+    expect(0).toBe(1)
+  }
+})
