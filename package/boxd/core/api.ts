@@ -67,7 +67,7 @@ export default class Api extends Fetch {
   public getBlockHeight(): Promise<{
   height: number;
   }> {
-    return super.fetch('/ctl/getblockheight')
+    return super.fetch('/ctl/getcurrentblockheight')
   }
 
   public viewBlockDetail(hash: string): Promise<BlockResponse.BlcokDetail> {
