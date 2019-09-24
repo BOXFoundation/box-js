@@ -277,5 +277,4 @@ var CommonUtil;
         }
     };
 })(CommonUtil || (CommonUtil = {}));
-var tmp = Object.assign(CommonUtil, util_1.default, util_2.default, util_3.default, util_4.default);
-exports.default = tmp;
+exports.default = Object.assign(CommonUtil, util_1.default, util_2.default, util_3.default, util_4.default);

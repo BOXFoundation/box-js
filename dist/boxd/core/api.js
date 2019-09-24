@@ -111,7 +111,7 @@ var Api = /** @class */ (function (_super) {
         });
     };
     Api.prototype.getBlockHeight = function () {
-        return _super.prototype.fetch.call(this, '/ctl/getblockheight');
+        return _super.prototype.fetch.call(this, '/ctl/getcurrentblockheight');
     };
     Api.prototype.viewBlockDetail = function (hash) {
         return _super.prototype.fetch.call(this, '/block/detail', { hash: hash });
