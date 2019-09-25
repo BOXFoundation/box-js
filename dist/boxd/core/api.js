@@ -191,43 +191,37 @@ var Api = /** @class */ (function (_super) {
     };
     Api.prototype.getBalance = function (addr) {
         return __awaiter(this, void 0, void 0, function () {
-            var balances, arr_balances, err_1;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, _super.prototype.fetch.call(this, '/tx/getbalance', { addrs: [addr] })];
-                    case 1:
-                        balances = _a.sent();
-                        return [4 /*yield*/, balances.balances.map(function (balance) {
-                                return new bn_js_1.default(balance, 10).toString();
-                            })];
-                    case 2:
-                        arr_balances = _a.sent();
-                        return [2 /*return*/, { balance: arr_balances[0] }];
-                    case 3:
-                        err_1 = _a.sent();
-                        throw new Error("API Error /tx/getbalance");
-                    case 4: return [2 /*return*/];
-                }
+                _super.prototype.fetch.call(this, '/tx/getbalance', { addrs: [addr] })
+                    .then(function (balances) {
+                    return new bn_js_1.default(balances.balances[0], 10).toString();
+                })
+                    .catch(function (err) {
+                    throw new Error(err);
+                });
+                return [2 /*return*/];
             });
         });
     };
     Api.prototype.getBalances = function (addrs) {
         return __awaiter(this, void 0, void 0, function () {
-            var balances, arr_balances;
+            var _this = this;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, _super.prototype.fetch.call(this, '/tx/getbalance', { addrs: addrs })];
-                    case 1:
-                        balances = _a.sent();
-                        return [4 /*yield*/, balances.balances.map(function (balance) {
-                                return new bn_js_1.default(balance, 10).toString();
-                            })];
-                    case 2:
-                        arr_balances = _a.sent();
-                        return [2 /*return*/, { balances: arr_balances }];
-                }
+                _super.prototype.fetch.call(this, '/tx/getbalance', { addrs: addrs })
+                    .then(function (balances) { return __awaiter(_this, void 0, void 0, function () {
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0: return [4 /*yield*/, balances.balances.map(function (balance) {
+                                    return new bn_js_1.default(balance, 10).toString();
+                                })];
+                            case 1: return [2 /*return*/, _a.sent()];
+                        }
+                    });
+                }); })
+                    .catch(function (err) {
+                    throw new Error(err);
+                });
+                return [2 /*return*/];
             });
         });
     };

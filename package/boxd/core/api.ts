@@ -65,7 +65,7 @@ export default class Api extends Fetch {
   }
 
   public getBlockHeight(): Promise<{
-  height: number;
+    height: number;
   }> {
     return super.fetch('/ctl/getcurrentblockheight')
   }
@@ -151,23 +151,27 @@ export default class Api extends Fetch {
   }
 
   public async getBalance(addr: string) {
-    try {
-      const balances = await super.fetch('/tx/getbalance', { addrs: [addr] })
-      const arr_balances = await balances.balances.map(balance => {
-        return new BN(balance, 10).toString()
+    super
+      .fetch('/tx/getbalance', { addrs: [addr] })
+      .then(balances => {
+        return new BN(balances.balances[0], 10).toString()
       })
-      return { balance: arr_balances[0] }
-    } catch(err){
-      throw new Error("API Error /tx/getbalance")
-    }
+      .catch(err => {
+        throw new Error(err)
+      })
   }
 
-  public async getBalances(addrs: string[]): Promise<{ balances: number[] }> {
-    const balances = await super.fetch('/tx/getbalance', { addrs })
-    const arr_balances = await balances.balances.map(balance => {
-      return new BN(balance, 10).toString()
-    })
-    return { balances: arr_balances }
+  public async getBalances(addrs: string[]) {
+    super
+      .fetch('/tx/getbalance', { addrs })
+      .then(async balances => {
+        return await balances.balances.map(balance => {
+          return new BN(balance, 10).toString()
+        })
+      })
+      .catch(err => {
+        throw new Error(err)
+      })
   }
 
   public fetchUtxos(
