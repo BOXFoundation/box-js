@@ -150,28 +150,16 @@ export default class Api extends Fetch {
     return super.fetch('/tx/detail', { hash })
   }
 
-  public async getBalance(addr: string) {
-    super
-      .fetch('/tx/getbalance', { addrs: [addr] })
-      .then(balances => {
-        return new BN(balances.balances[0], 10).toString()
-      })
-      .catch(err => {
-        throw new Error(err)
-      })
+  public async getBalance(addr: string): Promise<{ balance: number }> {
+    const res = await super.fetch('/tx/getbalance', { addrs: [addr] })
+    return new BN(res.balances[0], 10).toString()
   }
 
-  public async getBalances(addrs: string[]) {
-    super
-      .fetch('/tx/getbalance', { addrs })
-      .then(async balances => {
-        return await balances.balances.map(balance => {
-          return new BN(balance, 10).toString()
-        })
-      })
-      .catch(err => {
-        throw new Error(err)
-      })
+  public async getBalances(addrs: string[]): Promise<{ balances: number[] }> {
+    const res = await super.fetch('/tx/getbalance', { addrs })
+    return await res.balances.map(balance => {
+      return new BN(balance, 10).toString()
+    })
   }
 
   public fetchUtxos(

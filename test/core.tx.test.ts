@@ -56,11 +56,7 @@ test('Make a BOX transaction (Local Serialization)', async () => {
 
 test('Get the BOX balances of the given addresses', async done => {
   try {
-    const box_balance = await api.getBalances([
-      Mock.acc_addr_4,
-      Mock.acc_addr_4
-    ])
-    expect(box_balance)
+    expect(await api.getBalances([Mock.acc_addr_4, Mock.acc_addr_4]))
   } catch (err) {
     console.error('Dump cryptoJson from privateKey Error :', err)
     expect(0).toBe(1)
