@@ -191,10 +191,12 @@ var Api = /** @class */ (function (_super) {
     };
     Api.prototype.getBalance = function (addr) {
         return __awaiter(this, void 0, void 0, function () {
-            var balances, arr_balances;
+            var balances, arr_balances, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, _super.prototype.fetch.call(this, '/tx/getbalance', { addrs: [addr] })];
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, _super.prototype.fetch.call(this, '/tx/getbalance', { addrs: [addr] })];
                     case 1:
                         balances = _a.sent();
                         return [4 /*yield*/, balances.balances.map(function (balance) {
@@ -203,6 +205,10 @@ var Api = /** @class */ (function (_super) {
                     case 2:
                         arr_balances = _a.sent();
                         return [2 /*return*/, { balance: arr_balances[0] }];
+                    case 3:
+                        err_1 = _a.sent();
+                        throw new Error("API Error /tx/getbalance");
+                    case 4: return [2 /*return*/];
                 }
             });
         });
