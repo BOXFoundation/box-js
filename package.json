@@ -90,6 +90,7 @@
     "browserify": "^16.2.3",
     "eslint": "^5.16.0",
     "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-typescript": "^5.0.1",
     "gulp-uglify": "^3.0.2",

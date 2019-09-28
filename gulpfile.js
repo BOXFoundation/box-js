@@ -10,6 +10,7 @@ const sourcemaps = require('gulp-sourcemaps')
 const buffer = require('vinyl-buffer')
 const ts = require('gulp-typescript')
 const tsProject = ts.createProject('tsconfig.json')
+const babel = require('gulp-babel')
 
 /* watch browserify */
 const watchedBrowserify = watchify(browserify({
@@ -75,12 +76,12 @@ gulp.task('watch:script', function () {
   return watchedBundle()
 })
 
-gulp.task('build:node', function () {
-  return gulp.src('package/**/*.ts').pipe(tsProject()).js.pipe(gulp.dest('dist')).pipe(gulp.src('package/**/*.js')).pipe(gulp.dest('dist'))
-})
-
 gulp.task('build:script', function () {
   return browserifyBundle()
+})
+
+gulp.task('build:node', function () {
+  return gulp.src('package/**/*.ts').pipe(tsProject()).js.pipe(gulp.dest('dist')).pipe(gulp.src('package/**/*.js').pipe(babel())).pipe(gulp.dest('dist'))
 })
 
 gulp.task('build', gulp.series(['build:node', 'build:script']))

@@ -5,7 +5,7 @@ import Keystore from '../static/json/keystore.json'
 import Api from '../package/boxd/core/api'
 import Feature from '../package/boxd/core/feature'
 import Util from '../package/boxd/util/util'
-import Contract from '../package/boxd/core/contract/'
+import Contract from '../package/boxd/core/contract'
 
 // base58 format
 let src = Mock.acc_addr_4
@@ -175,7 +175,8 @@ test('Send a contract method', async () => {
     'sending contract @ ' + contractAddr + ' with balance: ' + initBalance
   )
   const tx_result = await contract.methods
-    .incrementBalance(depositAmount).send()
+    .incrementBalance(depositAmount)
+    .send()
 
   await sleep(5000)
   const tx_detail = await api.viewTxDetail(tx_result.hash)
