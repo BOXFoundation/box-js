@@ -1,4 +1,4 @@
-import tinySecp from 'tiny-secp256k1'
+import secp from 'secp256k1'
 import bs58 from 'bs58'
 import Hash from '../util/crypto/hash'
 
@@ -40,7 +40,7 @@ namespace Verify {
    * @returns [boolean]
    */
   export const isPrivate = (privKey: string) => {
-    if (tinySecp.isPrivate(Buffer.from(privKey, 'hex'))) {
+    if (secp.privateKeyVerify(Buffer.from(privKey, 'hex'))) {
       return privKey
     } else {
       return false

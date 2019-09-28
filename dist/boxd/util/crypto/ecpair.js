@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var tiny_secp256k1_1 = __importDefault(require("tiny-secp256k1"));
+var secp256k1_1 = __importDefault(require("secp256k1"));
 var util_1 = __importDefault(require("../util"));
 var Ecpair;
 (function (Ecpair) {
@@ -16,14 +16,13 @@ var Ecpair;
         }
         return b;
     }
-    function ECPair(d, Q, options) {
+    function ECPair(d, options) {
         options = options || {};
         this.compressed =
             options.compressed === undefined ? true : options.compressed;
         this.__d = d || null;
         this.__Q = null;
-        if (Q)
-            this.__Q = tiny_secp256k1_1.default.pointCompress(Q, this.compressed);
+        // if (Q) this.__Q = ecc.pointCompress(Q, this.compressed)
     }
     Object.defineProperty(ECPair.prototype, 'privateKey', {
         enumerable: false,
@@ -31,20 +30,23 @@ var Ecpair;
             return this.__d;
         }
     });
-    Object.defineProperty(ECPair.prototype, 'publicKey', {
-        get: function () {
-            if (!this.__Q)
-                this.__Q = tiny_secp256k1_1.default.pointFromScalar(this.__d, this.compressed);
-            return this.__Q;
-        }
-    });
+    /*   Object.defineProperty(ECPair.prototype, 'publicKey', {
+      get: function() {
+        if (!this.__Q) this.__Q = ecc.pointFromScalar(this.__d, this.compressed)
+        return this.__Q
+      }
+    }) */
     ECPair.prototype.sign = function (hash) {
         if (!this.__d)
             throw new Error('Missing private key');
-        var signature = tiny_secp256k1_1.default.sign(hash, this.__d);
-        return { sig: this.toCompact(signature), signature: signature };
+        var signature = secp256k1_1.default.sign(hash, this.__d);
+        return {
+            sig: this.toCompact(signature.signature),
+            signature: signature
+        };
     };
     ECPair.prototype.toCompact = function (signature) {
+        // console.log('signature :', signature)
         var rb = canonicalizeInt(signature.slice(0, 32));
         var sb = canonicalizeInt(signature.slice(32));
         var length = 6 + rb.length + sb.length;
@@ -60,14 +62,15 @@ var Ecpair;
         return allBytes;
     };
     ECPair.prototype.verify = function (hash, signature) {
-        return tiny_secp256k1_1.default.verify(hash, this.publicKey, signature);
+        return secp256k1_1.default.verify(hash, this.publicKey, signature);
     };
     Ecpair.getECfromPrivKey = function (privkey, options) {
         // console.log('==> getECfromPrivKey')
         privkey = Buffer.from(privkey, 'hex');
-        if (!tiny_secp256k1_1.default.isPrivate(privkey))
+        // if (!ecc.privateKeyVerify(privkey))
+        if (!secp256k1_1.default.privateKeyVerify(privkey))
             throw new TypeError('Private key not in range [1, n)');
-        return new ECPair(privkey, null, options);
+        return new ECPair(privkey, options);
     };
 })(Ecpair || (Ecpair = {}));
 exports.default = Ecpair;

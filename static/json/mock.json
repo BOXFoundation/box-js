@@ -1,6 +1,6 @@
 {
   "endpoint_test": "http://39.97.169.1:19110",
-  "endpoint_dev": "http://39.97.168.26:19110",
+  "endpoint_dev": "http://39.97.168.26:19180",
   "endpoint_local": "http://127.0.0.1:19110",
   "acc_list": {
     "b1nebwpTAb6GZEqtSZnSciKYMbcs6hyVCst": {
@@ -65,7 +65,7 @@
     10000,
     30000
   ],
-  "fee": "20000",
+  "fee": "1050000",
   "gasPrice": 2,
   "gasLimit": 2000000,
   "blockHeight": 6406299,

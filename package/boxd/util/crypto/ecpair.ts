@@ -1,4 +1,4 @@
-import ecc from 'tiny-secp256k1'
+import ecc from 'secp256k1'
 import Util from '../util'
 
 namespace Ecpair {
@@ -12,14 +12,14 @@ namespace Ecpair {
     return b
   }
 
-  function ECPair(d, Q, options: { compressed? }) {
+  function ECPair(d, options: { compressed? }) {
     options = options || {}
 
     this.compressed =
       options.compressed === undefined ? true : options.compressed
     this.__d = d || null
     this.__Q = null
-    if (Q) this.__Q = ecc.pointCompress(Q, this.compressed)
+    // if (Q) this.__Q = ecc.pointCompress(Q, this.compressed)
   }
 
   Object.defineProperty(ECPair.prototype, 'privateKey', {
@@ -29,20 +29,24 @@ namespace Ecpair {
     }
   })
 
-  Object.defineProperty(ECPair.prototype, 'publicKey', {
+  /*   Object.defineProperty(ECPair.prototype, 'publicKey', {
     get: function() {
       if (!this.__Q) this.__Q = ecc.pointFromScalar(this.__d, this.compressed)
       return this.__Q
     }
-  })
+  }) */
 
   ECPair.prototype.sign = function(hash: Buffer) {
     if (!this.__d) throw new Error('Missing private key')
     const signature = ecc.sign(hash, this.__d)
-    return { sig: this.toCompact(signature), signature }
+    return {
+      sig: this.toCompact(signature.signature),
+      signature
+    }
   }
 
   ECPair.prototype.toCompact = function(signature) {
+    // console.log('signature :', signature)
     const rb = canonicalizeInt(signature.slice(0, 32))
     const sb = canonicalizeInt(signature.slice(32))
 
@@ -69,9 +73,10 @@ namespace Ecpair {
   export const getECfromPrivKey = function(privkey, options?) {
     // console.log('==> getECfromPrivKey')
     privkey = Buffer.from(privkey, 'hex')
-    if (!ecc.isPrivate(privkey))
+    // if (!ecc.privateKeyVerify(privkey))
+    if (!ecc.privateKeyVerify(privkey))
       throw new TypeError('Private key not in range [1, n)')
-    return new ECPair(privkey, null, options)
+    return new ECPair(privkey, options)
   }
 }
 

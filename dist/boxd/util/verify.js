@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var tiny_secp256k1_1 = __importDefault(require("tiny-secp256k1"));
+var secp256k1_1 = __importDefault(require("secp256k1"));
 var bs58_1 = __importDefault(require("bs58"));
 var hash_1 = __importDefault(require("../util/crypto/hash"));
 var _typeof2 = function (obj) {
@@ -45,7 +45,7 @@ var Verify;
      * @returns [boolean]
      */
     Verify.isPrivate = function (privKey) {
-        if (tiny_secp256k1_1.default.isPrivate(Buffer.from(privKey, 'hex'))) {
+        if (secp256k1_1.default.privateKeyVerify(Buffer.from(privKey, 'hex'))) {
             return privKey;
         }
         else {
