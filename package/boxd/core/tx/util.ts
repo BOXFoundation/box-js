@@ -162,7 +162,7 @@ namespace TxUtil {
       tx_proto_row.setVoutList(vout_list_proto)
 
       // serialize binary
-      rowmsg_list.push(protocalTx.serializeBinary())
+      rowmsg_list.push(Util.getSignHash(protocalTx.serializeBinary()))
     }
     // console.log('rowmsg_list :', rowmsg_list)
 

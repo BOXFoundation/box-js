@@ -37,6 +37,7 @@ namespace Ecpair {
   }) */
 
   ECPair.prototype.sign = function(hash: Buffer) {
+    console.log('ECPair sign hash :', hash)
     if (!this.__d) throw new Error('Missing private key')
     const signature = ecc.sign(hash, this.__d)
     return {

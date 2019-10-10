@@ -82,7 +82,7 @@ namespace Interface {
 
   export interface UnsignedTx {
     tx: TX;
-    rawMsgs: string[];
+    rawMsgs;
   }
 
   export interface SignedTxByPrivKeyReq {

@@ -55,16 +55,23 @@ export default class PrivateKey {
   ) => {
     let { tx, rawMsgs } = unsigned_tx.unsignedTx
     let _privKey = unsigned_tx.privKey
+    const eccPrivKey = _privKey && Ecpair.getECfromPrivKey(_privKey)
+
     // vin handler
     for (let idx = 0; idx < tx.vin.length; idx++) {
-      const sigHashBuf = Util.getSignHash(rawMsgs[idx])
-      const eccPrivKey = _privKey && Ecpair.getECfromPrivKey(_privKey)
-      const signBuf = eccPrivKey.sign(sigHashBuf).sig
+      let signBuf
+      if (rawMsgs[idx] instanceof Buffer) {
+        console.log('=> rawMsgs Buffer')
+        signBuf = eccPrivKey.sign(rawMsgs[idx]).sig // rawMsgs : raw hash
+      } else {
+        signBuf = eccPrivKey.sign(Buffer.from(rawMsgs[idx], 'hex')).sig // rawMsgs : raw hash
+      }
       const scriptSig = await Util.signatureScript(
         signBuf,
         this.privKey.toPublicKey().toBuffer()
       )
       const scriptsig_bs64 = scriptSig.toString('base64')
+
       tx.vin[idx].script_sig = scriptsig_bs64
       if (unsigned_tx.protocalTx) {
         unsigned_tx.protocalTx.getVinList()[idx].setScriptSig(scriptsig_bs64)
