@@ -37,6 +37,7 @@ var Ecpair;
       }
     }) */
     ECPair.prototype.sign = function (hash) {
+        console.log('ECPair sign hash :', hash);
         if (!this.__d)
             throw new Error('Missing private key');
         var signature = secp256k1_1.default.sign(hash, this.__d);

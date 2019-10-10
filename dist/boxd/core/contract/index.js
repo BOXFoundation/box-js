@@ -894,7 +894,6 @@ Contract.prototype._executeMethod = /*#__PURE__*/function () {var _executeMethod
               from: args.options.from || this._parent.constructor._from,
               to: args.options.to,
               amount: args.options.value || 0,
-              gasPrice: args.options.gasPrice || 2,
               gasLimit: args.options.gasLimit || 2000000,
               nonce: addrNonce + 1,
               isDeploy: false,

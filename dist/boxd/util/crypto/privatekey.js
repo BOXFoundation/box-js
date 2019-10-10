@@ -72,19 +72,25 @@ var PrivateKey = /** @class */ (function () {
          * @memberof PrivateKey   *
          */
         this.signTxByPrivKey = function (unsigned_tx) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, tx, rawMsgs, _privKey, idx, sigHashBuf, eccPrivKey, signBuf, scriptSig, scriptsig_bs64;
+            var _a, tx, rawMsgs, _privKey, eccPrivKey, idx, signBuf, scriptSig, scriptsig_bs64;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         _a = unsigned_tx.unsignedTx, tx = _a.tx, rawMsgs = _a.rawMsgs;
                         _privKey = unsigned_tx.privKey;
+                        eccPrivKey = _privKey && ecpair_1.default.getECfromPrivKey(_privKey);
                         idx = 0;
                         _b.label = 1;
                     case 1:
                         if (!(idx < tx.vin.length)) return [3 /*break*/, 4];
-                        sigHashBuf = util_1.default.getSignHash(rawMsgs[idx]);
-                        eccPrivKey = _privKey && ecpair_1.default.getECfromPrivKey(_privKey);
-                        signBuf = eccPrivKey.sign(sigHashBuf).sig;
+                        signBuf = void 0;
+                        if (rawMsgs[idx] instanceof Buffer) {
+                            console.log('=> rawMsgs Buffer');
+                            signBuf = eccPrivKey.sign(rawMsgs[idx]).sig; // rawMsgs : raw hash
+                        }
+                        else {
+                            signBuf = eccPrivKey.sign(Buffer.from(rawMsgs[idx], 'hex')).sig; // rawMsgs : raw hash
+                        }
                         return [4 /*yield*/, util_1.default.signatureScript(signBuf, this.privKey.toPublicKey().toBuffer())];
                     case 2:
                         scriptSig = _b.sent();

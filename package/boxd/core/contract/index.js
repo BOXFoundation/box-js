@@ -766,142 +766,141 @@ Contract.prototype._executeMethod = async function _executeMethod() {
   } else {
 
     switch (args.type) {
-    // case 'estimate':
+      // case 'estimate':
 
-    //   var estimateGas = (new Method({
-    //     name: 'estimateGas',
-    //     call: 'eth_estimateGas',
-    //     params: 1,
-    //     inputFormatter: [formatters.inputCallFormatter],
-    //     outputFormatter: utils.hexToNumber,
-    //     requestManager: _this._parent._requestManager,
-    //     accounts: ethAccounts, // is eth.accounts (necessary for wallet signing)
-    //     defaultAccount: _this._parent.defaultAccount,
-    //     defaultBlock: _this._parent.defaultBlock
-    //   })).createFunction()
+      //   var estimateGas = (new Method({
+      //     name: 'estimateGas',
+      //     call: 'eth_estimateGas',
+      //     params: 1,
+      //     inputFormatter: [formatters.inputCallFormatter],
+      //     outputFormatter: utils.hexToNumber,
+      //     requestManager: _this._parent._requestManager,
+      //     accounts: ethAccounts, // is eth.accounts (necessary for wallet signing)
+      //     defaultAccount: _this._parent.defaultAccount,
+      //     defaultBlock: _this._parent.defaultBlock
+      //   })).createFunction()
 
-    //   return estimateGas(args.options, args.callback)
+      //   return estimateGas(args.options, args.callback)
 
-    case 'call':
+      case 'call':
 
-      // TODO check errors: missing "from" should give error on deploy and send, call ?
+        // TODO check errors: missing "from" should give error on deploy and send, call ?
 
-      // var call = (new Method({
-      //   name: 'call',
-      //   call: 'eth_call',
-      //   params: 2,
-      //   inputFormatter: [formatters.inputCallFormatter, formatters.inputDefaultBlockNumberFormatter],
-      //   // add output formatter for decoding
-      //   outputFormatter: function(result) {
-      //     return _this._parent._decodeMethodReturn(_this._method.outputs, result)
-      //   },
-      //   requestManager: _this._parent._requestManager,
-      //   accounts: ethAccounts, // is eth.accounts (necessary for wallet signing)
-      //   defaultAccount: _this._parent.defaultAccount,
-      //   defaultBlock: _this._parent.defaultBlock
-      // })).createFunction()
+        // var call = (new Method({
+        //   name: 'call',
+        //   call: 'eth_call',
+        //   params: 2,
+        //   inputFormatter: [formatters.inputCallFormatter, formatters.inputDefaultBlockNumberFormatter],
+        //   // add output formatter for decoding
+        //   outputFormatter: function(result) {
+        //     return _this._parent._decodeMethodReturn(_this._method.outputs, result)
+        //   },
+        //   requestManager: _this._parent._requestManager,
+        //   accounts: ethAccounts, // is eth.accounts (necessary for wallet signing)
+        //   defaultAccount: _this._parent.defaultAccount,
+        //   defaultBlock: _this._parent.defaultBlock
+        // })).createFunction()
 
-      const ret = await this._parent.constructor.feature.callContract({
-        from: args.options.from || this._parent.constructor._from,
-        to: args.options.to,
-        data: args.options.data.slice(2), // remove '0x' prefix
-        height: 0,
-        timeout: 0
-      })
-      return this._parent._decodeMethodReturn(this._method.outputs, '0x' + ret.result /* add '0x' prefix */ )
-      // return call(args.options, args.defaultBlock, args.callback)
+        const ret = await this._parent.constructor.feature.callContract({
+          from: args.options.from || this._parent.constructor._from,
+          to: args.options.to,
+          data: args.options.data.slice(2), // remove '0x' prefix
+          height: 0,
+          timeout: 0
+        })
+        return this._parent._decodeMethodReturn(this._method.outputs, '0x' + ret.result /* add '0x' prefix */ )
+        // return call(args.options, args.defaultBlock, args.callback)
 
-    case 'send':
+      case 'send':
 
-      // return error, if no "privateKey" is specified
-      if (!(args.options.privateKey || this._parent.constructor._privateKey)) {
-        return utils._fireError(new Error('No privateKey specified in neither the given options, nor the default options.'), defer.eventEmitter, defer.reject, args.callback)
-      }
+        // return error, if no "privateKey" is specified
+        if (!(args.options.privateKey || this._parent.constructor._privateKey)) {
+          return utils._fireError(new Error('No privateKey specified in neither the given options, nor the default options.'), defer.eventEmitter, defer.reject, args.callback)
+        }
 
-      // return error, if no "from" is specified
-      if (!(args.options.from || this._parent.constructor._from)) {
-        return utils._fireError(new Error('No "from" address specified in neither the given options, nor the default options.'), defer.eventEmitter, defer.reject, args.callback)
-      }
+        // return error, if no "from" is specified
+        if (!(args.options.from || this._parent.constructor._from)) {
+          return utils._fireError(new Error('No "from" address specified in neither the given options, nor the default options.'), defer.eventEmitter, defer.reject, args.callback)
+        }
 
-      if (_.isBoolean(this._method.payable) && !this._method.payable && args.options.value && args.options.value > 0) {
-        return utils._fireError(new Error('Can not send value to non-payable contract method or constructor'), defer.eventEmitter, defer.reject, args.callback)
-      }
+        if (_.isBoolean(this._method.payable) && !this._method.payable && args.options.value && args.options.value > 0) {
+          return utils._fireError(new Error('Can not send value to non-payable contract method or constructor'), defer.eventEmitter, defer.reject, args.callback)
+        }
 
 
-      // make sure receipt logs are decoded
-      //   var extraFormatters = {
-      //     receiptFormatter: function(receipt) {
-      //       if (_.isArray(receipt.logs)) {
+        // make sure receipt logs are decoded
+        //   var extraFormatters = {
+        //     receiptFormatter: function(receipt) {
+        //       if (_.isArray(receipt.logs)) {
 
-      //         // decode logs
-      //         var events = _.map(receipt.logs, function(log) {
-      //           return _this._parent._decodeEventABI.call({
-      //             name: 'ALLEVENTS',
-      //             jsonInterface: _this._parent.options.jsonInterface
-      //           }, log)
-      //         })
+        //         // decode logs
+        //         var events = _.map(receipt.logs, function(log) {
+        //           return _this._parent._decodeEventABI.call({
+        //             name: 'ALLEVENTS',
+        //             jsonInterface: _this._parent.options.jsonInterface
+        //           }, log)
+        //         })
 
-      //         // make log names keys
-      //         receipt.events = {}
-      //         var count = 0
-      //         events.forEach(function(ev) {
-      //           if (ev.event) {
-      //             // if > 1 of the same event, don't overwrite any existing events
-      //             if (receipt.events[ev.event]) {
-      //               if (Array.isArray(receipt.events[ev.event])) {
-      //                 receipt.events[ev.event].push(ev)
-      //               } else {
-      //                 receipt.events[ev.event] = [receipt.events[ev.event], ev]
-      //               }
-      //             } else {
-      //               receipt.events[ev.event] = ev
-      //             }
-      //           } else {
-      //             receipt.events[count] = ev
-      //             count++
-      //           }
-      //         })
+        //         // make log names keys
+        //         receipt.events = {}
+        //         var count = 0
+        //         events.forEach(function(ev) {
+        //           if (ev.event) {
+        //             // if > 1 of the same event, don't overwrite any existing events
+        //             if (receipt.events[ev.event]) {
+        //               if (Array.isArray(receipt.events[ev.event])) {
+        //                 receipt.events[ev.event].push(ev)
+        //               } else {
+        //                 receipt.events[ev.event] = [receipt.events[ev.event], ev]
+        //               }
+        //             } else {
+        //               receipt.events[ev.event] = ev
+        //             }
+        //           } else {
+        //             receipt.events[count] = ev
+        //             count++
+        //           }
+        //         })
 
-      //         delete receipt.logs
-      //       }
-      //       return receipt
-      //     },
-      //     contractDeployFormatter: function(receipt) {
-      //       var newContract = _this._parent.clone()
-      //       newContract.options.address = receipt.contractAddress
-      //       return newContract
-      //     }
-      //   }
+        //         delete receipt.logs
+        //       }
+        //       return receipt
+        //     },
+        //     contractDeployFormatter: function(receipt) {
+        //       var newContract = _this._parent.clone()
+        //       newContract.options.address = receipt.contractAddress
+        //       return newContract
+        //     }
+        //   }
 
-      // var sendTransaction = (new Method({
-      //   name: 'sendTransaction',
-      //   call: 'eth_sendTransaction',
-      //   params: 1,
-      //   inputFormatter: [formatters.inputTransactionFormatter],
-      //   requestManager: _this._parent._requestManager,
-      //   accounts: _this.constructor._ethAccounts || _this._ethAccounts, // is eth.accounts (necessary for wallet signing)
-      //   defaultAccount: _this._parent.defaultAccount,
-      //   defaultBlock: _this._parent.defaultBlock,
-      //   extraFormatters: extraFormatters
-      // })).createFunction()
+        // var sendTransaction = (new Method({
+        //   name: 'sendTransaction',
+        //   call: 'eth_sendTransaction',
+        //   params: 1,
+        //   inputFormatter: [formatters.inputTransactionFormatter],
+        //   requestManager: _this._parent._requestManager,
+        //   accounts: _this.constructor._ethAccounts || _this._ethAccounts, // is eth.accounts (necessary for wallet signing)
+        //   defaultAccount: _this._parent.defaultAccount,
+        //   defaultBlock: _this._parent.defaultBlock,
+        //   extraFormatters: extraFormatters
+        // })).createFunction()
 
-      // return sendTransaction(args.options, args.callback)
-      // let addrNonce = +(await this._parent._getNonce.call(this, this._parent._from))
-      let result = await this._parent.constructor.api.getNonce(this._parent.constructor._from)
-      // + is to convert to number
-      let addrNonce = +result.nonce
-      return this._parent.constructor.feature.makeContractTxByPrivKey({
-        from: args.options.from || this._parent.constructor._from,
-        to: args.options.to,
-        amount: args.options.value || 0,
-        gasPrice: args.options.gasPrice || 2,
-        gasLimit: args.options.gasLimit || 2000000,
-        nonce: addrNonce + 1,
-        isDeploy: false,
-        data: args.options.data.slice(2) // remove '0x' prefix
-      },
-      args.options.privateKey || this._parent.constructor._privateKey
-      )
+        // return sendTransaction(args.options, args.callback)
+        // let addrNonce = +(await this._parent._getNonce.call(this, this._parent._from))
+        let result = await this._parent.constructor.api.getNonce(this._parent.constructor._from)
+        // + is to convert to number
+        let addrNonce = +result.nonce
+        return this._parent.constructor.feature.makeContractTxByPrivKey({
+            from: args.options.from || this._parent.constructor._from,
+            to: args.options.to,
+            amount: args.options.value || 0,
+            gasLimit: args.options.gasLimit || 2000000,
+            nonce: addrNonce + 1,
+            isDeploy: false,
+            data: args.options.data.slice(2) // remove '0x' prefix
+          },
+          args.options.privateKey || this._parent.constructor._privateKey
+        )
 
     }
 

@@ -147,7 +147,7 @@ var TxUtil;
             tx_proto_row.setVinList(vin_list_proto_row);
             tx_proto_row.setVoutList(vout_list_proto);
             // serialize binary
-            rowmsg_list.push(protocalTx.serializeBinary());
+            rowmsg_list.push(util_1.default.getSignHash(protocalTx.serializeBinary()));
         };
         for (var vin_i = 0; vin_i < vin_list.length; vin_i++) {
             _loop_1(vin_i);
