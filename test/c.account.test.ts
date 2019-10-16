@@ -43,7 +43,7 @@ test('Dump cryptoJson from privateKey & password (string | Buffer)', async () =>
 
 test('Dump publicKey from privateKey (string | Buffer)', async () => {
   try {
-    expect(await Account.dumpPubKeyFromPrivKey(Mock.acc_privateKey)).toEqual(
+    expect(await Account.dumpPubKeyFromPrivKey('Mock.acc_privateKey')).toEqual(
       Mock.acc_publicKey
     )
     expect(await Account.dumpPubKeyFromPrivKey(acc_buf)).toEqual(

@@ -69,7 +69,7 @@ export default class Feature extends Fetch {
     const { tx, crypto, pwd } = org_tx
     const api = new Api(this._fetch, this.endpoint, this.fetch_type)
     const unsigned_tx = await api.makeUnsignedTx(tx)
-    // console.log('unsigned_tx:', JSON.stringify(unsigned_tx))
+    console.log('unsigned_tx:', JSON.stringify(unsigned_tx))
     const signed_tx_by_crypto = await this.signTxByCrypto({
       unsignedTx: {
         tx: unsigned_tx.tx,
@@ -78,7 +78,7 @@ export default class Feature extends Fetch {
       crypto,
       pwd
     })
-    // console.log('signed_tx_by_crypto :', JSON.stringify(signed_tx_by_crypto))
+    console.log('signed_tx_by_crypto :', JSON.stringify(signed_tx_by_crypto))
     return await api.sendTx(signed_tx_by_crypto)
   }
 

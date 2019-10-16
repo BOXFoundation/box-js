@@ -132,8 +132,8 @@ namespace CommonUtil {
      * @param [?isBuf] boolean
      * @returns [opcode] Buffer
      */
-    public add(and_buf, isBuf?: boolean) {
-      if (!isBuf) {
+    public add(and_buf) {
+      if (!(and_buf instanceof Buffer)) {
         and_buf = Buffer.from(and_buf, 'hex')
       }
       const and_len = and_buf.length
@@ -168,7 +168,7 @@ namespace CommonUtil {
         ])
       }
 
-      // opcode concat the and_buf
+      // concat the and_buf
       this.opcode = Buffer.concat([this.opcode, and_buf])
 
       return this
@@ -206,8 +206,8 @@ namespace CommonUtil {
   ): Buffer => {
     const op = new Opcoder([])
     return op
-      .add(sigBuf, true)
-      .add(pubKeyBuf, true)
+      .add(sigBuf)
+      .add(pubKeyBuf)
       .getCode()
   }
 
