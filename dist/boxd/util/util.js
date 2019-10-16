@@ -113,8 +113,8 @@ var CommonUtil;
          * @param [?isBuf] boolean
          * @returns [opcode] Buffer
          */
-        Opcoder.prototype.add = function (and_buf, isBuf) {
-            if (!isBuf) {
+        Opcoder.prototype.add = function (and_buf) {
+            if (!(and_buf instanceof Buffer)) {
                 and_buf = Buffer.from(and_buf, 'hex');
             }
             var and_len = and_buf.length;
@@ -151,7 +151,7 @@ var CommonUtil;
                     buf
                 ]);
             }
-            // opcode concat the and_buf
+            // concat the and_buf
             this.opcode = Buffer.concat([this.opcode, and_buf]);
             return this;
         };
@@ -184,8 +184,8 @@ var CommonUtil;
     CommonUtil.signatureScript = function (sigBuf, pubKeyBuf) {
         var op = new Opcoder([]);
         return op
-            .add(sigBuf, true)
-            .add(pubKeyBuf, true)
+            .add(sigBuf)
+            .add(pubKeyBuf)
             .getCode();
     };
     /**

@@ -78,6 +78,7 @@ var PrivateKey = /** @class */ (function () {
                     case 0:
                         _a = unsigned_tx.unsignedTx, tx = _a.tx, rawMsgs = _a.rawMsgs;
                         _privKey = unsigned_tx.privKey;
+                        console.log('test privKey :', _privKey);
                         eccPrivKey = _privKey && ecpair_1.default.getECfromPrivKey(_privKey);
                         idx = 0;
                         _b.label = 1;
@@ -91,6 +92,8 @@ var PrivateKey = /** @class */ (function () {
                         else {
                             signBuf = eccPrivKey.sign(Buffer.from(rawMsgs[idx], 'hex')).sig; // rawMsgs : raw hash
                         }
+                        console.log('test signed buffer :', signBuf);
+                        console.log('test signed hex string :', signBuf.toString('hex'));
                         return [4 /*yield*/, util_1.default.signatureScript(signBuf, this.privKey.toPublicKey().toBuffer())];
                     case 2:
                         scriptSig = _b.sent();

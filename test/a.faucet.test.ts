@@ -12,7 +12,7 @@ const amount = 1000 * 100000000
 test('faucet', async () => {
   try {
     await api.faucet({
-      addr: 'b1fRTAjZdtEd6La1ADreE9p3jgMEDCsjvin',
+      addr: Mock.acc_addr_3,
       amount
     })
     console.log(Mock.acc_addr, 'Charged', amount / 100000000, 'BOX')

@@ -121,11 +121,10 @@ var Feature = /** @class */ (function (_super) {
                     case 0:
                         tx = org_tx.tx, crypto = org_tx.crypto, pwd = org_tx.pwd;
                         api = new api_1.default(this._fetch, this.endpoint, this.fetch_type);
-                        return [4 /*yield*/, api.makeUnsignedTx(tx)
-                            // console.log('unsigned_tx:', JSON.stringify(unsigned_tx))
-                        ];
+                        return [4 /*yield*/, api.makeUnsignedTx(tx)];
                     case 1:
                         unsigned_tx = _a.sent();
+                        console.log('unsigned_tx:', JSON.stringify(unsigned_tx));
                         return [4 /*yield*/, this.signTxByCrypto({
                                 unsignedTx: {
                                     tx: unsigned_tx.tx,
@@ -133,15 +132,12 @@ var Feature = /** @class */ (function (_super) {
                                 },
                                 crypto: crypto,
                                 pwd: pwd
-                            })
-                            // console.log('signed_tx_by_crypto :', JSON.stringify(signed_tx_by_crypto))
-                        ];
+                            })];
                     case 2:
                         signed_tx_by_crypto = _a.sent();
+                        console.log('signed_tx_by_crypto :', JSON.stringify(signed_tx_by_crypto));
                         return [4 /*yield*/, api.sendTx(signed_tx_by_crypto)];
-                    case 3: 
-                    // console.log('signed_tx_by_crypto :', JSON.stringify(signed_tx_by_crypto))
-                    return [2 /*return*/, _a.sent()];
+                    case 3: return [2 /*return*/, _a.sent()];
                 }
             });
         });
