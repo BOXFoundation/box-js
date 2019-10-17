@@ -1,16 +1,23 @@
 import 'jest'
-import fetch from 'isomorphic-fetch'
-import Mock from '../static/json/mock.json'
-import Keystore from '../static/json/keystore.json'
+// import fetch from 'isomorphic-fetch'
+// import Mock from '../static/json/mock.json'
+// import Keystore from '../static/json/keystore.json'
 // import Api from '../package/boxd/core/api'
-import Feature from '../package/boxd/core/feature'
+// import Feature from '../package/boxd/core/feature'
+import PrivateKey from '../package/boxd/util/crypto/privatekey'
 
 // const api = new Api(fetch, Mock.endpoint_dev, 'http')
-const feature = new Feature(fetch, Mock.endpoint_dev, 'http')
+// const feature = new Feature(fetch, Mock.endpoint_dev, 'http')
+const priv_key = new PrivateKey(
+  '27119424a9b02b9baeec4f803887d1bb241d70d19031ec6336dc611723708dae'
+)
+const pub_key = '76a91401a3e163dec3f1add664d37cf12f57d3415bd6e588ac'
+const raw_hash =
+  '158223de9bf923168056c11c55d652c1e0089264f8d6ae1c5466e27d46c61708'
 
 jest.setTimeout(15000)
 
-test('Make a BOX transaction (Backend Serialization)', async done => {
+/* test('Make a BOX transaction (Backend Serialization)', async done => {
   try {
     const sent_tx = await feature.makeBoxTxByCryptoUseBoxd({
       tx: {
@@ -33,6 +40,26 @@ test('Make a BOX transaction (Backend Serialization)', async done => {
   setTimeout(function() {
     done()
   }, 10000)
+}) */
+
+test('Sign Test', async () => {
+  try {
+    const signature = await priv_key.privKey.signMsg(
+      Buffer.from(raw_hash, 'hex')
+    )
+    console.log('Signed signature :', signature.toString('hex'))
+
+    const verify_result = await priv_key.privKey.verifyMsg(
+      Buffer.from(raw_hash, 'hex'),
+      signature,
+      pub_key
+    )
+    console.log('Verify result :', verify_result)
+    expect(verify_result)
+  } catch (err) {
+    console.error('Sign Test Error :', err)
+    expect(0).toBe(1)
+  }
 })
 
 // test('Make a BOX transaction (Local Serialization)', async () => {

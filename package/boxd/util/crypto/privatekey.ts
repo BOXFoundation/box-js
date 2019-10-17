@@ -1,5 +1,6 @@
 import bitcore from 'bitcore-lib'
 import bs58 from 'bs58'
+
 import Hash from './hash'
 import Ecpair from './ecpair'
 import Util from '../util'
@@ -27,6 +28,11 @@ export default class PrivateKey {
     this.privKey.signMsg = sigHash => {
       const eccPrivateKey = privkey_str && Ecpair.getECfromPrivKey(privkey_str)
       return eccPrivateKey.sign(sigHash).sig
+    }
+    this.privKey.verifyMsg = (sigHash, signature, publicKey) => {
+      console.log('signature instanceof Buffer :', signature instanceof Buffer)
+      const eccPrivateKey = privkey_str && Ecpair.getECfromPrivKey(privkey_str)
+      return eccPrivateKey.verify(sigHash, signature, publicKey)
     }
     this.privKey.pkh = this.getPubKeyHashByPrivKey()
     this.privKey.toP2PKHAddress = this.getAddrByPrivKey(prefix.P2PKH)

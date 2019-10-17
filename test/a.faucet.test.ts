@@ -7,12 +7,12 @@ const api = new Api(fetch, Mock.endpoint_dev, 'http')
 const sleep = seconds => {
   return new Promise(resolve => setTimeout(resolve, seconds * 1000))
 }
-const amount = 1000 * 100000000
+const amount = 2000000 * 100000000
 
 test('faucet', async () => {
   try {
     await api.faucet({
-      addr: Mock.acc_addr_3,
+      addr: 'b1TxUf6m4M898YySm7sjkzevdbEvMHa6Gmn',
       amount
     })
     console.log(Mock.acc_addr, 'Charged', amount / 100000000, 'BOX')
