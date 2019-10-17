@@ -143,6 +143,11 @@ var PrivateKey = /** @class */ (function () {
             var eccPrivateKey = privkey_str && ecpair_1.default.getECfromPrivKey(privkey_str);
             return eccPrivateKey.sign(sigHash).sig;
         };
+        this.privKey.verifyMsg = function (sigHash, signature, publicKey) {
+            console.log('signature instanceof Buffer :', signature instanceof Buffer);
+            var eccPrivateKey = privkey_str && ecpair_1.default.getECfromPrivKey(privkey_str);
+            return eccPrivateKey.verify(sigHash, signature, publicKey);
+        };
         this.privKey.pkh = this.getPubKeyHashByPrivKey();
         this.privKey.toP2PKHAddress = this.getAddrByPrivKey(prefix.P2PKH);
         this.privKey.toP2SHAddress = this.getAddrByPrivKey(prefix.P2SH);
