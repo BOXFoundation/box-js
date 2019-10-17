@@ -13,7 +13,7 @@ const priv_key = new PrivateKey(
 )
 const pub_key = '76a91401a3e163dec3f1add664d37cf12f57d3415bd6e588ac'
 const raw_hash =
-  '158223de9bf923168056c11c55d652c1e0089264f8d6ae1c5466e27d46c61708'
+  'b4b4ec9857ea9d2269286bef9009741dd654f6b5bdec9564b0912608601f8811'
 
 jest.setTimeout(15000)
 

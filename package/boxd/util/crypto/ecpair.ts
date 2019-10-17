@@ -1,7 +1,7 @@
-import * as ecc from 'secp256k1'
 import Util from '../util'
-const EC = require('elliptic').ec
+import * as ecc from 'secp256k1'
 
+const EC = require('elliptic').ec
 const ec = new EC('secp256k1')
 
 namespace Ecpair {
@@ -80,9 +80,6 @@ namespace Ecpair {
 
     // 校验 signature长度
     const length = 6 + rb.length + sb.length
-    if (length !== 70) {
-      throw new Error('Signature length Error : length')
-    }
 
     const b1 = Buffer.alloc(4)
     b1[0] = 0x30

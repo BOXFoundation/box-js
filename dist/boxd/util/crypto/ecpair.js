@@ -1,4 +1,7 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
@@ -6,12 +9,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var ecc = __importStar(require("secp256k1"));
 var util_1 = __importDefault(require("../util"));
+var ecc = __importStar(require("secp256k1"));
 var EC = require('elliptic').ec;
 var ec = new EC('secp256k1');
 var Ecpair;
@@ -81,9 +81,6 @@ var Ecpair;
         var sb = sneg ? Buffer.concat([Buffer.from([0x00]), s_buf]) : s_buf;
         // 校验 signature长度
         var length = 6 + rb.length + sb.length;
-        if (length !== 70) {
-            throw new Error('Signature length Error : length');
-        }
         var b1 = Buffer.alloc(4);
         b1[0] = 0x30;
         b1[1] = util_1.default.getBufFromNumber(length - 2);
