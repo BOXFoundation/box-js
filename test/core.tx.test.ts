@@ -6,6 +6,7 @@ import 'jest'
 // import Feature from '../package/boxd/core/feature'
 import PrivateKey from '../package/boxd/util/crypto/privatekey'
 // import EP from '../package/boxd/util/crypto/ecpair'
+import BN from 'bn.js'
 
 // const api = new Api(fetch, Mock.endpoint_dev, 'http')
 // const feature = new Feature(fetch, Mock.endpoint_dev, 'http')
@@ -14,7 +15,7 @@ const priv_key = new PrivateKey(
 )
 const pub_key = '76a91401a3e163dec3f1add664d37cf12f57d3415bd6e588ac'
 const raw_hash =
-  'b4b4ec9857ea9d2269286bef9009741dd654f6b5bdec9564b0912608601f8811'
+  '837ea757f653af567cd181e18b2605a3058ddbad94d4444b7bc43ae2f0404505'
 
 jest.setTimeout(15000)
 
@@ -54,6 +55,11 @@ test('Sign Test', async () => {
       'CanonicalizeInted buf :',
       EP.canonicalizeInt(test).toString('hex')
     ) */
+
+    const test = new BN(
+      '51af0edcf37f287d1b706878502832e542a532a051bd1a89ee5523e5b9de2c80'
+    ).toBuffer()
+    console.log('test :', test)
 
     const signature = await priv_key.privKey.signMsg(
       Buffer.from(raw_hash, 'hex')

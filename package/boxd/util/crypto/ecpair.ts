@@ -58,8 +58,8 @@ namespace Ecpair {
 
     return {
       sig: this.toCompact(
-        new BN(ec_res.r).toBuffer(),
-        new BN(ec_res.s).toBuffer()
+        new BN(ec_res.r).toArrayLike(Buffer),
+        new BN(ec_res.s).toArrayLike(Buffer)
       ),
       raw_hash
     }
