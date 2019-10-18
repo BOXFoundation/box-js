@@ -12,6 +12,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __importDefault(require("../util"));
 var ecc = __importStar(require("secp256k1"));
+var bn_js_1 = __importDefault(require("bn.js"));
 var EC = require('elliptic').ec;
 var ec = new EC('secp256k1');
 var Ecpair;
@@ -26,6 +27,7 @@ var Ecpair;
         }
         return b;
     }
+    Ecpair.canonicalizeInt = canonicalizeInt;
     function ECPair(d, options) {
         options = options || {};
         this.compressed =
@@ -56,22 +58,21 @@ var Ecpair;
             pers: null
         });
         console.log('ECPair result :', JSON.stringify(ec_res));
-        console.log('ECPair result.r.length :', ec_res.r.length);
-        console.log('ECPair result.s.length :', ec_res.s.length);
+        // r or s is big number
         /* const signature = ecc.sign(raw_hash, this.__d)
         console.log('ecc signature :', signature.signature)
         console.log('ecc recovery :', signature.recovery) */
         return {
-            sig: this.toCompact(ec_res.r.toString('hex'), ec_res.s.toString('hex')),
+            sig: this.toCompact(new bn_js_1.default(ec_res.r).toBuffer(), new bn_js_1.default(ec_res.s).toBuffer()),
             raw_hash: raw_hash
         };
     };
     ECPair.prototype.toCompact = function (r, s) {
-        console.log('toCompact r :', r);
-        console.log('toCompact s :', s);
+        console.log('toCompact r :', r.toString('hex'));
+        console.log('toCompact s :', s.toString('hex'));
         // 序列化
-        var r_buf = canonicalizeInt(Buffer.from(r, 'hex'));
-        var s_buf = canonicalizeInt(Buffer.from(s, 'hex'));
+        var r_buf = canonicalizeInt(r);
+        var s_buf = canonicalizeInt(s);
         console.log('rb.length :', r_buf.length);
         console.log('sb.length :', s_buf.length);
         // 128 时补零

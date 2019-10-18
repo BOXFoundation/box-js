@@ -1,11 +1,12 @@
 import Util from '../util'
 import * as ecc from 'secp256k1'
+import BN from 'bn.js'
 
 const EC = require('elliptic').ec
 const ec = new EC('secp256k1')
 
 namespace Ecpair {
-  function canonicalizeInt(b: Buffer | Uint8Array) {
+  export function canonicalizeInt(b: Buffer | Uint8Array) {
     if (b.length === 0) {
       b = Buffer.from([0x00])
     }
@@ -49,25 +50,27 @@ namespace Ecpair {
       pers: null
     })
     console.log('ECPair result :', JSON.stringify(ec_res))
-    console.log('ECPair result.r.length :', ec_res.r.length)
-    console.log('ECPair result.s.length :', ec_res.s.length)
+    // r or s is big number
 
     /* const signature = ecc.sign(raw_hash, this.__d)
     console.log('ecc signature :', signature.signature)
     console.log('ecc recovery :', signature.recovery) */
 
     return {
-      sig: this.toCompact(ec_res.r.toString('hex'), ec_res.s.toString('hex')),
+      sig: this.toCompact(
+        new BN(ec_res.r).toBuffer(),
+        new BN(ec_res.s).toBuffer()
+      ),
       raw_hash
     }
   }
 
-  ECPair.prototype.toCompact = function(r, s) {
-    console.log('toCompact r :', r)
-    console.log('toCompact s :', s)
+  ECPair.prototype.toCompact = function(r: Buffer, s: Buffer) {
+    console.log('toCompact r :', r.toString('hex'))
+    console.log('toCompact s :', s.toString('hex'))
     // 序列化
-    const r_buf = canonicalizeInt(Buffer.from(r, 'hex'))
-    const s_buf = canonicalizeInt(Buffer.from(s, 'hex'))
+    const r_buf = canonicalizeInt(r)
+    const s_buf = canonicalizeInt(s)
     console.log('rb.length :', r_buf.length)
     console.log('sb.length :', s_buf.length)
 

@@ -5,6 +5,7 @@ import 'jest'
 // import Api from '../package/boxd/core/api'
 // import Feature from '../package/boxd/core/feature'
 import PrivateKey from '../package/boxd/util/crypto/privatekey'
+// import EP from '../package/boxd/util/crypto/ecpair'
 
 // const api = new Api(fetch, Mock.endpoint_dev, 'http')
 // const feature = new Feature(fetch, Mock.endpoint_dev, 'http')
@@ -44,6 +45,16 @@ jest.setTimeout(15000)
 
 test('Sign Test', async () => {
   try {
+    /*     const test = Buffer.from(
+      'a4cddfc845183ad643b00764f58a930df94f57457a4e318d57b3e0e1c189c4f1',
+      'hex'
+    )
+    console.log('Test buf :', test.toString('hex'))
+    console.log(
+      'CanonicalizeInted buf :',
+      EP.canonicalizeInt(test).toString('hex')
+    ) */
+
     const signature = await priv_key.privKey.signMsg(
       Buffer.from(raw_hash, 'hex')
     )

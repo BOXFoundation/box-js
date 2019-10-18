@@ -30,8 +30,8 @@
   "dependencies": {
     "@grpc/proto-loader": "^0.5.1",
     "base-x": "3.0.2",
-    "bitcore-lib": "^0.16.0",
     "bn.js": "^4.11.5",
+    "bitcore-lib": "^0.16.0",
     "bs58": "^4.0.1",
     "create-hash": "^1.2.0",
     "crypto-js": "^3.1.9-1",
