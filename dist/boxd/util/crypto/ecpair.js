@@ -63,7 +63,7 @@ var Ecpair;
         console.log('ecc signature :', signature.signature)
         console.log('ecc recovery :', signature.recovery) */
         return {
-            sig: this.toCompact(new bn_js_1.default(ec_res.r).toBuffer(), new bn_js_1.default(ec_res.s).toBuffer()),
+            sig: this.toCompact(new bn_js_1.default(ec_res.r).toArrayLike(Buffer), new bn_js_1.default(ec_res.s).toArrayLike(Buffer)),
             raw_hash: raw_hash
         };
     };
