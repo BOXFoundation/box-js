@@ -1,34 +1,33 @@
 import 'jest'
-// import fetch from 'isomorphic-fetch'
-// import Mock from '../static/json/mock.json'
-// import Keystore from '../static/json/keystore.json'
+import fetch from 'isomorphic-fetch'
+import Mock from '../static/json/mock.json'
+import Keystore from '../static/json/keystore.json'
 // import Api from '../package/boxd/core/api'
-// import Feature from '../package/boxd/core/feature'
+import Feature from '../package/boxd/core/feature'
 import PrivateKey from '../package/boxd/util/crypto/privatekey'
-// import EP from '../package/boxd/util/crypto/ecpair'
 import BN from 'bn.js'
 
 // const api = new Api(fetch, Mock.endpoint_dev, 'http')
-// const feature = new Feature(fetch, Mock.endpoint_dev, 'http')
+const feature = new Feature(fetch, Mock.endpoint_dev, 'http')
 const priv_key = new PrivateKey(
   '27119424a9b02b9baeec4f803887d1bb241d70d19031ec6336dc611723708dae'
 )
-const pub_key = '76a91401a3e163dec3f1add664d37cf12f57d3415bd6e588ac'
+// const pub_key = '76a91401a3e163dec3f1add664d37cf12f57d3415bd6e588ac'
 const raw_hash =
   '837ea757f653af567cd181e18b2605a3058ddbad94d4444b7bc43ae2f0404505'
 
 jest.setTimeout(15000)
 
-/* test('Make a BOX transaction (Backend Serialization)', async done => {
+test('Make a BOX transaction (Backend Serialization)', async done => {
   try {
     const sent_tx = await feature.makeBoxTxByCryptoUseBoxd({
       tx: {
-        from: Mock.acc_addr_3,
+        from: 'b1dDahJvyCicMuPwzkpRmhU7gqwyvq95nZZ', // Mock.acc_addr_3
         to: Mock.to_addrs,
         amounts: Mock.amounts,
         fee: Mock.fee
       },
-      crypto: Keystore.keystore_3,
+      crypto: Keystore.keystore_jimmy,
       pwd: Mock.acc_pwd
     })
     console.log('sent_tx :', sent_tx)
@@ -42,20 +41,10 @@ jest.setTimeout(15000)
   setTimeout(function() {
     done()
   }, 10000)
-}) */
+})
 
 test('Sign Test', async () => {
   try {
-    /*     const test = Buffer.from(
-      'a4cddfc845183ad643b00764f58a930df94f57457a4e318d57b3e0e1c189c4f1',
-      'hex'
-    )
-    console.log('Test buf :', test.toString('hex'))
-    console.log(
-      'CanonicalizeInted buf :',
-      EP.canonicalizeInt(test).toString('hex')
-    ) */
-
     const test = new BN(
       '51af0edcf37f287d1b706878502832e542a532a051bd1a89ee5523e5b9de2c80'
     ).toBuffer()
@@ -66,13 +55,13 @@ test('Sign Test', async () => {
     )
     console.log('Signed signature :', signature.toString('hex'))
 
-    const verify_result = await priv_key.privKey.verifyMsg(
-      Buffer.from(raw_hash, 'hex'),
-      signature,
-      pub_key
-    )
-    console.log('Verify result :', verify_result)
-    expect(verify_result)
+    // const verify_result = await priv_key.privKey.verifyMsg(
+    //   Buffer.from(raw_hash, 'hex'),
+    //   signature,
+    //   pub_key
+    // )
+    // console.log('Verify result :', verify_result)
+    // expect(verify_result)
   } catch (err) {
     console.error('Sign Test Error :', err)
     expect(0).toBe(1)

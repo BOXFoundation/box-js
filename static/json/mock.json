@@ -43,12 +43,12 @@
   "acc_publicKey": "025ba62e6e028dd6519a48d1064bae0c371df73afebb70ad90adba52fad2ff0e25",
   "acc_publickey_hash": "3e8821fa1b0f9fef5aaf3e1bb5879bf36772c258",
   "to_addrs": [
-    "b1oLGVzM7znUJid2B6zPWvwbiqmRV8HDcq1",
-    "b1oLGVzM7znUJid2B6zPWvwbiqmRV8HDcq1"
+    "b1qzR8uLQrxoF8dwsiud7pyci7Sbf8WZaxv",
+    "b1iH6rDq4N5KYGyGzkqzA45UXAjfxQux7xE"
   ],
   "to_map": {
-    "b1oLGVzM7znUJid2B6zPWvwbiqmRV8HDcq1": 10001,
-    "b1WpdQ1odtmVEMqTTTmpT5xjbudTJg1jtvX": 50005
+    "b1qzR8uLQrxoF8dwsiud7pyci7Sbf8WZaxv": 10001,
+    "b1iH6rDq4N5KYGyGzkqzA45UXAjfxQux7xE": 50005
   },
   "token_addr": "8b9aLjo62TiDWr3JoszMWYAQH5iEvJFKyNZJQ73ghywJC7ACVHh",
   "token_hash": "3eee007b30b559b57492d24225286899639262c392876ce0c9a777e686aaa98f",
@@ -60,10 +60,10 @@
     600000,
     400000
   ],
-  "amount": 10000,
+  "amount": 100000000,
   "amounts": [
-    10000,
-    30000
+    100000000,
+    300000000
   ],
   "fee": "1050000",
   "gasPrice": 2,
