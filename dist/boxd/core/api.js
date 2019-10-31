@@ -71,10 +71,11 @@ var Api = /** @class */ (function (_super) {
     Api.prototype.getNodeInfo = function () {
         return _super.prototype.fetch.call(this, '/ctl/getnodeinfo');
     };
-    Api.prototype.getBlockHashByHeight = function (blockHeight) {
-        return _super.prototype.fetch.call(this, '/ctl/getblockhash', { blockHeight: blockHeight });
+    Api.prototype.getBlockHashByHeight = function (height) {
+        return _super.prototype.fetch.call(this, '/ctl/getblockhash', { height: height });
     };
     Api.prototype.getBlockByHash = function (blockHash) {
+        // console.log('blockHash :', blockHash)
         return _super.prototype.fetch.call(this, '/ctl/getblock', { blockHash: blockHash });
     };
     Api.prototype.getBlockByHeight = function (block_height) {
@@ -100,9 +101,12 @@ var Api = /** @class */ (function (_super) {
             var block_hash;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getBlockHashByHeight(block_height)];
+                    case 0: return [4 /*yield*/, this.getBlockHashByHeight(block_height)
+                        // console.log('block_hash :', block_hash)
+                    ];
                     case 1:
                         block_hash = _a.sent();
+                        // console.log('block_hash :', block_hash)
                         return [2 /*return*/, _super.prototype.fetch.call(this, '/ctl/getblockheader', {
                                 blockHash: block_hash.hash
                             })];
