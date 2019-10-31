@@ -30,13 +30,14 @@ export default class Api extends Fetch {
     return super.fetch('/ctl/getnodeinfo')
   }
 
-  public getBlockHashByHeight(blockHeight: number): Promise<{ hash: string }> {
-    return super.fetch('/ctl/getblockhash', { blockHeight })
+  public getBlockHashByHeight(height: number): Promise<{ hash: string }> {
+    return super.fetch('/ctl/getblockhash', { height })
   }
 
   public getBlockByHash(
     blockHash: string
   ): Promise<{ block: BlockResponse.Block }> {
+    // console.log('blockHash :', blockHash)
     return super.fetch('/ctl/getblock', { blockHash })
   }
 
@@ -58,7 +59,10 @@ export default class Api extends Fetch {
   public async getBlockHeaderByHeight(
     block_height: number
   ): Promise<{ header: BlockResponse.BlockHeader }> {
+    // console.log('block_height :', block_height)
     const block_hash = await this.getBlockHashByHeight(block_height)
+    // console.log('block_hash :', block_hash)
+
     return super.fetch('/ctl/getblockheader', {
       blockHash: block_hash.hash
     })
