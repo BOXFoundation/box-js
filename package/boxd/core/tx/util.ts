@@ -1,8 +1,8 @@
-import BN from 'bn.js'
-import block_pb from '../../util/protobuf-js/block_pb.js'
-import Account from '../../account/account'
-import Util from '../../util/util'
-import TxRequest from './request'
+import BN from "bn.js"
+import block_pb from "../../util/protobuf-js/block_pb.js"
+import Account from "../../account/account"
+import Util from "../../util/util"
+import TxRequest from "./request"
 
 namespace TxUtil {
   /**
@@ -27,7 +27,7 @@ namespace TxUtil {
 
     /* check utxo */
     if (utxo_list.length < 1) {
-      throw new Error('Utxo error')
+      throw new Error("Utxo error")
     }
 
     /* utxo sum */
@@ -51,14 +51,14 @@ namespace TxUtil {
     /* ======================== */
 
     /* vout */
-    const op = new Util.Opcoder('')
+    const op = new Util.Opcoder("")
     Object.keys(to_map).forEach(to_addr => {
       const pub_hash = Account.dumpPubKeyHashFromAddr(to_addr)
       // console.log('pub_hash_1 :', pub_hash)
 
       // + script_pub_key
       const script = op
-        .reset('')
+        .reset("")
         .add(Util.to16StrFromNumber(op.OP_DUP))
         .add(Util.to16StrFromNumber(op.OP_HASH_160))
         .add(pub_hash)
@@ -69,14 +69,14 @@ namespace TxUtil {
 
       // + value
       const vout = new block_pb.TxOut()
-      vout.setScriptPubKey(script.toString('base64'))
+      vout.setScriptPubKey(script.toString("base64"))
       vout.setValue(to_map[to_addr])
       vout_list_proto.push(vout)
 
       // make tx vout (json)
       vout_list.push({
         value: to_map[to_addr],
-        script_pub_key: script.toString('base64')
+        script_pub_key: script.toString("base64")
       })
     })
 
@@ -91,7 +91,7 @@ namespace TxUtil {
 
       // + script_pub_key
       const script = op
-        .reset('')
+        .reset("")
         .add(Util.to16StrFromNumber(op.OP_DUP))
         .add(Util.to16StrFromNumber(op.OP_HASH_160))
         .add(pub_hash)
@@ -102,14 +102,14 @@ namespace TxUtil {
 
       // + value
       const vout = new block_pb.TxOut()
-      vout.setScriptPubKey(script.toString('base64'))
+      vout.setScriptPubKey(script.toString("base64"))
       vout.setValue(charge)
       vout_list_proto.push(vout)
 
       // make tx vout (json)
       vout_list.push({
         value: charge,
-        script_pub_key: script.toString('base64')
+        script_pub_key: script.toString("base64")
       })
     }
     // console.log('vout_list :', vout_list)
@@ -176,7 +176,7 @@ namespace TxUtil {
             vout: vout_list,
             data: null,
             magic: 0,
-            lock_time: '0'
+            lock_time: "0"
           },
           rawMsgs: rowmsg_list
         },
@@ -191,7 +191,7 @@ namespace TxUtil {
             vout: vout_list,
             data: null,
             magic: 0,
-            lock_time: '0'
+            lock_time: "0"
           },
           rawMsgs: rowmsg_list
         },

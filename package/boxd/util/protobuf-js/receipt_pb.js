@@ -107,7 +107,7 @@ if (goog.DEBUG && !COMPILED) {
  * @private {!Array<number>}
  * @const
  */
-proto.corepb.Receipt.repeatedFields_ = [5];
+proto.corepb.Receipt.repeatedFields_ = [6,7];
 
 
 
@@ -140,11 +140,14 @@ proto.corepb.Receipt.toObject = function(includeInstance, msg) {
   var f, obj = {
     txHash: msg.getTxHash_asB64(),
     txIndex: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    failed: jspb.Message.getFieldWithDefault(msg, 3, false),
-    gasUsed: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    deployed: jspb.Message.getFieldWithDefault(msg, 3, false),
+    failed: jspb.Message.getFieldWithDefault(msg, 4, false),
+    gasUsed: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    internalTxsList: msg.getInternalTxsList_asB64(),
     logsList: jspb.Message.toObjectList(msg.getLogsList(),
     log_pb.Log.toObject, includeInstance),
-    bloom: msg.getBloom_asB64()
+    bloom: msg.getBloom_asB64(),
+    errMsg: jspb.Message.getFieldWithDefault(msg, 9, "")
   };
 
   if (includeInstance) {
@@ -191,20 +194,32 @@ proto.corepb.Receipt.deserializeBinaryFromReader = function(msg, reader) {
       break;
     case 3:
       var value = /** @type {boolean} */ (reader.readBool());
-      msg.setFailed(value);
+      msg.setDeployed(value);
       break;
     case 4:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setFailed(value);
+      break;
+    case 5:
       var value = /** @type {number} */ (reader.readUint64());
       msg.setGasUsed(value);
       break;
-    case 5:
+    case 6:
+      var value = /** @type {!Uint8Array} */ (reader.readBytes());
+      msg.addInternalTxs(value);
+      break;
+    case 7:
       var value = new log_pb.Log;
       reader.readMessage(value,log_pb.Log.deserializeBinaryFromReader);
       msg.addLogs(value);
       break;
-    case 6:
+    case 8:
       var value = /** @type {!Uint8Array} */ (reader.readBytes());
       msg.setBloom(value);
+      break;
+    case 9:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setErrMsg(value);
       break;
     default:
       reader.skipField();
@@ -249,24 +264,38 @@ proto.corepb.Receipt.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getFailed();
+  f = message.getDeployed();
   if (f) {
     writer.writeBool(
       3,
       f
     );
   }
+  f = message.getFailed();
+  if (f) {
+    writer.writeBool(
+      4,
+      f
+    );
+  }
   f = message.getGasUsed();
   if (f !== 0) {
     writer.writeUint64(
-      4,
+      5,
+      f
+    );
+  }
+  f = message.getInternalTxsList_asU8();
+  if (f.length > 0) {
+    writer.writeRepeatedBytes(
+      6,
       f
     );
   }
   f = message.getLogsList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
-      5,
+      7,
       f,
       log_pb.Log.serializeBinaryToWriter
     );
@@ -274,7 +303,14 @@ proto.corepb.Receipt.serializeBinaryToWriter = function(message, writer) {
   f = message.getBloom_asU8();
   if (f.length > 0) {
     writer.writeBytes(
-      6,
+      8,
+      f
+    );
+  }
+  f = message.getErrMsg();
+  if (f.length > 0) {
+    writer.writeString(
+      9,
       f
     );
   }
@@ -336,50 +372,123 @@ proto.corepb.Receipt.prototype.setTxIndex = function(value) {
 
 
 /**
- * optional bool failed = 3;
+ * optional bool deployed = 3;
  * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
  * You should avoid comparisons like {@code val === true/false} in those cases.
  * @return {boolean}
  */
-proto.corepb.Receipt.prototype.getFailed = function() {
+proto.corepb.Receipt.prototype.getDeployed = function() {
   return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 3, false));
 };
 
 
 /** @param {boolean} value */
-proto.corepb.Receipt.prototype.setFailed = function(value) {
+proto.corepb.Receipt.prototype.setDeployed = function(value) {
   jspb.Message.setProto3BooleanField(this, 3, value);
 };
 
 
 /**
- * optional uint64 gas_used = 4;
+ * optional bool failed = 4;
+ * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
+ * You should avoid comparisons like {@code val === true/false} in those cases.
+ * @return {boolean}
+ */
+proto.corepb.Receipt.prototype.getFailed = function() {
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 4, false));
+};
+
+
+/** @param {boolean} value */
+proto.corepb.Receipt.prototype.setFailed = function(value) {
+  jspb.Message.setProto3BooleanField(this, 4, value);
+};
+
+
+/**
+ * optional uint64 gas_used = 5;
  * @return {number}
  */
 proto.corepb.Receipt.prototype.getGasUsed = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
 };
 
 
 /** @param {number} value */
 proto.corepb.Receipt.prototype.setGasUsed = function(value) {
-  jspb.Message.setProto3IntField(this, 4, value);
+  jspb.Message.setProto3IntField(this, 5, value);
 };
 
 
 /**
- * repeated Log logs = 5;
+ * repeated bytes internal_txs = 6;
+ * @return {!(Array<!Uint8Array>|Array<string>)}
+ */
+proto.corepb.Receipt.prototype.getInternalTxsList = function() {
+  return /** @type {!(Array<!Uint8Array>|Array<string>)} */ (jspb.Message.getRepeatedField(this, 6));
+};
+
+
+/**
+ * repeated bytes internal_txs = 6;
+ * This is a type-conversion wrapper around `getInternalTxsList()`
+ * @return {!Array<string>}
+ */
+proto.corepb.Receipt.prototype.getInternalTxsList_asB64 = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.bytesListAsB64(
+      this.getInternalTxsList()));
+};
+
+
+/**
+ * repeated bytes internal_txs = 6;
+ * Note that Uint8Array is not supported on all browsers.
+ * @see http://caniuse.com/Uint8Array
+ * This is a type-conversion wrapper around `getInternalTxsList()`
+ * @return {!Array<!Uint8Array>}
+ */
+proto.corepb.Receipt.prototype.getInternalTxsList_asU8 = function() {
+  return /** @type {!Array<!Uint8Array>} */ (jspb.Message.bytesListAsU8(
+      this.getInternalTxsList()));
+};
+
+
+/** @param {!(Array<!Uint8Array>|Array<string>)} value */
+proto.corepb.Receipt.prototype.setInternalTxsList = function(value) {
+  jspb.Message.setField(this, 6, value || []);
+};
+
+
+/**
+ * @param {!(string|Uint8Array)} value
+ * @param {number=} opt_index
+ */
+proto.corepb.Receipt.prototype.addInternalTxs = function(value, opt_index) {
+  jspb.Message.addToRepeatedField(this, 6, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ */
+proto.corepb.Receipt.prototype.clearInternalTxsList = function() {
+  this.setInternalTxsList([]);
+};
+
+
+/**
+ * repeated Log logs = 7;
  * @return {!Array<!proto.corepb.Log>}
  */
 proto.corepb.Receipt.prototype.getLogsList = function() {
   return /** @type{!Array<!proto.corepb.Log>} */ (
-    jspb.Message.getRepeatedWrapperField(this, log_pb.Log, 5));
+    jspb.Message.getRepeatedWrapperField(this, log_pb.Log, 7));
 };
 
 
 /** @param {!Array<!proto.corepb.Log>} value */
 proto.corepb.Receipt.prototype.setLogsList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 5, value);
+  jspb.Message.setRepeatedWrapperField(this, 7, value);
 };
 
 
@@ -389,7 +498,7 @@ proto.corepb.Receipt.prototype.setLogsList = function(value) {
  * @return {!proto.corepb.Log}
  */
 proto.corepb.Receipt.prototype.addLogs = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 5, opt_value, proto.corepb.Log, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 7, opt_value, proto.corepb.Log, opt_index);
 };
 
 
@@ -402,16 +511,16 @@ proto.corepb.Receipt.prototype.clearLogsList = function() {
 
 
 /**
- * optional bytes bloom = 6;
+ * optional bytes bloom = 8;
  * @return {!(string|Uint8Array)}
  */
 proto.corepb.Receipt.prototype.getBloom = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
 };
 
 
 /**
- * optional bytes bloom = 6;
+ * optional bytes bloom = 8;
  * This is a type-conversion wrapper around `getBloom()`
  * @return {string}
  */
@@ -422,7 +531,7 @@ proto.corepb.Receipt.prototype.getBloom_asB64 = function() {
 
 
 /**
- * optional bytes bloom = 6;
+ * optional bytes bloom = 8;
  * Note that Uint8Array is not supported on all browsers.
  * @see http://caniuse.com/Uint8Array
  * This is a type-conversion wrapper around `getBloom()`
@@ -436,7 +545,22 @@ proto.corepb.Receipt.prototype.getBloom_asU8 = function() {
 
 /** @param {!(string|Uint8Array)} value */
 proto.corepb.Receipt.prototype.setBloom = function(value) {
-  jspb.Message.setProto3BytesField(this, 6, value);
+  jspb.Message.setProto3BytesField(this, 8, value);
+};
+
+
+/**
+ * optional string err_msg = 9;
+ * @return {string}
+ */
+proto.corepb.Receipt.prototype.getErrMsg = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 9, ""));
+};
+
+
+/** @param {string} value */
+proto.corepb.Receipt.prototype.setErrMsg = function(value) {
+  jspb.Message.setProto3StringField(this, 9, value);
 };
 
 
@@ -600,7 +724,7 @@ proto.corepb.Receipts.prototype.clearReceiptsList = function() {
  * @private {!Array<number>}
  * @const
  */
-proto.corepb.HashReceipt.repeatedFields_ = [5];
+proto.corepb.HashReceipt.repeatedFields_ = [6,7];
 
 
 
@@ -633,11 +757,14 @@ proto.corepb.HashReceipt.toObject = function(includeInstance, msg) {
   var f, obj = {
     txHash: msg.getTxHash_asB64(),
     txIndex: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    failed: jspb.Message.getFieldWithDefault(msg, 3, false),
-    gasUsed: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    deployed: jspb.Message.getFieldWithDefault(msg, 3, false),
+    failed: jspb.Message.getFieldWithDefault(msg, 4, false),
+    gasUsed: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    internalTxsList: msg.getInternalTxsList_asB64(),
     logsList: jspb.Message.toObjectList(msg.getLogsList(),
     log_pb.HashLog.toObject, includeInstance),
-    bloom: msg.getBloom_asB64()
+    bloom: msg.getBloom_asB64(),
+    errMsg: jspb.Message.getFieldWithDefault(msg, 9, "")
   };
 
   if (includeInstance) {
@@ -684,20 +811,32 @@ proto.corepb.HashReceipt.deserializeBinaryFromReader = function(msg, reader) {
       break;
     case 3:
       var value = /** @type {boolean} */ (reader.readBool());
-      msg.setFailed(value);
+      msg.setDeployed(value);
       break;
     case 4:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setFailed(value);
+      break;
+    case 5:
       var value = /** @type {number} */ (reader.readUint64());
       msg.setGasUsed(value);
       break;
-    case 5:
+    case 6:
+      var value = /** @type {!Uint8Array} */ (reader.readBytes());
+      msg.addInternalTxs(value);
+      break;
+    case 7:
       var value = new log_pb.HashLog;
       reader.readMessage(value,log_pb.HashLog.deserializeBinaryFromReader);
       msg.addLogs(value);
       break;
-    case 6:
+    case 8:
       var value = /** @type {!Uint8Array} */ (reader.readBytes());
       msg.setBloom(value);
+      break;
+    case 9:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setErrMsg(value);
       break;
     default:
       reader.skipField();
@@ -742,24 +881,38 @@ proto.corepb.HashReceipt.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getFailed();
+  f = message.getDeployed();
   if (f) {
     writer.writeBool(
       3,
       f
     );
   }
+  f = message.getFailed();
+  if (f) {
+    writer.writeBool(
+      4,
+      f
+    );
+  }
   f = message.getGasUsed();
   if (f !== 0) {
     writer.writeUint64(
-      4,
+      5,
+      f
+    );
+  }
+  f = message.getInternalTxsList_asU8();
+  if (f.length > 0) {
+    writer.writeRepeatedBytes(
+      6,
       f
     );
   }
   f = message.getLogsList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
-      5,
+      7,
       f,
       log_pb.HashLog.serializeBinaryToWriter
     );
@@ -767,7 +920,14 @@ proto.corepb.HashReceipt.serializeBinaryToWriter = function(message, writer) {
   f = message.getBloom_asU8();
   if (f.length > 0) {
     writer.writeBytes(
-      6,
+      8,
+      f
+    );
+  }
+  f = message.getErrMsg();
+  if (f.length > 0) {
+    writer.writeString(
+      9,
       f
     );
   }
@@ -829,50 +989,123 @@ proto.corepb.HashReceipt.prototype.setTxIndex = function(value) {
 
 
 /**
- * optional bool failed = 3;
+ * optional bool deployed = 3;
  * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
  * You should avoid comparisons like {@code val === true/false} in those cases.
  * @return {boolean}
  */
-proto.corepb.HashReceipt.prototype.getFailed = function() {
+proto.corepb.HashReceipt.prototype.getDeployed = function() {
   return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 3, false));
 };
 
 
 /** @param {boolean} value */
-proto.corepb.HashReceipt.prototype.setFailed = function(value) {
+proto.corepb.HashReceipt.prototype.setDeployed = function(value) {
   jspb.Message.setProto3BooleanField(this, 3, value);
 };
 
 
 /**
- * optional uint64 gas_used = 4;
+ * optional bool failed = 4;
+ * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
+ * You should avoid comparisons like {@code val === true/false} in those cases.
+ * @return {boolean}
+ */
+proto.corepb.HashReceipt.prototype.getFailed = function() {
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 4, false));
+};
+
+
+/** @param {boolean} value */
+proto.corepb.HashReceipt.prototype.setFailed = function(value) {
+  jspb.Message.setProto3BooleanField(this, 4, value);
+};
+
+
+/**
+ * optional uint64 gas_used = 5;
  * @return {number}
  */
 proto.corepb.HashReceipt.prototype.getGasUsed = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
 };
 
 
 /** @param {number} value */
 proto.corepb.HashReceipt.prototype.setGasUsed = function(value) {
-  jspb.Message.setProto3IntField(this, 4, value);
+  jspb.Message.setProto3IntField(this, 5, value);
 };
 
 
 /**
- * repeated HashLog logs = 5;
+ * repeated bytes internal_txs = 6;
+ * @return {!(Array<!Uint8Array>|Array<string>)}
+ */
+proto.corepb.HashReceipt.prototype.getInternalTxsList = function() {
+  return /** @type {!(Array<!Uint8Array>|Array<string>)} */ (jspb.Message.getRepeatedField(this, 6));
+};
+
+
+/**
+ * repeated bytes internal_txs = 6;
+ * This is a type-conversion wrapper around `getInternalTxsList()`
+ * @return {!Array<string>}
+ */
+proto.corepb.HashReceipt.prototype.getInternalTxsList_asB64 = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.bytesListAsB64(
+      this.getInternalTxsList()));
+};
+
+
+/**
+ * repeated bytes internal_txs = 6;
+ * Note that Uint8Array is not supported on all browsers.
+ * @see http://caniuse.com/Uint8Array
+ * This is a type-conversion wrapper around `getInternalTxsList()`
+ * @return {!Array<!Uint8Array>}
+ */
+proto.corepb.HashReceipt.prototype.getInternalTxsList_asU8 = function() {
+  return /** @type {!Array<!Uint8Array>} */ (jspb.Message.bytesListAsU8(
+      this.getInternalTxsList()));
+};
+
+
+/** @param {!(Array<!Uint8Array>|Array<string>)} value */
+proto.corepb.HashReceipt.prototype.setInternalTxsList = function(value) {
+  jspb.Message.setField(this, 6, value || []);
+};
+
+
+/**
+ * @param {!(string|Uint8Array)} value
+ * @param {number=} opt_index
+ */
+proto.corepb.HashReceipt.prototype.addInternalTxs = function(value, opt_index) {
+  jspb.Message.addToRepeatedField(this, 6, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ */
+proto.corepb.HashReceipt.prototype.clearInternalTxsList = function() {
+  this.setInternalTxsList([]);
+};
+
+
+/**
+ * repeated HashLog logs = 7;
  * @return {!Array<!proto.corepb.HashLog>}
  */
 proto.corepb.HashReceipt.prototype.getLogsList = function() {
   return /** @type{!Array<!proto.corepb.HashLog>} */ (
-    jspb.Message.getRepeatedWrapperField(this, log_pb.HashLog, 5));
+    jspb.Message.getRepeatedWrapperField(this, log_pb.HashLog, 7));
 };
 
 
 /** @param {!Array<!proto.corepb.HashLog>} value */
 proto.corepb.HashReceipt.prototype.setLogsList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 5, value);
+  jspb.Message.setRepeatedWrapperField(this, 7, value);
 };
 
 
@@ -882,7 +1115,7 @@ proto.corepb.HashReceipt.prototype.setLogsList = function(value) {
  * @return {!proto.corepb.HashLog}
  */
 proto.corepb.HashReceipt.prototype.addLogs = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 5, opt_value, proto.corepb.HashLog, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 7, opt_value, proto.corepb.HashLog, opt_index);
 };
 
 
@@ -895,16 +1128,16 @@ proto.corepb.HashReceipt.prototype.clearLogsList = function() {
 
 
 /**
- * optional bytes bloom = 6;
+ * optional bytes bloom = 8;
  * @return {!(string|Uint8Array)}
  */
 proto.corepb.HashReceipt.prototype.getBloom = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
 };
 
 
 /**
- * optional bytes bloom = 6;
+ * optional bytes bloom = 8;
  * This is a type-conversion wrapper around `getBloom()`
  * @return {string}
  */
@@ -915,7 +1148,7 @@ proto.corepb.HashReceipt.prototype.getBloom_asB64 = function() {
 
 
 /**
- * optional bytes bloom = 6;
+ * optional bytes bloom = 8;
  * Note that Uint8Array is not supported on all browsers.
  * @see http://caniuse.com/Uint8Array
  * This is a type-conversion wrapper around `getBloom()`
@@ -929,7 +1162,22 @@ proto.corepb.HashReceipt.prototype.getBloom_asU8 = function() {
 
 /** @param {!(string|Uint8Array)} value */
 proto.corepb.HashReceipt.prototype.setBloom = function(value) {
-  jspb.Message.setProto3BytesField(this, 6, value);
+  jspb.Message.setProto3BytesField(this, 8, value);
+};
+
+
+/**
+ * optional string err_msg = 9;
+ * @return {string}
+ */
+proto.corepb.HashReceipt.prototype.getErrMsg = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 9, ""));
+};
+
+
+/** @param {string} value */
+proto.corepb.HashReceipt.prototype.setErrMsg = function(value) {
+  jspb.Message.setProto3StringField(this, 9, value);
 };
 
 
