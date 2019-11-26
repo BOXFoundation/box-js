@@ -1,4 +1,4 @@
-import UtilInterface from '../../util/interface'
+import UtilInterface from "../../util/interface"
 
 namespace Request {
   // interface Topiclist {}
@@ -7,7 +7,6 @@ namespace Request {
     from: string;
     to: string;
     amount: number;
-    gasPrice: number;
     gasLimit: number;
     nonce: number;
     isDeploy: boolean;

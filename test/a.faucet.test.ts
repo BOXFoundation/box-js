@@ -1,25 +1,25 @@
-import 'jest'
-import fetch from 'isomorphic-fetch'
-import Mock from '../static/json/mock.json'
-import Api from '../package/boxd/core/api'
+import "jest"
+import fetch from "isomorphic-fetch"
+import Mock from "../static/json/mock.json"
+import Api from "../package/boxd/core/api"
 
-const api = new Api(fetch, Mock.endpoint_dev, 'http')
+const api = new Api(fetch, Mock.endpoint_dev, "http")
 const amount = 2000000 * 100000000
 const sleep = seconds => {
   return new Promise(resolve => setTimeout(resolve, seconds * 1000))
 }
 
-test('faucet: common', async () => {
-  const addr = 'b1dDahJvyCicMuPwzkpRmhU7gqwyvq95nZZ'
+test("faucet: common", async () => {
+  const addr = "b1dDahJvyCicMuPwzkpRmhU7gqwyvq95nZZ"
   try {
     await api.faucet({
       addr,
       amount
     })
-    console.log(addr, 'Charged', amount / 100000000, 'BOX')
+    console.log(addr, "Charged", amount / 100000000, "BOX")
   } catch (err) {
     expect(0).toBe(1)
-    console.log('[Faucet] Error :', err)
+    console.log("[Faucet] Error :", err)
   }
   await sleep(1)
 })

@@ -254,9 +254,9 @@ var CommonUtil;
      * @throws when prefix is not expected
      */
     CommonUtil.hex2BoxAddr = function (prefix, hexAddr) {
-        if (!['b1', 'b2', 'b3', 'b5'].includes(prefix)) {
-            throw new Error('Incorrect address prefix !');
-        }
+        // if (!['b1', 'b2', 'b3', 'b5'].includes(prefix)) {
+        //   throw new Error('Incorrect address prefix !')
+        // }
         var prefixBuf = PREFIXSTR2BYTES[prefix];
         var prefixPKH = Buffer.concat([prefixBuf, Buffer.from(hexAddr, 'hex')]);
         return bs58_1.default.encode(Buffer.concat([prefixPKH, verify_1.default.getCheckSum(prefixPKH)]));

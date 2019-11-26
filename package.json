@@ -10,8 +10,7 @@
     "watch:script": "gulp watch:script",
     "build": "gulp",
     "build:node": "gulp build:node",
-    "build:script": "gulp build:script",
-    "lock": "npm shrinkwrap--dev"
+    "build:script": "gulp build:script"
   },
   "browser": {
     "./dist/index.js": "./dist/browser.js"

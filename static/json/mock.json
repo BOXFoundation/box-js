@@ -66,10 +66,9 @@
     300000000
   ],
   "fee": "1050000",
-  "gasPrice": 2,
-  "gasLimit": 2000000,
-  "blockHeight": 6406299,
-  "blockHash": "c7dd63f7bc0ebbfdb085d368ec0efc22fce7946f00c6e91d4b2599d46be6de38",
+  "gasLimit": 1000000,
+  "block_height": 6406299,
+  "block_hash": "c7dd63f7bc0ebbfdb085d368ec0efc22fce7946f00c6e91d4b2599d46be6de38",
   "constract_logs_req": {
     "from": 1,
     "to": 10000,

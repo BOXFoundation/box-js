@@ -289,6 +289,7 @@ namespace CommonUtil {
     }
     const prefixBuf = PREFIXSTR2BYTES[prefix]
     const prefixPKH = Buffer.concat([prefixBuf, Buffer.from(hexAddr, 'hex')])
+
     return bs58.encode(
       Buffer.concat([prefixPKH, Verify.getCheckSum(prefixPKH)])
     )
