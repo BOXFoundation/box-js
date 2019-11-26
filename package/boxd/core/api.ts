@@ -25,7 +25,12 @@ export default class Api extends Fetch {
     super(_fetch, endpoint, fetch_type)
   }
 
-  /* Block */
+  /* == Node & Block == */
+
+  /**
+   * @func [Get_node_info]
+   * @Permission Admin
+   */
   public getNodeInfo(): Promise<BlockResponse.NodeInfo> {
     return super.fetch("/ctl/getnodeinfo")
   }
@@ -34,120 +39,57 @@ export default class Api extends Fetch {
     return super.fetch("/ctl/getblockhash", { height })
   }
 
-  public getBlockByHash(
-    blockHash: string
-  ): Promise<{ block: BlockResponse.Block }> {
-    return super.fetch("/ctl/getblock", { blockHash })
-  }
-
-  public async getBlockByHeight(
-    block_height: number
-  ): Promise<{ block: BlockResponse.Block }> {
-    const block_hash = await this.getBlockHashByHeight(block_height)
-    return super.fetch("/ctl/getblock", {
-      blockHash: block_hash.hash
-    })
-  }
-
-  public getBlockHeaderByHash(
-    blockHash: string
-  ): Promise<{ header: BlockResponse.BlockHeader }> {
-    return super.fetch("/ctl/getblockheader", { blockHash })
-  }
-
-  public async getBlockHeaderByHeight(
-    block_height: number
-  ): Promise<{ header: BlockResponse.BlockHeader }> {
-    // console.log('block_height :', block_height)
-    const block_hash = await this.getBlockHashByHeight(block_height)
-    // console.log('block_hash :', block_hash)
-
-    return super.fetch("/ctl/getblockheader", {
-      blockHash: block_hash.hash
-    })
-  }
-
-  public getBlockHeight(): Promise<{
+  public getCurrentBlockHeight(): Promise<{
     height: number;
   }> {
     return super.fetch("/ctl/getcurrentblockheight")
   }
 
   /**
-   * @func 查看区块详情
-   * @param param hash | height
+   * @func [View_block_detail]
+   * @by 'block_hash' | 'block_height'
    */
   public viewBlockDetail(
+    type: string,
     param: string | number
   ): Promise<BlockResponse.BlcokDetail> {
-    return super.fetch("/block/detail", { param })
+    if (type === "block_hash") {
+      return super.fetch("/block/detail", { hash: param })
+    } else {
+      return super.fetch("/block/detail", { height: param })
+    }
+  }
+
+  /**
+   * @func [Get_block_header]
+   * @by 'block_hash' | 'block_height'
+   */
+  public async getBlockHeader(
+    type: string,
+    param: string | number
+  ): Promise<{ header: BlockResponse.BlockHeader }> {
+    if (type === "block_hash") {
+      return super.fetch("/ctl/getblockheader", { block_hash: param })
+    } else {
+      const block_hash = await this.getBlockHashByHeight(Number(param))
+
+      return super.fetch("/ctl/getblockheader", {
+        block_hash: block_hash.hash
+      })
+    }
   }
 
   public getNonce(addr: string): Promise<{ nonce: number }> {
     return super.fetch("/account/nonce", { addr })
   }
 
-  /* Split */
-  public makeUnsignedSplitAddrTx(
-    split_addr_tx: SplitRequest.SplitAddrTxReq
-  ): Promise<SplitResponse.UnsignedSplitAddrTx> {
-    return super.fetch("/tx/makeunsignedtx/splitaddr", split_addr_tx)
-  }
-
-  /* Token */
-  public makeUnsignedTokenIssueTx(
-    token_issue_tx: TokenRequest.IssueTokenReq
-  ): Promise<TokenResponse.UnsignedTokenIssueTx> {
-    return super.fetch("/tx/makeunsignedtx/token/issue", token_issue_tx)
-  }
-
-  public async getTokenbalance(
-    token: TokenRequest.TokenBalanceReq
-  ): Promise<{ balance: number }> {
-    token["addrs"] = [token.addr]
-    const balances = await super.fetch("/tx/gettokenbalance", token)
-    const arr_balances = await balances.balances.map(balance => {
-      return new BN(balance, 10).toString()
-    })
-    return { balance: arr_balances[0] }
-  }
-
-  public async getTokenbalances(
-    tokens: TokenRequest.TokenBalancesReq
-  ): Promise<{ balances: number[] }> {
-    const balances = await super.fetch("/tx/gettokenbalance", tokens)
-    const arr_balances = await balances.balances.map(balance => {
-      return new BN(balance, 10).toString()
-    })
-    return { balances: arr_balances }
-  }
-
-  public makeUnsignedTokenTx(
-    token_transfer_tx: TokenRequest.OriginalTokenTxReq
-  ): Promise<UtilInterface.UnsignedTx> {
-    return super.fetch("/tx/makeunsignedtx/token/transfer", token_transfer_tx)
-  }
-
-  /*   public fetchTokenUtxos(fetch_utxos_req: TxRequest.FetchUtxosReq) {
-    return super.fetch('/todo', fetch_utxos_req)
-  } */
-
-  /* Transaction */
-  public faucet(acc_info) {
-    return super.fetch("/faucet/claim", acc_info)
-  }
-
-  public makeUnsignedTx(
-    org_tx: TxRequest.OriginalTxReq
-  ): Promise<UtilInterface.UnsignedTx> {
-    return super.fetch("/tx/makeunsignedtx", org_tx)
-  }
-
+  /* == For All Transaction == */
   public signTxByPrivKey(
     unsigned_tx: UtilInterface.SignedTxByPrivKeyReq
   ): Promise<UtilInterface.TX> {
     const _privKey = unsigned_tx.privKey
     const privK = new PrivateKey(_privKey)
+
     return privK.signTxByPrivKey(unsigned_tx)
   }
 
@@ -159,18 +101,32 @@ export default class Api extends Fetch {
     return super.fetch("/tx/detail", { hash })
   }
 
+  /* == BOX == */
+  public faucet(faucet_info: TxRequest.FaucetInfoReq) {
+    return super.fetch("/faucet/claim", faucet_info)
+  }
+
+  /* make unsigned BOX TX */
   public async getBalance(addr: string): Promise<{ balance: number }> {
     const res = await super.fetch("/tx/getbalance", {
       addrs: [addr]
     })
+
     return new BN(res.balances[0], 10).toString()
   }
 
   public async getBalances(addrs: string[]): Promise<{ balances: number[] }> {
     const res = await super.fetch("/tx/getbalance", { addrs })
+
     return await res.balances.map(balance => {
       return new BN(balance, 10).toString()
     })
+  }
+
+  public makeUnsignedBOXTx(
+    org_tx: TxRequest.OriginalTxReq
+  ): Promise<UtilInterface.UnsignedTx> {
+    return super.fetch("/tx/makeunsignedtx", org_tx)
   }
 
   public fetchUtxos(
@@ -181,54 +137,60 @@ export default class Api extends Fetch {
 
   /**
    * @func create_raw_tx
-   * @param [*raw]
-   * @param [?is_raw] boolean # is send raw tx ?
    * @branch [next__sendTx_||_sendRawTx]
    * @step [fetchUtxos->makeUnsignTx->signTxByPrivKey]
+   *
+   * @param [*raw]
+   * @param [?is_raw] boolean # is send raw tx ?
    * @returns [signed_tx]
    */
   public async createRawTx(raw: TxRequest.Raw, is_raw?) {
-    const { addr, to, fee, privKey } = raw
-    let total_to = new BN(0, 10)
+    // console.log("=> [Create raw TX]")
+    try {
+      const { addr, to, privKey } = raw
+      let total_to = new BN(0, 10)
 
-    // fetch utxos
-    await Object.keys(to).forEach(addr => {
-      total_to = total_to.add(new BN(to[addr], 10))
-    })
-    total_to = total_to.add(new BN(fee, 10))
-    // console.log('fetchUtxos param :', addr, total_to.toString())
-    const utxo_res = await this.fetchUtxos({
-      addr,
-      amount: total_to.toString()
-    })
-    // console.log('fetchUtxos res :', JSON.stringify(utxo_res))
-    if (utxo_res["code"] === 0) {
-      // make unsigned tx
-      const utxo_list = utxo_res.utxos
-      let unsigned_tx = await Util.makeUnsignedTxHandle({
-        from: addr,
-        to_map: to,
-        fee,
-        utxo_list,
-        is_raw
+      /* make total_to */
+      Object.keys(to).forEach(addr => {
+        total_to = total_to.add(new BN(to[addr], 10))
       })
-      // console.log('unsigned_tx :', JSON.stringify(unsigned_tx))
+      // console.log('[Create raw TX] fetchUtxos param :', addr, total_to.toString())
 
-      // sign tx by privKey
-      return await this.signTxByPrivKey({
-        unsignedTx: unsigned_tx.tx_json,
-        privKey,
-        protocalTx: unsigned_tx.protocalTx
+      /* fetch utxos */
+      const utxo_res = await this.fetchUtxos({
+        addr,
+        amount: total_to.toString()
       })
-    } else {
-      throw new Error("Fetch utxos Error")
+      // console.log('[Create raw TX] fetchUtxos res :', JSON.stringify(utxo_res))
+
+      if (utxo_res["code"] === 0) {
+        /* make unsigned tx */
+        const utxo_list = utxo_res.utxos
+        let unsigned_tx = await Util.makeUnsignedTxHandle({
+          from: addr,
+          to_map: to,
+          utxo_list,
+          is_raw
+        })
+        // console.log('[Create raw TX] unsigned tx :', JSON.stringify(unsigned_tx))
+
+        /* sign tx by privKey */
+        return await this.signTxByPrivKey({
+          unsignedTx: unsigned_tx.tx_json,
+          privKey,
+          protocalTx: unsigned_tx.protocalTx
+        })
+      } else {
+        throw new Error("Fetch utxos Error !")
+      }
+    } catch (err) {
+      throw new Error(err)
     }
   }
 
-  // TODO
-  public sendRawTx(raw_tx) {
+  /*TODO public sendRawTx(raw_tx) {
     return super.fetch("/tx/sendrawtransaction", { tx: raw_tx })
-  }
+  } */
 
   /* Contract */
   public makeUnsignedContractTx(
@@ -248,4 +210,51 @@ export default class Api extends Fetch {
   ): Promise<ContractResponse.LogDetail[]> {
     return super.fetch("/contract/getLogs", logs_req)
   }
+
+  /* == Split Contract == */
+  public makeUnsignedSplitAddrTx(
+    split_addr_tx: SplitRequest.SplitAddrTxReq
+  ): Promise<SplitResponse.UnsignedSplitAddrTx> {
+    return super.fetch("/tx/makeunsignedtx/splitaddr", split_addr_tx)
+  }
+
+  /* == Token == */
+  public async getTokenbalance(
+    token: TokenRequest.TokenBalanceReq
+  ): Promise<{ balance: number }> {
+    token["addrs"] = [token.addr]
+    const balances = await super.fetch("/tx/gettokenbalance", token)
+    const arr_balances = await balances.balances.map(balance => {
+      return new BN(balance, 10).toString()
+    })
+
+    return { balance: arr_balances[0] }
+  }
+
+  public async getTokenbalances(
+    tokens: TokenRequest.TokenBalancesReq
+  ): Promise<{ balances: number[] }> {
+    const balances = await super.fetch("/tx/gettokenbalance", tokens)
+    const arr_balances = await balances.balances.map(balance => {
+      return new BN(balance, 10).toString()
+    })
+
+    return { balances: arr_balances }
+  }
+
+  public makeUnsignedTokenIssueTx(
+    token_issue_tx: TokenRequest.IssueTokenReq
+  ): Promise<TokenResponse.UnsignedTokenIssueTx> {
+    return super.fetch("/tx/makeunsignedtx/token/issue", token_issue_tx)
+  }
+
+  public makeUnsignedTokenTx(
+    token_transfer_tx: TokenRequest.OriginalTokenTxReq
+  ): Promise<UtilInterface.UnsignedTx> {
+    return super.fetch("/tx/makeunsignedtx/token/transfer", token_transfer_tx)
+  }
+
+  /*TODO public fetchTokenUtxos(fetch_utxos_req: TxRequest.FetchUtxosReq) {
+    return super.fetch("/todo", fetch_utxos_req)
+  } */
 }

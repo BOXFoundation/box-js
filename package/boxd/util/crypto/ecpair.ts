@@ -1,9 +1,9 @@
-import Util from '../util'
-import * as ecc from 'secp256k1'
-import BN from 'bn.js'
+import Util from "../util"
+import * as ecc from "secp256k1"
+import BN from "bn.js"
 
-const EC = require('elliptic').ec
-const ec = new EC('secp256k1')
+const EC = require("elliptic").ec
+const ec = new EC("secp256k1")
 
 namespace Ecpair {
   export function canonicalizeInt(b: Buffer | Uint8Array) {
@@ -11,7 +11,7 @@ namespace Ecpair {
       b = Buffer.from([0x00])
     }
     if ((b[0] & 0x80) !== 0) {
-      console.log('=> 0x80')
+      // console.log("=> 0x80")
       b = Buffer.concat([Buffer.alloc(1), b])
     }
     return b
@@ -27,7 +27,7 @@ namespace Ecpair {
     // if (Q) this.__Q = ecc.pointCompress(Q, this.compressed)
   }
 
-  Object.defineProperty(ECPair.prototype, 'privateKey', {
+  Object.defineProperty(ECPair.prototype, "privateKey", {
     enumerable: false,
     get: function() {
       return this.__d
@@ -42,14 +42,12 @@ namespace Ecpair {
   }) */
 
   ECPair.prototype.sign = function(raw_hash: Buffer) {
-    console.log('ECPair sign hash :', raw_hash)
-    if (!this.__d) throw new Error('Missing private key')
+    if (!this.__d) throw new Error("Missing private key")
     var ec_res = ec.sign(raw_hash, this.__d, {
       canonical: true,
       k: null,
       pers: null
     })
-    console.log('ECPair result :', JSON.stringify(ec_res))
     // r or s is big number
 
     /* const signature = ecc.sign(raw_hash, this.__d)
@@ -66,13 +64,13 @@ namespace Ecpair {
   }
 
   ECPair.prototype.toCompact = function(r: Buffer, s: Buffer) {
-    console.log('toCompact r :', r.toString('hex'))
-    console.log('toCompact s :', s.toString('hex'))
+    // console.log('toCompact r :', r.toString('hex'))
+    // console.log('toCompact s :', s.toString('hex'))
     // 序列化
     const r_buf = canonicalizeInt(r)
     const s_buf = canonicalizeInt(s)
-    console.log('rb.length :', r_buf.length)
-    console.log('sb.length :', s_buf.length)
+    // console.log("rb.length :", r_buf.length)
+    // console.log("sb.length :", s_buf.length)
 
     // 128 时补零
     const rneg = r_buf[0] & 0x80 ? true : false
@@ -103,10 +101,10 @@ namespace Ecpair {
 
   export const getECfromPrivKey = function(privkey, options?) {
     // console.log('==> getECfromPrivKey')
-    privkey = Buffer.from(privkey, 'hex')
+    privkey = Buffer.from(privkey, "hex")
 
     if (!ecc.privateKeyVerify(privkey))
-      throw new TypeError('Private key not in range [1, n)')
+      throw new TypeError("Private key not in range [1, n)")
     return new ECPair(privkey, options)
   }
 }

@@ -1,15 +1,15 @@
-import bitcore from 'bitcore-lib'
-import bs58 from 'bs58'
+import bitcore from "bitcore-lib"
+import bs58 from "bs58"
 
-import Hash from './hash'
-import Ecpair from './ecpair'
-import Util from '../util'
-import CryptoJson from './crypto-json'
-import UtilInterface from '../interface'
+import Hash from "./hash"
+import Ecpair from "./ecpair"
+import Util from "../util"
+import CryptoJson from "./crypto-json"
+import UtilInterface from "../interface"
 
 const prefix = {
-  P2PKH: '1326',
-  P2SH: '132b'
+  P2PKH: "1326",
+  P2SH: "132b"
 }
 
 /**
@@ -22,7 +22,7 @@ export default class PrivateKey {
   public constructor(privkey_str) {
     // console.log('privkey_str :', privkey_str)
     if (privkey_str) {
-      privkey_str = privkey_str.padStart(64, '0')
+      privkey_str = privkey_str.padStart(64, "0")
     }
     this.privKey = new bitcore.PrivateKey(privkey_str)
     this.privKey.signMsg = sigHash => {
@@ -30,7 +30,7 @@ export default class PrivateKey {
       return eccPrivateKey.sign(sigHash).sig
     }
     this.privKey.verifyMsg = (sigHash, signature, publicKey) => {
-      console.log('signature instanceof Buffer :', signature instanceof Buffer)
+      console.log("signature instanceof Buffer :", signature instanceof Buffer)
       const eccPrivateKey = privkey_str && Ecpair.getECfromPrivKey(privkey_str)
       return eccPrivateKey.verify(sigHash, signature, publicKey)
     }
@@ -61,25 +61,22 @@ export default class PrivateKey {
   ) => {
     let { tx, rawMsgs } = unsigned_tx.unsignedTx
     let _privKey = unsigned_tx.privKey
-    console.log('test privKey :', _privKey)
     const eccPrivKey = _privKey && Ecpair.getECfromPrivKey(_privKey)
 
     // vin handler
     for (let idx = 0; idx < tx.vin.length; idx++) {
       let signBuf
       if (rawMsgs[idx] instanceof Buffer) {
-        console.log('=> rawMsgs Buffer')
         signBuf = eccPrivKey.sign(rawMsgs[idx]).sig // rawMsgs : raw hash
       } else {
-        signBuf = eccPrivKey.sign(Buffer.from(rawMsgs[idx], 'hex')).sig // rawMsgs : raw hash
+        signBuf = eccPrivKey.sign(Buffer.from(rawMsgs[idx], "hex")).sig // rawMsgs : raw hash
       }
-      console.log('test signed buffer :', signBuf)
-      console.log('test signed hex string :', signBuf.toString('hex'))
+
       const scriptSig = await Util.signatureScript(
         signBuf,
         this.privKey.toPublicKey().toBuffer()
       )
-      const scriptsig_bs64 = scriptSig.toString('base64')
+      const scriptsig_bs64 = scriptSig.toString("base64")
 
       tx.vin[idx].script_sig = scriptsig_bs64
       if (unsigned_tx.protocalTx) {
@@ -87,7 +84,7 @@ export default class PrivateKey {
       }
     }
     if (unsigned_tx.protocalTx) {
-      return unsigned_tx.protocalTx.serializeBinary().toString('hex')
+      return unsigned_tx.protocalTx.serializeBinary().toString("hex")
     } else {
       return tx
     }
@@ -100,10 +97,10 @@ export default class PrivateKey {
   public getAddrByPrivKey = (prefixHex: string) => {
     const sha256Content = prefixHex + this.privKey.pkh
     const checksum = Hash.sha256(
-      Hash.sha256(Buffer.from(sha256Content, 'hex'))
+      Hash.sha256(Buffer.from(sha256Content, "hex"))
     ).slice(0, 4)
-    const content = sha256Content.concat(checksum.toString('hex'))
-    return bs58.encode(Buffer.from(content, 'hex'))
+    const content = sha256Content.concat(checksum.toString("hex"))
+    return bs58.encode(Buffer.from(content, "hex"))
   }
 
   /**
@@ -111,6 +108,6 @@ export default class PrivateKey {
    * @memberof PrivateKey
    */
   public getPubKeyHashByPrivKey = () => {
-    return Hash.hash160(this.privKey.toPublicKey().toBuffer()).toString('hex')
+    return Hash.hash160(this.privKey.toPublicKey().toBuffer()).toString("hex")
   }
 }

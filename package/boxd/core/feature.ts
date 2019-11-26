@@ -1,14 +1,14 @@
-import BN from 'bn.js'
-import { Fetch } from '../util/fetch'
-import TxRequest from './tx/request'
-import SplitRequest from './split/request'
-import TokenRequest from './token/request'
-import ContractRequest from './contract/request'
-import Account from '../account/account'
-import PrivateKey from '../util/crypto/privatekey'
-import Api from '../core/api'
-import Util from '../util/util'
-import UtilInterface from '../util/interface'
+import BN from "bn.js"
+import { Fetch } from "../util/fetch"
+import TxRequest from "./tx/request"
+import SplitRequest from "./split/request"
+import TokenRequest from "./token/request"
+import ContractRequest from "./contract/request"
+import Account from "../account/account"
+import PrivateKey from "../util/crypto/privatekey"
+import Api from "../core/api"
+import Util from "../util/util"
+import UtilInterface from "../util/interface"
 
 /**
  * @class [Feature]
@@ -58,18 +58,16 @@ export default class Feature extends Fetch {
   }
 
   /**
-   * @export Make_BOX_transaction_by_crypto.json_(Backend_Serialization)
-   * @param [*org_tx]
-   * @step [makeUnsignedTx->signTxByCrypto->send_tx]
-   * @returns [Promise<sent_tx>] { hash: string }
+   * @export { Make BOX transaction by crypto [Backend Serialization] }
+   * @step makeUnsignedBOXTx -> signTxByCrypto -> send_tx
    */
   public async makeBoxTxByCryptoUseBoxd(
     org_tx: TxRequest.MakeBoxTxByCryptoReq
   ): Promise<{ hash: string }> {
     const { tx, crypto, pwd } = org_tx
     const api = new Api(this._fetch, this.endpoint, this.fetch_type)
-    const unsigned_tx = await api.makeUnsignedTx(tx)
-    console.log('unsigned_tx:', JSON.stringify(unsigned_tx))
+
+    const unsigned_tx = await api.makeUnsignedBOXTx(tx)
     const signed_tx_by_crypto = await this.signTxByCrypto({
       unsignedTx: {
         tx: unsigned_tx.tx,
@@ -78,62 +76,64 @@ export default class Feature extends Fetch {
       crypto,
       pwd
     })
-    console.log('signed_tx_by_crypto :', JSON.stringify(signed_tx_by_crypto))
+
     return await api.sendTx(signed_tx_by_crypto)
   }
 
   /**
-   * @export Make_BOX_transaction_by_crypto.json_(Local_Serialization)
-   * @param [*org_tx]
-   * @step [make_privKey->fetch_utxos->make_unsigned_tx->sign_tx->send_tx]
-   * @returns [Promise<sent_tx>] { hash: string }
+   * @export { Make BOX transaction by crypto [Local Serialization] }
+   * @step make_privKey -> fetch_utxos -> make_unsigned_tx -> sign_tx->send_tx
    */
   public async makeBoxTxByCrypto(
     org_tx: TxRequest.MakeBoxTxByCryptoReq
   ): Promise<{ hash: string }> {
-    const { from, to, amounts, fee } = org_tx.tx
+    // console.log("=> [Make BOX TX by crypto]")
+    try {
+      const { from, to, amounts } = org_tx.tx
 
-    /* make privKey */
-    const privKey = await Account.dumpPrivKeyFromCrypto(
-      org_tx.crypto,
-      org_tx.pwd
-    )
-    let total_to = new BN(0, 10)
-    let to_map = {}
+      /* make privKey */
+      const privKey = await Account.dumpPrivKeyFromCrypto(
+        org_tx.crypto,
+        org_tx.pwd
+      )
 
-    /* fetch utxos */
-    await to.forEach((item, index) => {
-      to_map[item] = amounts[index]
-      total_to = total_to.add(new BN(amounts[index], 10))
-    })
-    total_to = total_to.add(new BN(fee, 10))
-    // console.log('fetchUtxos param :', from, total_to.toString())
-    const api = new Api(this._fetch, this.endpoint, this.fetch_type)
-    const utxo_res = await api.fetchUtxos({
-      addr: from,
-      amount: total_to.toString()
-    })
-    // console.log('fetchUtxos res :', JSON.stringify(utxo_res))
-
-    if (utxo_res['code'] === 0) {
-      /* make unsigned tx */
-      const unsigned_tx = await Util.makeUnsignedTxHandle({
-        from,
-        to_map,
-        fee,
-        utxo_list: utxo_res.utxos
+      /* fetch utxos */
+      let total_to = new BN(0, 10)
+      let to_map = {}
+      to.forEach((item, index) => {
+        to_map[item] = amounts[index]
+        total_to = total_to.add(new BN(amounts[index], 10))
       })
-      /* sign tx by privKey */
-      const signed_tx = await api.signTxByPrivKey({
-        unsignedTx: unsigned_tx.tx_json,
-        protocalTx: unsigned_tx.protocalTx,
-        privKey
+      // console.log('[Make BOX TX by crypto] fetchUtxos param :', from, total_to.toString())
+      const api = new Api(this._fetch, this.endpoint, this.fetch_type)
+      const utxo_res = await api.fetchUtxos({
+        addr: from,
+        amount: total_to.toString()
       })
-      /* send tx to boxd */
+      // console.log('[Make BOX TX by crypto] fetchUtxos res :', JSON.stringify(utxo_res))
 
-      return await api.sendTx(signed_tx)
-    } else {
-      throw new Error('Fetch utxos Error')
+      if (utxo_res["code"] === 0) {
+        /* make unsigned tx */
+        const unsigned_tx = await Util.makeUnsignedTxHandle({
+          from,
+          to_map,
+          utxo_list: utxo_res.utxos
+        })
+
+        /* sign tx by privKey */
+        const signed_tx = await api.signTxByPrivKey({
+          unsignedTx: unsigned_tx.tx_json,
+          protocalTx: unsigned_tx.protocalTx,
+          privKey
+        })
+
+        /* send tx to boxd */
+        return await api.sendTx(signed_tx)
+      } else {
+        throw new Error("Fetch utxos Error")
+      }
+    } catch (err) {
+      throw new Error(err)
     }
   }
 
@@ -160,7 +160,7 @@ export default class Feature extends Fetch {
       addrs: org_tx.tx.addrs,
       weights: org_tx.tx.weights,
       txHash: tx_result.hash,
-      index: tx_result['index']
+      index: tx_result["index"]
     })
 
     return Object.assign(tx_result, {
