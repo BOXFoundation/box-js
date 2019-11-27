@@ -3,10 +3,10 @@ import fetch from "isomorphic-fetch"
 import Mock from "../static/json/mock.json"
 import Api from "../package/boxd/core/api"
 
-let node_id
+// let node_id
 const api = new Api(fetch, Mock.endpoint_dev, "http")
 
-test("Get node info [Admin]", async () => {
+/* test("Get node info [Admin]", async () => {
   try {
     const node_info = await api.getNodeInfo()
     console.log("node_info :", JSON.stringify(node_info))
@@ -17,7 +17,7 @@ test("Get node info [Admin]", async () => {
     console.error("Get node info [Admin] Error :", err)
     expect(0).toBe(1)
   }
-})
+}) */
 
 test("Get block hash by Height", async () => {
   try {

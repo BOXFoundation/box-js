@@ -84,6 +84,7 @@ export default class Api extends Fetch {
   }
 
   /* == For All Transaction == */
+
   public signTxByPrivKey(
     unsigned_tx: UtilInterface.SignedTxByPrivKeyReq
   ): Promise<UtilInterface.TX> {
@@ -102,6 +103,7 @@ export default class Api extends Fetch {
   }
 
   /* == BOX == */
+
   public faucet(faucet_info: TxRequest.FaucetInfoReq) {
     return super.fetch("/faucet/claim", faucet_info)
   }
@@ -137,12 +139,12 @@ export default class Api extends Fetch {
 
   /**
    * @func create_raw_tx
-   * @branch [next__sendTx_||_sendRawTx]
-   * @step [fetchUtxos->makeUnsignTx->signTxByPrivKey]
+   * @branch sendTx || sendRawTx
+   * @step fetchUtxos -> makeUnsignTx -> signTxByPrivKey
    *
-   * @param [*raw]
-   * @param [?is_raw] boolean # is send raw tx ?
-   * @returns [signed_tx]
+   * @param *raw
+   * @param ?is_raw # is send raw tx ?
+   * @returns signed tx
    */
   public async createRawTx(raw: TxRequest.Raw, is_raw?) {
     // console.log("=> [Create raw TX]")
@@ -193,6 +195,7 @@ export default class Api extends Fetch {
   } */
 
   /* Contract */
+
   public makeUnsignedContractTx(
     org_tx: ContractRequest.OriginalContractReq
   ): Promise<ContractResponse.UnsignedContractTx> {
@@ -219,6 +222,7 @@ export default class Api extends Fetch {
   }
 
   /* == Token == */
+
   public async getTokenbalance(
     token: TokenRequest.TokenBalanceReq
   ): Promise<{ balance: number }> {

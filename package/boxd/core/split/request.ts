@@ -1,11 +1,10 @@
-import UtilInterface from '../../util/interface'
+import UtilInterface from "../../util/interface"
 
 namespace Request {
   export interface SplitAddrTxReq {
     from: string;
     addrs: string[];
     weights: number[];
-    fee: string;
   }
 
   export interface MakeSplitTxByCryptoReq {

@@ -12,25 +12,25 @@ const feature = new Feature(fetch, Mock.endpoint_dev, "http")
 const priv_key = new PrivateKey(
   "27119424a9b02b9baeec4f803887d1bb241d70d19031ec6336dc611723708dae"
 )
-// const pub_key = "76a91401a3e163dec3f1add664d37cf12f57d3415bd6e588ac"
 const raw_hash =
   "837ea757f653af567cd181e18b2605a3058ddbad94d4444b7bc43ae2f0404505"
 
+/* const sleep = seconds => {
+  return new Promise(resolve => setTimeout(resolve, seconds * 1000))
+} */
+
 jest.setTimeout(15000)
 
-test("Get the BOX balances of the given addresses", async done => {
+test("Get the BOX balances of the given addresses", async () => {
   try {
     expect(await api.getBalances([Mock.acc_addr_4, Mock.acc_addr_4]))
   } catch (err) {
     console.error("Get the BOX balances of the given addresses Error :", err)
     expect(0).toBe(1)
   }
-  setTimeout(function() {
-    done()
-  }, 2000)
 })
 
-test("Sign transaction by privKey || crypto", async done => {
+test("Sign transaction by privKey || crypto", async () => {
   try {
     const unsigned_tx = await api.makeUnsignedBOXTx({
       from: Mock.acc_addr_4,
@@ -61,10 +61,6 @@ test("Sign transaction by privKey || crypto", async done => {
     console.error("Sign transaction by privKey or crypto Error :", err)
     expect(0).toBe(1)
   }
-
-  setTimeout(function() {
-    done()
-  }, 10000)
 })
 
 test("Sign raw hash", async () => {
@@ -92,7 +88,7 @@ test("Sign raw hash", async () => {
   }
 })
 
-test("Make a BOX transaction [Backend Serialization]", async done => {
+test("Make a BOX transaction [Backend Serialization]", async () => {
   try {
     const sent_tx = await feature.makeBoxTxByCryptoUseBoxd({
       tx: {
@@ -110,59 +106,59 @@ test("Make a BOX transaction [Backend Serialization]", async done => {
     console.error("Make a BOX transaction [Backend Serialization] Error :", err)
     expect(0).toBe(1)
   }
-  setTimeout(function() {
-    done()
-  }, 10000)
+
+  // await sleep(2)
+  // done()
 })
 
-test("Make a BOX transaction [Local Serialization]", async () => {
-  try {
-    const tx_result = await feature.makeBoxTxByCrypto({
-      tx: {
-        from: Mock.acc_addr_2,
-        to: Mock.to_addrs,
-        amounts: Mock.amounts
-      },
-      crypto: Keystore.keystore_3,
-      pwd: Mock.acc_pwd
-    })
-    console.log("tx_result.hash :", tx_result.hash)
-    const tx_detail = await api.viewTxDetail(tx_result.hash)
+// test("Make a BOX transaction [Local Serialization]", async () => {
+//   try {
+//     const tx_result = await feature.makeBoxTxByCrypto({
+//       tx: {
+//         from: Mock.acc_addr_2,
+//         to: Mock.to_addrs,
+//         amounts: Mock.amounts
+//       },
+//       crypto: Keystore.keystore_3,
+//       pwd: Mock.acc_pwd
+//     })
+//     console.log("tx_result.hash :", tx_result.hash)
+//     const tx_detail = await api.viewTxDetail(tx_result.hash)
 
-    expect(tx_detail.detail.hash).toEqual(tx_result.hash)
-  } catch (err) {
-    console.error("Make a BOX transaction [Local Serialization] Error :", err)
-    expect(0).toBe(1)
-  }
-})
+//     expect(tx_detail.detail.hash).toEqual(tx_result.hash)
+//   } catch (err) {
+//     console.error("Make a BOX transaction [Local Serialization] Error :", err)
+//     expect(0).toBe(1)
+//   }
+// })
 
-test("Make a raw transaction (BOX)", async () => {
-  try {
-    const created_tx = await api.createRawTx({
-      addr: Mock.acc_addr_4,
-      to: Mock.to_map,
-      privKey: Mock.acc_privateKey_3
-    })
-    const tx_result = await api.sendTx(created_tx)
-    console.log("tx_result.hash :", tx_result.hash)
-    const tx_detail = await api.viewTxDetail(tx_result.hash)
+// test("Make a raw transaction (BOX)", async () => {
+//   try {
+//     const created_tx = await api.createRawTx({
+//       addr: Mock.acc_addr_4,
+//       to: Mock.to_map,
+//       privKey: Mock.acc_privateKey_3
+//     })
+//     const tx_result = await api.sendTx(created_tx)
+//     console.log("tx_result.hash :", tx_result.hash)
+//     const tx_detail = await api.viewTxDetail(tx_result.hash)
 
-    expect(tx_detail.detail.hash).toEqual(tx_result.hash)
-    // Row
-    /*TODO const created_tx_row = await api.createRawTx(
-      {
-        addr: Mock.acc_addr_4,
-        to: Mock.to_map,
-        privKey: Mock.acc_privateKey_3
-      },
-      'is_raw'
-    )
-    expect(created_tx_row)
-    console.log('created_tx_row :', created_tx_row)
-    const sent_tx_row = await api.sendRawTx(created_tx_row)
-    console.log('sent_tx_row :', JSON.stringify(sent_tx_row)) */
-  } catch (err) {
-    console.error("Make a raw transaction Error :", err)
-    expect(0).toBe(1)
-  }
-})
+//     expect(tx_detail.detail.hash).toEqual(tx_result.hash)
+//     // Row
+//     /*TODO const created_tx_row = await api.createRawTx(
+//       {
+//         addr: Mock.acc_addr_4,
+//         to: Mock.to_map,
+//         privKey: Mock.acc_privateKey_3
+//       },
+//       'is_raw'
+//     )
+//     expect(created_tx_row)
+//     console.log('created_tx_row :', created_tx_row)
+//     const sent_tx_row = await api.sendRawTx(created_tx_row)
+//     console.log('sent_tx_row :', JSON.stringify(sent_tx_row)) */
+//   } catch (err) {
+//     console.error("Make a raw transaction Error :", err)
+//     expect(0).toBe(1)
+//   }
+// })
