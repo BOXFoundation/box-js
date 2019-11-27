@@ -143,11 +143,11 @@ test("Make a raw transaction (BOX)", async () => {
       to: Mock.to_map,
       privKey: Mock.acc_privateKey_3
     })
+    const tx_result = await api.sendTx(created_tx)
+    console.log("tx_result.hash :", tx_result.hash)
+    const tx_detail = await api.viewTxDetail(tx_result.hash)
 
-    expect(created_tx)
-    const sent_tx = await api.sendTx(created_tx)
-    expect(sent_tx["code"]).toBe(0)
-    expect(sent_tx.hash)
+    expect(tx_detail.detail.hash).toEqual(tx_result.hash)
     // Row
     /*TODO const created_tx_row = await api.createRawTx(
       {

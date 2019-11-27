@@ -164,6 +164,11 @@ namespace TxUtil {
       tx_proto_row.setVinList(vin_list_proto_row)
       tx_proto_row.setVoutList(vout_list_proto)
 
+      console.log(
+        "protocalTx.serializeBinary res :",
+        protocalTx.serializeBinary()
+      )
+
       // serialize binary
       raw_hash_list.push(
         Util.getSignHash(protocalTx.serializeBinary()).toString("hex")
