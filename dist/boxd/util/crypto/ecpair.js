@@ -13,8 +13,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __importDefault(require("../util"));
 var ecc = __importStar(require("secp256k1"));
 var bn_js_1 = __importDefault(require("bn.js"));
-var EC = require('elliptic').ec;
-var ec = new EC('secp256k1');
+var EC = require("elliptic").ec;
+var ec = new EC("secp256k1");
 var Ecpair;
 (function (Ecpair) {
     function canonicalizeInt(b) {
@@ -22,7 +22,7 @@ var Ecpair;
             b = Buffer.from([0x00]);
         }
         if ((b[0] & 0x80) !== 0) {
-            console.log('=> 0x80');
+            // console.log("=> 0x80")
             b = Buffer.concat([Buffer.alloc(1), b]);
         }
         return b;
@@ -36,7 +36,7 @@ var Ecpair;
         this.__Q = null;
         // if (Q) this.__Q = ecc.pointCompress(Q, this.compressed)
     }
-    Object.defineProperty(ECPair.prototype, 'privateKey', {
+    Object.defineProperty(ECPair.prototype, "privateKey", {
         enumerable: false,
         get: function () {
             return this.__d;
@@ -49,15 +49,13 @@ var Ecpair;
       }
     }) */
     ECPair.prototype.sign = function (raw_hash) {
-        console.log('ECPair sign hash :', raw_hash);
         if (!this.__d)
-            throw new Error('Missing private key');
+            throw new Error("Missing private key");
         var ec_res = ec.sign(raw_hash, this.__d, {
             canonical: true,
             k: null,
             pers: null
         });
-        console.log('ECPair result :', JSON.stringify(ec_res));
         // r or s is big number
         /* const signature = ecc.sign(raw_hash, this.__d)
         console.log('ecc signature :', signature.signature)
@@ -68,13 +66,13 @@ var Ecpair;
         };
     };
     ECPair.prototype.toCompact = function (r, s) {
-        console.log('toCompact r :', r.toString('hex'));
-        console.log('toCompact s :', s.toString('hex'));
+        // console.log('toCompact r :', r.toString('hex'))
+        // console.log('toCompact s :', s.toString('hex'))
         // 序列化
         var r_buf = canonicalizeInt(r);
         var s_buf = canonicalizeInt(s);
-        console.log('rb.length :', r_buf.length);
-        console.log('sb.length :', s_buf.length);
+        // console.log("rb.length :", r_buf.length)
+        // console.log("sb.length :", s_buf.length)
         // 128 时补零
         var rneg = r_buf[0] & 0x80 ? true : false;
         var sneg = s_buf[0] & 0x80 ? true : false;
@@ -97,9 +95,9 @@ var Ecpair;
     };
     Ecpair.getECfromPrivKey = function (privkey, options) {
         // console.log('==> getECfromPrivKey')
-        privkey = Buffer.from(privkey, 'hex');
+        privkey = Buffer.from(privkey, "hex");
         if (!ecc.privateKeyVerify(privkey))
-            throw new TypeError('Private key not in range [1, n)');
+            throw new TypeError("Private key not in range [1, n)");
         return new ECPair(privkey, options);
     };
 })(Ecpair || (Ecpair = {}));

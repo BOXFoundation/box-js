@@ -90,8 +90,7 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
       outPoint: (f = msg.getOutPoint()) && block_pb.OutPoint.toObject(includeInstance, f),
       txOut: (f = msg.getTxOut()) && block_pb.TxOut.toObject(includeInstance, f),
       blockHeight: jspb.Message.getFieldWithDefault(msg, 3, 0),
-      isCoinbase: jspb.Message.getFieldWithDefault(msg, 4, false),
-      isSpent: jspb.Message.getFieldWithDefault(msg, 5, false) };
+      isSpent: jspb.Message.getFieldWithDefault(msg, 4, false) };
 
 
     if (includeInstance) {
@@ -143,10 +142,6 @@ proto.rpcpb.Utxo.deserializeBinaryFromReader = function (msg, reader) {
         msg.setBlockHeight(value);
         break;
       case 4:
-        var value = /** @type {boolean} */reader.readBool();
-        msg.setIsCoinbase(value);
-        break;
-      case 5:
         var value = /** @type {boolean} */reader.readBool();
         msg.setIsSpent(value);
         break;
@@ -202,17 +197,10 @@ proto.rpcpb.Utxo.serializeBinaryToWriter = function (message, writer) {
     f);
 
   }
-  f = message.getIsCoinbase();
-  if (f) {
-    writer.writeBool(
-    4,
-    f);
-
-  }
   f = message.getIsSpent();
   if (f) {
     writer.writeBool(
-    5,
+    4,
     f);
 
   }
@@ -301,36 +289,19 @@ proto.rpcpb.Utxo.prototype.setBlockHeight = function (value) {
 
 
 /**
-    * optional bool is_coinbase = 4;
-    * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
-    * You should avoid comparisons like {@code val === true/false} in those cases.
-    * @return {boolean}
-    */
-proto.rpcpb.Utxo.prototype.getIsCoinbase = function () {
-  return (/** @type {boolean} */jspb.Message.getFieldWithDefault(this, 4, false));
-};
-
-
-/** @param {boolean} value */
-proto.rpcpb.Utxo.prototype.setIsCoinbase = function (value) {
-  jspb.Message.setProto3BooleanField(this, 4, value);
-};
-
-
-/**
-    * optional bool is_spent = 5;
+    * optional bool is_spent = 4;
     * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
     * You should avoid comparisons like {@code val === true/false} in those cases.
     * @return {boolean}
     */
 proto.rpcpb.Utxo.prototype.getIsSpent = function () {
-  return (/** @type {boolean} */jspb.Message.getFieldWithDefault(this, 5, false));
+  return (/** @type {boolean} */jspb.Message.getFieldWithDefault(this, 4, false));
 };
 
 
 /** @param {boolean} value */
 proto.rpcpb.Utxo.prototype.setIsSpent = function (value) {
-  jspb.Message.setProto3BooleanField(this, 5, value);
+  jspb.Message.setProto3BooleanField(this, 4, value);
 };
 
 

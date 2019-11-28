@@ -108,10 +108,8 @@ var Feature = /** @class */ (function (_super) {
         });
     };
     /**
-     * @export Make_BOX_transaction_by_crypto.json_(Backend_Serialization)
-     * @param [*org_tx]
-     * @step [makeUnsignedTx->signTxByCrypto->send_tx]
-     * @returns [Promise<sent_tx>] { hash: string }
+     * @export { Make BOX transaction by crypto [Backend Serialization] }
+     * @step makeUnsignedBOXTx -> signTxByCrypto -> send_tx
      */
     Feature.prototype.makeBoxTxByCryptoUseBoxd = function (org_tx) {
         return __awaiter(this, void 0, void 0, function () {
@@ -121,10 +119,9 @@ var Feature = /** @class */ (function (_super) {
                     case 0:
                         tx = org_tx.tx, crypto = org_tx.crypto, pwd = org_tx.pwd;
                         api = new api_1.default(this._fetch, this.endpoint, this.fetch_type);
-                        return [4 /*yield*/, api.makeUnsignedTx(tx)];
+                        return [4 /*yield*/, api.makeUnsignedBOXTx(tx)];
                     case 1:
                         unsigned_tx = _a.sent();
-                        console.log('unsigned_tx:', JSON.stringify(unsigned_tx));
                         return [4 /*yield*/, this.signTxByCrypto({
                                 unsignedTx: {
                                     tx: unsigned_tx.tx,
@@ -135,7 +132,6 @@ var Feature = /** @class */ (function (_super) {
                             })];
                     case 2:
                         signed_tx_by_crypto = _a.sent();
-                        console.log('signed_tx_by_crypto :', JSON.stringify(signed_tx_by_crypto));
                         return [4 /*yield*/, api.sendTx(signed_tx_by_crypto)];
                     case 3: return [2 /*return*/, _a.sent()];
                 }
@@ -143,51 +139,46 @@ var Feature = /** @class */ (function (_super) {
         });
     };
     /**
-     * @export Make_BOX_transaction_by_crypto.json_(Local_Serialization)
-     * @param [*org_tx]
-     * @step [make_privKey->fetch_utxos->make_unsigned_tx->sign_tx->send_tx]
-     * @returns [Promise<sent_tx>] { hash: string }
+     * @export { Make BOX transaction by crypto [Local Serialization] }
+     * @step make_privKey -> fetch_utxos -> make_unsigned_tx -> sign_tx->send_tx
      */
     Feature.prototype.makeBoxTxByCrypto = function (org_tx) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, from, to, amounts, fee, privKey, total_to, to_map, api, utxo_res, unsigned_tx, signed_tx;
+            var _a, from, to, amounts_1, privKey, total_to_1, to_map_1, api, utxo_res, unsigned_tx, signed_tx, err_1;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _a = org_tx.tx, from = _a.from, to = _a.to, amounts = _a.amounts, fee = _a.fee;
-                        return [4 /*yield*/, account_1.default.dumpPrivKeyFromCrypto(org_tx.crypto, org_tx.pwd)];
+                        _b.trys.push([0, 8, , 9]);
+                        _a = org_tx.tx, from = _a.from, to = _a.to, amounts_1 = _a.amounts;
+                        return [4 /*yield*/, account_1.default.dumpPrivKeyFromCrypto(org_tx.crypto, org_tx.pwd)
+                            /* fetch utxos */
+                        ];
                     case 1:
                         privKey = _b.sent();
-                        total_to = new bn_js_1.default(0, 10);
-                        to_map = {};
-                        /* fetch utxos */
-                        return [4 /*yield*/, to.forEach(function (item, index) {
-                                to_map[item] = amounts[index];
-                                total_to = total_to.add(new bn_js_1.default(amounts[index], 10));
-                            })];
-                    case 2:
-                        /* fetch utxos */
-                        _b.sent();
-                        total_to = total_to.add(new bn_js_1.default(fee, 10));
+                        total_to_1 = new bn_js_1.default(0, 10);
+                        to_map_1 = {};
+                        to.forEach(function (item, index) {
+                            to_map_1[item] = amounts_1[index];
+                            total_to_1 = total_to_1.add(new bn_js_1.default(amounts_1[index], 10));
+                        });
                         api = new api_1.default(this._fetch, this.endpoint, this.fetch_type);
                         return [4 /*yield*/, api.fetchUtxos({
                                 addr: from,
-                                amount: total_to.toString()
+                                amount: total_to_1.toString()
                             })
-                            // console.log('fetchUtxos res :', JSON.stringify(utxo_res))
+                            // console.log('[Make BOX TX by crypto] fetchUtxos res :', JSON.stringify(utxo_res))
                         ];
-                    case 3:
+                    case 2:
                         utxo_res = _b.sent();
-                        if (!(utxo_res['code'] === 0)) return [3 /*break*/, 7];
+                        if (!(utxo_res["code"] === 0)) return [3 /*break*/, 6];
                         return [4 /*yield*/, util_1.default.makeUnsignedTxHandle({
                                 from: from,
-                                to_map: to_map,
-                                fee: fee,
+                                to_map: to_map_1,
                                 utxo_list: utxo_res.utxos
                             })
                             /* sign tx by privKey */
                         ];
-                    case 4:
+                    case 3:
                         unsigned_tx = _b.sent();
                         return [4 /*yield*/, api.signTxByPrivKey({
                                 unsignedTx: unsigned_tx.tx_json,
@@ -196,13 +187,18 @@ var Feature = /** @class */ (function (_super) {
                             })
                             /* send tx to boxd */
                         ];
-                    case 5:
+                    case 4:
                         signed_tx = _b.sent();
                         return [4 /*yield*/, api.sendTx(signed_tx)];
-                    case 6: 
+                    case 5: 
                     /* send tx to boxd */
                     return [2 /*return*/, _b.sent()];
-                    case 7: throw new Error('Fetch utxos Error');
+                    case 6: throw new Error("Fetch utxos Error");
+                    case 7: return [3 /*break*/, 9];
+                    case 8:
+                        err_1 = _b.sent();
+                        throw new Error(err_1);
+                    case 9: return [2 /*return*/];
                 }
             });
         });
@@ -239,7 +235,7 @@ var Feature = /** @class */ (function (_super) {
                                 addrs: org_tx.tx.addrs,
                                 weights: org_tx.tx.weights,
                                 txHash: tx_result.hash,
-                                index: tx_result['index']
+                                index: tx_result["index"]
                             })];
                     case 4:
                         split_addr = _a.sent();
