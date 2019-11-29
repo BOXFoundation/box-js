@@ -32,10 +32,10 @@ const PREFIXSTR2BYTES = {
 /* keccak = BEGIN = */
 const KECCAK256_NULL_S =
   '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470'
-const isHexStrict = hex => {
+const isHexStrict = (hex) => {
   return (isString(hex) || isNumber(hex)) && /^(-)?0x[0-9a-f]*$/i.test(hex)
 }
-const hexToBytes = hex => {
+const hexToBytes = (hex) => {
   hex = hex.toString(16)
   if (!isHexStrict(hex)) {
     throw new Error('Given value "'.concat(hex, '" is not a valid hex string.'))
@@ -134,12 +134,21 @@ namespace CommonUtil {
      */
     public add(and_buf) {
       if (!(and_buf instanceof Buffer)) {
-        and_buf = Buffer.from(and_buf, 'hex')
+        if (and_buf instanceof Number) {
+          console.log('=> instanceof Number')
+          and_buf = Buffer.from(and_buf.toString())
+        } else {
+          and_buf = Buffer.from(and_buf.toString(), 'hex')
+        }
       }
       const and_len = and_buf.length
-      const and_len_str = to16StrFromNumber(and_len)
-      // console.log('and_len_str :', and_len_str)
+      let and_len_str = to16StrFromNumber(and_len)
+      and_len_str = and_len_str.padStart(2, '0')
+      console.log('[opcode add] and_len_str :', and_len_str)
       if (and_len < OP_PUSH_DATA_1) {
+        console.log('=> OP_PUSH_DATA_1')
+        console.log('[opcode add] this.opcode :', this.opcode)
+        console.log('[opcode add] and_len_str :', and_len_str)
         this.opcode = Buffer.concat([
           this.opcode,
           Buffer.from(and_len_str, 'hex')
@@ -224,7 +233,7 @@ namespace CommonUtil {
     }
   }
 
-  export const jsonInterfaceMethodToString = json => {
+  export const jsonInterfaceMethodToString = (json) => {
     if (isObject(json) && json.name && json.name.includes('(')) {
       return json.name
     }
@@ -233,7 +242,7 @@ namespace CommonUtil {
       .concat(_flattenTypes(false, json.inputs).join(','), ')')
   }
 
-  export const keccak256 = value => {
+  export const keccak256 = (value) => {
     if (isHexStrict(value) && /^0x/i.test(value.toString())) {
       value = hexToBytes(value)
     }
@@ -251,7 +260,7 @@ namespace CommonUtil {
    * @return [boolean] a boolean if it is or is not hex prefixed
    * @throws if the str input is not a string
    */
-  export const isHexPrefixed = str => {
+  export const isHexPrefixed = (str) => {
     if (typeof str !== 'string') {
       throw new Error(
         "[is-hex-prefixed] value must be type 'string', is currently type " +
@@ -268,7 +277,7 @@ namespace CommonUtil {
    * @param [*str] str the string value
    * @return [string|optional] a string by pass if necessary
    */
-  export const stripHexPrefix = str => {
+  export const stripHexPrefix = (str) => {
     if (typeof str !== 'string') {
       return str
     }

@@ -24,14 +24,19 @@ var SplitUtil;
         for (var i = 0; i < addrs.length; i++) {
             var weight = util_1.default.putUint32(Buffer.alloc(4), weights[i]);
             var pkh = Buffer.from(account_1.default.dumpPubKeyHashFromAddr(addrs[i]), 'hex');
+            console.log('calcSplitAddr weight :', weight);
+            console.log('calcSplitAddr pkh :', pkh);
             op.add(pkh).add(weight);
+            console.log('calcSplitAddr for :', i);
         }
         /* make raw */
         var splitHashBs = hash_1.default.ripemd160(hash_1.default.sha256(op.getCode()));
         var idxBytes = util_1.default.putUint32(Buffer.alloc(4), index);
         var hashBytes = Buffer.from(txHash, 'hex');
         var raw = Buffer.concat([hashBytes, idxBytes, splitHashBs]);
-        return hash_1.default.ripemd160(hash_1.default.sha256(raw)).toString('hex');
+        var split_addr = hash_1.default.ripemd160(hash_1.default.sha256(raw)).toString('hex');
+        console.log('calcSplitAddr split_addr :', split_addr);
+        return split_addr;
     };
 })(SplitUtil || (SplitUtil = {}));
 exports.default = SplitUtil;

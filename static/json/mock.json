@@ -42,6 +42,9 @@
   "acc_privateKey_4": "0fb5104cbf4814dbd5ae3855d6168ceb255f079b9a86bfcd56b965d9d478441b",
   "acc_publicKey": "025ba62e6e028dd6519a48d1064bae0c371df73afebb70ad90adba52fad2ff0e25",
   "acc_publickey_hash": "3e8821fa1b0f9fef5aaf3e1bb5879bf36772c258",
+  "to_addr": [
+    "b1ZWSdrg48g145VdcmBwMPVuDFdaxDLoktk"
+  ],
   "to_addrs": [
     "b1qzR8uLQrxoF8dwsiud7pyci7Sbf8WZaxv",
     "b1iH6rDq4N5KYGyGzkqzA45UXAjfxQux7xE"
@@ -57,8 +60,7 @@
   "token_supply": 100000,
   "token_decimal": 3,
   "split_weights": [
-    600000,
-    400000
+    1000000
   ],
   "amount": 100000000,
   "amounts": [

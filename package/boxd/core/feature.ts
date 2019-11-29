@@ -1,14 +1,14 @@
-import BN from "bn.js"
-import { Fetch } from "../util/fetch"
-import TxRequest from "./tx/request"
-import SplitRequest from "./split/request"
-import TokenRequest from "./token/request"
-import ContractRequest from "./contract/request"
-import Account from "../account/account"
-import PrivateKey from "../util/crypto/privatekey"
-import Api from "../core/api"
-import Util from "../util/util"
-import UtilInterface from "../util/interface"
+import BN from 'bn.js'
+import { Fetch } from '../util/fetch'
+import TxRequest from './tx/request'
+import SplitRequest from './split/request'
+import TokenRequest from './token/request'
+import ContractRequest from './contract/request'
+import Account from '../account/account'
+import PrivateKey from '../util/crypto/privatekey'
+import Api from '../core/api'
+import Util from '../util/util'
+import UtilInterface from '../util/interface'
 
 /**
  * @class [Feature]
@@ -112,7 +112,7 @@ export default class Feature extends Fetch {
       })
       // console.log('[Make BOX TX by crypto] fetchUtxos res :', JSON.stringify(utxo_res))
 
-      if (utxo_res["code"] === 0) {
+      if (utxo_res['code'] === 0) {
         /* make unsigned tx */
         const unsigned_tx = await Util.makeUnsignedTxHandle({
           from,
@@ -130,7 +130,7 @@ export default class Feature extends Fetch {
         /* send tx to boxd */
         return await api.sendTx(signed_tx)
       } else {
-        throw new Error("Fetch utxos Error")
+        throw new Error('Fetch utxos Error')
       }
     } catch (err) {
       throw new Error(err)
@@ -156,11 +156,12 @@ export default class Feature extends Fetch {
       pwd: org_tx.pwd
     })
     const tx_result = await api.sendTx(signed_tx)
+
     const split_addr = await Util.calcSplitAddr({
       addrs: org_tx.tx.addrs,
       weights: org_tx.tx.weights,
       txHash: tx_result.hash,
-      index: tx_result["index"]
+      index: tx_result['index']
     })
 
     return Object.assign(tx_result, {

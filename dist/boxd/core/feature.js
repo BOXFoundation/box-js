@@ -170,7 +170,7 @@ var Feature = /** @class */ (function (_super) {
                         ];
                     case 2:
                         utxo_res = _b.sent();
-                        if (!(utxo_res["code"] === 0)) return [3 /*break*/, 6];
+                        if (!(utxo_res['code'] === 0)) return [3 /*break*/, 6];
                         return [4 /*yield*/, util_1.default.makeUnsignedTxHandle({
                                 from: from,
                                 to_map: to_map_1,
@@ -193,7 +193,7 @@ var Feature = /** @class */ (function (_super) {
                     case 5: 
                     /* send tx to boxd */
                     return [2 /*return*/, _b.sent()];
-                    case 6: throw new Error("Fetch utxos Error");
+                    case 6: throw new Error('Fetch utxos Error');
                     case 7: return [3 /*break*/, 9];
                     case 8:
                         err_1 = _b.sent();
@@ -235,7 +235,7 @@ var Feature = /** @class */ (function (_super) {
                                 addrs: org_tx.tx.addrs,
                                 weights: org_tx.tx.weights,
                                 txHash: tx_result.hash,
-                                index: tx_result["index"]
+                                index: tx_result['index']
                             })];
                     case 4:
                         split_addr = _a.sent();

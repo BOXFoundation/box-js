@@ -25,7 +25,10 @@ namespace SplitUtil {
     for (let i = 0; i < addrs.length; i++) {
       const weight = Util.putUint32(Buffer.alloc(4), weights[i])
       const pkh = Buffer.from(Account.dumpPubKeyHashFromAddr(addrs[i]), 'hex')
+      console.log('calcSplitAddr weight :', weight)
+      console.log('calcSplitAddr pkh :', pkh)
       op.add(pkh).add(weight)
+      console.log('calcSplitAddr for :', i)
     }
 
     /* make raw */
@@ -33,8 +36,10 @@ namespace SplitUtil {
     const idxBytes = Util.putUint32(Buffer.alloc(4), index)
     const hashBytes = Buffer.from(txHash, 'hex')
     const raw = Buffer.concat([hashBytes, idxBytes, splitHashBs])
+    const split_addr = Hash.ripemd160(Hash.sha256(raw)).toString('hex')
+    console.log('calcSplitAddr split_addr :', split_addr)
 
-    return Hash.ripemd160(Hash.sha256(raw)).toString('hex')
+    return split_addr
   }
 }
 

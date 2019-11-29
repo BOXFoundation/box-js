@@ -115,12 +115,22 @@ var CommonUtil;
          */
         Opcoder.prototype.add = function (and_buf) {
             if (!(and_buf instanceof Buffer)) {
-                and_buf = Buffer.from(and_buf, 'hex');
+                if (and_buf instanceof Number) {
+                    console.log('=> instanceof Number');
+                    and_buf = Buffer.from(and_buf.toString());
+                }
+                else {
+                    and_buf = Buffer.from(and_buf.toString(), 'hex');
+                }
             }
             var and_len = and_buf.length;
             var and_len_str = CommonUtil.to16StrFromNumber(and_len);
-            // console.log('and_len_str :', and_len_str)
+            and_len_str = and_len_str.padStart(2, '0');
+            console.log('[opcode add] and_len_str :', and_len_str);
             if (and_len < OP_PUSH_DATA_1) {
+                console.log('=> OP_PUSH_DATA_1');
+                console.log('[opcode add] this.opcode :', this.opcode);
+                console.log('[opcode add] and_len_str :', and_len_str);
                 this.opcode = Buffer.concat([
                     this.opcode,
                     Buffer.from(and_len_str, 'hex')
