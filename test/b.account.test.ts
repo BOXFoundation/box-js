@@ -43,19 +43,19 @@ test('Dump crypto-json from (private-key + password) <string | Buffer>', async (
   }
 })
 
-test('Dump public-key from private-key (string | Buffer)', async () => {
+test('Dump public-key from private-key <string | Buffer>', async () => {
   try {
     expect(await Account.dumpPubKeyFromPrivKey(Mock.privatekey)).toEqual(
       Mock.publickey
     )
     expect(await Account.dumpPubKeyFromPrivKey(acc_buf)).toEqual(Mock.publickey)
   } catch (err) {
-    console.error('Dump publicKey from privateKey Error :', err)
+    console.error('Dump public-key from private-key Error :', err)
     expect(0).toBe(1)
   }
 })
 
-test('Dump publicKey hash from privateKey (string | Buffer)', async () => {
+test('Dump public-key-hash from private-key <string | Buffer>', async () => {
   try {
     expect(await Account.dumpPubKeyHashFromPrivKey(Mock.privatekey)).toEqual(
       Mock.publickey_hash
@@ -64,54 +64,57 @@ test('Dump publicKey hash from privateKey (string | Buffer)', async () => {
       Mock.publickey_hash
     )
   } catch (err) {
-    console.error('Dump publicKey hash from privateKey Error :', err)
+    console.error('Dump public-key-hash from private-key Error :', err)
     expect(0).toBe(1)
   }
 })
 
-test('Dump publicKey hash from address', async () => {
+test('Dump public-key-hash from address', async () => {
   try {
     expect(await Account.dumpPubKeyHashFromAddr(Mock.addr)).toEqual(
       Mock.publickey_hash
     )
   } catch (err) {
-    console.error('Dump publicKey hash from address Error :', err)
+    console.error('Dump public-key-hash from address Error :', err)
     expect(0).toBe(1)
   }
 })
 
-test('Dump privateKey from cryptoJson', async () => {
+test('Dump private-key from crypto-json', async () => {
   try {
     expect(
       await Account.dumpPrivKeyFromCrypto(Keystore.ks, Mock.acc_pwd)
     ).toEqual(Mock.privatekey)
   } catch (err) {
-    console.error('Dump privateKey from cryptoJson Error :', err)
+    console.error('Dump private-key from crypto-json Error :', err)
     expect(0).toBe(1)
   }
 })
 
-test('Dump publicKey hash from address', async () => {
+test('Dump public-key-hash from address', async () => {
   try {
     expect(await Account.dumpPubKeyHashFromAddr(Mock.addr)).toEqual(
       Mock.publickey_hash
     )
   } catch (err) {
-    console.error('Dump publicKey hash from address Error :', err)
+    console.error('Dump public-key-hash from address Error :', err)
     expect(0).toBe(1)
   }
 })
 
 test('Create an account', async () => {
   try {
-    // create a crypto without privateKey
+    // Create a crypto without private-key
     const { cryptoJSON, P2PKH } = await Account.getCryptoByPwd(Mock.acc_pwd)
-    console.log('New account :', cryptoJSON)
+    // console.log('New account :', cryptoJSON)
     expect(cryptoJSON.address).toEqual(P2PKH)
+
+    // Add to account list
     await accManager.addToAccList(cryptoJSON, {
       name: Mock.acc_name,
       P2PKH
     })
+
     expect(acc_list_result[P2PKH].name).toEqual(Mock.acc_name)
     expect(acc_list_result[P2PKH].P2PKH).toEqual(P2PKH)
   } catch (err) {
@@ -120,14 +123,16 @@ test('Create an account', async () => {
   }
 })
 
-test('Import an account by PrivateKey', async () => {
+test('Import an account by private-key', async () => {
   try {
-    // import a crypto with privateKey
+    // Import a crypto with private-key
     const { cryptoJSON, P2PKH } = await Account.getCryptoByPwd(
       Mock.acc_pwd,
       Mock.privatekey
     )
     expect(cryptoJSON.address).toEqual(P2PKH)
+
+    // Add to account list
     await accManager.addToAccList(cryptoJSON, {
       name: Mock.acc_name,
       P2PKH
@@ -135,18 +140,21 @@ test('Import an account by PrivateKey', async () => {
     expect(acc_list_result[P2PKH].name).toEqual(Mock.acc_name)
     expect(acc_list_result[P2PKH].P2PKH).toEqual(P2PKH)
   } catch (err) {
-    console.error('Import an account by PrivateKey Error :', err)
+    console.error('Import an account by private-key Error :', err)
     expect(0).toBe(1)
   }
 })
 
-test('Import an account by CryptoJson', async () => {
+test('Import an account by crypto-json', async () => {
   try {
+    // Import a crypto with crypto-json
     const { cryptoJSON, P2PKH } = await Account.getCryptoByPwd(
       Mock.acc_pwd,
       await Account.dumpPrivKeyFromCrypto(Keystore.ks, Mock.acc_pwd)
     )
     expect(cryptoJSON.address).toEqual(P2PKH)
+
+    // Add to account list
     await accManager.addToAccList(cryptoJSON, {
       name: Mock.acc_name,
       P2PKH
@@ -154,7 +162,7 @@ test('Import an account by CryptoJson', async () => {
     expect(acc_list_result[P2PKH].name).toEqual(Mock.acc_name)
     expect(acc_list_result[P2PKH].P2PKH).toEqual(P2PKH)
   } catch (err) {
-    console.error('Import an account by CryptoJson Error :', err)
+    console.error('Import an account by crypto-json Error :', err)
     expect(0).toBe(1)
   }
 })

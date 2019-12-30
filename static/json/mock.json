@@ -40,6 +40,7 @@
   "privatekey_2": "9c3e8a720bce41c19d9c63ede573a7a6bb48873b68617218c558e84b70221256",
   "privatekey_3": "7d38661b0c1b5fcd3a93d15ad9973ef459ed10b8b6b9bb223d585d64477d6ae0",
   "privatekey_4": "0fb5104cbf4814dbd5ae3855d6168ceb255f079b9a86bfcd56b965d9d478441b",
+  "privatekey_5": "27119424a9b02b9baeec4f803887d1bb241d70d19031ec6336dc611723708dae",
   "acc_pwd": "1",
   "acc_name": "Little Dog Huang",
   "publickey": "03c7f259ac74f7c324e11f92970be49a74c070cad52ecc52ae23cf0557a7194771",
@@ -83,5 +84,6 @@
         ]
       }
     ]
-  }
+  },
+  "raw_hash": "837ea757f653af567cd181e18b2605a3058ddbad94d4444b7bc43ae2f0404505"
 }

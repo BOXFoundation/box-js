@@ -130,11 +130,6 @@
       "tsx",
       "node"
     ],
-    "globals": {
-      "ts-jest": {
-        "skipBabel": true
-      }
-    },
     "testPathIgnorePatterns": [
       "/(node_modules|lib|coverage|types)/"
     ]

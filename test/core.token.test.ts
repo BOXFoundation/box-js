@@ -1,5 +1,6 @@
 import 'jest'
 import fetch from 'isomorphic-fetch'
+
 import Mock from '../static/json/mock.json'
 import Keystore from '../static/json/keystore.json'
 import Api from '../package/boxd/core/api'
@@ -32,9 +33,9 @@ test('Issue a token & get the token balance', async (done) => {
       crypto: Keystore.ks_2,
       pwd: Mock.acc_pwd
     })
-    // console.log("[Issue a token] tx result :", issue_result)
+    // console.log('[Issue a token] tx result :', issue_result)
     const tx_detail = await api.viewTxDetail(issue_result.hash)
-    // console.log("[Issue a token] tx detail :", tx_detail)
+    // console.log('[Issue a token] tx detail :', tx_detail)
     expect(tx_detail.detail.hash).toEqual(issue_result.hash)
     token_hash = issue_result.hash
     const token_addr = await Util.encodeTokenAddr({
@@ -54,7 +55,7 @@ test('Issue a token & get the token balance', async (done) => {
         tokenHash: token_hash,
         tokenIndex: 0
       })
-      // console.log("[Issue a token] token balances:", token_balances)
+      // console.log('[Issue a token] token balances:', token_balances)
 
       expect(
         Number(token_balances.balances[1]) / Math.pow(10, Mock.token_decimal)
@@ -81,11 +82,11 @@ test('Make a token transaction', async () => {
       crypto: Keystore.ks_2,
       pwd: Mock.acc_pwd
     }
-    // console.log("[Token TX] param :", param)
+    // console.log('[Token TX] param :', param)
     const token_result = await feature.makeTokenTxByCrypto(param)
-    // console.log("[Token TX] result :", token_result)
+    // console.log('[Token TX] result :', token_result)
     const token_detail = await api.viewTxDetail(token_result.hash)
-    // console.log("[Token TX] detail:", token_detail)
+    // console.log('[Token TX] detail:', token_detail)
 
     expect(token_detail.detail.hash).toEqual(token_result.hash)
   } catch (err) {
