@@ -1,4 +1,5 @@
-import scrypt from 'scrypt.js'
+/* eslint-disable @typescript-eslint/member-delimiter-style */
+const crypto = require('crypto')
 import randomBytes from 'randombytes'
 import Aes from './aes'
 import UtilInterface from '../interface'
@@ -7,7 +8,7 @@ const _STRING_ENC_ = 'hex'
 // The AES block size in bytes. see go/1.11.2/libexec/src/crypto/aes/cipher.go
 const aesBlockSize = 16
 const scryptOpt = {
-  n: 1 << 18,
+  n: 16384,
   r: 8,
   p: 1,
   dklen: 32
@@ -27,13 +28,15 @@ namespace CryptoJson {
   export const getDerivedKey = (
     passphrase: string,
     salt: Buffer,
-    n: number,
+    N: number,
     r: number,
     p: number,
     dklen: number
   ) => {
-    return scrypt(Buffer.from(passphrase), salt, n, r, p, dklen)
-    // delete progress
+    return crypto.scryptSync(Buffer.from(passphrase), salt, dklen, {
+      r,
+      p
+    })
   }
 
   /**
@@ -44,8 +47,8 @@ namespace CryptoJson {
    */
   export const getCryptoByPrivKey = (
     privateKey: {
-    toString: (arg0: string) => void;
-    toP2PKHAddress;
+      toString: (arg0: string) => void
+      toP2PKHAddress
     },
     passphrase: string
   ): UtilInterface.Crypto => {

@@ -6,13 +6,13 @@ import Api from '../package/boxd/core/api'
 const api = new Api(fetch, Mock.endpoint_dev, 'http')
 const amount = 1000 * 100000000
 const faucet_addr_list = [
-  Mock.acc_addr,
-  Mock.acc_addr_1,
-  Mock.acc_addr_2,
-  Mock.acc_addr_3,
-  Mock.acc_addr_4
+  Mock.addr,
+  Mock.addr_1,
+  Mock.addr_2,
+  Mock.addr_3,
+  Mock.addr_4
 ]
-// const faucet_addr_list = ['b1b69PiUS3KBjHdG1KpZghzo6FYnhg6SFmn']
+// const faucet_addr_list = ['b1hp5raZBs6D1d6rTrq5Hir3y1gkbtLgNub']
 
 const sleep = (seconds) => {
   return new Promise((resolve) => setTimeout(resolve, seconds * 1000))

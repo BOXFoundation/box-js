@@ -1,19 +1,19 @@
-import "jest"
-import fetch from "isomorphic-fetch"
-import Mock from "../static/json/mock.json"
-import Keystore from "../static/json/keystore.json"
-import Api from "../package/boxd/core/api"
-import Feature from "../package/boxd/core/feature"
-import PrivateKey from "../package/boxd/util/crypto/privatekey"
-import BN from "bn.js"
+import 'jest'
+import fetch from 'isomorphic-fetch'
+import Mock from '../static/json/mock.json'
+import Keystore from '../static/json/keystore.json'
+import Api from '../package/boxd/core/api'
+import Feature from '../package/boxd/core/feature'
+import PrivateKey from '../package/boxd/util/crypto/privatekey'
+import BN from 'bn.js'
 
-const api = new Api(fetch, Mock.endpoint_dev, "http")
-const feature = new Feature(fetch, Mock.endpoint_dev, "http")
+const api = new Api(fetch, Mock.endpoint_dev, 'http')
+const feature = new Feature(fetch, Mock.endpoint_dev, 'http')
 const priv_key = new PrivateKey(
-  "27119424a9b02b9baeec4f803887d1bb241d70d19031ec6336dc611723708dae"
+  '27119424a9b02b9baeec4f803887d1bb241d70d19031ec6336dc611723708dae'
 )
 const raw_hash =
-  "837ea757f653af567cd181e18b2605a3058ddbad94d4444b7bc43ae2f0404505"
+  '837ea757f653af567cd181e18b2605a3058ddbad94d4444b7bc43ae2f0404505'
 
 /* const sleep = seconds => {
   return new Promise(resolve => setTimeout(resolve, seconds * 1000))
@@ -21,21 +21,21 @@ const raw_hash =
 
 jest.setTimeout(15000)
 
-test("Get the BOX balances of the given addresses", async () => {
+test('Get the BOX balances of the given addresses', async () => {
   try {
-    expect(await api.getBalances([Mock.acc_addr_4, Mock.acc_addr_4]))
+    expect(await api.getBalances([Mock.addr_4, Mock.addr_4]))
   } catch (err) {
-    console.error("Get the BOX balances of the given addresses Error :", err)
+    console.error('Get the BOX balances of the given addresses Error :', err)
     expect(0).toBe(1)
   }
 })
 
-test("Sign transaction by privKey || crypto", async () => {
+test('Sign transaction by privKey || crypto', async () => {
   try {
     const unsigned_tx = await api.makeUnsignedBOXTx({
-      from: Mock.acc_addr_4,
-      to: Mock.to_addrs,
-      amounts: Mock.amounts
+      from: Mock.addr_4,
+      to: Mock.to_addr_list,
+      amounts: Mock.amount_list
     })
 
     const signed_tx = await api.signTxByPrivKey({
@@ -43,7 +43,7 @@ test("Sign transaction by privKey || crypto", async () => {
         tx: unsigned_tx.tx,
         rawMsgs: unsigned_tx.rawMsgs
       },
-      privKey: Mock.acc_privateKey_3,
+      privKey: Mock.privatekey_3,
       protocalTx: null
     })
 
@@ -52,28 +52,28 @@ test("Sign transaction by privKey || crypto", async () => {
         tx: unsigned_tx.tx,
         rawMsgs: unsigned_tx.rawMsgs
       },
-      crypto: Keystore.keystore_3,
+      crypto: Keystore.ks_3,
       pwd: Mock.acc_pwd
     })
 
     expect(signed_tx).toEqual(signed_tx_by_crypto)
   } catch (err) {
-    console.error("Sign transaction by privKey or crypto Error :", err)
+    console.error('Sign transaction by privKey or crypto Error :', err)
     expect(0).toBe(1)
   }
 })
 
-test("Sign raw hash", async () => {
+test('Sign raw hash', async () => {
   try {
     const raw_hash_buf = new BN(
-      "51af0edcf37f287d1b706878502832e542a532a051bd1a89ee5523e5b9de2c80"
+      '51af0edcf37f287d1b706878502832e542a532a051bd1a89ee5523e5b9de2c80'
     ).toBuffer()
-    console.log("[Sign raw hash] raw_hash_buf :", raw_hash_buf)
+    console.log('[Sign raw hash] raw_hash_buf :', raw_hash_buf)
 
     const signature = await priv_key.privKey.signMsg(
-      Buffer.from(raw_hash, "hex")
+      Buffer.from(raw_hash, 'hex')
     )
-    console.log("[Sign raw hash] signed_signature :", signature.toString("hex"))
+    console.log('[Sign raw hash] signed_signature :', signature.toString('hex'))
 
     /*TODO const verify_result = await priv_key.privKey.verifyMsg(
       Buffer.from(raw_hash, 'hex'),
@@ -83,27 +83,27 @@ test("Sign raw hash", async () => {
     console.log('Verify result :', verify_result)
     expect(verify_result) */
   } catch (err) {
-    console.error("[Sign raw hash] Error :", err)
+    console.error('[Sign raw hash] Error :', err)
     expect(0).toBe(1)
   }
 })
 
-test("Make a BOX transaction [Backend Serialization]", async () => {
+test('Make a BOX transaction [Backend Serialization]', async () => {
   try {
     const sent_tx = await feature.makeBoxTxByCryptoUseBoxd({
       tx: {
-        from: Mock.acc_addr_3,
-        to: Mock.to_addrs,
-        amounts: Mock.amounts
+        from: Mock.addr_3,
+        to: Mock.to_addr_list,
+        amounts: Mock.amount_list
       },
-      crypto: Keystore.keystore_3,
+      crypto: Keystore.ks_3,
       pwd: Mock.acc_pwd
     })
 
-    expect(sent_tx["code"]).toBe(0)
+    expect(sent_tx['code']).toBe(0)
     expect(sent_tx.hash)
   } catch (err) {
-    console.error("Make a BOX transaction [Backend Serialization] Error :", err)
+    console.error('Make a BOX transaction [Backend Serialization] Error :', err)
     expect(0).toBe(1)
   }
 
@@ -115,11 +115,11 @@ test("Make a BOX transaction [Backend Serialization]", async () => {
 //   try {
 //     const tx_result = await feature.makeBoxTxByCrypto({
 //       tx: {
-//         from: Mock.acc_addr_2,
-//         to: Mock.to_addrs,
-//         amounts: Mock.amounts
+//         from: Mock.addr_2,
+//         to: Mock.to_addr_list,
+//         amounts: Mock.amount_list
 //       },
-//       crypto: Keystore.keystore_3,
+//       crypto: Keystore.ks_3,
 //       pwd: Mock.acc_pwd
 //     })
 //     console.log("tx_result.hash :", tx_result.hash)
@@ -135,9 +135,9 @@ test("Make a BOX transaction [Backend Serialization]", async () => {
 // test("Make a raw transaction (BOX)", async () => {
 //   try {
 //     const created_tx = await api.createRawTx({
-//       addr: Mock.acc_addr_4,
+//       addr: Mock.addr_4,
 //       to: Mock.to_map,
-//       privKey: Mock.acc_privateKey_3
+//       privKey: Mock.privatekey_3
 //     })
 //     const tx_result = await api.sendTx(created_tx)
 //     console.log("tx_result.hash :", tx_result.hash)
@@ -147,9 +147,9 @@ test("Make a BOX transaction [Backend Serialization]", async () => {
 //     // Row
 //     /*TODO const created_tx_row = await api.createRawTx(
 //       {
-//         addr: Mock.acc_addr_4,
+//         addr: Mock.addr_4,
 //         to: Mock.to_map,
-//         privKey: Mock.acc_privateKey_3
+//         privKey: Mock.privatekey_3
 //       },
 //       'is_raw'
 //     )

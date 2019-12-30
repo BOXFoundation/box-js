@@ -1,27 +1,27 @@
-import "jest"
-import fetch from "isomorphic-fetch"
-import Mock from "../static/json/mock.json"
-import Keystore from "../static/json/keystore.json"
-import Api from "../package/boxd/core/api"
-import Feature from "../package/boxd/core/feature"
-import Util from "../package/boxd/util/util"
+import 'jest'
+import fetch from 'isomorphic-fetch'
+import Mock from '../static/json/mock.json'
+import Keystore from '../static/json/keystore.json'
+import Api from '../package/boxd/core/api'
+import Feature from '../package/boxd/core/feature'
+import Util from '../package/boxd/util/util'
 
-const api = new Api(fetch, Mock.endpoint_dev, "http")
-const feature = new Feature(fetch, Mock.endpoint_dev, "http")
+const api = new Api(fetch, Mock.endpoint_dev, 'http')
+const feature = new Feature(fetch, Mock.endpoint_dev, 'http')
 let token_hash
 
-const sleep = seconds => {
-  return new Promise(resolve => setTimeout(resolve, seconds * 1000))
+const sleep = (seconds) => {
+  return new Promise((resolve) => setTimeout(resolve, seconds * 1000))
 }
 
 jest.setTimeout(20000)
 
-test("Issue a token & get the token balance", async done => {
+test('Issue a token & get the token balance', async (done) => {
   try {
     const issue_result = await feature.issueTokenByCrypto({
       tx: {
-        issuer: Mock.acc_addr_2,
-        owner: Mock.acc_addr_2,
+        issuer: Mock.addr_2,
+        owner: Mock.addr_2,
         tag: {
           name: Mock.token_name,
           symbol: Mock.token_symbol,
@@ -29,7 +29,7 @@ test("Issue a token & get the token balance", async done => {
           decimal: Mock.token_decimal
         }
       },
-      crypto: Keystore.keystore_2,
+      crypto: Keystore.ks_2,
       pwd: Mock.acc_pwd
     })
     // console.log("[Issue a token] tx result :", issue_result)
@@ -50,7 +50,7 @@ test("Issue a token & get the token balance", async done => {
     // test [Api.getTokenbalances]
     setTimeout(async () => {
       const token_balances = await api.getTokenbalances({
-        addrs: [Mock.acc_addr_2, Mock.acc_addr_2],
+        addrs: [Mock.addr_2, Mock.addr_2],
         tokenHash: token_hash,
         tokenIndex: 0
       })
@@ -63,22 +63,22 @@ test("Issue a token & get the token balance", async done => {
       done()
     }, 5000)
   } catch (err) {
-    console.error("Issue a token & get the token balance Error :", err)
+    console.error('Issue a token & get the token balance Error :', err)
     expect(0).toBe(1)
   }
 })
 
-test("Make a token transaction", async () => {
+test('Make a token transaction', async () => {
   try {
     const param = {
       tx: {
         amounts: [1000, 2000],
-        from: Mock.acc_addr_2,
-        to: Mock.to_addrs,
+        from: Mock.addr_2,
+        to: Mock.to_addr_list,
         token_hash,
         token_index: 0
       },
-      crypto: Keystore.keystore_2,
+      crypto: Keystore.ks_2,
       pwd: Mock.acc_pwd
     }
     // console.log("[Token TX] param :", param)
@@ -89,7 +89,7 @@ test("Make a token transaction", async () => {
 
     expect(token_detail.detail.hash).toEqual(token_result.hash)
   } catch (err) {
-    console.error("Make a token transaction Error :", err)
+    console.error('Make a token transaction Error :', err)
     expect(0).toBe(1)
   }
 })

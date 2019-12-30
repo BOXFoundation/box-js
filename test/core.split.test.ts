@@ -12,11 +12,11 @@ test('Create a split contract', async () => {
   try {
     const tx_result = await feature.makeSplitTxByCrypto({
       tx: {
-        from: Mock.acc_addr_1,
+        from: Mock.addr_1,
         addrs: Mock.to_addr,
         weights: Mock.split_weights
       },
-      crypto: Keystore.keystore_1,
+      crypto: Keystore.ks_1,
       pwd: Mock.acc_pwd
     })
     const tx_detail = await api.viewTxDetail(tx_result.hash)
