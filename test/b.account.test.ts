@@ -83,7 +83,7 @@ test('Dump public-key-hash from address', async () => {
 test('Dump private-key from crypto-json', async () => {
   try {
     expect(
-      await Account.dumpPrivKeyFromCrypto(Keystore.ks, Mock.acc_pwd)
+      await Account.dumpPrivKeyFromCrypto(Keystore.ks, Mock.acc_pwd) // todo
     ).toEqual(Mock.privatekey)
   } catch (err) {
     console.error('Dump private-key from crypto-json Error :', err)

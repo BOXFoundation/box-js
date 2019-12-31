@@ -10,7 +10,7 @@ import PrivateKey from '../package/boxd/util/crypto/privatekey'
 
 const api = new Api(fetch, Mock.endpoint_dev, 'http')
 const feature = new Feature(fetch, Mock.endpoint_dev, 'http')
-const priv_key = new PrivateKey(Mock.privatekey_5)
+const priv_key = new PrivateKey(Mock.privatekey_jimmy)
 
 /* const sleep = seconds => {
   return new Promise(resolve => setTimeout(resolve, seconds * 1000))

@@ -31,7 +31,7 @@ test('faucet', async () => {
       }
     }
   } catch (err) {
-    console.log('[faucet] Error :', err)
+    console.log('[Faucet] Error :', err)
     expect(0).toBe(1)
   }
 })
