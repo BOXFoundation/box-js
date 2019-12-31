@@ -32,9 +32,9 @@ var AccountManager = /** @class */ (function () {
         if (this.acc_list[address]) {
             console.warn('This Account already existed. It will be rewrited...');
         }
-        this.acc_list[address] = __assign({ cryptoJSON: cryptoJSON }, {
+        this.acc_list[address] = __assign(__assign({ cryptoJSON: cryptoJSON }, {
             updateTime: updateTime
-        }, otherInfo);
+        }), otherInfo);
         this.update_func && this.update_func(this.acc_list);
     };
     /**

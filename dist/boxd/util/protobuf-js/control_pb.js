@@ -4528,13 +4528,13 @@ proto.rpcpb.DelegatesReq.serializeBinaryToWriter = function (message, writer) {
 proto.rpcpb.DelegatesReq.Type = {
   BOOKKEEPERS: 0,
   DELEGATES: 1,
-  CANDIDATES: 2
+  CANDIDATES: 2 };
 
 
-  /**
-                 * optional Type type = 1;
-                 * @return {!proto.rpcpb.DelegatesReq.Type}
-                 */ };
+/**
+                    * optional Type type = 1;
+                    * @return {!proto.rpcpb.DelegatesReq.Type}
+                    */
 proto.rpcpb.DelegatesReq.prototype.getType = function () {
   return (/** @type {!proto.rpcpb.DelegatesReq.Type} */jspb.Message.getFieldWithDefault(this, 1, 0));
 };

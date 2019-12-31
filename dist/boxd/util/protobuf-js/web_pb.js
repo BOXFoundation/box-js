@@ -738,12 +738,12 @@ proto.rpcpb.RegisterReq.oneofGroups_ = [
        */
 proto.rpcpb.RegisterReq.InfoCase = {
   INFO_NOT_SET: 0,
-  LOGS_REQ: 3
+  LOGS_REQ: 3 };
 
 
-  /**
-               * @return {proto.rpcpb.RegisterReq.InfoCase}
-               */ };
+/**
+                  * @return {proto.rpcpb.RegisterReq.InfoCase}
+                  */
 proto.rpcpb.RegisterReq.prototype.getInfoCase = function () {
   return (/** @type {proto.rpcpb.RegisterReq.InfoCase} */jspb.Message.computeOneofCase(this, proto.rpcpb.RegisterReq.oneofGroups_[0]));
 };
@@ -968,12 +968,12 @@ proto.rpcpb.ListenedData.DataCase = {
   DATA_NOT_SET: 0,
   BLOCK: 2,
   LOGS: 3,
-  INFO: 4
+  INFO: 4 };
 
 
-  /**
-           * @return {proto.rpcpb.ListenedData.DataCase}
-           */ };
+/**
+              * @return {proto.rpcpb.ListenedData.DataCase}
+              */
 proto.rpcpb.ListenedData.prototype.getDataCase = function () {
   return (/** @type {proto.rpcpb.ListenedData.DataCase} */jspb.Message.computeOneofCase(this, proto.rpcpb.ListenedData.oneofGroups_[0]));
 };
@@ -4005,13 +4005,13 @@ proto.rpcpb.TxDetail.TxType = {
   CONTRACT: 2,
   TOKEN_ISSUE: 4,
   TOKEN_TRANSFER: 5,
-  SPLIT_ADDR: 8
+  SPLIT_ADDR: 8 };
 
 
-  /**
-                 * optional string hash = 1;
-                 * @return {string}
-                 */ };
+/**
+                    * optional string hash = 1;
+                    * @return {string}
+                    */
 proto.rpcpb.TxDetail.prototype.getHash = function () {
   return (/** @type {string} */jspb.Message.getFieldWithDefault(this, 1, ""));
 };
@@ -4368,12 +4368,12 @@ proto.rpcpb.TxOutDetail.AppendixCase = {
   TOKEN_ISSUE_INFO: 5,
   TOKEN_TRANSFER_INFO: 6,
   SPLIT_CONTRACT_INFO: 7,
-  CONTRACT_INFO: 8
+  CONTRACT_INFO: 8 };
 
 
-  /**
-                    * @return {proto.rpcpb.TxOutDetail.AppendixCase}
-                    */ };
+/**
+                       * @return {proto.rpcpb.TxOutDetail.AppendixCase}
+                       */
 proto.rpcpb.TxOutDetail.prototype.getAppendixCase = function () {
   return (/** @type {proto.rpcpb.TxOutDetail.AppendixCase} */jspb.Message.computeOneofCase(this, proto.rpcpb.TxOutDetail.oneofGroups_[0]));
 };
@@ -4591,13 +4591,13 @@ proto.rpcpb.TxOutDetail.TxOutType = {
   NEW_SPLIT_ADDR: 5,
   PAY_TO_SCRIPT_HASH: 6,
   CONTRACT_CREATE: 7,
-  CONTRACT_CALL: 8
+  CONTRACT_CALL: 8 };
 
 
-  /**
-                    * optional string addr = 1;
-                    * @return {string}
-                    */ };
+/**
+                       * optional string addr = 1;
+                       * @return {string}
+                       */
 proto.rpcpb.TxOutDetail.prototype.getAddr = function () {
   return (/** @type {string} */jspb.Message.getFieldWithDefault(this, 1, ""));
 };

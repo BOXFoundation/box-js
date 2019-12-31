@@ -13,13 +13,15 @@ const tsProject = ts.createProject('tsconfig.json')
 const babel = require('gulp-babel')
 
 /* watch browserify */
-const watchedBrowserify = watchify(browserify({
-  basedir: '.',
-  debug: true,
-  entries: ['package/index.ts'],
-  cache: {},
-  packageCache: {}
-}).plugin(tsify))
+const watchedBrowserify = watchify(
+  browserify({
+    basedir: '.',
+    debug: true,
+    entries: ['package/index.ts'],
+    cache: {},
+    packageCache: {}
+  }).plugin(tsify)
+)
 
 const watchedBundle = () => {
   return watchedBrowserify
@@ -30,16 +32,20 @@ const watchedBundle = () => {
     .bundle()
     .pipe(source('bundle.js'))
     .pipe(buffer())
-    .pipe(sourcemaps.init({
-      loadMaps: true
-    }))
-    .pipe(uglify({
-      compress: {
-        warnings: false,
-        drop_console: true,
-        drop_debugger: true
-      }
-    }))
+    .pipe(
+      sourcemaps.init({
+        loadMaps: true
+      })
+    )
+    .pipe(
+      uglify({
+        compress: {
+          warnings: false,
+          drop_console: true,
+          drop_debugger: true
+        }
+      })
+    )
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('boxdjs-script'))
 }
@@ -51,37 +57,48 @@ const browserifyBundle = () => {
     entries: ['package/index.ts'],
     cache: {},
     packageCache: {}
-  }).plugin(tsify).transform('babelify', {
-    presets: ['env'],
-    extensions: ['.ts']
   })
+    .plugin(tsify)
+    .transform('babelify', {
+      presets: ['env'],
+      extensions: ['.ts']
+    })
     .bundle()
     .pipe(source('bundle.js'))
     .pipe(buffer())
-    .pipe(sourcemaps.init({
-      loadMaps: true
-    }))
-    .pipe(uglify({
-      compress: {
-        warnings: false,
-        drop_console: true, // console filter
-        drop_debugger: true // debugger filter
-      }
-    }))
+    .pipe(
+      sourcemaps.init({
+        loadMaps: true
+      })
+    )
+    .pipe(
+      uglify({
+        compress: {
+          warnings: false,
+          drop_console: true, // console filter
+          drop_debugger: true // debugger filter
+        }
+      })
+    )
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('boxdjs-script'))
 }
 
-gulp.task('watch:script', function () {
+gulp.task('watch:script', function() {
   return watchedBundle()
 })
 
-gulp.task('build:script', function () {
+gulp.task('build:script', function() {
   return browserifyBundle()
 })
 
-gulp.task('build:node', function () {
-  return gulp.src('package/**/*.ts').pipe(tsProject()).js.pipe(gulp.dest('dist')).pipe(gulp.src('package/**/*.js').pipe(babel())).pipe(gulp.dest('dist'))
+gulp.task('build:node', function() {
+  return gulp
+    .src('package/**/*.ts')
+    .pipe(tsProject())
+    .js.pipe(gulp.dest('dist'))
+    .pipe(gulp.src('package/**/*.js').pipe(babel()))
+    .pipe(gulp.dest('dist'))
 })
 
 gulp.task('build', gulp.series(['build:node', 'build:script']))

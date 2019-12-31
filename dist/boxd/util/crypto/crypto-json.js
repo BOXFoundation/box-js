@@ -14,14 +14,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var scrypt_js_1 = __importDefault(require("scrypt.js"));
+/* eslint-disable @typescript-eslint/member-delimiter-style */
+var crypto = require('crypto');
 var randombytes_1 = __importDefault(require("randombytes"));
 var aes_1 = __importDefault(require("./aes"));
 var _STRING_ENC_ = 'hex';
 // The AES block size in bytes. see go/1.11.2/libexec/src/crypto/aes/cipher.go
 var aesBlockSize = 16;
 var scryptOpt = {
-    n: 1 << 18,
+    n: 16384,
     r: 8,
     p: 1,
     dklen: 32
@@ -38,9 +39,11 @@ var CryptoJson;
      * @param [dklen] number
      * @returns Buffer
      */
-    CryptoJson.getDerivedKey = function (passphrase, salt, n, r, p, dklen) {
-        return scrypt_js_1.default(Buffer.from(passphrase), salt, n, r, p, dklen);
-        // delete progress
+    CryptoJson.getDerivedKey = function (passphrase, salt, N, r, p, dklen) {
+        return crypto.scryptSync(Buffer.from(passphrase), salt, dklen, {
+            r: r,
+            p: p
+        });
     };
     /**
      * @export get-Crypto-by-PrivateKey&Passphrase

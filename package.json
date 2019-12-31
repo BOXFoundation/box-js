@@ -51,7 +51,6 @@
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.5.5",
-    "@babel/runtime": "^7.6.3",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
     "@babel/plugin-proposal-decorators": "^7.0.0",
     "@babel/plugin-proposal-do-expressions": "^7.0.0",
@@ -71,6 +70,7 @@
     "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/register": "^7.0.0",
+    "@babel/runtime": "^7.6.3",
     "@babel/runtime-corejs2": "^7.6.3",
     "@types/bitcore-lib": "^0.15.1",
     "@types/bs58": "^4.0.0",
@@ -83,6 +83,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.4.2",
+    "babel-plugin-add-module-exports": "^1.0.2",
     "babel-plugin-promise": "^1.0.3",
     "babel-preset-env": "^1.7.0",
     "babelify": "^10.0.0",
