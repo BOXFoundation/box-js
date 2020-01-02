@@ -1,8 +1,10 @@
-# boxd-js
+# boxd-js ![](https://img.shields.io/github/issues/BOXFoundation/box-js) ![](https://travis-ci.com/BOXFoundation/boxd.svg?branch=master)
+
+By **[Contentbox](https://contentbox.one/)**
 
 A javascript API for integration with boxd-based blockchain using [Boxd RPC API](https://github.com/BOXFoundation/boxd) on nodejs or browser.
 
-Documentation can be found [here]().
+Documentation can be found [here](https://github.com/BOXFoundation/box-js/wiki).
 
 ![contentbox](https://contentbox.one/img/home-background.png)
 
@@ -21,12 +23,6 @@ npm i boxdjs
 ### Browser Distribution
 
 Clone this repository locally then run `npm run build:node`. The browser distribution will be located in `dist` and can be directly copied into your project repository. The `dist` folder contains minified bundles ready for production, along with source mapped versions of the library for debugging.
-
-### CDN
-
-```
-<script src="https://todo"></script>
-```
 
 ## Import
 
