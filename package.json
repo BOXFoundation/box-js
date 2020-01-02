@@ -121,7 +121,7 @@
     "transformIgnorePatterns": [
       "<rootDir>/node_modules/(moment|core-js|babel-runtime|regenerator-runtime|lodash)/"
     ],
-    "collectCoverage": true,
+    "collectCoverage": false,
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(tsx?)$",
     "moduleFileExtensions": [
       "js",
