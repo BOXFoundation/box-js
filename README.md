@@ -1,86 +1,118 @@
-# boxd-js
+# boxd-js ![](https://img.shields.io/github/issues/BOXFoundation/box-js) ![](https://travis-ci.com/BOXFoundation/boxd.svg?branch=master)
 
-A Javascript implementation of BOX Payout blockchain on NodeJS or Browser.
+By **[Contentbox](https://contentbox.one/)**
 
-## NPM
+A javascript API for integration with boxd-based blockchain using [Boxd RPC API](https://github.com/BOXFoundation/boxd) on nodejs or browser.
 
-The official distribution package can be found at [npm](https://todo).
+Documentation can be found [here](https://github.com/BOXFoundation/box-js/wiki).
+
+![contentbox](https://contentbox.one/img/home-background.png)
 
 ## Installation
 
-### NodeJS Dependency
+### NPM
 
-`npm i boxd-js`
+The official distribution package can be found at [npm](https://www.npmjs.com/package/boxdjs).
 
-### Build
+### Add dependency to your project
 
-`npm run build`
+```
+npm i boxdjs
+```
 
-### Test
+### Browser Distribution
 
-`npm run test`
+Clone this repository locally then run `npm run build:node`. The browser distribution will be located in `dist` and can be directly copied into your project repository. The `dist` folder contains minified bundles ready for production, along with source mapped versions of the library for debugging.
+
+## Import
+
+### ES Modules
+
+Supported using TypeScript, [webpack](https://webpack.js.org/api/module-methods), or [Node.js with `--experimental-modules` flag](https://nodejs.org/api/esm.html)
+
+```js
+import boxdjs from "boxdjs";
+import { Account, AccountManager, Api, Feature, Contract, Util } from "boxdjs";
+```
+
+### CommonJS
+
+Importing using commonJS syntax is supported by Node.js out of the box.
+
+```js
+const boxdjs = require("boxdjs").default;
+```
+
+## Setup
+
+### Build (nodejs & browser)
+
+```
+npm run build
+```
+
+### Test (Jest)
+
+```
+npm run test
+```
 
 ## Project Structure
 
-```
+```bash
 .
-├── .vscode  # vscode config
-├── coverage  # test coverage
-├── dist  # builded
-│
-├── src
-│   └── boxd
-│       ├── boxd.ts  # boxd output file
-│       ├── account
-│       │   ├── account-manager.ts  # accounts manager
-│       │   └── account.ts  # account core
-│       ├── contract  # todo
-│       ├── core  # boxd:core
-│       │   ├── api.ts  # core:api function
-│       │   ├── feature.ts  # core:feature function
-│       │   ├── block
-│       │   │   ├── request.ts  # api request data structure
-│       │   │   └── response.ts  # api response data structure
-│       │   ├── split
-│       │   │   ├── request.ts
-│       │   │   └── response.ts
-│       │   ├── token
-│       │   │   ├── request.ts
-│       │   │   ├── response.ts
-│       │   │   └── util.ts  # token tools
-│       │   └── tx
-│       │       ├── request.ts
-│       │       └── response.ts
-│       └── util  # boxd tools
-│           ├── crypto   # crypto tools
-│           │   ├── aes.ts  # [crypto-js](https://www.npmjs.com/package/crypto-js) :aes
-│           │   ├── ecpair.ts  # [bitcoin-lib](https://www.npmjs.com/package/bitcoinjs-lib) :ecpair
-│           │   ├── hash.ts
-│           │   ├── keystore.ts  # account keystore
-│           │   └── privatekey.ts  # privatekey class
-│           ├── fetch.ts  # fetch class
-│           ├── interface.ts  # util data structure
-│           ├── util.ts  # util output file
-│           ├── var.ts  # variable
-│           └── verify.ts  # format verify
-│
-├── test  # jest test
-│   ├── account.test.ts
+├── boxdjs-script # packages used in the <script>
+├── dist
+│   ├── boxd
+│   ├── browser.js # packages used in the browser
+│   └── index.js # packages used in the nodejs
+├── package # source
+│   ├── boxd # package name
+│   │   ├── account
+│   │   │   ├── account-manager.ts # mature account system
+│   │   │   └── account.ts # account API
+│   │   ├── core
+│   │   │   ├── token # token API
+│   │   │   ├── block # block & node API
+│   │   │   ├── contract # contract API
+│   │   │   ├── tx # BOX transaction API
+│   │   │   ├── split # split contract API
+│   │   │   ├── api.ts # API export
+│   │   │   └── feature.ts # encapsulated API export
+│   │   └── util # utility functions
+│   ├── browser.ts # package export for browser
+│   └── index.ts # package export for nodejs
+├── static
+│   ├── json
+│   │   ├── keystore.json # local key-store for test
+│   │   └── mock.json # local mock data for test
+│   └── protobuf
+├── test
+│   ├── a.faucet.test.ts
+│   ├── b.account.test.ts
+│   ├── b.util.test.ts
+│   ├── core.abi.test.ts
 │   ├── core.block.test.ts
+│   ├── core.contract.test.ts
 │   ├── core.split.test.ts
 │   ├── core.token.test.ts
 │   ├── core.tx.test.ts
-│   └── json  # test data json
-│       ├── data.json
-│       └── keystore.json
-│ 
-├── types  # typescript declaration
-│    └── index.d.ts
-│
-├── gulpfile.js  # [gulp](https://gulpjs.com/)
-├── note.md
-├── package.json  # npm package config
+│   ├── z.contract-test.js
+│   └── z.rpc-test.ts
+├── .babelrc  # [Babel](https://babeljs.io/)
+├── .prettierrc  # [Prettier](https://prettier.io/)
+├── .eslintrc.json  # [Eslint](https://eslint.org/)
+├── .gitignore
+├── tsconfig.json # [Typescript](https://www.typescriptlang.org/)
+├── gulpfile.js # [Gulp](https://gulpjs.com/)
+├── package-lock.json
+├── package.json
+├── LICENSE
 ├── README.md
-└── tsconfig.json  # typescript config
-
+└── types
+    └── index.d.ts # typescript declaration
 ```
+
+## License
+
+[MIT](./LICENSE)
