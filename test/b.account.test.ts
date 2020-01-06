@@ -102,7 +102,7 @@ test('Dump public-key-hash from address', async () => {
   }
 })
 
-test('Create an account', async () => {
+test('Create an account by password', async () => {
   try {
     // Create a crypto without private-key
     const { cryptoJSON, P2PKH } = await Account.getCryptoByPwd(Mock.acc_pwd)
@@ -118,12 +118,12 @@ test('Create an account', async () => {
     expect(acc_list_result[P2PKH].name).toEqual(Mock.acc_name)
     expect(acc_list_result[P2PKH].P2PKH).toEqual(P2PKH)
   } catch (err) {
-    console.error('Create an account Error :', err)
+    console.error('Create an account by password Error :', err)
     expect(0).toBe(1)
   }
 })
 
-test('Import an account by private-key', async () => {
+test('Import an account by (password + private-key)', async () => {
   try {
     // Import a crypto with private-key
     const { cryptoJSON, P2PKH } = await Account.getCryptoByPwd(
@@ -140,12 +140,12 @@ test('Import an account by private-key', async () => {
     expect(acc_list_result[P2PKH].name).toEqual(Mock.acc_name)
     expect(acc_list_result[P2PKH].P2PKH).toEqual(P2PKH)
   } catch (err) {
-    console.error('Import an account by private-key Error :', err)
+    console.error('Import an account by (password + private-key) Error :', err)
     expect(0).toBe(1)
   }
 })
 
-test('Import an account by crypto-json', async () => {
+test('Import an account by (password + key-store)', async () => {
   try {
     // Import a crypto with crypto-json
     const { cryptoJSON, P2PKH } = await Account.getCryptoByPwd(
@@ -162,7 +162,7 @@ test('Import an account by crypto-json', async () => {
     expect(acc_list_result[P2PKH].name).toEqual(Mock.acc_name)
     expect(acc_list_result[P2PKH].P2PKH).toEqual(P2PKH)
   } catch (err) {
-    console.error('Import an account by crypto-json Error :', err)
+    console.error('Import an account by (password + key-store) Error :', err)
     expect(0).toBe(1)
   }
 })

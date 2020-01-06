@@ -23,7 +23,7 @@ export default class Feature extends Fetch {
   }
 
   /**
-   * @export Sign_transaction_by_priv_key.json
+   * @export Sign_transaction_by_private_key
    * @param [*unsigned_tx]
    * @param [*priv_key_hex_str]
    * @returns [signed_tx]
@@ -214,7 +214,7 @@ export default class Feature extends Fetch {
   }
 
   /**
-   * @export Make_contract_transaction_by_priv_key.json
+   * @export Make_contract_transaction_by_private_key
    * @param [*org_tx]
    * @param [*priv_key_hex_str]
    * @returns [Promise<sent_tx>] { hash: string }

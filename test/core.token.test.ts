@@ -47,6 +47,7 @@ test('Issue a token & get the token balance', async (done) => {
     const { opHash, index } = await Util.decodeTokenAddr(token_addr)
     expect(opHash).toEqual(token_hash)
     expect(index).toEqual(0)
+    console.log('<Issue a token & get balance> token hash :', token_hash)
 
     // test [Api.getTokenbalances]
     setTimeout(async () => {
@@ -64,7 +65,7 @@ test('Issue a token & get the token balance', async (done) => {
       done()
     }, 5000)
   } catch (err) {
-    console.error('Issue a token & get the token balance Error :', err)
+    console.error('Issue a token & get balance Error :', err)
     expect(0).toBe(1)
   }
 })
