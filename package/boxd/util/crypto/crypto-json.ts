@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/member-delimiter-style */
-const crypto = require('crypto')
+import scrypt from 'scrypt.js'
 import randomBytes from 'randombytes'
 import Aes from './aes'
 import UtilInterface from '../interface'
@@ -8,7 +8,7 @@ const _STRING_ENC_ = 'hex'
 // The AES block size in bytes. see go/1.11.2/libexec/src/crypto/aes/cipher.go
 const aesBlockSize = 16
 const scryptOpt = {
-  n: 16384,
+  n: 1 << 18,
   r: 8,
   p: 1,
   dklen: 32
@@ -28,15 +28,13 @@ namespace CryptoJson {
   export const getDerivedKey = (
     passphrase: string,
     salt: Buffer,
-    N: number,
+    n: number,
     r: number,
     p: number,
     dklen: number
   ) => {
-    return crypto.scryptSync(Buffer.from(passphrase), salt, dklen, {
-      r,
-      p
-    })
+    return scrypt(Buffer.from(passphrase), salt, n, r, p, dklen)
+    // delete progress
   }
 
   /**

@@ -126,11 +126,11 @@ var CommonUtil;
             var and_len = and_buf.length;
             var and_len_str = CommonUtil.to16StrFromNumber(and_len);
             and_len_str = and_len_str.padStart(2, '0');
-            console.log('[opcode add] and_len_str :', and_len_str);
+            // console.log('[opcode add] and_len_str :', and_len_str)
             if (and_len < OP_PUSH_DATA_1) {
-                console.log('=> OP_PUSH_DATA_1');
-                console.log('[opcode add] this.opcode :', this.opcode);
-                console.log('[opcode add] and_len_str :', and_len_str);
+                // console.log('=> OP_PUSH_DATA_1')
+                // console.log('[opcode add] this.opcode :', this.opcode)
+                // console.log('[opcode add] and_len_str :', and_len_str)
                 this.opcode = Buffer.concat([
                     this.opcode,
                     Buffer.from(and_len_str, 'hex')
@@ -257,7 +257,7 @@ var CommonUtil;
         return CommonUtil.isHexPrefixed(str) ? str.slice(2) : str;
     };
     /**
-     * @func # Convert hex address to box address format
+     * @func Convert_hex_address_to_box_address_format
      * @param [*prefix] string # the box address prefix
      * @param [*hexAddr] string # hex address without '0x' prefix
      * @return [string] box address, starting with "b"

@@ -29,8 +29,8 @@
   "dependencies": {
     "@grpc/proto-loader": "^0.5.1",
     "base-x": "3.0.2",
-    "bn.js": "^4.11.5",
     "bitcore-lib": "^0.16.0",
+    "bn.js": "^5.1.1",
     "bs58": "^4.0.1",
     "create-hash": "^1.2.0",
     "crypto-js": "^3.1.9-1",
@@ -41,6 +41,7 @@
     "lodash": "^4.17.11",
     "npm": "^6.12.0",
     "randombytes": "^2.0.6",
+    "scrypt.js": "^0.3.0",
     "secp256k1": "^3.7.1",
     "underscore": "^1.9.1",
     "web3-core-helpers": "^1.2.1",
