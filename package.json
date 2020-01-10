@@ -1,42 +1,136 @@
 {
   "name": "boxdjs",
-  "version": "0.0.9",
-  "description": "boxd jsonrpc",
-  "main": "dist/index.js",
+  "version": "1.0.3",
+  "description": "A Javascript implementation of BOX Payout blockchain on NodeJS or Browser.",
+  "main": "dist/boxd/boxd.js",
   "types": "./types/index.d.ts",
   "scripts": {
-    "lock": "npm shrinkwrap",
-    "test": "babel-node test/tx.test.js",
-    "postinstall": "npm run build",
-    "test1": "npx mocha --require babel-register --require ./test/test_helper.js --recursive",
-    "build": "npx rimraf dist && npx babel src --out-dir dist --source-maps"
-  },
-  "author": "",
-  "license": "MIT",
-  "devDependencies": {
-    "babel-register": "^6.26.0",
-    "babel-eslint": "^10.0.1",
-    "chai": "^4.2.0",
-    "mocha": "^5.2.0",
-    "node-fetch": "^2.3.0"
+    "test": "jest --colors",
+    "lint": "eslint --ext .js --ext .ts src",
+    "lint:fix": "eslint --fix --ext .js --fix --ext .ts src",
+    "build": "gulp",
+    "build:node": "gulp build:node",
+    "build:web": "gulp build:web",
+    "watch:web": "gulp watch:web",
+    "lock": "npm shrinkwrap--dev"
   },
   "dependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-plugin-promise": "^1.0.3",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-1": "^6.24.1",
     "bitcore-lib": "^0.16.0",
+    "bn.js": "^4.11.5",
     "bs58": "^4.0.1",
     "create-hash": "^1.2.0",
     "crypto-js": "^3.1.9-1",
-    "eccrypto": "^1.1.0",
+    "google-protobuf": "^3.9.0-rc.1",
+    "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.11",
-    "protobufjs": "^6.8.8",
     "randombytes": "^2.0.6",
-    "rimraf": "^2.6.3",
     "scrypt.js": "^0.2.0",
     "tiny-secp256k1": "^1.0.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-proposal-decorators": "^7.0.0",
+    "@babel/plugin-proposal-do-expressions": "^7.0.0",
+    "@babel/plugin-proposal-export-default-from": "^7.0.0",
+    "@babel/plugin-proposal-export-namespace-from": "^7.0.0",
+    "@babel/plugin-proposal-function-sent": "^7.0.0",
+    "@babel/plugin-proposal-json-strings": "^7.0.0",
+    "@babel/plugin-proposal-logical-assignment-operators": "^7.0.0",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.0.0",
+    "@babel/plugin-proposal-numeric-separator": "^7.0.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.0.0",
+    "@babel/plugin-proposal-pipeline-operator": "^7.0.0",
+    "@babel/plugin-proposal-throw-expressions": "^7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-syntax-import-meta": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.0.0",
+    "@babel/polyfill": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "@babel/runtime-corejs2": "^7.5.5",
+    "@types/bitcore-lib": "^0.15.1",
+    "@types/bs58": "^4.0.0",
+    "@types/create-hash": "^1.2.0",
+    "@types/isomorphic-fetch": "0.0.35",
+    "@types/jest": "^24.0.11",
+    "@types/node": "^11.13.7",
+    "@types/tiny-secp256k1": "^1.0.0",
+    "@typescript-eslint/eslint-plugin": "^1.9.0",
+    "@typescript-eslint/parser": "^1.9.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^23.4.2",
+    "babel-plugin-promise": "^1.0.3",
+    "babel-preset-env": "^1.7.0",
+    "babelify": "^10.0.0",
+    "browserify": "^16.2.3",
+    "eslint": "^5.16.0",
+    "gulp": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-typescript": "^5.0.1",
+    "gulp-uglify": "^3.0.2",
+    "gulp-uglify-es": "^1.0.4",
+    "gulp-util": "^3.0.8",
+    "jest": "^24.7.1",
+    "ts-jest": "^24.0.2",
+    "tsify": "^4.0.1",
+    "typescript": "^3.4.5",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0",
+    "watchify": "^3.11.1"
+  },
+  "directories": {
+    "boxdjs": "src/boxd",
+    "test": "test",
+    "builded for nodejs": "dist",
+    "builded for browser": "dist-web"
+  },
+  "keywords": [
+    "box",
+    "boxd",
+    "contentbox",
+    "blockchain",
+    "cryptocurrency",
+    "transaction",
+    "payment"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BOXFoundation/box-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BOXFoundation/box-js/issues"
+  },
+  "homepage": "https://github.com/BOXFoundation/box-js#readme",
+  "author": "Contentbox",
+  "license": "MIT",
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest",
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/(moment|core-js|babel-runtime|regenerator-runtime|lodash)/"
+    ],
+    "collectCoverage": false,
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(tsx?)$",
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "jsx",
+      "ts",
+      "tsx",
+      "node"
+    ],
+    "globals": {
+      "ts-jest": {
+        "skipBabel": true
+      }
+    },
+    "testPathIgnorePatterns": [
+      "/(node_modules|lib|coverage|types)/"
+    ]
   }
 }
