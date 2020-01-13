@@ -112,6 +112,6 @@ npm run test
 
 ## License
 
-[MIT](./LICENSE)
+BOX Payout is released under the MIT License. Please refer to the [LICENSE](./LICENSE) file that accompanies this project for more information including complete terms and conditions.
 
 ### **By [Contentbox](https://contentbox.one/)**
