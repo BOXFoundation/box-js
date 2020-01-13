@@ -13,10 +13,11 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -54,86 +55,212 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var bn_js_1 = __importDefault(require("bn.js"));
 var fetch_1 = require("../util/fetch");
 var privatekey_1 = __importDefault(require("../util/crypto/privatekey"));
-var util_1 = __importDefault(require("./tx/util"));
+var util_1 = __importDefault(require("../util/util"));
 /**
  * @class [Api]
  * @extends Fetch
- * @constructs _fetch # user incoming
- * @constructs endpoint string # user incoming
+ * @constructs _fetch user incoming
+ * @constructs endpoint user incoming
+ * @constructs fetch_type http / rpc
  */
 var Api = /** @class */ (function (_super) {
     __extends(Api, _super);
     function Api(_fetch, endpoint, fetch_type) {
         return _super.call(this, _fetch, endpoint, fetch_type) || this;
     }
-    /* Block */
+    /* == Node & Block == */
+    /**
+     * @func [Get_node_info]
+     * @Permission Admin
+     */
     Api.prototype.getNodeInfo = function () {
-        return _super.prototype.fetch.call(this, '/ctl/getnodeinfo');
+        return _super.prototype.fetch.call(this, "/ctl/getnodeinfo");
     };
-    Api.prototype.getBlockHashByHeight = function (blockHeight) {
-        return _super.prototype.fetch.call(this, '/ctl/getblockhash', { blockHeight: blockHeight });
+    Api.prototype.getBlockHashByHeight = function (height) {
+        return _super.prototype.fetch.call(this, "/ctl/getblockhash", { height: height });
     };
-    Api.prototype.getBlockByHash = function (blockHash) {
-        return _super.prototype.fetch.call(this, '/ctl/getblock', { blockHash: blockHash });
+    Api.prototype.getCurrentBlockHeight = function () {
+        return _super.prototype.fetch.call(this, "/ctl/getcurrentblockheight");
     };
-    Api.prototype.getBlockByHeight = function (block_height) {
+    /**
+     * @func [View_block_detail]
+     * @by 'block_hash' | 'block_height'
+     */
+    Api.prototype.viewBlockDetail = function (type, param) {
+        if (type === "block_hash") {
+            return _super.prototype.fetch.call(this, "/block/detail", { hash: param });
+        }
+        else {
+            return _super.prototype.fetch.call(this, "/block/detail", { height: param });
+        }
+    };
+    /**
+     * @func [Get_block_header]
+     * @by 'block_hash' | 'block_height'
+     */
+    Api.prototype.getBlockHeader = function (type, param) {
         return __awaiter(this, void 0, void 0, function () {
             var block_hash;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getBlockHashByHeight(block_height)];
-                    case 1:
+                    case 0:
+                        if (!(type === "block_hash")) return [3 /*break*/, 1];
+                        return [2 /*return*/, _super.prototype.fetch.call(this, "/ctl/getblockheader", { block_hash: param })];
+                    case 1: return [4 /*yield*/, this.getBlockHashByHeight(Number(param))];
+                    case 2:
                         block_hash = _a.sent();
-                        return [2 /*return*/, _super.prototype.fetch.call(this, '/ctl/getblock', {
-                                blockHash: block_hash.hash
+                        return [2 /*return*/, _super.prototype.fetch.call(this, "/ctl/getblockheader", {
+                                block_hash: block_hash.hash
                             })];
                 }
             });
         });
-    };
-    Api.prototype.getBlockHeaderByHash = function (blockHash) {
-        return _super.prototype.fetch.call(this, '/ctl/getblockheader', { blockHash: blockHash });
-    };
-    Api.prototype.getBlockHeaderByHeight = function (block_height) {
-        return __awaiter(this, void 0, void 0, function () {
-            var block_hash;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getBlockHashByHeight(block_height)];
-                    case 1:
-                        block_hash = _a.sent();
-                        return [2 /*return*/, _super.prototype.fetch.call(this, '/ctl/getblockheader', {
-                                blockHash: block_hash.hash
-                            })];
-                }
-            });
-        });
-    };
-    Api.prototype.getBlockHeight = function () {
-        return _super.prototype.fetch.call(this, '/ctl/getblockheight');
-    };
-    Api.prototype.viewBlockDetail = function (hash) {
-        return _super.prototype.fetch.call(this, '/block/detail', { hash: hash });
     };
     Api.prototype.getNonce = function (addr) {
-        return _super.prototype.fetch.call(this, '/account/nonce', { addr: addr });
+        return _super.prototype.fetch.call(this, "/account/nonce", { addr: addr });
     };
-    /* Split */
+    /* == For All Transaction == */
+    Api.prototype.signTxByPrivKey = function (unsigned_tx) {
+        var _privKey = unsigned_tx.privKey;
+        var privK = new privatekey_1.default(_privKey);
+        return privK.signTxByPrivKey(unsigned_tx);
+    };
+    Api.prototype.sendTx = function (signed_tx) {
+        return _super.prototype.fetch.call(this, "/tx/sendtransaction", { tx: signed_tx });
+    };
+    Api.prototype.viewTxDetail = function (hash) {
+        return _super.prototype.fetch.call(this, "/tx/detail", { hash: hash });
+    };
+    /* == BOX == */
+    Api.prototype.faucet = function (faucet_info) {
+        return _super.prototype.fetch.call(this, "/faucet/claim", faucet_info);
+    };
+    /* make unsigned BOX TX */
+    Api.prototype.getBalance = function (addr) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, _super.prototype.fetch.call(this, "/tx/getbalance", {
+                            addrs: [addr]
+                        })];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, new bn_js_1.default(res.balances[0], 10).toString()];
+                }
+            });
+        });
+    };
+    Api.prototype.getBalances = function (addrs) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, _super.prototype.fetch.call(this, "/tx/getbalance", { addrs: addrs })];
+                    case 1:
+                        res = _a.sent();
+                        return [4 /*yield*/, res.balances.map(function (balance) {
+                                return new bn_js_1.default(balance, 10).toString();
+                            })];
+                    case 2: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    Api.prototype.makeUnsignedBOXTx = function (org_tx) {
+        return _super.prototype.fetch.call(this, "/tx/makeunsignedtx", org_tx);
+    };
+    Api.prototype.fetchUtxos = function (utxos_req) {
+        return _super.prototype.fetch.call(this, "/tx/fetchutxos", utxos_req);
+    };
+    /**
+     * @func create_raw_tx
+     * @branch sendTx || sendRawTx
+     * @step fetchUtxos -> makeUnsignTx -> signTxByPrivKey
+     *
+     * @param *raw
+     * @param ?is_raw # is send raw tx ?
+     * @returns signed tx
+     */
+    Api.prototype.createRawTx = function (raw, is_raw) {
+        return __awaiter(this, void 0, void 0, function () {
+            var addr, to_1, privKey, total_to_1, utxo_res, utxo_list, unsigned_tx, err_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 6, , 7]);
+                        addr = raw.addr, to_1 = raw.to, privKey = raw.privKey;
+                        total_to_1 = new bn_js_1.default(0, 10);
+                        /* make total_to */
+                        Object.keys(to_1).forEach(function (addr) {
+                            total_to_1 = total_to_1.add(new bn_js_1.default(to_1[addr], 10));
+                        });
+                        return [4 /*yield*/, this.fetchUtxos({
+                                addr: addr,
+                                amount: total_to_1.toString()
+                            })
+                            // console.log('[Create raw TX] fetchUtxos res :', JSON.stringify(utxo_res))
+                        ];
+                    case 1:
+                        utxo_res = _a.sent();
+                        if (!(utxo_res["code"] === 0)) return [3 /*break*/, 4];
+                        utxo_list = utxo_res.utxos;
+                        return [4 /*yield*/, util_1.default.makeUnsignedTxHandle({
+                                from: addr,
+                                to_map: to_1,
+                                utxo_list: utxo_list,
+                                is_raw: is_raw
+                            })
+                            // console.log('[Create raw TX] unsigned tx :', JSON.stringify(unsigned_tx))
+                            /* sign tx by privKey */
+                        ];
+                    case 2:
+                        unsigned_tx = _a.sent();
+                        return [4 /*yield*/, this.signTxByPrivKey({
+                                unsignedTx: unsigned_tx.tx_json,
+                                privKey: privKey,
+                                protocalTx: unsigned_tx.protocalTx
+                            })];
+                    case 3: 
+                    // console.log('[Create raw TX] unsigned tx :', JSON.stringify(unsigned_tx))
+                    /* sign tx by privKey */
+                    return [2 /*return*/, _a.sent()];
+                    case 4: throw new Error("Fetch utxos Error !");
+                    case 5: return [3 /*break*/, 7];
+                    case 6:
+                        err_1 = _a.sent();
+                        throw new Error(err_1);
+                    case 7: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /*TODO public sendRawTx(raw_tx) {
+      return super.fetch("/tx/sendrawtransaction", { tx: raw_tx })
+    } */
+    /* Contract */
+    Api.prototype.makeUnsignedContractTx = function (org_tx) {
+        return _super.prototype.fetch.call(this, "/tx/makeunsignedtx/contract", org_tx);
+    };
+    Api.prototype.callContract = function (org_tx) {
+        return _super.prototype.fetch.call(this, "/contract/call", org_tx);
+    };
+    Api.prototype.getLogs = function (logs_req) {
+        return _super.prototype.fetch.call(this, "/contract/getLogs", logs_req);
+    };
+    /* == Split Contract == */
     Api.prototype.makeUnsignedSplitAddrTx = function (split_addr_tx) {
-        return _super.prototype.fetch.call(this, '/tx/makeunsignedtx/splitaddr', split_addr_tx);
+        return _super.prototype.fetch.call(this, "/tx/makeunsignedtx/splitaddr", split_addr_tx);
     };
-    /* Token */
-    Api.prototype.makeUnsignedTokenIssueTx = function (token_issue_tx) {
-        return _super.prototype.fetch.call(this, '/tx/makeunsignedtx/token/issue', token_issue_tx);
-    };
+    /* == Token == */
     Api.prototype.getTokenbalance = function (token) {
         return __awaiter(this, void 0, void 0, function () {
             var balances, arr_balances;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        token['addrs'] = [token.addr];
-                        return [4 /*yield*/, _super.prototype.fetch.call(this, '/tx/gettokenbalance', token)];
+                        token["addrs"] = [token.addr];
+                        return [4 /*yield*/, _super.prototype.fetch.call(this, "/tx/gettokenbalance", token)];
                     case 1:
                         balances = _a.sent();
                         return [4 /*yield*/, balances.balances.map(function (balance) {
@@ -151,7 +278,7 @@ var Api = /** @class */ (function (_super) {
             var balances, arr_balances;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, _super.prototype.fetch.call(this, '/tx/gettokenbalance', tokens)];
+                    case 0: return [4 /*yield*/, _super.prototype.fetch.call(this, "/tx/gettokenbalance", tokens)];
                     case 1:
                         balances = _a.sent();
                         return [4 /*yield*/, balances.balances.map(function (balance) {
@@ -163,143 +290,12 @@ var Api = /** @class */ (function (_super) {
                 }
             });
         });
+    };
+    Api.prototype.makeUnsignedTokenIssueTx = function (token_issue_tx) {
+        return _super.prototype.fetch.call(this, "/tx/makeunsignedtx/token/issue", token_issue_tx);
     };
     Api.prototype.makeUnsignedTokenTx = function (token_transfer_tx) {
-        return _super.prototype.fetch.call(this, '/tx/makeunsignedtx/token/transfer', token_transfer_tx);
-    };
-    /*   public fetchTokenUtxos(fetch_utxos_req: TxRequest.FetchUtxosReq) {
-      return super.fetch('/todo', fetch_utxos_req)
-    } */
-    /* Transaction */
-    Api.prototype.faucet = function (acc_info) {
-        return _super.prototype.fetch.call(this, '/faucet/claim', acc_info);
-    };
-    Api.prototype.makeUnsignedTx = function (org_tx) {
-        return _super.prototype.fetch.call(this, '/tx/makeunsignedtx', org_tx);
-    };
-    Api.prototype.signTxByPrivKey = function (unsigned_tx) {
-        var _privKey = unsigned_tx.privKey;
-        var privK = new privatekey_1.default(_privKey);
-        return privK.signTxByPrivKey(unsigned_tx);
-    };
-    Api.prototype.sendTx = function (signed_tx) {
-        return _super.prototype.fetch.call(this, '/tx/sendtransaction', { tx: signed_tx });
-    };
-    Api.prototype.viewTxDetail = function (hash) {
-        return _super.prototype.fetch.call(this, '/tx/detail', { hash: hash });
-    };
-    Api.prototype.getBalance = function (addr) {
-        return __awaiter(this, void 0, void 0, function () {
-            var balances, arr_balances;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, _super.prototype.fetch.call(this, '/tx/getbalance', { addrs: [addr] })];
-                    case 1:
-                        balances = _a.sent();
-                        return [4 /*yield*/, balances.balances.map(function (balance) {
-                                return new bn_js_1.default(balance, 10).toString();
-                            })];
-                    case 2:
-                        arr_balances = _a.sent();
-                        return [2 /*return*/, { balance: arr_balances[0] }];
-                }
-            });
-        });
-    };
-    Api.prototype.getBalances = function (addrs) {
-        return __awaiter(this, void 0, void 0, function () {
-            var balances, arr_balances;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, _super.prototype.fetch.call(this, '/tx/getbalance', { addrs: addrs })];
-                    case 1:
-                        balances = _a.sent();
-                        return [4 /*yield*/, balances.balances.map(function (balance) {
-                                return new bn_js_1.default(balance, 10).toString();
-                            })];
-                    case 2:
-                        arr_balances = _a.sent();
-                        return [2 /*return*/, { balances: arr_balances }];
-                }
-            });
-        });
-    };
-    Api.prototype.fetchUtxos = function (utxos_req) {
-        return _super.prototype.fetch.call(this, '/tx/fetchutxos', utxos_req);
-    };
-    /**
-     * @func create_raw_tx
-     * @param [*raw]
-     * @param [?is_raw] boolean # is send raw tx ?
-     * @branch [next__sendTx_||_sendRawTx]
-     * @step [fetchUtxos->makeUnsignTx->signTxByPrivKey]
-     * @returns [signed_tx]
-     */
-    Api.prototype.createRawTx = function (raw, is_raw) {
-        return __awaiter(this, void 0, void 0, function () {
-            var addr, to, fee, privKey, total_to, utxo_res, utxo_list, unsigned_tx;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        addr = raw.addr, to = raw.to, fee = raw.fee, privKey = raw.privKey;
-                        total_to = new bn_js_1.default(0, 10);
-                        // fetch utxos
-                        return [4 /*yield*/, Object.keys(to).forEach(function (addr) {
-                                total_to = total_to.add(new bn_js_1.default(to[addr], 10));
-                            })];
-                    case 1:
-                        // fetch utxos
-                        _a.sent();
-                        total_to = total_to.add(new bn_js_1.default(fee, 10));
-                        return [4 /*yield*/, this.fetchUtxos({
-                                addr: addr,
-                                amount: total_to.toString()
-                            })
-                            // console.log('fetchUtxos res :', JSON.stringify(utxo_res))
-                        ];
-                    case 2:
-                        utxo_res = _a.sent();
-                        if (!(utxo_res['code'] === 0)) return [3 /*break*/, 5];
-                        utxo_list = utxo_res.utxos;
-                        return [4 /*yield*/, util_1.default.makeUnsignedTxHandle({
-                                from: addr,
-                                to_map: to,
-                                fee: fee,
-                                utxo_list: utxo_list,
-                                is_raw: is_raw
-                            })
-                            // console.log('unsigned_tx :', JSON.stringify(unsigned_tx))
-                            // sign tx by privKey
-                        ];
-                    case 3:
-                        unsigned_tx = _a.sent();
-                        return [4 /*yield*/, this.signTxByPrivKey({
-                                unsignedTx: unsigned_tx.tx_json,
-                                privKey: privKey,
-                                protocalTx: unsigned_tx.protocalTx
-                            })];
-                    case 4: 
-                    // console.log('unsigned_tx :', JSON.stringify(unsigned_tx))
-                    // sign tx by privKey
-                    return [2 /*return*/, _a.sent()];
-                    case 5: throw new Error('Fetch utxos Error');
-                }
-            });
-        });
-    };
-    // TODO
-    Api.prototype.sendRawTx = function (raw_tx) {
-        return _super.prototype.fetch.call(this, '/tx/sendrawtransaction', { tx: raw_tx });
-    };
-    /* Contract */
-    Api.prototype.makeUnsignedContractTx = function (org_tx) {
-        return _super.prototype.fetch.call(this, '/tx/makeunsignedtx/contract', org_tx);
-    };
-    Api.prototype.callContract = function (org_tx) {
-        return _super.prototype.fetch.call(this, '/contract/call', org_tx);
-    };
-    Api.prototype.getLogs = function (logs_req) {
-        return _super.prototype.fetch.call(this, '/contract/getLogs', logs_req);
+        return _super.prototype.fetch.call(this, "/tx/makeunsignedtx/token/transfer", token_transfer_tx);
     };
     return Api;
 }(fetch_1.Fetch));

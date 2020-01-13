@@ -344,9 +344,9 @@ function decodeSingle(parsedType, data, offset) {
     }
     throw new Error('Unsupported or invalid type: ' + parsedType.name);
 }
-var Util;
-(function (Util) {
-    Util.rawEncode = function (types, values) {
+var AbiUtil;
+(function (AbiUtil) {
+    AbiUtil.rawEncode = function (types, values) {
         var output = [];
         var data = [];
         var headLength = 0;
@@ -385,7 +385,7 @@ var Util;
         }
         return Buffer.concat(output.concat(data));
     };
-    Util.rawDecode = function (types, data) {
+    AbiUtil.rawDecode = function (types, data) {
         var ret = [];
         data = Buffer.from(data);
         var offset = 0;
@@ -407,5 +407,5 @@ var Util;
         }
         return ret;
     };
-})(Util || (Util = {}));
-exports.default = Util;
+})(AbiUtil || (AbiUtil = {}));
+exports.default = AbiUtil;

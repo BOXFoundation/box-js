@@ -1,0 +1,250 @@
+// Copyright (c) 2018 ContentBox Authors. 
+// Use of this source code is governed by a MIT-style 
+// license that can be found in the LICENSE file.
+
+syntax = "proto3";
+package rpcpb;
+
+option java_package = "one.contentbox.boxd.protocol.rpc.protobuf.generated";
+option java_outer_classname ="TransactionProto";
+option java_multiple_files = true;
+
+import "block.proto";
+//import "google/api/annotations.proto";
+import "common.proto";
+
+service TransactionCommand {
+
+
+    rpc GetBalance (GetBalanceReq) returns (GetBalanceResp) ;
+//    rpc GetBalance (GetBalanceReq) returns (GetBalanceResp) {
+//        option (google.api.http) = {
+//            post: "/v1/tx/getbalance"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc GetTokenBalance (GetTokenBalanceReq) returns (GetBalanceResp) ;
+//    rpc GetTokenBalance (GetTokenBalanceReq) returns (GetBalanceResp) {
+//        option (google.api.http) = {
+//            post: "/v1/tx/gettokenbalance"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc FetchUtxos (FetchUtxosReq) returns (FetchUtxosResp) ;
+//    rpc FetchUtxos (FetchUtxosReq) returns (FetchUtxosResp) {
+//        option (google.api.http) = {
+//            post: "/v1/tx/fetchutxos"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc SendTransaction (SendTransactionReq) returns (SendTransactionResp) ;
+//    rpc SendTransaction (SendTransactionReq) returns (SendTransactionResp) {
+//        option (google.api.http) = {
+//            post: "/v1/tx/sendtransaction"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc SendRawTransaction (SendRawTransactionReq) returns (SendTransactionResp) ;
+//    rpc SendRawTransaction (SendRawTransactionReq) returns (SendTransactionResp) {
+//        option (google.api.http) = {
+//            post: "/v1/tx/sendrawtransaction"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc GetRawTransaction (GetRawTransactionRequest) returns (GetRawTransactionResponse) ;
+//    rpc GetRawTransaction (GetRawTransactionRequest) returns (GetRawTransactionResponse) {
+//        option (google.api.http) = {
+//            post: "/v1/tx/getrawtransaction"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc MakeUnsignedTx (MakeTxReq) returns (MakeTxResp) ;
+//    rpc MakeUnsignedTx (MakeTxReq) returns (MakeTxResp) {
+//        option (google.api.http) = {
+//            post: "/v1/tx/makeunsignedtx"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc MakeUnsignedSplitAddrTx (MakeSplitAddrTxReq) returns (MakeTxResp) ;
+//    rpc MakeUnsignedSplitAddrTx (MakeSplitAddrTxReq) returns (MakeTxResp) {
+//        option (google.api.http) = {
+//            post: "/v1/tx/makeunsignedtx/splitaddr"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc MakeUnsignedTokenIssueTx (MakeTokenIssueTxReq) returns (MakeTokenIssueTxResp) ;
+//    rpc MakeUnsignedTokenIssueTx (MakeTokenIssueTxReq) returns (MakeTokenIssueTxResp) {
+//        option (google.api.http) = {
+//            post: "/v1/tx/makeunsignedtx/token/issue"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc MakeUnsignedTokenTransferTx (MakeTokenTransferTxReq) returns (MakeTxResp) ;
+//    rpc MakeUnsignedTokenTransferTx (MakeTokenTransferTxReq) returns (MakeTxResp) {
+//        option (google.api.http) = {
+//            post: "/v1/tx/makeunsignedtx/token/transfer"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc MakeUnsignedContractTx (MakeContractTxReq) returns (MakeContractTxResp) ;
+//    rpc MakeUnsignedContractTx (MakeContractTxReq) returns (MakeContractTxResp) {
+//        option (google.api.http) = {
+//            post: "/v1/tx/makeunsignedtx/contract"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc MakeUnsignedCombineTx (MakeCombineTx) returns (MakeTxResp) ;
+//    rpc MakeUnsignedCombineTx (MakeCombineTx) returns (MakeTxResp) {
+//        option (google.api.http) = {
+//            post: "/v1/tx/makeunsignedtx/combine"
+//            body: "*"
+//        };
+//    }
+}
+
+message SendRawTransactionReq {
+    string tx = 1;
+}
+
+message GetBalanceReq {
+    repeated string addrs = 1;
+}
+
+message GetBalanceResp {
+    int32 code = 1;
+    string message = 2;
+    repeated uint64 balances = 3;
+}
+
+message GetTokenBalanceReq {
+    repeated string addrs = 1;
+    string token_hash = 2;
+    uint32 token_index = 3;
+}
+
+message FetchUtxosReq {
+    string addr = 1;
+    uint64 amount = 2;
+    string token_hash = 3;
+    uint32 token_index = 4;
+}
+
+message FetchUtxosResp {
+    int32 code = 1;
+    string message = 2;
+    repeated Utxo utxos = 3;
+}
+
+message GetRawTransactionRequest {
+    string hash = 1;
+}
+
+message GetRawTransactionResponse {
+    int32 code = 1;
+    string message = 2;
+    corepb.Transaction tx = 3;
+}
+
+message SendTransactionReq {
+    corepb.Transaction tx = 1;
+}
+
+message SendTransactionResp {
+    int32 code = 1;
+    string message = 2;
+    string hash = 3;
+}
+
+message MakeTxReq {
+    string from = 1;
+    repeated string to = 2;
+    repeated uint64 amounts = 3;
+}
+
+message MakeTxResp {
+    int32 code = 1;
+    string message = 2;
+    corepb.Transaction tx = 3;
+    repeated string rawMsgs = 4;
+}
+
+message MakeSplitAddrTxReq {
+    string from = 1;
+    repeated string addrs = 2;
+    repeated uint32 weights = 3;
+}
+
+message MakeTokenIssueTxReq {
+    string issuer = 1;
+    string owner = 2;
+    TokenTag tag = 3;
+} 
+
+message MakeTokenIssueTxResp {
+    int32 code = 1;
+    string message = 2;
+    uint32 issue_out_index = 3;
+    corepb.Transaction tx = 4;
+    repeated string rawMsgs = 5;
+}
+
+message MakeTokenTransferTxReq {
+    string from = 1;
+    repeated string to = 2;
+    repeated uint64 amounts = 3;
+    string token_hash = 4;
+    uint32 token_index = 5;
+}
+
+message TokenTag {
+    string name = 1;
+    string symbol = 2;
+    uint64 supply = 3;
+    uint32 decimal = 4;
+}
+
+message MakeContractTxReq {
+    string from = 1;
+    string to = 2;
+    uint64 amount = 3;
+    uint64 gas_limit = 4;
+    uint64 nonce = 5;
+    bool is_deploy = 6;
+    string data = 7;
+}
+
+message MakeContractTxResp {
+    int32 code = 1;
+    string message = 2;
+    corepb.Transaction tx = 3;
+    repeated string rawMsgs = 4;
+    string contract_addr = 5;
+}
+
+message MakeCombineTx {
+    string addr = 1;
+    string token_hash = 2; // combine box if token_hash is set empty
+    uint32 token_index = 3;
+}

@@ -1,10 +1,10 @@
 # boxd-js ![](https://img.shields.io/github/issues/BOXFoundation/box-js) ![](https://travis-ci.com/BOXFoundation/boxd.svg?branch=master)
 
-By **[Contentbox](https://contentbox.one/)**
-
 A javascript API for integration with boxd-based blockchain using [Boxd RPC API](https://github.com/BOXFoundation/boxd) on nodejs or browser.
 
-Documentation can be found [here](https://github.com/BOXFoundation/box-js/wiki).
+Documentation can be found [Here](https://github.com/BOXFoundation/box-js/wiki).
+
+By **[Contentbox](https://contentbox.one/)**
 
 ![contentbox](https://contentbox.one/img/home-background.png)
 
@@ -31,8 +31,13 @@ Clone this repository locally then run `npm run build:node`. The browser distrib
 Supported using TypeScript, [webpack](https://webpack.js.org/api/module-methods), or [Node.js with `--experimental-modules` flag](https://nodejs.org/api/esm.html)
 
 ```js
+<<<<<<< HEAD
 import boxdjs from "boxdjs";
 import { Account, AccountManager, Api, Feature, Contract, Util } from "boxdjs";
+=======
+import boxdjs from 'boxdjs'
+import { Account, AccountManager, Api, Feature, Contract, Util } from 'boxdjs'
+>>>>>>> v1.1.0
 ```
 
 ### CommonJS
@@ -40,7 +45,11 @@ import { Account, AccountManager, Api, Feature, Contract, Util } from "boxdjs";
 Importing using commonJS syntax is supported by Node.js out of the box.
 
 ```js
+<<<<<<< HEAD
 const boxdjs = require("boxdjs").default;
+=======
+const boxdjs = require('boxdjs').default
+>>>>>>> v1.1.0
 ```
 
 ## Setup

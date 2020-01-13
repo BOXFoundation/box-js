@@ -1,9 +1,10 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -39,7 +40,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __importDefault(require("../../../util/util"));
-var util_2 = __importDefault(require("./util"));
 var isObject_1 = __importDefault(require("lodash/isObject"));
 var isArray_1 = __importDefault(require("lodash/isArray"));
 var AbiCoder = /** @class */ (function () {
@@ -107,14 +107,14 @@ var AbiCoder = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, util_2.default.rawEncode(types, params).toString('hex')];
+                    case 0: return [4 /*yield*/, util_1.default.rawEncode(types, params).toString('hex')];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
     /**
-     * Encodes a function call from its json interface and parameters.
+     * Encodes a function call from its json interface and parameters
      *
      * @param [jsonInterface] object
      * @param [params] array
@@ -166,7 +166,7 @@ var AbiCoder = /** @class */ (function () {
         if (!bytes || bytes === '0x' || bytes === '0X') {
             throw new Error("Invalid bytes string given: " + bytes);
         }
-        var result = util_2.default.rawDecode(outputs, bytes);
+        var result = util_1.default.rawDecode(outputs, bytes);
         var returnValues = {};
         var decodedValue;
         if (result) {

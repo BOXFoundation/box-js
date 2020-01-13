@@ -1,0 +1,296 @@
+// Copyright (c) 2018 ContentBox Authors.
+// Use of this source code is governed by a MIT-style
+// license that can be found in the LICENSE file.
+
+syntax = "proto3";
+package rpcpb;
+
+option java_package = "one.contentbox.boxd.protocol.rpc.protobuf.generated";
+option java_outer_classname ="ControlProto";
+option java_multiple_files = true;
+
+import "block.proto";
+import "common.proto";
+//import "google/api/annotations.proto";
+
+// admin control service
+service AdminControl {
+    // set boxd debug level
+
+    rpc SetDebugLevel (DebugLevelRequest) returns (BaseResponse) ;
+//    rpc SetDebugLevel (DebugLevelRequest) returns (BaseResponse) {
+//        option (google.api.http) = {
+//            post: "/v1/ctl/debuglevel"
+//            body: "*"
+//      };
+//    }
+
+
+    rpc GetNetworkID (GetNetworkIDRequest) returns (GetNetworkIDResponse) ;
+//    rpc GetNetworkID (GetNetworkIDRequest) returns (GetNetworkIDResponse) {
+//        option (google.api.http) = {
+//            post: "/v1/ctl/getnetwork"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc UpdateNetworkID (UpdateNetworkIDRequest) returns (BaseResponse) ;
+//    rpc UpdateNetworkID (UpdateNetworkIDRequest) returns (BaseResponse) {
+//        option (google.api.http) = {
+//            post: "/v1/ctl/networkid"
+//            body: "*"
+//      };
+//    }
+
+
+    rpc AddNode (AddNodeRequest) returns (BaseResponse) ;
+//    rpc AddNode (AddNodeRequest) returns (BaseResponse) {
+//        option (google.api.http) = {
+//            post: "/v1/ctl/addnode"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc GetNodeInfo (GetNodeInfoRequest) returns (GetNodeInfoResponse) ;
+//    rpc GetNodeInfo (GetNodeInfoRequest) returns (GetNodeInfoResponse) {
+//        option (google.api.http) = {
+//            post: "/v1/ctl/getnodeinfo"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc PeerID (PeerIDReq) returns (PeerIDResp) ;
+//    rpc PeerID (PeerIDReq) returns (PeerIDResp) {
+//        option (google.api.http) = {
+//            post: "/v1/p2p/id"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc Miners (MinersReq) returns (MinersResp) ;
+//    rpc Miners (MinersReq) returns (MinersResp) {
+//        option (google.api.http) = {
+//            post: "/v1/miners"
+//            body: "*"
+//        };
+//    }
+}
+
+// The box control command service definition.
+service ContorlCommand {
+
+
+    rpc GetCurrentBlockHeight (GetCurrentBlockHeightRequest) returns (GetCurrentBlockHeightResponse) ;
+//    rpc GetCurrentBlockHeight (GetCurrentBlockHeightRequest) returns (GetCurrentBlockHeightResponse) {
+//        option (google.api.http) = {
+//            post: "/v1/ctl/getcurrentblockheight"
+//            body: "*"
+//      };
+//    }
+
+
+    rpc LatestConfirmedBlock (LatestConfirmedBlockReq) returns (LatestConfirmedBlockResp) ;
+//    rpc LatestConfirmedBlock (LatestConfirmedBlockReq) returns (LatestConfirmedBlockResp) {
+//        option (google.api.http) = {
+//            post: "/v1/ctl/latestconfirmedblock"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc GetCurrentBlockHash (GetCurrentBlockHashRequest) returns (GetCurrentBlockHashResponse) ;
+//    rpc GetCurrentBlockHash (GetCurrentBlockHashRequest) returns (GetCurrentBlockHashResponse) {
+//        option (google.api.http) = {
+//            post: "/v1/ctl/getcurrentblockhash"
+//            body: "*"
+//      };
+//    }
+
+
+    rpc GetBlockHash (GetBlockHashRequest) returns (GetBlockHashResponse) ;
+//    rpc GetBlockHash (GetBlockHashRequest) returns (GetBlockHashResponse) {
+//        option (google.api.http) = {
+//            post: "/v1/ctl/getblockhash"
+//            body: "*"
+//      };
+//    }
+
+
+    rpc GetBlockHeader (GetBlockRequest) returns (GetBlockHeaderResponse) ;
+//    rpc GetBlockHeader (GetBlockRequest) returns (GetBlockHeaderResponse) {
+//        option (google.api.http) = {
+//            post: "/v1/ctl/getblockheader"
+//            body: "*"
+//      };
+//    }
+
+
+    rpc GetTxCount (GetTxCountReq) returns (GetTxCountResp);
+//    rpc GetTxCount (GetTxCountReq) returns (GetTxCountResp){
+//        option (google.api.http) = {
+//            post: "/v1/ctl/block/txcount"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc Delegates (DelegatesReq) returns (DelegatesResp) ;
+//    rpc Delegates (DelegatesReq) returns (DelegatesResp) {
+//        option (google.api.http) = {
+//            post: "/v1/ctl/delegates"
+//            body: "*"
+//        };
+//    }
+}
+
+// The request message containing debug level.
+message DebugLevelRequest {
+    string level = 1;
+}
+
+message UpdateNetworkIDRequest {
+    uint32 id = 1;
+}
+
+message GetNetworkIDRequest {
+}
+
+message GetNetworkIDResponse {
+    int32 code = 1;
+    string message = 2;
+    uint32 id = 3;
+    string literal = 4;
+}
+
+message AddNodeRequest {
+    string node = 1;
+}
+
+message GetCurrentBlockHeightRequest {
+}
+
+message GetCurrentBlockHeightResponse {
+    int32 code = 1;
+    string message = 2;
+    uint32 height = 3;
+}
+
+message GetCurrentBlockHashRequest{
+
+}
+
+message GetCurrentBlockHashResponse{
+    int32 code = 1;
+    string message = 2;
+    string hash = 3;
+}
+
+message GetBlockHashRequest {
+    uint32 height = 1;
+}
+
+message GetBlockHashResponse {
+    int32 code = 1;
+    string message = 2;
+    string hash = 3;
+}
+
+message GetBlockRequest {
+    string block_hash = 1;
+}
+
+message GetBlockHeaderResponse {
+    int32 code = 1;
+    string message = 2;
+    corepb.BlockHeader header = 3;
+}
+
+message Node {
+    string id = 1;
+    repeated string addrs = 2;
+    string ttl = 3;
+}
+
+message GetNodeInfoRequest {
+
+}
+
+message GetNodeInfoResponse {
+    int32 code = 1;
+    string message = 2;
+    repeated Node nodes = 3;
+}
+
+message GetTxCountReq{
+    uint32 block_height = 1;
+    string block_hash = 2;
+}
+
+message GetTxCountResp{
+    int32 code = 1;
+    string message = 2;
+    uint32 count = 3;
+}
+
+message Delegate {
+    string addr = 1;
+    uint64 votes = 2;
+    uint64 pledge_amount = 3;
+    uint64 score = 4;
+    uint32 continual_periods = 5;
+    uint32 blocks_this_dynasty = 6;
+    uint32 blocks_total = 7;
+}
+
+message PeerIDReq {
+}
+
+message PeerIDResp {
+    int32 code = 1;
+    string message = 2;
+    string peerid = 3;
+}
+
+message MinersReq {
+}
+
+message MinersResp {
+    int32 code = 1;
+    string message = 2;
+    repeated MinerDetail miners = 3;
+}
+
+message MinerDetail {
+    string id = 1;
+    string address = 2;
+    repeated string iplist = 3;
+}
+
+message DelegatesReq {
+    enum Type {
+        BOOKKEEPERS = 0;
+        DELEGATES = 1;
+        CANDIDATES = 2;
+    }
+    Type type = 1;
+}
+
+message DelegatesResp {
+    int32 code = 1;
+    string message = 2;
+    repeated Delegate delegates = 3;
+}
+
+message LatestConfirmedBlockReq {
+}
+
+message LatestConfirmedBlockResp {
+    int32 code = 1;
+    string message = 2;
+    uint32 height = 3;
+    string hash = 4;
+}

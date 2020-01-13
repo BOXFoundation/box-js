@@ -13,10 +13,11 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -47,7 +48,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * @class [Http-Error]
@@ -76,7 +76,7 @@ var HttpError = /** @class */ (function (_super) {
             _this = _super.call(this, json.statusText) || this;
         }
         else {
-            _this = _super.call(this, 'Unknow Error!') || this;
+            _this = _super.call(this, 'Unknow Error !') || this;
         }
         Object.setPrototypeOf(_this, HttpError.prototype);
         _this.json = json;
@@ -92,7 +92,7 @@ var HttpError = /** @class */ (function (_super) {
  * @param [*endpoint]
  * @returns [result]  # response -> result
  */
-var httpFetch = function (path, body, _fetch, endpoint) { return __awaiter(_this, void 0, void 0, function () {
+var httpFetch = function (path, body, _fetch, endpoint) { return __awaiter(void 0, void 0, void 0, function () {
     var response, result, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -119,23 +119,20 @@ var httpFetch = function (path, body, _fetch, endpoint) { return __awaiter(_this
             case 2:
                 result = _a.sent();
                 console.log(result);
-                return [2 /*return*/, result
-                    // result.code = response.status
-                    // result.statusText = response.statusText
-                ];
+                throw new HttpError(result);
             case 3: return [4 /*yield*/, response.json()
-                // console.log('[fetch] Result:', result)
+                // console.log('[fetch] Result :', result)
             ];
             case 4:
                 result = _a.sent();
-                // console.log('[fetch] Result:', result)
+                // console.log('[fetch] Result :', result)
                 if (result.code) {
                     if (result.code === 0) {
                         delete result.code;
                         delete result.message;
                     }
                     else {
-                        // console.log('[fetch] Error: code !== 0')
+                        // console.log('[fetch] Error : code !== 0')
                         throw new HttpError(result);
                     }
                 }

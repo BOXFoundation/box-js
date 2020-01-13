@@ -7,8 +7,8 @@ var bn_js_1 = __importDefault(require("bn.js"));
 var block_pb_js_1 = __importDefault(require("../../util/protobuf-js/block_pb.js"));
 var account_1 = __importDefault(require("../../account/account"));
 var util_1 = __importDefault(require("../../util/util"));
-var Util;
-(function (Util) {
+var TxUtil;
+(function (TxUtil) {
     /**
      * @func Make_Unsigned_transaction_handle
      * @param [*param] {utxo_list: TxResponse.Utxo[]; is_raw?: boolean}
@@ -17,12 +17,12 @@ var Util;
      * @returns [tx_json] # tx type of json {rawMsgs: []}
      * @returns [protocalTx] # tx type of protocal
      */
-    Util.makeUnsignedTxHandle = function (param) {
-        // console.log('makeUnsignedTxHandle param ===', JSON.stringify(param))
-        var from = param.from, to_map = param.to_map, fee = param.fee, utxo_list = param.utxo_list, is_raw = param.is_raw;
+    TxUtil.makeUnsignedTxHandle = function (param) {
+        // console.log('=> [Make unsigned TX handle] param :', JSON.stringify(param))
+        var from = param.from, to_map = param.to_map, utxo_list = param.utxo_list, is_raw = param.is_raw;
         var total_to = new bn_js_1.default(0, 10); // total tx count (big number)
         var total_utxo = new bn_js_1.default(0, 10); // total account utxo (big number)
-        var rowmsg_list = []; // row message list
+        var raw_hash_list = []; // row message list
         var vin_list = []; // vin list (json)
         var vout_list = []; // vout list (json)
         var vin_list_proto = []; // vin list (protobuf)
@@ -30,81 +30,82 @@ var Util;
         var vout_list_proto = []; // vout list (protobuf)
         /* check utxo */
         if (utxo_list.length < 1) {
-            throw new Error('Utxo error');
+            throw new Error("Utxo error");
         }
+        var fee = (Math.floor(utxo_list.length / 16) + 1) * 1050000;
+        // console.log("[Make unsigned TX handle] fee :", fee)
         /* utxo sum */
         utxo_list.forEach(function (utxo) {
             total_utxo = total_utxo.add(new bn_js_1.default(utxo.tx_out.value, 10));
         });
-        // console.log('total_utxo :', total_utxo.toString())
+        // console.log('[Make unsigned TX handle] total_utxo :', total_utxo.toString())
         /* tx count sum */
         Object.keys(to_map).forEach(function (to) {
             total_to = total_to.add(new bn_js_1.default(to_map[to], 10));
         });
         total_to = total_to.add(new bn_js_1.default(fee, 10));
-        // console.log('total_to :', total_to.toString())
+        // console.log('[Make unsigned TX handle] total_to :', total_to.toString())
         /* check balance */
         if (total_to.toNumber() > total_utxo.toNumber()) {
             throw new Error("The balance of " + from + " is too low");
         }
         /* ======================== */
         /* vout */
-        var acc = new account_1.default();
-        var op = new util_1.default.Opcoder('');
+        var op = new util_1.default.Opcoder("");
         Object.keys(to_map).forEach(function (to_addr) {
-            var pub_hash = acc.dumpPubKeyHashFromAddr(to_addr);
-            // console.log('pub_hash_1 :', pub_hash)
+            var pub_hash = account_1.default.dumpPubKeyHashFromAddr(to_addr);
+            // console.log('[Make unsigned TX handle] pub_hash_1 :', pub_hash)
             // + script_pub_key
             var script = op
-                .reset('')
-                .add(util_1.default.getHexStrFromNumber(op.OP_DUP))
-                .add(util_1.default.getHexStrFromNumber(op.OP_HASH_160))
+                .reset("")
+                .add(util_1.default.to16StrFromNumber(op.OP_DUP))
+                .add(util_1.default.to16StrFromNumber(op.OP_HASH_160))
                 .add(pub_hash)
-                .add(util_1.default.getHexStrFromNumber(op.OP_EQUAL_VERIFY))
-                .add(util_1.default.getHexStrFromNumber(op.OP_CHECK_SIG))
+                .add(util_1.default.to16StrFromNumber(op.OP_EQUAL_VERIFY))
+                .add(util_1.default.to16StrFromNumber(op.OP_CHECK_SIG))
                 .getCode();
-            // console.log('script :', script.toString('base64'))
+            // console.log('[Make unsigned TX handle] script :', script.toString('base64'))
             // + value
             var vout = new block_pb_js_1.default.TxOut();
-            vout.setScriptPubKey(script.toString('base64'));
+            vout.setScriptPubKey(script.toString("base64"));
             vout.setValue(to_map[to_addr]);
             vout_list_proto.push(vout);
             // make tx vout (json)
             vout_list.push({
                 value: to_map[to_addr],
-                script_pub_key: script.toString('base64')
+                script_pub_key: script.toString("base64")
             });
         });
         /* ======================== */
         /* charge */
         if (total_to.toNumber() < total_utxo.toNumber()) {
             var charge = total_utxo.sub(total_to).toString();
-            // console.log('charge :', charge)
-            var pub_hash = acc.dumpPubKeyHashFromAddr(from);
-            // console.log('pub_hash_2 :', pub_hash)
+            // console.log('[Make unsigned TX handle] charge :', charge)
+            var pub_hash = account_1.default.dumpPubKeyHashFromAddr(from);
+            // console.log('[Make unsigned TX handle] pub_hash_2 :', pub_hash)
             // + script_pub_key
             var script = op
-                .reset('')
-                .add(util_1.default.getHexStrFromNumber(op.OP_DUP))
-                .add(util_1.default.getHexStrFromNumber(op.OP_HASH_160))
+                .reset("")
+                .add(util_1.default.to16StrFromNumber(op.OP_DUP))
+                .add(util_1.default.to16StrFromNumber(op.OP_HASH_160))
                 .add(pub_hash)
-                .add(util_1.default.getHexStrFromNumber(op.OP_EQUAL_VERIFY))
-                .add(util_1.default.getHexStrFromNumber(op.OP_CHECK_SIG))
+                .add(util_1.default.to16StrFromNumber(op.OP_EQUAL_VERIFY))
+                .add(util_1.default.to16StrFromNumber(op.OP_CHECK_SIG))
                 .getCode();
-            // console.log('script :', script.toString('base64'))
+            // console.log('[Make unsigned TX handle] script :', script.toString('base64'))
             // + value
             var vout = new block_pb_js_1.default.TxOut();
-            vout.setScriptPubKey(script.toString('base64'));
+            vout.setScriptPubKey(script.toString("base64"));
             vout.setValue(charge);
             vout_list_proto.push(vout);
             // make tx vout (json)
             vout_list.push({
                 value: charge,
-                script_pub_key: script.toString('base64')
+                script_pub_key: script.toString("base64")
             });
         }
-        // console.log('vout_list :', vout_list)
-        // console.log('vout_list_proto :', vout_list_proto)
+        // console.log('[Make unsigned TX handle] vout_list :', vout_list)
+        // console.log('[Make unsigned TX handle] vout_list_proto :', vout_list_proto)
         /* ======================== */
         /* vin */
         // make tx vin (json)
@@ -117,7 +118,7 @@ var Util;
                 script_sig: utxo.tx_out.script_pub_key
             });
         });
-        // console.log('vin_list :', JSON.stringify(vin_list))
+        // console.log('[Make unsigned TX handle] vin_list :', JSON.stringify(vin_list))
         // make tx vin (protobuf)
         var protocalTx = new block_pb_js_1.default.Transaction();
         var tx_proto_row = new block_pb_js_1.default.Transaction();
@@ -125,21 +126,21 @@ var Util;
             vin_list.forEach(function (vin, i) {
                 // + prev_out_point
                 var out_point = new block_pb_js_1.default.OutPoint();
-                // console.log('out_point org :', out_point)
+                // console.log('[Make unsigned TX handle] out_point org :', out_point)
                 out_point.setHash(vin.prev_out_point.hash);
                 out_point.setIndex(vin.prev_out_point.index);
-                // console.log('out_point :', out_point)
+                // console.log('[Make unsigned TX handle] out_point :', out_point)
                 // + script_sig
                 var vin_proto = new block_pb_js_1.default.TxIn();
                 var vin_proto_row = new block_pb_js_1.default.TxIn();
-                // console.log('vin_proto org :', vin_proto)
+                // console.log('[Make unsigned TX handle] vin_proto org :', vin_proto)
                 vin_proto.setPrevOutPoint(out_point);
                 vin_proto_row.setPrevOutPoint(out_point);
                 vin_proto_row.setScriptSig(vin.script_sig);
                 if (i === vin_i) {
                     vin_proto.setScriptSig(vin.script_sig);
                 }
-                // console.log('vin_proto :', vin_proto)
+                // console.log('[Make unsigned TX handle] vin_proto :', vin_proto)
                 vin_list_proto.push(vin_proto);
                 vin_list_proto_row.push(vin_proto_row);
             });
@@ -147,13 +148,14 @@ var Util;
             protocalTx.setVoutList(vout_list_proto);
             tx_proto_row.setVinList(vin_list_proto_row);
             tx_proto_row.setVoutList(vout_list_proto);
+            console.log("protocalTx.serializeBinary res :", protocalTx.serializeBinary());
             // serialize binary
-            rowmsg_list.push(protocalTx.serializeBinary());
+            raw_hash_list.push(util_1.default.getSignHash(protocalTx.serializeBinary()).toString("hex"));
         };
         for (var vin_i = 0; vin_i < vin_list.length; vin_i++) {
             _loop_1(vin_i);
         }
-        // console.log('rowmsg_list :', rowmsg_list)
+        console.log("[Make unsigned TX handle] raw_hash_list :", raw_hash_list);
         /* ======================== */
         if (is_raw) {
             return {
@@ -164,9 +166,9 @@ var Util;
                         vout: vout_list,
                         data: null,
                         magic: 0,
-                        lock_time: '0'
+                        lock_time: "0"
                     },
-                    rawMsgs: rowmsg_list
+                    rawMsgs: raw_hash_list
                 },
                 protocalTx: tx_proto_row
             };
@@ -180,13 +182,13 @@ var Util;
                         vout: vout_list,
                         data: null,
                         magic: 0,
-                        lock_time: '0'
+                        lock_time: "0"
                     },
-                    rawMsgs: rowmsg_list
+                    rawMsgs: raw_hash_list
                 },
                 protocalTx: null
             };
         }
     };
-})(Util || (Util = {}));
-exports.default = Util;
+})(TxUtil || (TxUtil = {}));
+exports.default = TxUtil;

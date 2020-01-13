@@ -1,9 +1,10 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -44,10 +45,9 @@ var hash_1 = __importDefault(require("./hash"));
 var ecpair_1 = __importDefault(require("./ecpair"));
 var util_1 = __importDefault(require("../util"));
 var crypto_json_1 = __importDefault(require("./crypto-json"));
-var OPCODE_TYPE = 'hex';
 var prefix = {
-    P2PKH: '1326',
-    P2SH: '132b'
+    P2PKH: "1326",
+    P2SH: "132b"
 };
 /**
  * @class [PrivateKey]
@@ -59,7 +59,7 @@ var PrivateKey = /** @class */ (function () {
         /**
          * @func Get_CryptoJson_by_PrivateKey_&_Password
          * @param [*pwd]
-         * @returns [cryptoJSON]
+         * @returns [crypto.json]
          * @memberof PrivateKey   *
          */
         this.getCryptoByPrivKey = function (pwd) {
@@ -73,23 +73,28 @@ var PrivateKey = /** @class */ (function () {
          * @memberof PrivateKey   *
          */
         this.signTxByPrivKey = function (unsigned_tx) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, tx, rawMsgs, _privKey, idx, sigHashBuf, eccPrivKey, signBuf, scriptSig, scriptsig_bs64;
+            var _a, tx, rawMsgs, _privKey, eccPrivKey, idx, signBuf, scriptSig, scriptsig_bs64;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         _a = unsigned_tx.unsignedTx, tx = _a.tx, rawMsgs = _a.rawMsgs;
                         _privKey = unsigned_tx.privKey;
+                        eccPrivKey = _privKey && ecpair_1.default.getECfromPrivKey(_privKey);
                         idx = 0;
                         _b.label = 1;
                     case 1:
                         if (!(idx < tx.vin.length)) return [3 /*break*/, 4];
-                        sigHashBuf = util_1.default.getSignHash(rawMsgs[idx]);
-                        eccPrivKey = _privKey && ecpair_1.default.getECfromPrivKey(_privKey);
-                        signBuf = eccPrivKey.sign(sigHashBuf).sig;
+                        signBuf = void 0;
+                        if (rawMsgs[idx] instanceof Buffer) {
+                            signBuf = eccPrivKey.sign(rawMsgs[idx]).sig; // rawMsgs : raw hash
+                        }
+                        else {
+                            signBuf = eccPrivKey.sign(Buffer.from(rawMsgs[idx], "hex")).sig; // rawMsgs : raw hash
+                        }
                         return [4 /*yield*/, util_1.default.signatureScript(signBuf, this.privKey.toPublicKey().toBuffer())];
                     case 2:
                         scriptSig = _b.sent();
-                        scriptsig_bs64 = scriptSig.toString('base64');
+                        scriptsig_bs64 = scriptSig.toString("base64");
                         tx.vin[idx].script_sig = scriptsig_bs64;
                         if (unsigned_tx.protocalTx) {
                             unsigned_tx.protocalTx.getVinList()[idx].setScriptSig(scriptsig_bs64);
@@ -100,7 +105,7 @@ var PrivateKey = /** @class */ (function () {
                         return [3 /*break*/, 1];
                     case 4:
                         if (unsigned_tx.protocalTx) {
-                            return [2 /*return*/, unsigned_tx.protocalTx.serializeBinary().toString(OPCODE_TYPE)];
+                            return [2 /*return*/, unsigned_tx.protocalTx.serializeBinary().toString("hex")];
                         }
                         else {
                             return [2 /*return*/, tx];
@@ -115,21 +120,30 @@ var PrivateKey = /** @class */ (function () {
          */
         this.getAddrByPrivKey = function (prefixHex) {
             var sha256Content = prefixHex + _this.privKey.pkh;
-            var checksum = hash_1.default.sha256(hash_1.default.sha256(Buffer.from(sha256Content, OPCODE_TYPE))).slice(0, 4);
-            var content = sha256Content.concat(checksum.toString(OPCODE_TYPE));
-            return bs58_1.default.encode(Buffer.from(content, OPCODE_TYPE));
+            var checksum = hash_1.default.sha256(hash_1.default.sha256(Buffer.from(sha256Content, "hex"))).slice(0, 4);
+            var content = sha256Content.concat(checksum.toString("hex"));
+            return bs58_1.default.encode(Buffer.from(content, "hex"));
         };
         /**
          * @func get_PubKeyHash_by_PrivKey
          * @memberof PrivateKey
          */
         this.getPubKeyHashByPrivKey = function () {
-            return hash_1.default.hash160(_this.privKey.toPublicKey().toBuffer()).toString(OPCODE_TYPE);
+            return hash_1.default.hash160(_this.privKey.toPublicKey().toBuffer()).toString("hex");
         };
+        // console.log('privkey_str :', privkey_str)
+        if (privkey_str) {
+            privkey_str = privkey_str.padStart(64, "0");
+        }
         this.privKey = new bitcore_lib_1.default.PrivateKey(privkey_str);
         this.privKey.signMsg = function (sigHash) {
             var eccPrivateKey = privkey_str && ecpair_1.default.getECfromPrivKey(privkey_str);
             return eccPrivateKey.sign(sigHash).sig;
+        };
+        this.privKey.verifyMsg = function (sigHash, signature, publicKey) {
+            console.log("signature instanceof Buffer :", signature instanceof Buffer);
+            var eccPrivateKey = privkey_str && ecpair_1.default.getECfromPrivKey(privkey_str);
+            return eccPrivateKey.verify(sigHash, signature, publicKey);
         };
         this.privKey.pkh = this.getPubKeyHashByPrivKey();
         this.privKey.toP2PKHAddress = this.getAddrByPrivKey(prefix.P2PKH);

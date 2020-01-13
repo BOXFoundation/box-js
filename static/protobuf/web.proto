@@ -1,0 +1,337 @@
+// Copyright (c) 2018 ContentBox Authors.
+// Use of this source code is governed by a MIT-style
+// license that can be found in the LICENSE file.
+
+syntax = "proto3";
+package rpcpb;
+
+option java_package = "one.contentbox.boxd.protocol.rpc.protobuf.generated";
+option java_outer_classname ="WebProto";
+option java_multiple_files = true;
+
+import "transaction.proto";
+//import "google/api/annotations.proto";
+
+service WebApi {
+
+    rpc ViewTxDetail (ViewTxDetailReq) returns (ViewTxDetailResp) ;
+//    rpc ViewTxDetail (ViewTxDetailReq) returns (ViewTxDetailResp) {
+//        option (google.api.http) = {
+//            post: "/v1/tx/detail"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc ViewBlockDetail (ViewBlockDetailReq) returns (ViewBlockDetailResp) ;
+//    rpc ViewBlockDetail (ViewBlockDetailReq) returns (ViewBlockDetailResp) {
+//        option (google.api.http) = {
+//            post: "/v1/block/detail"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc DoCall (CallReq) returns (CallResp) ;
+//    rpc DoCall (CallReq) returns (CallResp) {
+//        option (google.api.http) = {
+//            post: "/v1/contract/call"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc GetCode (GetCodeReq) returns (GetCodeResp) ;
+//    rpc GetCode (GetCodeReq) returns (GetCodeResp) {
+//        option (google.api.http) = {
+//            post: "/v1/contract/code"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc EstimateGas (CallReq) returns (EstimateGasResp) ;
+//    rpc EstimateGas (CallReq) returns (EstimateGasResp) {
+//        option (google.api.http) = {
+//            post: "/v1/contract/estimateGas"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc GetStorageAt (StorageReq) returns (StorageResp) ;
+//    rpc GetStorageAt (StorageReq) returns (StorageResp) {
+//        option (google.api.http) = {
+//            post: "/v1/contract/getStorageAt"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc Nonce (NonceReq) returns (NonceResp) ;
+//    rpc Nonce (NonceReq) returns (NonceResp) {
+//        option (google.api.http) = {
+//            post: "/v1/account/nonce"
+//            body: "*"
+//        };
+//    }
+
+
+    rpc GetLogs (LogsReq) returns (Logs) ;
+//    rpc GetLogs (LogsReq) returns (Logs) {
+//        option (google.api.http) = {
+//            post: "/v1/contract/getLogs"
+//            body: "*"
+//        };
+//    }
+
+    rpc Connect (stream RegisterReq) returns (stream ListenedData);
+
+
+    rpc Table (TableReq) returns (TableResp) ;
+//    rpc Table (TableReq) returns (TableResp) {
+//        option (google.api.http) = {
+//            post: "/v1/p2p/table"
+//            body: "*"
+//        };
+//    }
+}
+
+message RegisterReq {
+    uint32 type = 1;
+    bool cancel = 2;
+    oneof info {
+        LogsReq logs_req= 3;
+    }
+}
+
+message ListenedData {
+    uint32 type = 1;
+    oneof data {
+        BlockDetail block = 2;
+        LogDetails logs = 3;
+        RegisterDetails info = 4;
+    }
+}
+
+message RegisterDetails {
+    string uid = 1;
+}
+    
+message ViewTxDetailReq {
+    string hash = 1;
+    bool spread_split = 2;
+}
+
+enum TxStatus {
+    unknown = 0;
+    pending = 1;
+    onchain = 2;
+    confirmed = 3;
+}
+
+message ViewTxDetailResp {
+    int32 code = 1;
+    string message = 2;
+    int32 version = 3;
+    int64 block_time = 4;
+    uint32 block_height = 5;
+    TxStatus status = 6;
+    TxDetail detail = 7;
+}
+
+message ViewBlockDetailReq {
+    string hash = 1;
+    uint32 height = 2;
+}
+
+message ViewBlockDetailResp {
+    int32 code = 1;
+    string message = 2;
+    BlockDetail detail = 3;
+}
+
+message ContractInfo {
+    bool failed = 2;
+    uint64 gas_limit = 3;
+    uint64 gas_used = 4;
+    uint64 nonce = 5;
+    string data = 6;
+    repeated string internal_txs = 7;
+    repeated LogDetail logs = 8;
+    string err_msg = 9;
+}
+
+message ListenBlocksReq {
+}
+
+message LogsReq {
+    string uid = 1;
+    string hash = 2;
+    uint32 from = 3;
+    uint32 to = 4;
+    repeated string addresses = 5;
+    repeated topiclist topics = 6;
+
+    message topiclist {
+        repeated string topics = 1;
+    }
+}
+
+message Logs {
+    int32 code = 1;
+    string message = 2;
+    repeated LogDetail logs = 3;
+}
+
+message LogDetails {
+    repeated LogDetail logs = 1;
+}
+
+message LogDetail {
+    string address = 1;
+    repeated string topics = 2;
+    string data = 3;
+    uint64 block_number = 4;
+    string tx_hash = 5;
+    uint32 tx_index = 6;
+    string block_hash = 7;
+    uint32 index = 8;
+    bool removed = 9;
+}
+
+message TxDetail {
+    string hash = 1;
+    uint64 fee = 2;
+    enum TxType {
+      unknown = 0;
+      pay_to_pubk = 1;
+	    contract = 2;
+	    token_issue = 4;
+	    token_transfer = 5;
+	    split_addr = 8;
+    }
+    TxType type = 3;
+    repeated TxInDetail vin = 4;
+    repeated TxOutDetail vout = 5;
+}
+
+message TxInDetail {
+    TxOutDetail prev_out_detail = 1;
+    string script_sig = 2;
+    uint32 sequence = 3;
+    string prev_out_point = 4;
+}
+
+message TxOutDetail {
+    string addr = 1;
+    uint64 value = 2;
+    string script_disasm = 3;
+    enum TxOutType {
+        unknown = 0;
+        pay_to_pubkey_hash = 1;
+        pay_to_pubkey_hash_cltv = 2;
+        token_issue = 3;
+        token_transfer = 4;
+        new_split_addr = 5;
+        pay_to_script_hash = 6;
+        contract_create = 7;
+        contract_call = 8;
+    }
+    TxOutType type = 4;
+    oneof appendix {
+        TokenIssueInfo token_issue_info = 5;
+        TokenTransferInfo token_transfer_info = 6;
+        SplitContractInfo split_contract_info = 7;
+        ContractInfo contract_info = 8;
+    }
+}
+
+message BlockDetail {
+    int32 version = 1;
+    uint32 height = 2;
+    int64 time_stamp = 3;
+    uint32 size = 4;
+    string hash = 5;
+    string prev_block_hash = 6;
+    string coin_base = 7;
+    bool confirmed = 8;
+    string signature = 10;
+    repeated TxDetail txs = 11;
+    repeated TxDetail internal_txs = 12;
+}
+
+message TokenIssueInfo {
+    TokenTag token_tag = 1;
+}
+
+message SplitContractInfo  {
+    repeated string addrs = 1;
+    repeated uint32 weights = 2;
+}
+
+message TokenTransferInfo {
+    string token_id = 1;
+}
+
+message CallReq {
+    string from = 1;
+    string to = 2;
+    string data = 3;
+    uint32 height = 4;
+    uint32 timeout = 5;
+}
+
+message CallResp {
+    int32 code = 1;
+    string message = 2;
+    string output = 3;
+    int32 height = 4;
+}
+
+message EstimateGasResp {
+    int32 code = 1;
+    string message = 2;
+    int32 gas = 3;
+}
+
+message NonceReq {
+    string addr = 1;
+}
+
+message NonceResp {
+    int32 code = 1;
+    string message = 2;
+    uint64 nonce = 3;
+}
+
+message TableReq {
+}
+
+message TableResp {
+    int32 code = 1;
+    string message = 2;
+    repeated string table = 3;
+}
+
+message GetCodeReq {
+    string address = 1;
+}
+
+message GetCodeResp {
+    int32 code = 1;
+    string message = 2;
+    string data = 3;
+}
+
+message StorageReq {
+    string address = 1;
+    string position = 2;
+    uint32 height = 3;
+}
+
+message StorageResp {
+    int32 code = 1;
+    string message = 2;
+    string data = 3;
+}
