@@ -31,13 +31,8 @@ Clone this repository locally then run `npm run build:node`. The browser distrib
 Supported using TypeScript, [webpack](https://webpack.js.org/api/module-methods), or [Node.js with `--experimental-modules` flag](https://nodejs.org/api/esm.html)
 
 ```js
-<<<<<<< HEAD
-import boxdjs from "boxdjs";
-import { Account, AccountManager, Api, Feature, Contract, Util } from "boxdjs";
-=======
 import boxdjs from 'boxdjs'
 import { Account, AccountManager, Api, Feature, Contract, Util } from 'boxdjs'
->>>>>>> v1.1.0
 ```
 
 ### CommonJS
@@ -45,11 +40,7 @@ import { Account, AccountManager, Api, Feature, Contract, Util } from 'boxdjs'
 Importing using commonJS syntax is supported by Node.js out of the box.
 
 ```js
-<<<<<<< HEAD
-const boxdjs = require("boxdjs").default;
-=======
 const boxdjs = require('boxdjs').default
->>>>>>> v1.1.0
 ```
 
 ## Setup
