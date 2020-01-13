@@ -1,10 +1,7 @@
 # boxd-js ![](https://img.shields.io/github/issues/BOXFoundation/box-js) ![](https://travis-ci.com/BOXFoundation/boxd.svg?branch=master)
 
-A javascript API for integration with boxd-based blockchain using [Boxd RPC API](https://github.com/BOXFoundation/boxd) on nodejs or browser.
-
-Documentation can be found [Here](https://github.com/BOXFoundation/box-js/wiki).
-
-By **[Contentbox](https://contentbox.one/)**
+> A javascript API for integration with boxd-based blockchain using [Boxd RPC API](https://github.com/BOXFoundation/boxd) on nodejs or browser.
+> Documentation can be found [Here](https://github.com/BOXFoundation/box-js/wiki).
 
 ![contentbox](https://contentbox.one/img/home-background.png)
 
@@ -116,3 +113,5 @@ npm run test
 ## License
 
 [MIT](./LICENSE)
+
+### **By [Contentbox](https://contentbox.one/)**
